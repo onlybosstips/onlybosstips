@@ -362,6 +362,7 @@ card.appendChild(kickoff);
 return card;
 }
 
+
 async function loadPredictions() {
 const freeBox = document.getElementById("freePredictions");
 const vipBox = document.getElementById("vipPredictions");
@@ -383,10 +384,20 @@ resultsBox.textContent = "Unable to load results.";
 return;
 }
 
-const upcoming = (data || []).filter(item => item.status !== "finished");
+const allItems = data || [];
+
+const finished = allItems.filter(item => {
+const status = String(item.status || "").toLowerCase();
+return ["finished", "won", "lost", "void"].includes(status);
+});
+
+const upcoming = allItems.filter(item => {
+const status = String(item.status || "").toLowerCase();
+return !["finished", "won", "lost", "void"].includes(status);
+});
+
 const freeItems = upcoming.filter(item => item.visibility === "free");
 const vipItems = upcoming.filter(item => item.visibility === "vip");
-const finished = (data || []).filter(item => item.status === "finished");
 
 if (!freeItems.length) {
 freeBox.textContent = "No FREE predictions available yet.";
@@ -411,15 +422,16 @@ if (!finished.length) {
 resultsBox.textContent = "No match results available yet.";
 } else {
 finished.forEach(item => {
-const card = makePredictionCard(item, false);
+const card = makePredictionCard(item, item.visibility === "vip");
 const result = document.createElement("p");
 result.className = "gold";
-result.textContent = "Result: " + (item.result || "Updated");
+result.textContent = "RESULT: " + String(item.result || item.status || "Updated").toUpperCase();
 card.appendChild(result);
 resultsBox.appendChild(card);
 });
 }
 }
+
 
 async function logOut() {
 await db.auth.signOut();
