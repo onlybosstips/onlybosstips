@@ -42,95 +42,96 @@ footer{text-align:center;padding:25px;border-top:1px solid #292e39;color:var(--m
 <body>
 
 <header>
-  <div class="logo">ONLYBOSSTIPS</div>
-  <button id="headerButton" onclick="showAuth('signup')">JOIN NOW</button>
+<div class="logo">ONLYBOSSTIPS</div>
+<button id="headerButton" onclick="showAuth('signup')">JOIN NOW</button>
 </header>
 
 <section id="welcome">
-  <div class="hero">
-    <h1>WELCOME TO <span class="gold">ONLYBOSSTIPS</span></h1>
-    <p>Smart Football Predictions.<br>Match Analysis. Results.</p>
-    <div class="actions">
-      <button onclick="showAuth('signup')">CREATE FREE ACCOUNT</button>
-      <button class="secondary" onclick="showAuth('login')">MEMBER LOGIN</button>
-    </div>
-  </div>
-  <div class="container">
-    <div class="card">
-      <h2 class="gold">FREE ODDS</h2>
-      <p class="muted">Create your free account to access FREE football predictions and match results.</p>
-    </div>
-    <div class="card">
-      <h2 class="gold">VIP ODDS</h2>
-      <p class="muted">Exclusive VIP predictions available to approved VIP members.</p>
-    </div>
-    <div class="card">
-      <h2 class="gold">JOIN OUR COMMUNITY</h2>
-      <p class="muted">Register today and become part of ONLYBOSSTIPS.</p>
-      <button onclick="showAuth('signup')">SIGN UP FREE</button>
-    </div>
-  </div>
+<div class="hero">
+<h1>WELCOME TO <span class="gold">ONLYBOSSTIPS</span></h1>
+<p>Smart Football Predictions.<br>Match Analysis. Results.</p>
+<div class="actions">
+<button onclick="showAuth('signup')">CREATE FREE ACCOUNT</button>
+<button class="secondary" onclick="showAuth('login')">MEMBER LOGIN</button>
+</div>
+</div>
+<div class="container">
+<div class="card">
+<h2 class="gold">FREE ODDS</h2>
+<p class="muted">Create your free account to access FREE football predictions and match results.</p>
+</div>
+<div class="card">
+<h2 class="gold">VIP ODDS</h2>
+<p class="muted">Exclusive VIP predictions available to approved VIP members.</p>
+</div>
+<div class="card">
+<h2 class="gold">JOIN OUR COMMUNITY</h2>
+<p class="muted">Register today and become part of ONLYBOSSTIPS.</p>
+<button onclick="showAuth('signup')">SIGN UP FREE</button>
+</div>
+</div>
 </section>
 
 <section id="authSection" class="container hidden">
-  <div class="card form">
-    <div id="signupForm">
-      <h2 class="gold">CREATE ACCOUNT</h2>
-      <p class="muted">Join ONLYBOSSTIPS as a FREE MEMBER.</p>
-      <label>Email address</label>
-      <input id="signupEmail" type="email" placeholder="Enter your email">
-      <label>Password</label>
-      <input id="signupPassword" type="password" placeholder="Create a password">
-      <button id="signupButton" onclick="signUp()">CREATE ACCOUNT</button>
-      <p class="muted">Already registered? <span class="link" onclick="showAuth('login')">Log in</span></p>
-    </div>
+<div class="card form">
 
-    <div id="loginForm" class="hidden">
-      <h2 class="gold">MEMBER LOGIN</h2>
-      <p class="muted">Log in to access your predictions.</p>
-      <label>Email address</label>
-      <input id="loginEmail" type="email" placeholder="Enter your email">
-      <label>Password</label>
-      <input id="loginPassword" type="password" placeholder="Enter password">
-      <button id="loginButton" onclick="logIn()">LOG IN</button>
-      <p class="muted"><span class="link" onclick="forgotPassword()">Forgot password?</span></p>
-      <p class="muted">Don't have an account? <span class="link" onclick="showAuth('signup')">Sign up</span></p>
-    </div>
+<div id="signupForm">
+<h2 class="gold">CREATE ACCOUNT</h2>
+<p class="muted">Join ONLYBOSSTIPS as a FREE MEMBER.</p>
+<label>Email address</label>
+<input id="signupEmail" type="email" placeholder="Enter your email">
+<label>Password</label>
+<input id="signupPassword" type="password" placeholder="Create a password">
+<button id="signupButton" onclick="signUp()">CREATE ACCOUNT</button>
+<p class="muted">Already registered? <span class="link" onclick="showAuth('login')">Log in</span></p>
+</div>
 
-    <div id="recoveryForm" class="hidden">
-      <h2 class="gold">RESET PASSWORD</h2>
-      <p class="muted">Enter your new password below.</p>
-      <label>New password</label>
-      <input id="newPassword" type="password" placeholder="Enter new password">
-      <label>Confirm new password</label>
-      <input id="confirmPassword" type="password" placeholder="Confirm new password">
-      <button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button>
-    </div>
+<div id="loginForm" class="hidden">
+<h2 class="gold">MEMBER LOGIN</h2>
+<p class="muted">Log in to access your predictions.</p>
+<label>Email address</label>
+<input id="loginEmail" type="email" placeholder="Enter your email">
+<label>Password</label>
+<input id="loginPassword" type="password" placeholder="Enter password">
+<button id="loginButton" onclick="logIn()">LOG IN</button>
+<p class="muted"><span class="link" onclick="forgotPassword()">Forgot password?</span></p>
+<p class="muted">Don't have an account? <span class="link" onclick="showAuth('signup')">Sign up</span></p>
+</div>
 
-    <p id="authMessage" class="message"></p>
-    <p class="muted"><span class="link" onclick="showWelcome()">Back to home</span></p>
-  </div>
+<div id="recoveryForm" class="hidden">
+<h2 class="gold">RESET PASSWORD</h2>
+<p class="muted">Enter your new password below.</p>
+<label>New password</label>
+<input id="newPassword" type="password" placeholder="Enter new password">
+<label>Confirm new password</label>
+<input id="confirmPassword" type="password" placeholder="Confirm new password">
+<button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button>
+</div>
+
+<p id="authMessage" class="message"></p>
+<p class="muted"><span class="link" onclick="showWelcome()">Back to home</span></p>
+</div>
 </section>
 
 <section id="memberDashboard" class="container hidden">
-  <div class="card">
-    <h2>WELCOME TO ONLYBOSSTIPS</h2>
-    <p id="memberEmail" class="muted"></p>
-    <span id="memberBadge" class="badge">FREE MEMBER</span>
-    <div style="margin-top:18px">
-      <button class="secondary" onclick="logOut()">LOG OUT</button>
-    </div>
-  </div>
-  <h2 class="section-title gold">FREE ODDS</h2>
-  <div id="freePredictions"><p class="notice">Loading FREE predictions...</p></div>
-  <h2 class="section-title gold">VIP ODDS</h2>
-  <div id="vipPredictions"><p class="notice">Loading VIP predictions...</p></div>
-  <h2 class="section-title gold">RECENT RESULTS</h2>
-  <div id="recentResults"><p class="notice">Loading results...</p></div>
-  <div id="adminNotice" class="card hidden">
-    <h3 class="gold">ADMINISTRATOR ACCOUNT</h3>
-    <p class="muted">Your administrator account is recognised. Use the separate private administrator dashboard.</p>
-  </div>
+<div class="card">
+<h2>WELCOME TO ONLYBOSSTIPS</h2>
+<p id="memberEmail" class="muted"></p>
+<span id="memberBadge" class="badge">FREE MEMBER</span>
+<div style="margin-top:18px">
+<button class="secondary" onclick="logOut()">LOG OUT</button>
+</div>
+</div>
+<h2 class="section-title gold">FREE ODDS</h2>
+<div id="freePredictions"><p class="notice">Loading FREE predictions...</p></div>
+<h2 class="section-title gold">VIP ODDS</h2>
+<div id="vipPredictions"><p class="notice">Loading VIP predictions...</p></div>
+<h2 class="section-title gold">RECENT RESULTS</h2>
+<div id="recentResults"><p class="notice">Loading results...</p></div>
+<div id="adminNotice" class="card hidden">
+<h3 class="gold">ADMINISTRATOR ACCOUNT</h3>
+<p class="muted">Your administrator account is recognised. Use the separate private administrator dashboard.</p>
+</div>
 </section>
 
 <footer>ONLYBOSSTIPS © 2026. All rights reserved.</footer>
@@ -138,329 +139,356 @@ footer{text-align:center;padding:25px;border-top:1px solid #292e39;color:var(--m
 <script>
 const SUPABASE_URL = "https://mumntekskdfexzupjvmc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
-
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
 let currentTier = "free";
 let currentIsAdmin = false;
+let recoveryInProgress = false;
 
 function hideAllSections() {
-  document.getElementById("welcome").classList.add("hidden");
-  document.getElementById("authSection").classList.add("hidden");
-  document.getElementById("memberDashboard").classList.add("hidden");
+document.getElementById("welcome").classList.add("hidden");
+document.getElementById("authSection").classList.add("hidden");
+document.getElementById("memberDashboard").classList.add("hidden");
 }
 
 function showWelcome() {
-  hideAllSections();
-  document.getElementById("welcome").classList.remove("hidden");
+hideAllSections();
+document.getElementById("welcome").classList.remove("hidden");
 }
 
 function showAuth(mode) {
-  hideAllSections();
-  document.getElementById("authSection").classList.remove("hidden");
-
-  document.getElementById("signupForm").classList.toggle("hidden", mode !== "signup");
-  document.getElementById("loginForm").classList.toggle("hidden", mode !== "login");
-  document.getElementById("recoveryForm").classList.add("hidden");
-  document.getElementById("authMessage").textContent = "";
+hideAllSections();
+document.getElementById("authSection").classList.remove("hidden");
+document.getElementById("signupForm").classList.toggle("hidden", mode !== "signup");
+document.getElementById("loginForm").classList.toggle("hidden", mode !== "login");
+document.getElementById("recoveryForm").classList.add("hidden");
+document.getElementById("authMessage").textContent = "";
 }
 
 function showRecoveryForm() {
-  hideAllSections();
-  document.getElementById("authSection").classList.remove("hidden");
-  document.getElementById("signupForm").classList.add("hidden");
-  document.getElementById("loginForm").classList.add("hidden");
-  document.getElementById("recoveryForm").classList.remove("hidden");
-  document.getElementById("authMessage").textContent = "Enter and confirm your new password.";
+recoveryInProgress = true;
+hideAllSections();
+document.getElementById("authSection").classList.remove("hidden");
+document.getElementById("signupForm").classList.add("hidden");
+document.getElementById("loginForm").classList.add("hidden");
+document.getElementById("recoveryForm").classList.remove("hidden");
+document.getElementById("authMessage").textContent = "Enter and confirm your new password.";
 }
 
 function showDashboard() {
-  hideAllSections();
-  document.getElementById("memberDashboard").classList.remove("hidden");
-  document.getElementById("headerButton").textContent = "MY ACCOUNT";
-  document.getElementById("memberEmail").textContent = currentUser.email || "";
-
-  const badge = document.getElementById("memberBadge");
-  badge.textContent = currentTier.toUpperCase() + " MEMBER";
-  badge.className = currentTier === "vip" ? "badge vip" : "badge";
-
-  document.getElementById("adminNotice").classList.toggle("hidden", !currentIsAdmin);
-  loadPredictions();
+hideAllSections();
+document.getElementById("memberDashboard").classList.remove("hidden");
+document.getElementById("headerButton").textContent = "MY ACCOUNT";
+document.getElementById("memberEmail").textContent = currentUser.email || "";
+const badge = document.getElementById("memberBadge");
+badge.textContent = currentTier.toUpperCase() + " MEMBER";
+badge.className = currentTier === "vip" ? "badge vip" : "badge";
+document.getElementById("adminNotice").classList.toggle("hidden", !currentIsAdmin);
+loadPredictions();
 }
 
 async function signUp() {
-  const email = document.getElementById("signupEmail").value.trim();
-  const password = document.getElementById("signupPassword").value;
-  const message = document.getElementById("authMessage");
-  const button = document.getElementById("signupButton");
+const email = document.getElementById("signupEmail").value.trim();
+const password = document.getElementById("signupPassword").value;
+const message = document.getElementById("authMessage");
+const button = document.getElementById("signupButton");
 
-  if (!email || password.length < 6) {
-    message.textContent = "Enter a valid email and a password of at least 6 characters.";
-    return;
-  }
+if (!email || password.length < 6) {
+message.textContent = "Enter a valid email and a password of at least 6 characters.";
+return;
+}
 
-  button.disabled = true;
-  message.textContent = "Creating your account...";
+button.disabled = true;
+message.textContent = "Creating your account...";
+const {data, error} = await db.auth.signUp({email, password});
+button.disabled = false;
 
-  const {data, error} = await db.auth.signUp({email, password});
-  button.disabled = false;
+if (error) {
+message.textContent = error.message;
+return;
+}
 
-  if (error) {
-    message.textContent = error.message;
-    return;
-  }
-
-  if (data.session) {
-    await loadUser(data.session.user);
-  } else {
-    message.textContent = "Registration successful. Check your email to confirm your account before logging in.";
-  }
+if (data.session) {
+await loadUser(data.session.user);
+} else {
+message.textContent = "Registration successful. Check your email to confirm your account before logging in.";
+}
 }
 
 async function logIn() {
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
-  const message = document.getElementById("authMessage");
-  const button = document.getElementById("loginButton");
+const email = document.getElementById("loginEmail").value.trim();
+const password = document.getElementById("loginPassword").value;
+const message = document.getElementById("authMessage");
+const button = document.getElementById("loginButton");
 
-  if (!email || !password) {
-    message.textContent = "Enter your email and password.";
-    return;
-  }
+if (!email || !password) {
+message.textContent = "Enter your email and password.";
+return;
+}
 
-  button.disabled = true;
-  message.textContent = "Logging in...";
+button.disabled = true;
+message.textContent = "Logging in...";
+const {data, error} = await db.auth.signInWithPassword({email, password});
+button.disabled = false;
 
-  const {data, error} = await db.auth.signInWithPassword({email, password});
-  button.disabled = false;
+if (error) {
+message.textContent = error.message;
+return;
+}
 
-  if (error) {
-    message.textContent = error.message;
-    return;
-  }
-
-  await loadUser(data.user);
+await loadUser(data.user);
 }
 
 async function forgotPassword() {
-  const email = document.getElementById("loginEmail").value.trim();
-  const message = document.getElementById("authMessage");
+const email = document.getElementById("loginEmail").value.trim();
+const message = document.getElementById("authMessage");
 
-  if (!email) {
-    message.textContent = "Enter your email address above first.";
-    return;
-  }
+if (!email) {
+message.textContent = "Enter your email address above first.";
+return;
+}
 
-  message.textContent = "Sending password reset email...";
+message.textContent = "Sending password reset email...";
+const {error} = await db.auth.resetPasswordForEmail(email, {
+redirectTo: window.location.origin + "/"
+});
 
-  const {error} = await db.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + "/"
-  });
-
-  if (error) {
-    message.textContent = error.message;
-  } else {
-    message.textContent = "Password reset email sent. Open the email link to return here and create your new password.";
-  }
+if (error) {
+message.textContent = error.message;
+} else {
+message.textContent = "Password reset email sent. Open the email link to return here and create your new password.";
+}
 }
 
 async function saveNewPassword() {
-  const password = document.getElementById("newPassword").value;
-  const confirm = document.getElementById("confirmPassword").value;
-  const message = document.getElementById("authMessage");
-  const button = document.getElementById("savePasswordButton");
+const password = document.getElementById("newPassword").value;
+const confirm = document.getElementById("confirmPassword").value;
+const message = document.getElementById("authMessage");
+const button = document.getElementById("savePasswordButton");
 
-  if (password.length < 6) {
-    message.textContent = "Your password must contain at least 6 characters.";
-    return;
-  }
+if (password.length < 6) {
+message.textContent = "Your password must contain at least 6 characters.";
+return;
+}
 
-  if (password !== confirm) {
-    message.textContent = "The passwords do not match.";
-    return;
-  }
+if (password !== confirm) {
+message.textContent = "The passwords do not match.";
+return;
+}
 
-  button.disabled = true;
-  message.textContent = "Updating your password...";
+button.disabled = true;
+message.textContent = "Updating your password...";
+const {error} = await db.auth.updateUser({password});
+button.disabled = false;
 
-  const {error} = await db.auth.updateUser({password});
+if (error) {
+message.textContent = "Password update failed: " + error.message;
+return;
+}
 
-  button.disabled = false;
+recoveryInProgress = false;
+message.textContent = "Your password has been changed successfully. You can now log in.";
+document.getElementById("newPassword").value = "";
+document.getElementById("confirmPassword").value = "";
 
-  if (error) {
-    message.textContent = "Password update failed: " + error.message;
-    return;
-  }
-
-  message.textContent = "Your password has been changed successfully. You can now log in.";
-  document.getElementById("newPassword").value = "";
-  document.getElementById("confirmPassword").value = "";
-
-  await db.auth.signOut();
-  setTimeout(() => showAuth("login"), 1500);
+await db.auth.signOut();
+window.history.replaceState({}, document.title, window.location.pathname);
+setTimeout(() => showAuth("login"), 1500);
 }
 
 async function loadUser(user) {
-  currentUser = user;
-  currentTier = "free";
-  currentIsAdmin = false;
+currentUser = user;
+currentTier = "free";
+currentIsAdmin = false;
 
-  const {data: profile, error: profileError} = await db
-    .from("member_profiles")
-    .select("membership_tier")
-    .eq("user_id", user.id)
-    .maybeSingle();
+const {data: profile, error: profileError} = await db
+.from("member_profiles")
+.select("membership_tier")
+.eq("user_id", user.id)
+.maybeSingle();
 
-  if (profileError) {
-    document.getElementById("authMessage").textContent = "Could not load your membership. Please try again.";
-    return;
-  }
+if (profileError) {
+document.getElementById("authMessage").textContent = "Could not load your membership. Please try again.";
+return;
+}
 
-  if (profile) currentTier = profile.membership_tier;
+if (profile) currentTier = profile.membership_tier;
 
-  const {data: adminRecord} = await db
-    .from("admins")
-    .select("user_id")
-    .eq("user_id", user.id)
-    .maybeSingle();
+const {data: adminRecord} = await db
+.from("admins")
+.select("user_id")
+.eq("user_id", user.id)
+.maybeSingle();
 
-  currentIsAdmin = !!adminRecord;
-  showDashboard();
+currentIsAdmin = !!adminRecord;
+showDashboard();
 }
 
 function makePredictionCard(item, showTier) {
-  const card = document.createElement("div");
-  card.className = "card";
+const card = document.createElement("div");
+card.className = "card";
 
-  const teams = document.createElement("h3");
-  teams.textContent = item.home_team + " vs " + item.away_team;
-  card.appendChild(teams);
+const teams = document.createElement("h3");
+teams.textContent = item.home_team + " vs " + item.away_team;
+card.appendChild(teams);
 
-  const league = document.createElement("p");
-  league.className = "muted";
-  league.textContent = item.league || "Football";
-  card.appendChild(league);
+const league = document.createElement("p");
+league.className = "muted";
+league.textContent = item.league || "Football";
+card.appendChild(league);
 
-  if (showTier) {
-    const tier = document.createElement("span");
-    tier.className = item.visibility === "vip" ? "badge vip" : "badge";
-    tier.textContent = item.visibility.toUpperCase() + " ODDS";
-    card.appendChild(tier);
-  }
+if (showTier) {
+const tier = document.createElement("span");
+tier.className = item.visibility === "vip" ? "badge vip" : "badge";
+tier.textContent = item.visibility.toUpperCase() + " ODDS";
+card.appendChild(tier);
+}
 
-  const prediction = document.createElement("p");
-  prediction.textContent = "Prediction: " + (item.prediction || "-");
-  card.appendChild(prediction);
+const prediction = document.createElement("p");
+prediction.textContent = "Prediction: " + (item.prediction || "-");
+card.appendChild(prediction);
 
-  const odds = document.createElement("p");
-  odds.className = "odds";
-  odds.textContent = "Odds: " + (item.odds ?? "-");
-  card.appendChild(odds);
+const odds = document.createElement("p");
+odds.className = "odds";
+odds.textContent = "Odds: " + (item.odds ?? "-");
+card.appendChild(odds);
 
-  const kickoff = document.createElement("p");
-  kickoff.className = "muted";
-  kickoff.textContent = item.kickoff ? "Kickoff: " + new Date(item.kickoff).toLocaleString() : "Kickoff time not provided";
-  card.appendChild(kickoff);
+const kickoff = document.createElement("p");
+kickoff.className = "muted";
+kickoff.textContent = item.kickoff ? "Kickoff: " + new Date(item.kickoff).toLocaleString() : "Kickoff time not provided";
+card.appendChild(kickoff);
 
-  return card;
+return card;
 }
 
 async function loadPredictions() {
-  const freeBox = document.getElementById("freePredictions");
-  const vipBox = document.getElementById("vipPredictions");
-  const resultsBox = document.getElementById("recentResults");
+const freeBox = document.getElementById("freePredictions");
+const vipBox = document.getElementById("vipPredictions");
+const resultsBox = document.getElementById("recentResults");
 
-  freeBox.replaceChildren();
-  vipBox.replaceChildren();
-  resultsBox.replaceChildren();
+freeBox.replaceChildren();
+vipBox.replaceChildren();
+resultsBox.replaceChildren();
 
-  const {data, error} = await db
-    .from("predictions")
-    .select("*")
-    .order("kickoff", {ascending:true});
+const {data, error} = await db
+.from("predictions")
+.select("*")
+.order("kickoff", {ascending:true});
 
-  if (error) {
-    freeBox.textContent = "Unable to load predictions. Please refresh.";
-    vipBox.textContent = "Unable to load VIP predictions.";
-    resultsBox.textContent = "Unable to load results.";
-    return;
-  }
+if (error) {
+freeBox.textContent = "Unable to load predictions. Please refresh.";
+vipBox.textContent = "Unable to load VIP predictions.";
+resultsBox.textContent = "Unable to load results.";
+return;
+}
 
-  const upcoming = (data || []).filter(item => item.status !== "finished");
-  const freeItems = upcoming.filter(item => item.visibility === "free");
-  const vipItems = upcoming.filter(item => item.visibility === "vip");
-  const finished = (data || []).filter(item => item.status === "finished");
+const upcoming = (data || []).filter(item => item.status !== "finished");
+const freeItems = upcoming.filter(item => item.visibility === "free");
+const vipItems = upcoming.filter(item => item.visibility === "vip");
+const finished = (data || []).filter(item => item.status === "finished");
 
-  if (!freeItems.length) {
-    freeBox.textContent = "No FREE predictions available yet.";
-  } else {
-    freeItems.forEach(item => freeBox.appendChild(makePredictionCard(item, false)));
-  }
+if (!freeItems.length) {
+freeBox.textContent = "No FREE predictions available yet.";
+} else {
+freeItems.forEach(item => freeBox.appendChild(makePredictionCard(item, false)));
+}
 
-  if (currentTier === "vip" || currentIsAdmin) {
-    if (!vipItems.length) {
-      vipBox.textContent = "No VIP predictions available yet.";
-    } else {
-      vipItems.forEach(item => vipBox.appendChild(makePredictionCard(item, true)));
-    }
-  } else {
-    const locked = document.createElement("div");
-    locked.className = "card";
-    locked.innerHTML = '<h3 class="gold">VIP MEMBERS ONLY</h3><p class="muted">VIP predictions are available to approved VIP members. Contact the administrator for VIP access.</p>';
-    vipBox.appendChild(locked);
-  }
+if (currentTier === "vip" || currentIsAdmin) {
+if (!vipItems.length) {
+vipBox.textContent = "No VIP predictions available yet.";
+} else {
+vipItems.forEach(item => vipBox.appendChild(makePredictionCard(item, true)));
+}
+} else {
+const locked = document.createElement("div");
+locked.className = "card";
+locked.innerHTML = '<h3 class="gold">VIP MEMBERS ONLY</h3><p class="muted">VIP predictions are available to approved VIP members. Contact the administrator for VIP access.</p>';
+vipBox.appendChild(locked);
+}
 
-  if (!finished.length) {
-    resultsBox.textContent = "No match results available yet.";
-  } else {
-    finished.forEach(item => {
-      const card = makePredictionCard(item, false);
-      const result = document.createElement("p");
-      result.className = "gold";
-      result.textContent = "Result: " + (item.result || "Updated");
-      card.appendChild(result);
-      resultsBox.appendChild(card);
-    });
-  }
+if (!finished.length) {
+resultsBox.textContent = "No match results available yet.";
+} else {
+finished.forEach(item => {
+const card = makePredictionCard(item, false);
+const result = document.createElement("p");
+result.className = "gold";
+result.textContent = "Result: " + (item.result || "Updated");
+card.appendChild(result);
+resultsBox.appendChild(card);
+});
+}
 }
 
 async function logOut() {
-  await db.auth.signOut();
-  currentUser = null;
-  currentTier = "free";
-  currentIsAdmin = false;
-  document.getElementById("headerButton").textContent = "JOIN NOW";
-  showWelcome();
+await db.auth.signOut();
+currentUser = null;
+currentTier = "free";
+currentIsAdmin = false;
+document.getElementById("headerButton").textContent = "JOIN NOW";
+showWelcome();
 }
 
 db.auth.onAuthStateChange((event, session) => {
-  if (event === "PASSWORD_RECOVERY") {
-    showRecoveryForm();
-  }
+if (event === "PASSWORD_RECOVERY") {
+showRecoveryForm();
+}
 
-  if (event === "SIGNED_OUT") {
-    currentUser = null;
-    currentTier = "free";
-    currentIsAdmin = false;
-    document.getElementById("headerButton").textContent = "JOIN NOW";
-    showWelcome();
-  }
+if (event === "SIGNED_OUT" && !recoveryInProgress) {
+currentUser = null;
+currentTier = "free";
+currentIsAdmin = false;
+document.getElementById("headerButton").textContent = "JOIN NOW";
+showWelcome();
+}
 });
 
 async function startApp() {
-  const {data} = await db.auth.getSession();
+const params = new URLSearchParams(window.location.search);
+const code = params.get("code");
 
-  if (window.location.hash.includes("type=recovery")) {
-    showRecoveryForm();
-    return;
-  }
+if (code) {
+const {error} = await db.auth.exchangeCodeForSession(code);
 
-  if (data.session) {
-    await loadUser(data.session.user);
-  } else {
-    showWelcome();
-  }
+if (error) {
+showAuth("login");
+document.getElementById("authMessage").textContent =
+"This password reset link is invalid or has expired. Request a new one.";
+return;
+}
+
+window.history.replaceState({}, document.title, window.location.pathname);
+showRecoveryForm();
+return;
+}
+
+if (window.location.hash.includes("type=recovery")) {
+const {data, error} = await db.auth.getSession();
+
+if (error || !data.session) {
+showAuth("login");
+document.getElementById("authMessage").textContent =
+"This password reset link is invalid or has expired. Request a new one.";
+return;
+}
+
+showRecoveryForm();
+return;
+}
+
+const {data, error} = await db.auth.getSession();
+
+if (error) {
+showWelcome();
+return;
+}
+
+if (data.session) {
+await loadUser(data.session.user);
+} else {
+showWelcome();
+}
 }
 
 startApp();
