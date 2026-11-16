@@ -4,18 +4,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090b10">
+<meta name="theme-color" content="#06140d">
 <title>ONLYBOSSTIPS | Football Predictions</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
-  --gold:#e9b949;
-  --bg:#090b10;
-  --panel:#151923;
-  --muted:#a5adbd;
-  --white:#fff;
-  --green:#36c879;
+  --gold:#35e879;
+  --bg:#06140d;
+  --panel:#0d2116;
+  --muted:#a8b9ae;
+  --white:#ffffff;
+  --green:#36d879;
   --red:#ff5252;
   --orange:#ffad42;
 }
@@ -34,7 +34,8 @@ header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  border-bottom:1px solid #292e39;
+  border-bottom:1px solid #1c422b;
+  background:#081b10;
 }
 
 .logo{
@@ -48,13 +49,13 @@ button{
   padding:13px 18px;
   border-radius:7px;
   background:var(--gold);
-  color:#111;
+  color:#06140d;
   font-weight:bold;
   cursor:pointer;
 }
 
 button.secondary{
-  background:#293142;
+  background:#203a2b;
   color:white;
 }
 
@@ -63,7 +64,7 @@ button:disabled{opacity:.5}
 .hero{
   text-align:center;
   padding:75px 18px;
-  background:radial-gradient(ellipse at top,#302715,#090b10 68%);
+  background:radial-gradient(ellipse at top,#174c2c,#06140d 68%);
 }
 
 .hero h1{
@@ -94,7 +95,7 @@ button:disabled{opacity:.5}
 
 .card{
   background:var(--panel);
-  border:1px solid #292e39;
+  border:1px solid #1c422b;
   border-radius:12px;
   padding:20px;
   margin-bottom:16px;
@@ -116,9 +117,9 @@ input{
   width:100%;
   padding:14px;
   margin:8px 0 16px;
-  background:#0d1119;
+  background:#08170e;
   color:white;
-  border:1px solid #394253;
+  border:1px solid #31543c;
   border-radius:7px;
   font-size:16px;
 }
@@ -146,13 +147,13 @@ label{
   border-radius:20px;
   font-size:11px;
   font-weight:bold;
-  background:#263b2e;
+  background:#17472b;
   color:#8ce0a5;
 }
 
 .badge.vip{
-  background:#45351b;
-  color:#ffd477;
+  background:#294a31;
+  color:#a8ffbd;
 }
 
 .notice{
@@ -175,8 +176,8 @@ label{
 }
 
 .bank-details{
-  background:#0d1119;
-  border:1px solid #394253;
+  background:#08170e;
+  border:1px solid #31543c;
   border-radius:9px;
   padding:15px;
   margin:15px 0;
@@ -199,13 +200,13 @@ label{
   font-weight:bold;
   margin:22px 0 12px;
   padding-bottom:9px;
-  border-bottom:1px solid #343a46;
+  border-bottom:1px solid #285038;
 }
 
 .prediction-table-wrap{
   width:100%;
   overflow-x:auto;
-  border:1px solid #303744;
+  border:1px solid #285038;
   border-radius:9px;
   margin-bottom:20px;
   -webkit-overflow-scrolling:touch;
@@ -216,23 +217,23 @@ label{
   min-width:690px;
   border-collapse:collapse;
   text-align:left;
-  background:#111620;
+  background:#0b1b11;
 }
 
 .prediction-table th{
-  background:#202735;
-  color:var(--gold);
+  background:#173c25;
+  color:#62ed91;
   font-size:12px;
   font-weight:bold;
   padding:14px 12px;
   white-space:nowrap;
-  border-bottom:1px solid #394253;
+  border-bottom:1px solid #31543c;
 }
 
 .prediction-table td{
   padding:14px 12px;
   font-size:13px;
-  border-bottom:1px solid #292f3b;
+  border-bottom:1px solid #1c3826;
   white-space:nowrap;
 }
 
@@ -241,7 +242,7 @@ label{
 }
 
 .prediction-table tbody tr:hover{
-  background:#1a2230;
+  background:#132c1c;
 }
 
 .club-name{
@@ -288,9 +289,10 @@ label{
 footer{
   text-align:center;
   padding:25px;
-  border-top:1px solid #292e39;
+  border-top:1px solid #1c422b;
   color:var(--muted);
   font-size:12px;
+  background:#081b10;
 }
 
 @media(max-width:500px){
