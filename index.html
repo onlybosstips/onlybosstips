@@ -554,13 +554,60 @@ footer{
     <div class="card">
       <h2 class="gold">VIP ODDS</h2>
       <p class="muted">Exclusive VIP predictions available to approved VIP members.</p>
-      <p class="payment-price">₦5,500 <small>/ month</small></p>
     </div>
 
     <div class="card">
       <h2 class="gold">JOIN OUR COMMUNITY</h2>
       <p class="muted">Register today and become part of ONLYBOSSTIPS.</p>
       <button onclick="showAuth('signup')">SIGN UP FREE</button>
+    </div>
+
+    <!-- PUBLIC EXPLORE AND RESPONSIBLE PLAY -->
+    <div class="explore-card">
+
+      <h2 class="explore-title">EXPLORE</h2>
+
+      <div class="explore-links">
+
+        <a class="explore-link" href="#" onclick="openPublicLogin(event)">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3v9l6 3"/>
+          </svg>
+          Daily predictions
+        </a>
+
+        <a class="explore-link" href="#" onclick="openPublicLogin(event)">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 12a9 9 0 1 0 3-6.7"/>
+            <path d="M3 4v5h5M12 7v5l4 2"/>
+          </svg>
+          Results &amp; history
+        </a>
+
+        <a class="explore-link" href="#" onclick="openPublicSignup(event)">
+          <svg viewBox="0 0 24 24">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M19 8v6M16 11h6"/>
+          </svg>
+          Create free account
+        </a>
+
+      </div>
+
+      <div class="responsible">
+        <div class="responsible-heading">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/>
+            <path d="m9 12 2 2 4-4"/>
+          </svg>
+          PLAY RESPONSIBLY
+        </div>
+
+        <p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p>
+      </div>
+
     </div>
   </div>
 </section>
@@ -681,7 +728,7 @@ footer{
     <p class="muted">Your administrator account is recognised. Use the separate private administrator dashboard.</p>
   </div>
 
-  <!-- EXPLORE AND RESPONSIBLE PLAY -->
+  <!-- MEMBER EXPLORE AND RESPONSIBLE PLAY -->
   <div class="explore-card">
 
     <h2 class="explore-title">EXPLORE</h2>
@@ -770,6 +817,18 @@ function showAuth(mode){
   document.getElementById("loginForm").classList.toggle("hidden",mode!=="login");
   document.getElementById("recoveryForm").classList.add("hidden");
   document.getElementById("authMessage").textContent="";
+}
+
+/* PUBLIC EXPLORE LINKS */
+
+function openPublicLogin(event){
+  event.preventDefault();
+  showAuth("login");
+}
+
+function openPublicSignup(event){
+  event.preventDefault();
+  showAuth("signup");
 }
 
 function showRecoveryForm(){
