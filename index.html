@@ -205,16 +205,17 @@ label{
 
 .prediction-table-wrap{
   width:100%;
-  overflow-x:auto;
+  max-width:100%;
+  overflow-x:hidden;
   border:1px solid #285038;
   border-radius:9px;
   margin-bottom:20px;
-  -webkit-overflow-scrolling:touch;
 }
 
 .prediction-table{
   width:100%;
-  min-width:690px;
+  min-width:0;
+  table-layout:fixed;
   border-collapse:collapse;
   text-align:left;
   background:#0b1b11;
@@ -223,19 +224,38 @@ label{
 .prediction-table th{
   background:#173c25;
   color:#62ed91;
-  font-size:12px;
+  font-size:11px;
   font-weight:bold;
-  padding:14px 12px;
-  white-space:nowrap;
+  padding:12px 5px;
+  white-space:normal;
+  overflow-wrap:anywhere;
   border-bottom:1px solid #31543c;
 }
 
 .prediction-table td{
-  padding:14px 12px;
-  font-size:13px;
+  padding:12px 5px;
+  font-size:12px;
   border-bottom:1px solid #1c3826;
-  white-space:nowrap;
+  white-space:normal;
+  overflow-wrap:anywhere;
+  word-break:normal;
+  vertical-align:middle;
 }
+
+.prediction-table th:nth-child(1),
+.prediction-table td:nth-child(1){width:27%}
+
+.prediction-table th:nth-child(2),
+.prediction-table td:nth-child(2){width:24%}
+
+.prediction-table th:nth-child(3),
+.prediction-table td:nth-child(3){width:11%}
+
+.prediction-table th:nth-child(4),
+.prediction-table td:nth-child(4){width:17%}
+
+.prediction-table th:nth-child(5),
+.prediction-table td:nth-child(5){width:21%}
 
 .prediction-table tbody tr:last-child td{
   border-bottom:none;
@@ -280,12 +300,6 @@ label{
   margin-bottom:22px;
 }
 
-.table-scroll-note{
-  color:var(--muted);
-  font-size:11px;
-  margin:7px 0 12px;
-}
-
 footer{
   text-align:center;
   padding:25px;
@@ -298,10 +312,24 @@ footer{
 @media(max-width:500px){
   header{padding:15px}
   .hero{padding:55px 15px}
-  .container{padding:18px 14px 45px}
+  .container{padding:18px 10px 45px}
+
   .prediction-date{font-size:14px}
-  .prediction-table th{font-size:11px}
-  .prediction-table td{font-size:12px}
+
+  .prediction-table th{
+    font-size:9px;
+    padding:10px 3px;
+  }
+
+  .prediction-table td{
+    font-size:10px;
+    padding:10px 3px;
+  }
+
+  .prediction-table th:nth-child(4),
+  .prediction-table td:nth-child(4){
+    font-size:9px;
+  }
 }
 </style>
 </head>
@@ -856,11 +884,6 @@ function renderPredictionGroup(container,items){
 
     section.appendChild(heading);
     section.appendChild(makePredictionTable(group.items));
-
-    const note=document.createElement("p");
-    note.className="table-scroll-note";
-    note.textContent="Swipe horizontally to view all columns.";
-    section.appendChild(note);
 
     container.appendChild(section);
   });
