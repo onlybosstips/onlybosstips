@@ -192,6 +192,192 @@ label{
   margin-top:10px;
 }
 
+.vip-upgrade-button{
+  width:100%;
+  padding:16px;
+  font-size:15px;
+  border-radius:9px;
+  margin:5px 0 20px;
+  box-shadow:0 4px 18px #35e87920;
+}
+
+.close-payment{
+  width:100%;
+  margin-top:10px;
+}
+
+/* MEMBER WELCOME */
+
+.member-welcome{
+  padding:22px;
+  background:
+    radial-gradient(ellipse at top right,#17472b 0%,transparent 65%),
+    linear-gradient(135deg,#102a1a,#0b1b11);
+  border:1px solid #285038;
+  border-radius:15px;
+  margin-bottom:28px;
+  box-shadow:0 8px 25px #00000025;
+}
+
+.member-welcome-top{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.profile-icon{
+  width:58px;
+  height:58px;
+  min-width:58px;
+  background:#ffffff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 3px 14px #00000035;
+}
+
+.profile-icon svg{
+  width:31px;
+  height:31px;
+  fill:#173c26;
+}
+
+.welcome-label{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:#c9b16c;
+  font-size:10px;
+  font-weight:bold;
+  letter-spacing:3px;
+  margin-bottom:6px;
+}
+
+.welcome-label:before,
+.welcome-label:after{
+  content:"";
+  display:block;
+  height:2px;
+  width:17px;
+  background:#35e879;
+  border-radius:5px;
+}
+
+.member-brand{
+  font-size:clamp(23px,6vw,31px);
+  font-weight:900;
+  color:#35e879;
+  letter-spacing:1px;
+  margin:0;
+}
+
+.member-tagline{
+  font-size:9px;
+  color:#91a397;
+  letter-spacing:1.5px;
+  margin-top:5px;
+}
+
+.member-email{
+  color:#ffffff;
+  font-size:14px;
+  font-weight:bold;
+  overflow-wrap:anywhere;
+  margin:0 0 12px;
+}
+
+/* EXPLORE SECTION */
+
+.explore-card{
+  background:linear-gradient(145deg,#102a1a,#0b1b11);
+  border:1px solid #285038;
+  border-radius:12px;
+  padding:21px;
+  margin-top:35px;
+}
+
+.explore-title{
+  color:#35e879;
+  font-size:19px;
+  font-weight:900;
+  letter-spacing:2px;
+  margin:0 0 18px;
+}
+
+.explore-links{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.explore-link{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#e6eee8;
+  font-size:14px;
+  text-decoration:none;
+  cursor:pointer;
+}
+
+.explore-link svg{
+  width:19px;
+  height:19px;
+  stroke:#35e879;
+  fill:none;
+  stroke-width:1.8;
+  flex-shrink:0;
+}
+
+.responsible{
+  margin-top:25px;
+  padding-top:20px;
+  border-top:1px solid #285038;
+}
+
+.responsible-heading{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  color:#35e879;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:1px;
+  margin-bottom:9px;
+}
+
+.responsible-heading svg{
+  width:19px;
+  height:19px;
+  stroke:#35e879;
+  fill:none;
+  stroke-width:2;
+}
+
+.responsible p{
+  color:#a8b9ae;
+  font-size:12px;
+  line-height:1.8;
+  margin:0;
+}
+
+.logout-bottom{
+  margin-top:18px;
+  padding:16px;
+  width:100%;
+  border:1px solid #743c3c;
+  background:#291817;
+  color:#ffb1a9;
+  border-radius:9px;
+  font-size:13px;
+}
+
+.logout-bottom:hover{
+  background:#40201e;
+}
+
 /* PREDICTION TABLE */
 
 .prediction-date{
@@ -312,7 +498,15 @@ footer{
 @media(max-width:500px){
   header{padding:15px}
   .hero{padding:55px 15px}
-  .container{padding:18px 10px 45px}
+  .container{padding:18px 10px 35px}
+
+  .member-welcome{padding:18px}
+  .member-welcome-top{gap:12px}
+  .profile-icon{
+    width:52px;
+    height:52px;
+    min-width:52px;
+  }
 
   .prediction-date{font-size:14px}
 
@@ -414,15 +608,42 @@ footer{
 
 <section id="memberDashboard" class="container hidden">
 
-  <div class="card">
-    <h2>WELCOME TO ONLYBOSSTIPS</h2>
-    <p id="memberEmail" class="muted"></p>
-    <span id="memberBadge" class="badge">FREE MEMBER</span>
-    <div style="margin-top:18px">
-      <button class="secondary" onclick="logOut()">LOG OUT</button>
+  <!-- MEMBER WELCOME -->
+  <div class="member-welcome">
+    <div class="member-welcome-top">
+
+      <div class="profile-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.1 0-8 2.05-8 5v2h16v-2c0-2.95-3.9-5-8-5Z"/>
+        </svg>
+      </div>
+
+      <div>
+        <div class="welcome-label">WELCOME TO</div>
+        <h2 class="member-brand">ONLYBOSSTIPS</h2>
+        <div class="member-tagline">YOUR FOOTBALL PREDICTION HUB</div>
+      </div>
+
     </div>
+
+    <p id="memberEmail" class="member-email"></p>
+    <span id="memberBadge" class="badge">FREE MEMBER</span>
   </div>
 
+  <!-- FREE PREDICTIONS -->
+  <h2 class="section-title gold" id="freeOddsHeading">FREE ODDS</h2>
+  <div id="freePredictions">
+    <p class="notice">Loading FREE predictions...</p>
+  </div>
+
+  <!-- VIP UPGRADE BUTTON -->
+  <div id="vipUpgradeArea">
+    <button class="vip-upgrade-button" onclick="toggleVipPayment()">
+      <span id="vipUpgradeButtonText">💎 UPGRADE TO VIP</span>
+    </button>
+  </div>
+
+  <!-- VIP PAYMENT DETAILS: HIDDEN UNTIL TAPPED -->
   <div id="vipPaymentPanel" class="card hidden">
     <h2 class="gold">UPGRADE TO VIP</h2>
     <p class="muted">Get access to exclusive ONLYBOSSTIPS VIP football predictions.</p>
@@ -445,13 +666,11 @@ footer{
 
     <p class="muted">Your VIP membership will be activated after the administrator confirms your payment.</p>
     <p id="paymentMessage" class="message"></p>
+
+    <button class="secondary close-payment" onclick="toggleVipPayment(false)">CLOSE PAYMENT DETAILS</button>
   </div>
 
-  <h2 class="section-title gold">FREE ODDS</h2>
-  <div id="freePredictions">
-    <p class="notice">Loading FREE predictions...</p>
-  </div>
-
+  <!-- VIP PREDICTIONS -->
   <h2 class="section-title gold">VIP ODDS</h2>
   <div id="vipPredictions">
     <p class="notice">Loading VIP predictions...</p>
@@ -461,6 +680,59 @@ footer{
     <h3 class="gold">ADMINISTRATOR ACCOUNT</h3>
     <p class="muted">Your administrator account is recognised. Use the separate private administrator dashboard.</p>
   </div>
+
+  <!-- EXPLORE AND RESPONSIBLE PLAY -->
+  <div class="explore-card">
+
+    <h2 class="explore-title">EXPLORE</h2>
+
+    <div class="explore-links">
+
+      <a class="explore-link" href="#freeOddsHeading" onclick="scrollToFreeOdds(event)">
+        <svg viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 3v9l6 3"/>
+        </svg>
+        Daily predictions
+      </a>
+
+      <a class="explore-link" href="#freeOddsHeading" onclick="scrollToFreeOdds(event)">
+        <svg viewBox="0 0 24 24">
+          <path d="M3 12a9 9 0 1 0 3-6.7"/>
+          <path d="M3 4v5h5M12 7v5l4 2"/>
+        </svg>
+        Results &amp; history
+      </a>
+
+      <a class="explore-link" href="#" onclick="openSignupFromDashboard(event)">
+        <svg viewBox="0 0 24 24">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M19 8v6M16 11h6"/>
+        </svg>
+        Create free account
+      </a>
+
+    </div>
+
+    <div class="responsible">
+      <div class="responsible-heading">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        PLAY RESPONSIBLY
+      </div>
+
+      <p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p>
+    </div>
+
+  </div>
+
+  <!-- LOG OUT AT THE VERY BOTTOM -->
+  <button class="logout-bottom" onclick="logOut()">
+    ↪ LOG OUT
+  </button>
 
 </section>
 
@@ -486,11 +758,13 @@ function hideAllSections(){
 function showWelcome(){
   hideAllSections();
   document.getElementById("welcome").classList.remove("hidden");
+  document.getElementById("headerButton").classList.remove("hidden");
 }
 
 function showAuth(mode){
   hideAllSections();
   document.getElementById("authSection").classList.remove("hidden");
+  document.getElementById("headerButton").classList.remove("hidden");
 
   document.getElementById("signupForm").classList.toggle("hidden",mode!=="signup");
   document.getElementById("loginForm").classList.toggle("hidden",mode!=="login");
@@ -503,6 +777,7 @@ function showRecoveryForm(){
   hideAllSections();
 
   document.getElementById("authSection").classList.remove("hidden");
+  document.getElementById("headerButton").classList.add("hidden");
   document.getElementById("signupForm").classList.add("hidden");
   document.getElementById("loginForm").classList.add("hidden");
   document.getElementById("recoveryForm").classList.remove("hidden");
@@ -513,7 +788,9 @@ function showDashboard(){
   hideAllSections();
   document.getElementById("memberDashboard").classList.remove("hidden");
 
-  document.getElementById("headerButton").textContent="MY ACCOUNT";
+  // Hide the top button while the member is logged in.
+  document.getElementById("headerButton").classList.add("hidden");
+
   document.getElementById("memberEmail").textContent=currentUser.email||"";
 
   const badge=document.getElementById("memberBadge");
@@ -522,12 +799,51 @@ function showDashboard(){
 
   document.getElementById("adminNotice").classList.toggle("hidden",!currentIsAdmin);
 
-  document.getElementById("vipPaymentPanel").classList.toggle(
+  // VIP members and admins do not need the upgrade button.
+  document.getElementById("vipUpgradeArea").classList.toggle(
     "hidden",
     currentTier==="vip"||currentIsAdmin
   );
 
+  document.getElementById("vipPaymentPanel").classList.add("hidden");
+  document.getElementById("vipUpgradeButtonText").textContent="💎 UPGRADE TO VIP";
+
   loadPredictions();
+}
+
+function toggleVipPayment(forceOpen){
+  const panel=document.getElementById("vipPaymentPanel");
+  const buttonText=document.getElementById("vipUpgradeButtonText");
+
+  const shouldOpen=typeof forceOpen==="boolean"
+    ?forceOpen
+    :panel.classList.contains("hidden");
+
+  panel.classList.toggle("hidden",!shouldOpen);
+
+  buttonText.textContent=shouldOpen
+    ?"💎 VIP PAYMENT DETAILS OPEN"
+    :"💎 UPGRADE TO VIP";
+
+  if(shouldOpen){
+    setTimeout(()=>{
+      panel.scrollIntoView({behavior:"smooth",block:"start"});
+    },100);
+  }
+}
+
+function scrollToFreeOdds(event){
+  event.preventDefault();
+  document.getElementById("freeOddsHeading").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+function openSignupFromDashboard(event){
+  event.preventDefault();
+  showWelcome();
+  showAuth("signup");
 }
 
 async function copyAccountNumber(){
@@ -934,7 +1250,7 @@ async function loadPredictions(){
 
     const description=document.createElement("p");
     description.className="muted";
-    description.textContent="VIP predictions are available to approved VIP members. Use the payment section above to request VIP access.";
+    description.textContent="VIP predictions are available to approved VIP members. Tap the UPGRADE TO VIP button above to view payment details and request VIP access.";
     locked.appendChild(description);
 
     vipBox.appendChild(locked);
@@ -949,6 +1265,7 @@ async function logOut(){
   currentIsAdmin=false;
 
   document.getElementById("headerButton").textContent="JOIN NOW";
+  document.getElementById("headerButton").classList.remove("hidden");
 
   showWelcome();
 }
@@ -964,6 +1281,7 @@ db.auth.onAuthStateChange((event,session)=>{
     currentIsAdmin=false;
 
     document.getElementById("headerButton").textContent="JOIN NOW";
+    document.getElementById("headerButton").classList.remove("hidden");
 
     showWelcome();
   }
