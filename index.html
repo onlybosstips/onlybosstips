@@ -87,7 +87,7 @@ button:disabled{opacity:.5}
 }
 
 .container{
-  max-width:1000px;
+  max-width:1100px;
   margin:auto;
   padding:25px 18px 60px;
 }
@@ -191,7 +191,7 @@ label{
   margin-top:10px;
 }
 
-/* NEW SIMPLE PREDICTION LAYOUT */
+/* PREDICTION TABLE */
 
 .prediction-date{
   color:var(--gold);
@@ -202,26 +202,72 @@ label{
   border-bottom:1px solid #343a46;
 }
 
-.prediction-line{
-  font-size:14px;
-  line-height:1.8;
-  padding:9px 0;
-  border-bottom:1px solid #242a35;
-  overflow-wrap:anywhere;
+.prediction-table-wrap{
+  width:100%;
+  overflow-x:auto;
+  border:1px solid #303744;
+  border-radius:9px;
+  margin-bottom:20px;
+  -webkit-overflow-scrolling:touch;
 }
 
-.prediction-line:last-child{
-  border-bottom:none;
+.prediction-table{
+  width:100%;
+  min-width:690px;
+  border-collapse:collapse;
+  text-align:left;
+  background:#111620;
 }
 
-.prediction-result{
+.prediction-table th{
+  background:#202735;
+  color:var(--gold);
+  font-size:12px;
   font-weight:bold;
+  padding:14px 12px;
+  white-space:nowrap;
+  border-bottom:1px solid #394253;
+}
+
+.prediction-table td{
+  padding:14px 12px;
+  font-size:13px;
+  border-bottom:1px solid #292f3b;
   white-space:nowrap;
 }
 
-.result-won{color:var(--green)}
-.result-lost{color:var(--red)}
-.result-void{color:var(--orange)}
+.prediction-table tbody tr:last-child td{
+  border-bottom:none;
+}
+
+.prediction-table tbody tr:hover{
+  background:#1a2230;
+}
+
+.club-name{
+  font-weight:bold;
+  color:white;
+}
+
+.result-awaiting{
+  color:#a5adbd;
+  font-weight:bold;
+}
+
+.result-won{
+  color:var(--green);
+  font-weight:bold;
+}
+
+.result-lost{
+  color:var(--red);
+  font-weight:bold;
+}
+
+.result-void{
+  color:var(--orange);
+  font-weight:bold;
+}
 
 .prediction-empty{
   color:var(--muted);
@@ -230,7 +276,13 @@ label{
 }
 
 .prediction-group{
-  margin-bottom:18px;
+  margin-bottom:22px;
+}
+
+.table-scroll-note{
+  color:var(--muted);
+  font-size:11px;
+  margin:7px 0 12px;
 }
 
 footer{
@@ -245,8 +297,9 @@ footer{
   header{padding:15px}
   .hero{padding:55px 15px}
   .container{padding:18px 14px 45px}
-  .prediction-line{font-size:13px;line-height:1.9}
   .prediction-date{font-size:14px}
+  .prediction-table th{font-size:11px}
+  .prediction-table td{font-size:12px}
 }
 </style>
 </head>
@@ -683,42 +736,69 @@ function getResult(item){
     return {text:"Void",symbol:"🚫",className:"result-void"};
   }
 
-  return null;
+  return {text:"Awaiting",symbol:"",className:"result-awaiting"};
 }
 
-/* COMPACT PREDICTION DISPLAY */
+/* TABLE PREDICTION DISPLAY */
 
-function makePredictionLine(item){
-  const line=document.createElement("div");
-  line.className="prediction-line";
+function makePredictionTable(items){
+  const wrapper=document.createElement("div");
+  wrapper.className="prediction-table-wrap";
 
-  const match=document.createElement("span");
+  const table=document.createElement("table");
+  table.className="prediction-table";
 
-  const kickoff=item.kickoff?formatKickoff(item.kickoff):"Time not set";
+  const thead=document.createElement("thead");
+  const headingRow=document.createElement("tr");
 
-  match.textContent=
-    (item.home_team||"Home")+" vs "+
-    (item.away_team||"Away")+" - "+
-    (item.prediction||"-")+" - "+
-    (item.odds??"-")+" - "+
-    kickoff;
+  ["CLUB NAMES","PREDICTION","ODDS","TIME","RESULT"].forEach(label=>{
+    const th=document.createElement("th");
+    th.textContent=label;
+    headingRow.appendChild(th);
+  });
 
-  line.appendChild(match);
+  thead.appendChild(headingRow);
+  table.appendChild(thead);
 
-  const result=getResult(item);
+  const tbody=document.createElement("tbody");
 
-  if(result){
-    const space=document.createTextNode(" ");
-    line.appendChild(space);
+  items.forEach(item=>{
+    const row=document.createElement("tr");
 
-    const resultText=document.createElement("span");
-    resultText.className="prediction-result "+result.className;
-    resultText.textContent=result.text+" "+result.symbol;
+    const clubCell=document.createElement("td");
+    clubCell.className="club-name";
+    clubCell.textContent=
+      (item.home_team||"Home")+" vs "+(item.away_team||"Away");
 
-    line.appendChild(resultText);
-  }
+    const predictionCell=document.createElement("td");
+    predictionCell.textContent=item.prediction||"-";
 
-  return line;
+    const oddsCell=document.createElement("td");
+    oddsCell.textContent=item.odds??"-";
+
+    const timeCell=document.createElement("td");
+    timeCell.textContent=formatKickoff(item.kickoff);
+
+    const resultCell=document.createElement("td");
+    const result=getResult(item);
+
+    resultCell.className=result.className;
+    resultCell.textContent=result.text+
+      (result.symbol?" "+result.symbol:"");
+
+    row.appendChild(clubCell);
+    row.appendChild(predictionCell);
+    row.appendChild(oddsCell);
+    row.appendChild(timeCell);
+    row.appendChild(resultCell);
+
+    tbody.appendChild(row);
+  });
+
+  table.appendChild(tbody);
+  wrapper.appendChild(table);
+
+  return wrapper;
 }
 
 function renderPredictionGroup(container,items){
@@ -762,8 +842,8 @@ function renderPredictionGroup(container,items){
   });
 
   sortedGroups.forEach(group=>{
-    const wrapper=document.createElement("div");
-    wrapper.className="prediction-group";
+    const section=document.createElement("div");
+    section.className="prediction-group";
 
     const heading=document.createElement("div");
     heading.className="prediction-date";
@@ -772,13 +852,15 @@ function renderPredictionGroup(container,items){
       ?dateHeading(group.date,today)
       :"DATE NOT SET";
 
-    wrapper.appendChild(heading);
+    section.appendChild(heading);
+    section.appendChild(makePredictionTable(group.items));
 
-    group.items.forEach(item=>{
-      wrapper.appendChild(makePredictionLine(item));
-    });
+    const note=document.createElement("p");
+    note.className="table-scroll-note";
+    note.textContent="Swipe horizontally to view all columns.";
+    section.appendChild(note);
 
-    container.appendChild(wrapper);
+    container.appendChild(section);
   });
 }
 
