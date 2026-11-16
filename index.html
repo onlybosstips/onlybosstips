@@ -175,6 +175,10 @@ label{
   margin:15px 0;
 }
 
+.payment-price small{
+  font-size:19px;
+}
+
 .bank-details{
   background:#08170e;
   border:1px solid #31543c;
@@ -288,7 +292,7 @@ label{
   margin:0 0 12px;
 }
 
-/* EXPLORE SECTION */
+/* EXPLORE SECTION - PUBLIC LANDING PAGE */
 
 .explore-card{
   background:linear-gradient(145deg,#102a1a,#0b1b11);
@@ -361,6 +365,22 @@ label{
   font-size:12px;
   line-height:1.8;
   margin:0;
+}
+
+/* RESPONSIBLE PLAY - MEMBER DASHBOARD */
+
+.member-responsible{
+  margin-top:30px;
+  background:linear-gradient(145deg,#102a1a,#0b1b11);
+  border:1px solid #285038;
+  border-radius:12px;
+  padding:20px;
+}
+
+.member-responsible .responsible{
+  margin:0;
+  padding:0;
+  border:0;
 }
 
 .logout-bottom{
@@ -695,7 +715,7 @@ footer{
     <h2 class="gold">UPGRADE TO VIP</h2>
     <p class="muted">Get access to exclusive ONLYBOSSTIPS VIP football predictions.</p>
 
-    <div class="payment-price">₦5,500 <small>/ month</small></div>
+    <div class="payment-price">₦5,500 <small>monthly</small></div>
 
     <p class="muted">Transfer your monthly membership payment to the bank account below.</p>
 
@@ -728,40 +748,8 @@ footer{
     <p class="muted">Your administrator account is recognised. Use the separate private administrator dashboard.</p>
   </div>
 
-  <!-- MEMBER EXPLORE AND RESPONSIBLE PLAY -->
-  <div class="explore-card">
-
-    <h2 class="explore-title">EXPLORE</h2>
-
-    <div class="explore-links">
-
-      <a class="explore-link" href="#freeOddsHeading" onclick="scrollToFreeOdds(event)">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="9"/>
-          <path d="M12 3v9l6 3"/>
-        </svg>
-        Daily predictions
-      </a>
-
-      <a class="explore-link" href="#freeOddsHeading" onclick="scrollToFreeOdds(event)">
-        <svg viewBox="0 0 24 24">
-          <path d="M3 12a9 9 0 1 0 3-6.7"/>
-          <path d="M3 4v5h5M12 7v5l4 2"/>
-        </svg>
-        Results &amp; history
-      </a>
-
-      <a class="explore-link" href="#" onclick="openSignupFromDashboard(event)">
-        <svg viewBox="0 0 24 24">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <path d="M19 8v6M16 11h6"/>
-        </svg>
-        Create free account
-      </a>
-
-    </div>
-
+  <!-- RESPONSIBLE PLAY ONLY - NO MEMBER EXPLORE SECTION -->
+  <div class="member-responsible">
     <div class="responsible">
       <div class="responsible-heading">
         <svg viewBox="0 0 24 24">
@@ -773,13 +761,10 @@ footer{
 
       <p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p>
     </div>
-
   </div>
 
   <!-- LOG OUT AT THE VERY BOTTOM -->
-  <button class="logout-bottom" onclick="logOut()">
-    ↪ LOG OUT
-  </button>
+  <button class="logout-bottom" onclick="logOut()">LOG OUT</button>
 
 </section>
 
