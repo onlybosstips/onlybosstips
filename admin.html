@@ -4,29 +4,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07111f">
+<meta name="theme-color" content="#06140d">
 <title>ONLYBOSSTIPS Admin Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#07111f;color:#f5f7fb;font-family:Arial,sans-serif}
-header{background:#101d30;padding:20px;border-bottom:2px solid #e5b83d}
-h1{margin:0;color:#e5b83d;font-size:25px}
-main{max-width:950px;margin:25px auto;padding:15px}
-.panel{background:#101d30;padding:22px;border-radius:12px;margin-bottom:20px}
-h2{color:#e5b83d}
-input,select,button{width:100%;padding:13px;margin:8px 0;border-radius:7px;border:1px solid #34445b;font-size:15px}
-input,select{background:#07111f;color:white}
-button{background:#e5b83d;color:#07111f;font-weight:bold;border:0;cursor:pointer}
-button.secondary{background:#263b55;color:white}
-button.danger{background:#b52b3b;color:white}
-.hidden{display:none}
-.notice{padding:12px;background:#1b3049;border-radius:7px;margin:10px 0;line-height:1.5}
-.item{background:#192b42;padding:15px;border-radius:8px;margin:12px 0}
-.item button{width:auto;margin-right:6px}
-small{color:#bdc9d8}
+
+body{
+ margin:0;
+ background:#06140d;
+ color:#f5f7fb;
+ font-family:Arial,sans-serif;
+}
+
+header{
+ background:#0d2116;
+ padding:20px;
+ border-bottom:2px solid #35e879;
+}
+
+h1{
+ margin:0;
+ color:#35e879;
+ font-size:25px;
+}
+
+main{
+ max-width:950px;
+ margin:25px auto;
+ padding:15px;
+}
+
+.panel{
+ background:#0d2116;
+ padding:22px;
+ border-radius:12px;
+ margin-bottom:20px;
+ border:1px solid #1d4930;
+}
+
+h2{
+ color:#35e879;
+}
+
+input,select,button{
+ width:100%;
+ padding:13px;
+ margin:8px 0;
+ border-radius:7px;
+ border:1px solid #28543a;
+ font-size:15px;
+}
+
+input,select{
+ background:#06140d;
+ color:white;
+}
+
+input:focus,select:focus{
+ outline:none;
+ border-color:#35e879;
+}
+
+button{
+ background:#35e879;
+ color:#06140d;
+ font-weight:bold;
+ border:0;
+ cursor:pointer;
+ transition:0.2s;
+}
+
+button:hover{
+ background:#22c55e;
+}
+
+button.secondary{
+ background:#234b32;
+ color:white;
+}
+
+button.danger{
+ background:#b52b3b;
+ color:white;
+}
+
+.hidden{
+ display:none;
+}
+
+.notice{
+ padding:12px;
+ background:#173b27;
+ border:1px solid #285c3c;
+ border-radius:7px;
+ margin:10px 0;
+ line-height:1.5;
+}
+
+.item{
+ background:#102c1c;
+ border:1px solid #28543a;
+ padding:15px;
+ border-radius:8px;
+ margin:12px 0;
+}
+
+.item button{
+ width:auto;
+ margin-right:6px;
+}
+
+small{
+ color:#b9d2c1;
+}
+
+@media(max-width:600px){
+ main{
+  padding:10px;
+ }
+
+ .panel{
+  padding:16px;
+ }
+
+ .item button{
+  width:100%;
+  margin:5px 0;
+ }
+}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -35,13 +145,19 @@ small{color:#bdc9d8}
 </header>
 
 <main>
+
 <section class="panel" id="loginPanel">
 <h2>Administrator Login</h2>
 <p>Sign in with your authorised administrator account.</p>
+
 <input id="email" type="email" placeholder="Administrator email">
 <input id="password" type="password" placeholder="Password">
+
 <button onclick="adminLogin()">LOGIN</button>
-<div class="notice" id="loginMessage">Enter your administrator login details.</div>
+
+<div class="notice" id="loginMessage">
+Enter your administrator login details.
+</div>
 </section>
 
 <section id="dashboard" class="hidden">
@@ -49,23 +165,28 @@ small{color:#bdc9d8}
 <div class="panel">
 <h2>Welcome, Administrator</h2>
 <p>You are logged in to the private dashboard.</p>
+
 <button class="secondary" onclick="loadAll()">REFRESH DASHBOARD</button>
 <button class="danger" onclick="logout()">LOG OUT</button>
 </div>
 
 <div class="panel">
 <h2>Post New Prediction</h2>
+
 <input id="league" placeholder="League name">
 <input id="home" placeholder="Home team">
 <input id="away" placeholder="Away team">
 <input id="prediction" placeholder="Prediction (e.g. Home Win)">
 <input id="odds" placeholder="Odds">
 <input id="kickoff" type="datetime-local">
+
 <select id="visibility">
 <option value="free">FREE ODDS</option>
 <option value="vip">VIP ODDS</option>
 </select>
+
 <button onclick="savePrediction()">PUBLISH PREDICTION</button>
+
 <div id="postMessage" class="notice"></div>
 </div>
 
@@ -80,6 +201,7 @@ small{color:#bdc9d8}
 </div>
 
 </section>
+
 </main>
 
 <script>
@@ -99,9 +221,11 @@ function initializeSupabase(){
   message("loginMessage","Supabase library did not load. Refresh this page.");
   return false;
  }
+
  if(!db){
   db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
  }
+
  return true;
 }
 
@@ -120,6 +244,7 @@ async function adminLogin(){
 
  try{
   const {data,error}=await db.auth.signInWithPassword({email,password});
+
   if(error) throw error;
 
   currentUser=data.user;
@@ -151,10 +276,13 @@ async function adminLogin(){
 
 async function logout(){
  if(db) await db.auth.signOut();
+
  currentUser=null;
+
  document.getElementById("dashboard").classList.add("hidden");
  document.getElementById("loginPanel").classList.remove("hidden");
  document.getElementById("password").value="";
+
  message("loginMessage","You have logged out.");
 }
 
@@ -239,7 +367,9 @@ async function loadPredictions(){
    const option=document.createElement("option");
    option.value=s;
    option.textContent=s.toUpperCase();
+
    if(p.status===s) option.selected=true;
+
    status.appendChild(option);
   });
 
@@ -272,6 +402,7 @@ async function updatePrediction(id,result,status){
  }
 
  alert("Prediction updated successfully.");
+
  await loadPredictions();
 }
 
@@ -289,6 +420,7 @@ async function deletePrediction(id){
  }
 
  alert("Prediction deleted.");
+
  await loadPredictions();
 }
 
@@ -330,7 +462,9 @@ async function loadMembers(){
    const option=document.createElement("option");
    option.value=level;
    option.textContent=level.toUpperCase()+" MEMBER";
+
    if(member.membership_tier===level) option.selected=true;
+
    select.appendChild(option);
   });
 
@@ -357,6 +491,7 @@ async function updateMember(userId,tier){
  }
 
  alert("Membership updated to "+tier.toUpperCase()+".");
+
  await loadMembers();
 }
 </script>
