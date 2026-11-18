@@ -141,40 +141,39 @@ label{font-size:13px;color:#cbd0da}
 }
 .close-payment{width:100%;margin-top:10px}
 
-/* MEMBER WELCOME */
+/* MEMBER PROFILE */
 .member-welcome{
-  padding:22px;
-  background:
-    radial-gradient(ellipse at top right,#17472b 0%,transparent 65%),
-    linear-gradient(135deg,#102a1a,#0b1b11);
+  padding:16px 18px;
+  background:linear-gradient(135deg,#102a1a,#0b1b11);
   border:1px solid #285038;
-  border-radius:15px;
-  margin-bottom:28px;
-  box-shadow:0 8px 25px #00000025;
+  border-radius:12px;
+  margin-bottom:20px;
 }
-.member-welcome-top{display:flex;align-items:center;gap:15px;margin-bottom:20px}
+.member-welcome-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
 .profile-icon{
-  width:58px;height:58px;min-width:58px;
-  background:#fff;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
+  width:45px;
+  height:45px;
+  min-width:45px;
+  background:#fff;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.profile-icon svg{width:31px;height:31px;fill:#173c26}
-.welcome-label{
-  display:flex;align-items:center;gap:9px;
-  color:#c9b16c;font-size:10px;font-weight:bold;
-  letter-spacing:3px;margin-bottom:6px;
+.profile-icon svg{width:26px;height:26px;fill:#173c26}
+.member-account{min-width:0;flex:1}
+.member-email{
+  color:#fff;
+  font-size:13px;
+  font-weight:bold;
+  overflow-wrap:anywhere;
+  margin:0 0 7px;
 }
-.welcome-label:before,.welcome-label:after{
-  content:"";display:block;height:2px;width:17px;
-  background:var(--green);border-radius:5px;
-}
-.member-brand{
-  font-size:clamp(23px,6vw,31px);
-  font-weight:900;color:var(--green);
-  letter-spacing:1px;margin:0;
-}
-.member-tagline{font-size:9px;color:#91a397;letter-spacing:1.5px;margin-top:5px}
-.member-email{color:#fff;font-size:14px;font-weight:bold;overflow-wrap:anywhere;margin:0 0 12px}
+.member-account .badge{font-size:10px;padding:5px 9px}
 
 /* EXPLORE */
 .explore-card{
@@ -205,77 +204,83 @@ label{font-size:13px;color:#cbd0da}
   color:#ffb1a9;border-radius:9px;font-size:13px;
 }
 
-/* FILTERS */
+/* COMPACT FILTERS */
 .filter-panel{
   background:#0d2116;
   border:1px solid #285038;
-  border-radius:12px;
-  padding:16px;
-  margin:20px 0;
-}
-.filter-heading{
-  color:var(--green);
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:1.5px;
-  margin:0 0 10px;
+  border-radius:10px;
+  padding:12px;
+  margin:16px 0;
 }
 .filter-row{
   display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding:3px 2px 10px;
-  scrollbar-width:thin;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:7px;
+  padding:2px 0;
 }
 .filter-btn{
   flex:0 0 auto;
-  padding:10px 14px;
+  padding:8px 12px;
   border:1px solid #31543c;
-  border-radius:20px;
+  border-radius:18px;
   background:#102a1a;
   color:#d9e8de;
-  font-size:12px;
+  font-size:11px;
+  font-weight:normal;
   white-space:nowrap;
 }
 .filter-btn.active{
   background:var(--green);
   color:#06140d;
   border-color:var(--green);
+  font-weight:bold;
 }
-.filter-note{font-size:11px;color:var(--muted);margin:3px 0 0}
+.filter-divider{
+  height:1px;
+  background:#285038;
+  margin:10px 0;
+}
 
-/* PREDICTION TABLE */
+/* PREDICTIONS */
 .prediction-date{
-  color:var(--green);font-size:15px;font-weight:bold;
-  margin:22px 0 12px;padding-bottom:9px;
+  color:var(--green);
+  font-size:14px;
+  font-weight:bold;
+  margin:20px 0 10px;
+  padding-bottom:8px;
   border-bottom:1px solid #285038;
 }
 .prediction-table-wrap{
   width:100%;
   max-width:100%;
-  overflow-x:auto;
-  -webkit-overflow-scrolling:touch;
+  overflow:visible;
   border:1px solid #285038;
   border-radius:9px;
-  margin-bottom:20px;
+  margin-bottom:18px;
 }
 .prediction-table{
   width:100%;
-  min-width:620px;
+  min-width:0;
   border-collapse:collapse;
   text-align:left;
   background:#0b1b11;
+  table-layout:fixed;
 }
 .prediction-table th{
-  background:#173c25;color:#62ed91;
-  font-size:11px;font-weight:bold;
-  padding:13px 10px;white-space:nowrap;
+  background:#173c25;
+  color:#62ed91;
+  font-size:11px;
+  font-weight:bold;
+  padding:12px 8px;
   border-bottom:1px solid #31543c;
 }
 .prediction-table td{
-  padding:13px 10px;font-size:12px;
+  padding:12px 8px;
+  font-size:12px;
   border-bottom:1px solid #1c3826;
-  white-space:nowrap;vertical-align:middle;
+  overflow-wrap:anywhere;
+  vertical-align:middle;
 }
 .prediction-table tbody tr:last-child td{border-bottom:none}
 .prediction-table tbody tr:hover{background:#132c1c}
@@ -285,22 +290,75 @@ label{font-size:13px;color:#cbd0da}
 .result-lost{color:var(--red);font-weight:bold}
 .result-void{color:var(--orange);font-weight:bold}
 .prediction-empty{color:var(--muted);font-size:14px;padding:12px 0}
-.prediction-group{margin-bottom:22px}
+.prediction-group{margin-bottom:20px}
 footer{
   text-align:center;padding:25px;
   border-top:1px solid #1c422b;
   color:var(--muted);font-size:12px;background:#081b10;
 }
-@media(max-width:500px){
-  header{padding:15px}
+
+/* MOBILE PREDICTION CARDS - NO SIDEWAYS SWIPING */
+@media(max-width:600px){
+  header{padding:14px}
+  .logo{font-size:18px}
   .hero{padding:55px 15px}
   .container{padding:18px 10px 35px}
-  .member-welcome{padding:18px}
-  .member-welcome-top{gap:12px}
-  .profile-icon{width:52px;height:52px;min-width:52px}
-  .prediction-date{font-size:14px}
-  .prediction-table th{font-size:10px;padding:12px 8px}
-  .prediction-table td{font-size:11px;padding:12px 8px}
+  .member-welcome{padding:13px}
+  .filter-panel{padding:10px}
+  .filter-row{gap:6px}
+  .filter-btn{font-size:10px;padding:8px 10px}
+  .prediction-table-wrap{overflow:visible}
+  .prediction-table{
+    display:block;
+    width:100%;
+    min-width:0;
+  }
+  .prediction-table thead{display:none}
+  .prediction-table tbody{display:block;width:100%}
+  .prediction-table tr{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0;
+    width:100%;
+    padding:8px;
+    border-bottom:1px solid #285038;
+  }
+  .prediction-table tbody tr:last-child{border-bottom:none}
+  .prediction-table td{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:7px;
+    width:100%;
+    min-width:0;
+    padding:9px 6px;
+    font-size:11px;
+    white-space:normal;
+    border:0;
+    overflow-wrap:anywhere;
+    text-align:right;
+  }
+  .prediction-table td:before{
+    content:attr(data-label);
+    color:#62ed91;
+    font-size:9px;
+    font-weight:bold;
+    text-align:left;
+    flex-shrink:0;
+  }
+  .prediction-table td.club-name{
+    grid-column:1/-1;
+    justify-content:flex-start;
+    text-align:left;
+    font-size:13px;
+    padding:10px 6px;
+    border-bottom:1px solid #1c3826;
+    margin-bottom:3px;
+  }
+  .prediction-table td.club-name:before{content:"CLUB:"}
+  .prediction-table td:last-child{justify-content:space-between}
+  .prediction-date{font-size:13px}
+  .section-title{font-size:19px}
 }
 </style>
 </head>
@@ -406,40 +464,37 @@ footer{
   <div class="member-welcome">
     <div class="member-welcome-top">
       <div class="profile-icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.1 0-8 2.05-8 5v2h16v-2c0-2.95-3.9-5-8-5Z"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.1 0-8 2.05-8 5v2h16v-2c0-2.95-3.9-5-8-5Z"/>
+        </svg>
       </div>
-      <div>
-        <div class="welcome-label">WELCOME TO</div>
-        <h2 class="member-brand">ONLYBOSSTIPS</h2>
-        <div class="member-tagline">YOUR FOOTBALL PREDICTION HUB</div>
+      <div class="member-account">
+        <p id="memberEmail" class="member-email"></p>
+        <span id="memberBadge" class="badge">FREE MEMBER</span>
       </div>
     </div>
-    <p id="memberEmail" class="member-email"></p>
-    <span id="memberBadge" class="badge">FREE MEMBER</span>
   </div>
 
   <!-- DATE AND LEAGUE FILTERS -->
   <div class="filter-panel">
-    <p class="filter-heading">FILTER BY DATE</p>
     <div class="filter-row" id="dateFilters">
-      <button class="filter-btn active" data-date="all" onclick="setDateFilter('all',this)">ALL DATES</button>
-      <button class="filter-btn" data-date="yesterday" onclick="setDateFilter('yesterday',this)">YESTERDAY</button>
-      <button class="filter-btn" data-date="today" onclick="setDateFilter('today',this)">TODAY</button>
-      <button class="filter-btn" data-date="tomorrow" onclick="setDateFilter('tomorrow',this)">TOMORROW</button>
+      <button class="filter-btn" data-date="yesterday" onclick="setDateFilter('yesterday',this)">Yesterday</button>
+      <button class="filter-btn active" data-date="today" onclick="setDateFilter('today',this)">Today</button>
+      <button class="filter-btn" data-date="tomorrow" onclick="setDateFilter('tomorrow',this)">Tomorrow</button>
     </div>
 
-    <p class="filter-heading">FILTER BY LEAGUE</p>
+    <div class="filter-divider"></div>
+
     <div class="filter-row" id="leagueFilters">
-      <button class="filter-btn active" data-league="all" onclick="setLeagueFilter('all',this)">ALL LEAGUES</button>
-      <button class="filter-btn" data-league="premier" onclick="setLeagueFilter('premier',this)">PREMIER LEAGUE</button>
-      <button class="filter-btn" data-league="bundesliga" onclick="setLeagueFilter('bundesliga',this)">BUNDESLIGA</button>
-      <button class="filter-btn" data-league="laliga" onclick="setLeagueFilter('laliga',this)">LA LIGA</button>
-      <button class="filter-btn" data-league="ligue1" onclick="setLeagueFilter('ligue1',this)">LIGUE 1</button>
+      <button class="filter-btn active" data-league="all" onclick="setLeagueFilter('all',this)">All leagues</button>
+      <button class="filter-btn" data-league="premier" onclick="setLeagueFilter('premier',this)">Premier League</button>
+      <button class="filter-btn" data-league="bundesliga" onclick="setLeagueFilter('bundesliga',this)">Bundesliga</button>
+      <button class="filter-btn" data-league="laliga" onclick="setLeagueFilter('laliga',this)">La Liga</button>
+      <button class="filter-btn" data-league="ligue1" onclick="setLeagueFilter('ligue1',this)">Ligue 1</button>
       <button class="filter-btn" data-league="afcon" onclick="setLeagueFilter('afcon',this)">AFCON</button>
       <button class="filter-btn" data-league="uefa" onclick="setLeagueFilter('uefa',this)">UEFA</button>
-      <button class="filter-btn" data-league="world" onclick="setLeagueFilter('world',this)">WORLD</button>
+      <button class="filter-btn" data-league="world" onclick="setLeagueFilter('world',this)">World Cup</button>
     </div>
-    <p class="filter-note">Choose a date and league to filter the predictions below.</p>
   </div>
 
   <h2 class="section-title gold" id="freeOddsHeading">FREE ODDS</h2>
@@ -501,7 +556,7 @@ let currentTier="free";
 let currentIsAdmin=false;
 let recoveryInProgress=false;
 let allPredictions=[];
-let selectedDate="all";
+let selectedDate="today";
 let selectedLeague="all";
 
 function hideAllSections(){
@@ -677,7 +732,6 @@ function dayOffset(date){
   return Math.round((a-b)/86400000);
 }
 function matchesDate(item){
-  if(selectedDate==="all")return true;
   if(!item.kickoff)return false;
   const date=new Date(item.kickoff);
   if(Number.isNaN(date.getTime()))return false;
@@ -697,17 +751,17 @@ function matchesLeague(item){
     ligue1:["ligue 1","ligue1"],
     afcon:["afcon","africa cup of nations"],
     uefa:["uefa","champions league","europa league","conference league"],
-    world:["world","international","friendly","world cup","qualifier"]
+    world:["world cup","fifa world cup"]
   };
   return (rules[selectedLeague]||[]).some(term=>league.includes(term));
 }
 function dateHeading(date){
   const difference=dayOffset(date);
   let label="";
-  if(difference===-1)label="YESTERDAY";
-  else if(difference===0)label="TODAY";
-  else if(difference===1)label="TOMORROW";
-  else label=date.toLocaleDateString("en-GB",{weekday:"long"}).toUpperCase();
+  if(difference===-1)label="Yesterday";
+  else if(difference===0)label="Today";
+  else if(difference===1)label="Tomorrow";
+  else label=date.toLocaleDateString("en-GB",{weekday:"long"});
   return label+" — "+date.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
 }
 function formatKickoff(value){
@@ -744,16 +798,26 @@ function makePredictionTable(items){
     const clubCell=document.createElement("td");
     clubCell.className="club-name";
     clubCell.textContent=(item.home_team||"Home")+" vs "+(item.away_team||"Away");
+    clubCell.setAttribute("data-label","CLUB");
+
     const predictionCell=document.createElement("td");
     predictionCell.textContent=item.prediction||"-";
+    predictionCell.setAttribute("data-label","PREDICTION");
+
     const oddsCell=document.createElement("td");
     oddsCell.textContent=item.odds??"-";
+    oddsCell.setAttribute("data-label","ODD");
+
     const timeCell=document.createElement("td");
     timeCell.textContent=formatKickoff(item.kickoff);
+    timeCell.setAttribute("data-label","TIME");
+
     const resultCell=document.createElement("td");
     const result=getResult(item);
     resultCell.className=result.className;
     resultCell.textContent=result.text+(result.symbol?" "+result.symbol:"");
+    resultCell.setAttribute("data-label","RESULT");
+
     [clubCell,predictionCell,oddsCell,timeCell,resultCell].forEach(cell=>row.appendChild(cell));
     tbody.appendChild(row);
   });
@@ -787,7 +851,7 @@ function renderPredictionGroup(container,items){
     section.className="prediction-group";
     const heading=document.createElement("div");
     heading.className="prediction-date";
-    heading.textContent=group.date?dateHeading(group.date):"DATE NOT SET";
+    heading.textContent=group.date?dateHeading(group.date):"Date not set";
     section.appendChild(heading);
     section.appendChild(makePredictionTable(group.items));
     container.appendChild(section);
