@@ -29,6 +29,9 @@ button.danger{background:#b52b3b;color:white}
 .item button{width:auto;margin-right:6px}
 small{color:#b9d2c1}
 .member-tier{color:#35e879;font-weight:bold}
+.membership-option{display:flex;align-items:center;gap:10px;margin:12px 0;padding:12px;background:#06140d;border:1px solid #28543a;border-radius:7px}
+.membership-option input{width:20px;height:20px;margin:0;accent-color:#35e879}
+.membership-option label{font-weight:bold;flex:1}
 @media(max-width:600px){
  main{padding:10px}
  .panel{padding:16px}
@@ -97,11 +100,13 @@ Enter your administrator login details.
 <div class="panel">
 <h2>Manage Memberships</h2>
 <p class="notice">
-After confirming a member's payment, select the correct membership below and tap UPDATE MEMBERSHIP.
+After confirming a member's payment, select the membership or memberships you want to activate and tap UPDATE MEMBERSHIP.
 <br><br>
 VIP: ₦5,500 monthly.
 <br>
 ROLLOVER: ₦4,000 weekly.
+<br><br>
+A member can have VIP and Rollover at the same time. FREE odds remain available to every member.
 </p>
 <div id="membersList">Loading members...</div>
 </div>
@@ -132,6 +137,36 @@ function initializeSupabase(){
  }
 
  return true;
+}
+
+function parseMemberships(value){
+ const parts=String(value||"free")
+  .toLowerCase()
+  .split(",")
+  .map(x=>x.trim());
+
+ return {
+  vip:parts.includes("vip"),
+  rollover:parts.includes("rollover")
+ };
+}
+
+function membershipText(value){
+ const memberships=parseMemberships(value);
+
+ if(memberships.vip&&memberships.rollover){
+  return "VIP + ROLLOVER";
+ }
+
+ if(memberships.vip){
+  return "VIP";
+ }
+
+ if(memberships.rollover){
+  return "ROLLOVER";
+ }
+
+ return "FREE";
 }
 
 async function adminLogin(){
@@ -351,39 +386,73 @@ async function loadMembers(){
   memberId.textContent="Member ID: "+member.user_id;
   item.appendChild(memberId);
 
+  const memberships=parseMemberships(member.membership_tier);
+
   const tier=document.createElement("p");
   tier.className="member-tier";
-  tier.textContent="Current Membership: "+(member.membership_tier||"free").toUpperCase();
+  tier.textContent="Current Membership: "+membershipText(member.membership_tier);
   item.appendChild(tier);
 
-  const select=document.createElement("select");
+  const vipRow=document.createElement("div");
+  vipRow.className="membership-option";
 
-  ["free","vip","rollover"].forEach(level=>{
-   const option=document.createElement("option");
-   option.value=level;
-   option.textContent=level.toUpperCase()+" MEMBER";
+  const vipCheckbox=document.createElement("input");
+  vipCheckbox.type="checkbox";
+  vipCheckbox.checked=memberships.vip;
+  vipCheckbox.id="vip-"+member.user_id;
 
-   if(String(member.membership_tier||"free").toLowerCase()===level){
-    option.selected=true;
-   }
+  const vipLabel=document.createElement("label");
+  vipLabel.htmlFor=vipCheckbox.id;
+  vipLabel.textContent="VIP MEMBERSHIP";
 
-   select.appendChild(option);
-  });
+  vipRow.appendChild(vipCheckbox);
+  vipRow.appendChild(vipLabel);
+  item.appendChild(vipRow);
 
-  item.appendChild(select);
+  const rolloverRow=document.createElement("div");
+  rolloverRow.className="membership-option";
+
+  const rolloverCheckbox=document.createElement("input");
+  rolloverCheckbox.type="checkbox";
+  rolloverCheckbox.checked=memberships.rollover;
+  rolloverCheckbox.id="rollover-"+member.user_id;
+
+  const rolloverLabel=document.createElement("label");
+  rolloverLabel.htmlFor=rolloverCheckbox.id;
+  rolloverLabel.textContent="ROLLOVER MEMBERSHIP";
+
+  rolloverRow.appendChild(rolloverCheckbox);
+  rolloverRow.appendChild(rolloverLabel);
+  item.appendChild(rolloverRow);
 
   const updateButton=document.createElement("button");
   updateButton.textContent="UPDATE MEMBERSHIP";
-  updateButton.onclick=()=>updateMember(member.user_id,select.value);
-  item.appendChild(updateButton);
+  updateButton.onclick=()=>updateMember(
+   member.user_id,
+   vipCheckbox.checked,
+   rolloverCheckbox.checked
+  );
 
+  item.appendChild(updateButton);
   box.appendChild(item);
  });
 }
 
-async function updateMember(userId,tier){
+async function updateMember(userId,vipActive,rolloverActive){
+ let tier="free";
+
+ if(vipActive&&rolloverActive){
+  tier="vip,rollover";
+ }else if(vipActive){
+  tier="vip";
+ }else if(rolloverActive){
+  tier="rollover";
+ }
+
+ const display=membershipText(tier);
+
  const confirmed=confirm(
-  "Confirm changing this member's membership to "+tier.toUpperCase()+"?"
+  "Confirm changing this member's membership to "+display+"?"
  );
 
  if(!confirmed) return;
@@ -394,11 +463,14 @@ async function updateMember(userId,tier){
   .eq("user_id",userId);
 
  if(error){
-  alert("Could not update membership: "+error.message);
+  alert(
+   "Could not update membership: "+error.message+
+   "\n\nIf you selected both memberships, your database may need a small update to allow the combined value. Your existing membership has not been confirmed as changed."
+  );
   return;
  }
 
- alert("Membership successfully updated to "+tier.toUpperCase()+".");
+ alert("Membership successfully updated to "+display+".");
  await loadMembers();
 }
 </script>
