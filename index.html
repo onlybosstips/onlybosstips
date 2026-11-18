@@ -59,7 +59,11 @@ label{font-size:13px;color:#cbd0da}
 .welcome-label:before,.welcome-label:after{content:"";display:block;height:2px;width:17px;background:var(--green);border-radius:5px}
 .member-brand{font-size:clamp(23px,6vw,31px);font-weight:900;color:var(--green);letter-spacing:1px;margin:0}
 .member-tagline{font-size:9px;color:#91a397;letter-spacing:1.5px;margin-top:5px}
-.member-email{color:#fff;font-size:14px;font-weight:bold;overflow-wrap:anywhere;margin:0 0 12px}
+.member-profile-row{display:flex;align-items:center;gap:12px;margin:14px 0}
+.member-avatar{width:43px;height:43px;min-width:43px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.member-avatar svg{width:25px;height:25px;fill:#183c27}
+.member-email{color:#fff;font-size:13px;font-weight:bold;overflow-wrap:anywhere;margin:0}
+.member-email-label{font-size:10px;color:#a8b9ae;margin-top:4px}
 .explore-card,.member-responsible{background:linear-gradient(145deg,#102a1a,#0b1b11);border:1px solid #285038;border-radius:12px;padding:21px;margin-top:30px}
 .explore-title{color:var(--green);font-size:19px;font-weight:900;letter-spacing:2px;margin:0 0 18px}
 .explore-links{display:flex;flex-direction:column;gap:16px}
@@ -105,6 +109,17 @@ footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--m
 .admin-list-item strong{display:block;margin-bottom:8px}
 .admin-list-item select{padding:9px;background:#08170e;color:#fff;border:1px solid #31543c;border-radius:6px;margin-right:6px}
 .admin-list-item button{padding:9px 12px;margin:4px 3px 0 0}
+.streak-dashboard{background:linear-gradient(145deg,#102a1a,#0b1b11);border:1px solid #39734a;border-radius:13px;padding:18px;margin:30px 0 22px}
+.streak-heading{color:var(--green);font-size:19px;font-weight:900;letter-spacing:1px;margin:0 0 6px}
+.streak-intro{color:var(--muted);font-size:12px;line-height:1.6;margin:0 0 16px}
+.streak-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.streak-card{background:#08170e;border:1px solid #285038;border-radius:10px;padding:14px;min-width:0}
+.streak-card h3{color:#8ce0a5;font-size:14px;margin:0 0 13px}
+.streak-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 8px}
+.streak-stat small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}
+.streak-stat strong{font-size:20px;color:#fff;overflow-wrap:anywhere}
+.streak-stat strong.green{color:var(--green)}
+.streak-note{color:var(--muted);font-size:10px;line-height:1.5;margin:14px 0 0}
 @media(max-width:500px){
 .admin-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}
 header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
@@ -114,6 +129,7 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 .outcome-circle{width:17px;height:17px}.prediction-controls{padding:10px}
 .date-tab{padding:9px 3px;font-size:11px}
 .league-tabs{gap:6px}.league-tab{padding:7px 9px;font-size:10px}
+.streak-dashboard{padding:13px}.streak-grid{grid-template-columns:1fr}.streak-card{padding:13px}
 }
 </style>
 </head>
@@ -246,7 +262,18 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
         <div class="member-tagline">✧ YOUR FOOTBALL PREDICTION HUB ✧</div>
       </div>
     </div>
-    <p id="memberEmail" class="member-email"></p>
+
+    <div class="member-profile-row">
+      <div class="member-avatar" aria-label="Member profile icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 12a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Zm0 2c-4.1 0-7.4 2.1-7.4 4.8V21h14.8v-2.2c0-2.7-3.3-4.8-7.4-4.8Z"/>
+        </svg>
+      </div>
+      <div>
+        <p id="memberEmail" class="member-email"></p>
+        <div class="member-email-label">MEMBER ACCOUNT</div>
+      </div>
+    </div>
     <span id="memberBadge" class="badge">FREE MEMBER</span>
   </div>
 
@@ -281,18 +308,18 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
     <h2 class="gold">CHOOSE YOUR MEMBERSHIP</h2>
     <p class="muted">Choose the membership plan you want. Both plans provide access to exclusive VIP predictions after payment verification.</p>
 
-    <div class="membership-choice">
+    <div class="membership-choice" id="vipMembershipChoice">
       <h3>💎 VIP MEMBERSHIP</h3>
       <div class="payment-price">₦5,500 <small>monthly</small></div>
       <p>Access to exclusive ONLYBOSSTIPS VIP football predictions.</p>
-      <button onclick="selectMembership('vip')">PAY FOR VIP MEMBERSHIP</button>
+      <button id="vipPaymentButton" onclick="selectMembership('vip')">PAY FOR VIP MEMBERSHIP</button>
     </div>
 
-    <div class="membership-choice">
+    <div class="membership-choice" id="rolloverMembershipChoice">
       <h3>🏆 ROLLOVER EXCLUSIVE MEMBER</h3>
       <div class="payment-price">₦4,000 <small>Weekly</small></div>
       <p>Access to exclusive ONLYBOSSTIPS VIP football predictions with weekly membership payment.</p>
-      <button class="rollover-button" onclick="selectMembership('rollover')">PAY FOR ROLLOVER EXCLUSIVE</button>
+      <button id="rolloverPaymentButton" class="rollover-button" onclick="selectMembership('rollover')">PAY FOR ROLLOVER EXCLUSIVE</button>
     </div>
 
     <div id="selectedPaymentDetails" class="hidden">
@@ -321,6 +348,33 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
     <p class="muted">Your administrator account is recognised. Use the separate private administrator dashboard.</p>
   </div>
 
+  <!-- WINNING STREAK DASHBOARD: intentionally placed immediately above PLAY RESPONSIBLY -->
+  <div id="winningStreakDashboard" class="streak-dashboard">
+    <h2 class="streak-heading">🏆 WINNING STREAK DASHBOARD</h2>
+    <p class="streak-intro">Our recorded prediction results, separated by FREE and VIP odds. Statistics update when match results are updated.</p>
+    <div class="streak-grid">
+      <div class="streak-card">
+        <h3>🟢 FREE ODDS RECORD</h3>
+        <div class="streak-stats">
+          <div class="streak-stat"><small>TOTAL WINS</small><strong id="freeWins" class="green">0</strong></div>
+          <div class="streak-stat"><small>TOTAL LOSSES</small><strong id="freeLosses">0</strong></div>
+          <div class="streak-stat"><small>WIN RATE</small><strong id="freeWinRate">0%</strong></div>
+          <div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="freeStreak" class="green">0</strong></div>
+        </div>
+      </div>
+      <div class="streak-card">
+        <h3>💎 VIP ODDS RECORD</h3>
+        <div class="streak-stats">
+          <div class="streak-stat"><small>TOTAL WINS</small><strong id="vipWins" class="green">0</strong></div>
+          <div class="streak-stat"><small>TOTAL LOSSES</small><strong id="vipLosses">0</strong></div>
+          <div class="streak-stat"><small>WIN RATE</small><strong id="vipWinRate">0%</strong></div>
+          <div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="vipStreak" class="green">0</strong></div>
+        </div>
+      </div>
+    </div>
+    <p class="streak-note">Statistics are calculated from recorded WON and LOST results only. Pending, live and void predictions are not counted. Past results do not guarantee future outcomes.</p>
+  </div>
+
   <div class="member-responsible">
     <div class="responsible">
       <div class="responsible-heading">PLAY RESPONSIBLY</div>
@@ -337,12 +391,30 @@ const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
 const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-let currentUser=null,currentTier="free",currentIsAdmin=false,recoveryInProgress=false;
+let currentUser=null,currentTier="free",currentMemberships=[],currentIsAdmin=false,recoveryInProgress=false;
 let allPredictions=[],selectedDate="today",selectedLeague="all";
 let selectedMembership="vip";
 
+function parseMemberships(value){
+  const raw=String(value||"free").toLowerCase().split(/[,+|]/).map(x=>x.trim()).filter(Boolean);
+  const memberships=[];
+  raw.forEach(level=>{
+    if(level==="vip"||level==="rollover"){
+      if(!memberships.includes(level))memberships.push(level);
+    }
+  });
+  return memberships;
+}
+
+function membershipLabel(){
+  if(currentMemberships.includes("vip")&&currentMemberships.includes("rollover"))return "VIP + ROLLOVER MEMBER";
+  if(currentMemberships.includes("rollover"))return "ROLLOVER EXCLUSIVE MEMBER";
+  if(currentMemberships.includes("vip"))return "VIP MEMBER";
+  return "FREE MEMBER";
+}
+
 function hasVipAccess(){
-  return currentTier==="vip"||currentTier==="rollover"||currentIsAdmin;
+  return currentMemberships.includes("vip")||currentMemberships.includes("rollover")||currentIsAdmin;
 }
 
 function hideAllSections(){
@@ -379,6 +451,26 @@ function showRecoveryForm(){
   document.getElementById("authMessage").textContent="Enter and confirm your new password.";
 }
 
+function updateMembershipPlanButtons(){
+  const hasVip=currentMemberships.includes("vip");
+  const hasRollover=currentMemberships.includes("rollover");
+  const vipButton=document.getElementById("vipPaymentButton");
+  const rolloverButton=document.getElementById("rolloverPaymentButton");
+  const vipChoice=document.getElementById("vipMembershipChoice");
+  const rolloverChoice=document.getElementById("rolloverMembershipChoice");
+
+  vipButton.disabled=hasVip;
+  vipButton.textContent=hasVip?"VIP MEMBERSHIP ALREADY ACTIVE":"PAY FOR VIP MEMBERSHIP";
+  rolloverButton.disabled=hasRollover;
+  rolloverButton.textContent=hasRollover?"ROLLOVER MEMBERSHIP ALREADY ACTIVE":"PAY FOR ROLLOVER EXCLUSIVE";
+
+  vipChoice.style.opacity=hasVip?".65":"1";
+  rolloverChoice.style.opacity=hasRollover?".65":"1";
+
+  const bothActive=hasVip&&hasRollover;
+  document.getElementById("membershipUpgradeArea").classList.toggle("hidden",bothActive);
+}
+
 function showDashboard(){
   hideAllSections();
   document.getElementById("memberDashboard").classList.remove("hidden");
@@ -386,12 +478,14 @@ function showDashboard(){
   document.getElementById("memberEmail").textContent=currentUser.email||"";
 
   const badge=document.getElementById("memberBadge");
-  badge.textContent=currentTier==="rollover"?"ROLLOVER EXCLUSIVE MEMBER":currentTier.toUpperCase()+" MEMBER";
-  badge.className=currentTier==="vip"?"badge vip":currentTier==="rollover"?"badge rollover":"badge";
+  badge.textContent=currentIsAdmin?"ADMINISTRATOR":membershipLabel();
+  badge.className="badge";
+  if(currentMemberships.includes("rollover"))badge.classList.add("rollover");
+  else if(currentMemberships.includes("vip"))badge.classList.add("vip");
 
   document.getElementById("adminNotice").classList.toggle("hidden",!currentIsAdmin);
   document.getElementById("adminDashboard").classList.toggle("hidden",!currentIsAdmin);
-  document.getElementById("membershipUpgradeArea").classList.toggle("hidden",hasVipAccess());
+  updateMembershipPlanButtons();
   document.getElementById("membershipPaymentPanel").classList.add("hidden");
   document.getElementById("membershipButtonText").textContent="💎 VIEW MEMBERSHIP PLANS";
   loadPredictions();
@@ -405,6 +499,12 @@ function toggleMembershipPayment(forceOpen){
 }
 
 function selectMembership(plan){
+  if(currentMemberships.includes(plan)){
+    document.getElementById("paymentMessage").textContent="This membership is already active on your account.";
+    document.getElementById("selectedPaymentDetails").classList.remove("hidden");
+    return;
+  }
+
   selectedMembership=plan;
   const details=document.getElementById("selectedPaymentDetails");
   details.classList.remove("hidden");
@@ -508,13 +608,20 @@ async function saveNewPassword(){
 async function loadUser(user){
   currentUser=user;
   currentTier="free";
+  currentMemberships=[];
   currentIsAdmin=false;
+
   const {data:profile,error}=await db.from("member_profiles").select("membership_tier").eq("user_id",user.id).maybeSingle();
   if(error){
     document.getElementById("authMessage").textContent="Could not load your membership. Please try again.";
     return;
   }
-  if(profile)currentTier=String(profile.membership_tier||"free").toLowerCase();
+
+  if(profile){
+    currentTier=String(profile.membership_tier||"free").toLowerCase();
+    currentMemberships=parseMemberships(profile.membership_tier);
+  }
+
   const {data:admin}=await db.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
   currentIsAdmin=!!admin;
   showDashboard();
@@ -558,6 +665,47 @@ function getResult(item){
     if(!Number.isNaN(kick.getTime())&&localDateKey(kick)===localDateKey(now)&&kick<=now)return{text:"LIVE",symbol:"•",className:"result-live"};
   }
   return{text:"PENDING",symbol:"",className:"result-awaiting"};
+}
+
+/* Calculates statistics from actual saved prediction results only. */
+function calculateStreakStats(visibility){
+  const settled=allPredictions
+    .filter(p=>String(p.visibility||"free").toLowerCase()===visibility)
+    .map(p=>({prediction:p,result:getResult(p).text,date:new Date(p.kickoff||p.created_at||0).getTime()}))
+    .filter(p=>p.result==="WON"||p.result==="LOST"||p.result==="VOID")
+    .sort((a,b)=>b.date-a.date);
+
+  let wins=0,losses=0;
+  settled.forEach(p=>{
+    if(p.result==="WON")wins++;
+    if(p.result==="LOST")losses++;
+  });
+
+  let streak=0;
+  for(const p of settled){
+    if(p.result==="VOID")continue;
+    if(p.result==="WON")streak++;
+    else if(p.result==="LOST")break;
+  }
+
+  const total=wins+losses;
+  const rate=total?Math.round((wins/total)*100):0;
+  return{wins,losses,rate,streak};
+}
+
+function updateWinningStreakDashboard(){
+  const free=calculateStreakStats("free");
+  const vip=calculateStreakStats("vip");
+
+  document.getElementById("freeWins").textContent=free.wins;
+  document.getElementById("freeLosses").textContent=free.losses;
+  document.getElementById("freeWinRate").textContent=free.rate+"%";
+  document.getElementById("freeStreak").textContent=free.streak;
+
+  document.getElementById("vipWins").textContent=vip.wins;
+  document.getElementById("vipLosses").textContent=vip.losses;
+  document.getElementById("vipWinRate").textContent=vip.rate+"%";
+  document.getElementById("vipStreak").textContent=vip.streak;
 }
 
 function makePredictionTable(items){
@@ -631,7 +779,9 @@ async function loadPredictions(){
   free.textContent="Loading FREE predictions...";vip.textContent="Loading VIP predictions...";
   const {data,error}=await db.from("predictions").select("*").order("kickoff",{ascending:true});
   if(error){free.textContent="Unable to load predictions. Please refresh.";vip.textContent="Unable to load VIP predictions.";return}
-  allPredictions=data||[];renderAllPredictionViews();
+  allPredictions=data||[];
+  renderAllPredictionViews();
+  updateWinningStreakDashboard();
   if(currentIsAdmin)renderAdminPredictionList();
 }
 
@@ -689,7 +839,7 @@ async function adminUpdateResult(id,value,button){
 
 async function logOut(){
   await db.auth.signOut();
-  currentUser=null;currentTier="free";currentIsAdmin=false;
+  currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
   document.getElementById("headerButton").textContent="JOIN NOW";
   document.getElementById("headerButton").classList.remove("hidden");
   showWelcome();
@@ -698,7 +848,7 @@ async function logOut(){
 db.auth.onAuthStateChange((event)=>{
   if(event==="PASSWORD_RECOVERY")showRecoveryForm();
   if(event==="SIGNED_OUT"&&!recoveryInProgress){
-    currentUser=null;currentTier="free";currentIsAdmin=false;
+    currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
     document.getElementById("headerButton").textContent="JOIN NOW";
     document.getElementById("headerButton").classList.remove("hidden");
     showWelcome();
