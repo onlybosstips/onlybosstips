@@ -20,100 +20,58 @@
 }
 *{box-sizing:border-box}
 body{
-  margin:0;
-  background:var(--bg);
-  color:var(--white);
-  font-family:Arial,sans-serif;
-  position:relative;
-  min-height:100vh;
+  margin:0;background:var(--bg);color:var(--white);
+  font-family:Arial,sans-serif;position:relative;min-height:100vh;
 }
 body:before{
-  content:"BOSS";
-  position:fixed;
-  top:38%;
-  left:50%;
+  content:"BOSS";position:fixed;top:38%;left:50%;
   transform:translate(-50%,-50%);
-  font-size:clamp(100px,25vw,260px);
-  font-weight:900;
-  letter-spacing:10px;
-  color:rgba(53,232,121,.025);
-  pointer-events:none;
-  z-index:0;
-  white-space:nowrap;
+  font-size:clamp(100px,25vw,260px);font-weight:900;
+  letter-spacing:10px;color:rgba(53,232,121,.025);
+  pointer-events:none;z-index:0;white-space:nowrap;
 }
 header,main,section,footer{position:relative;z-index:1}
 header{
-  padding:18px 6%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #1c422b;
-  background:#081b10;
+  padding:18px 6%;display:flex;justify-content:space-between;
+  align-items:center;border-bottom:1px solid #1c422b;background:#081b10;
 }
-.logo{
-  font-size:21px;
-  font-weight:900;
-  color:var(--green);
-  letter-spacing:1px;
-}
+.logo{font-size:21px;font-weight:900;color:var(--green);letter-spacing:1px}
 button{
-  border:0;
-  padding:13px 18px;
-  border-radius:7px;
-  background:var(--green);
-  color:#06140d;
-  font-weight:bold;
-  cursor:pointer;
+  border:0;padding:13px 18px;border-radius:7px;
+  background:var(--green);color:#06140d;font-weight:bold;cursor:pointer;
 }
 button.secondary{background:#203a2b;color:white}
 button:disabled{opacity:.5}
 .hero{
-  text-align:center;
-  padding:75px 18px;
+  text-align:center;padding:75px 18px;
   background:radial-gradient(ellipse at top,#174c2c,#06140d 68%);
 }
 .hero h1{font-size:clamp(32px,7vw,58px);margin:0 0 15px}
 .gold{color:var(--green)}
 .hero p{color:var(--muted);line-height:1.8}
 .actions{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:25px;
+  display:flex;justify-content:center;gap:12px;
+  flex-wrap:wrap;margin-top:25px;
 }
 .container{max-width:1100px;margin:auto;padding:25px 18px 60px}
 .card{
-  background:var(--panel);
-  border:1px solid #1c422b;
-  border-radius:12px;
-  padding:20px;
-  margin-bottom:16px;
+  background:var(--panel);border:1px solid #1c422b;
+  border-radius:12px;padding:20px;margin-bottom:16px;
 }
 .section-title{font-size:21px;margin:30px 0 15px}
 .hidden{display:none!important}
 .form{max-width:430px;margin:35px auto}
 input{
-  width:100%;
-  padding:14px;
-  margin:8px 0 16px;
-  background:#08170e;
-  color:white;
-  border:1px solid #31543c;
-  border-radius:7px;
-  font-size:16px;
+  width:100%;padding:14px;margin:8px 0 16px;
+  background:#08170e;color:white;border:1px solid #31543c;
+  border-radius:7px;font-size:16px;
 }
 label{font-size:13px;color:#cbd0da}
 .muted{color:var(--muted);font-size:14px;line-height:1.7}
 .link{color:var(--green);text-decoration:underline;cursor:pointer}
 .badge{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:20px;
-  font-size:11px;
-  font-weight:bold;
-  background:#17472b;
-  color:#8ce0a5;
+  display:inline-block;padding:6px 10px;border-radius:20px;
+  font-size:11px;font-weight:bold;background:#17472b;color:#8ce0a5;
 }
 .badge.vip{background:#294a31;color:#a8ffbd}
 .notice{color:var(--muted);padding:12px 0}
@@ -121,57 +79,33 @@ label{font-size:13px;color:#cbd0da}
 .payment-price{font-size:34px;font-weight:bold;color:var(--green);margin:15px 0}
 .payment-price small{font-size:19px}
 .bank-details{
-  background:#08170e;
-  border:1px solid #31543c;
-  border-radius:9px;
-  padding:15px;
-  margin:15px 0;
-  line-height:2;
-  overflow-wrap:anywhere;
+  background:#08170e;border:1px solid #31543c;
+  border-radius:9px;padding:15px;margin:15px 0;
+  line-height:2;overflow-wrap:anywhere;
 }
 .bank-details p{margin:5px 0}
 .payment-button{width:100%;margin-top:10px}
 .vip-upgrade-button{
-  width:100%;
-  padding:16px;
-  font-size:15px;
-  border-radius:9px;
-  margin:5px 0 20px;
-  box-shadow:0 4px 18px #35e87920;
+  width:100%;padding:16px;font-size:15px;border-radius:9px;
+  margin:5px 0 20px;box-shadow:0 4px 18px #35e87920;
 }
 .close-payment{width:100%;margin-top:10px}
 
 /* MEMBER PROFILE */
 .member-welcome{
-  padding:16px 18px;
-  background:linear-gradient(135deg,#102a1a,#0b1b11);
-  border:1px solid #285038;
-  border-radius:12px;
-  margin-bottom:20px;
+  padding:16px 18px;background:linear-gradient(135deg,#102a1a,#0b1b11);
+  border:1px solid #285038;border-radius:12px;margin-bottom:20px;
 }
-.member-welcome-top{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+.member-welcome-top{display:flex;align-items:center;gap:12px}
 .profile-icon{
-  width:45px;
-  height:45px;
-  min-width:45px;
-  background:#fff;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  width:45px;height:45px;min-width:45px;background:#fff;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
 }
 .profile-icon svg{width:26px;height:26px;fill:#173c26}
 .member-account{min-width:0;flex:1}
 .member-email{
-  color:#fff;
-  font-size:13px;
-  font-weight:bold;
-  overflow-wrap:anywhere;
-  margin:0 0 7px;
+  color:#fff;font-size:13px;font-weight:bold;
+  overflow-wrap:anywhere;margin:0 0 7px;
 }
 .member-account .badge{font-size:10px;padding:5px 9px}
 
@@ -181,17 +115,27 @@ label{font-size:13px;color:#cbd0da}
   border:1px solid #285038;border-radius:12px;
   padding:21px;margin-top:35px;
 }
-.explore-title{color:var(--green);font-size:19px;font-weight:900;letter-spacing:2px;margin:0 0 18px}
+.explore-title{
+  color:var(--green);font-size:19px;font-weight:900;
+  letter-spacing:2px;margin:0 0 18px;
+}
 .explore-links{display:flex;flex-direction:column;gap:16px}
-.explore-link{display:flex;align-items:center;gap:12px;color:#e6eee8;font-size:14px;text-decoration:none;cursor:pointer}
-.explore-link svg{width:19px;height:19px;stroke:var(--green);fill:none;stroke-width:1.8;flex-shrink:0}
+.explore-link{
+  display:flex;align-items:center;gap:12px;
+  color:#e6eee8;font-size:14px;text-decoration:none;cursor:pointer;
+}
+.explore-link svg{
+  width:19px;height:19px;stroke:var(--green);
+  fill:none;stroke-width:1.8;flex-shrink:0;
+}
 .responsible{margin-top:25px;padding-top:20px;border-top:1px solid #285038}
 .responsible-heading{
-  display:flex;align-items:center;gap:9px;
-  color:var(--green);font-size:13px;font-weight:900;
-  letter-spacing:1px;margin-bottom:9px;
+  display:flex;align-items:center;gap:9px;color:var(--green);
+  font-size:13px;font-weight:900;letter-spacing:1px;margin-bottom:9px;
 }
-.responsible-heading svg{width:19px;height:19px;stroke:var(--green);fill:none;stroke-width:2}
+.responsible-heading svg{
+  width:19px;height:19px;stroke:var(--green);fill:none;stroke-width:2;
+}
 .responsible p{color:var(--muted);font-size:12px;line-height:1.8;margin:0}
 .member-responsible{
   margin-top:30px;background:linear-gradient(145deg,#102a1a,#0b1b11);
@@ -204,161 +148,108 @@ label{font-size:13px;color:#cbd0da}
   color:#ffb1a9;border-radius:9px;font-size:13px;
 }
 
-/* COMPACT FILTERS */
+/* FILTERS */
 .filter-panel{
-  background:#0d2116;
-  border:1px solid #285038;
-  border-radius:10px;
-  padding:12px;
-  margin:16px 0;
+  background:#0d2116;border:1px solid #285038;
+  border-radius:10px;padding:12px;margin:16px 0;
 }
-.filter-row{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:7px;
-  padding:2px 0;
-}
+.filter-row{display:flex;flex-wrap:wrap;align-items:center;gap:7px;padding:2px 0}
 .filter-btn{
-  flex:0 0 auto;
-  padding:8px 12px;
-  border:1px solid #31543c;
-  border-radius:18px;
-  background:#102a1a;
-  color:#d9e8de;
-  font-size:11px;
-  font-weight:normal;
-  white-space:nowrap;
+  flex:0 0 auto;padding:8px 12px;border:1px solid #31543c;
+  border-radius:18px;background:#102a1a;color:#d9e8de;
+  font-size:11px;font-weight:normal;white-space:nowrap;
 }
 .filter-btn.active{
-  background:var(--green);
-  color:#06140d;
-  border-color:var(--green);
-  font-weight:bold;
+  background:var(--green);color:#06140d;
+  border-color:var(--green);font-weight:bold;
 }
-.filter-divider{
-  height:1px;
-  background:#285038;
-  margin:10px 0;
-}
+.filter-divider{height:1px;background:#285038;margin:10px 0}
 
 /* PREDICTIONS */
 .prediction-date{
-  color:var(--green);
-  font-size:14px;
-  font-weight:bold;
-  margin:20px 0 10px;
-  padding-bottom:8px;
-  border-bottom:1px solid #285038;
+  color:var(--green);font-size:14px;font-weight:bold;
+  margin:20px 0 10px;padding-bottom:8px;border-bottom:1px solid #285038;
 }
 .prediction-table-wrap{
-  width:100%;
-  max-width:100%;
-  overflow:visible;
-  border:1px solid #285038;
-  border-radius:9px;
-  margin-bottom:18px;
+  width:100%;max-width:100%;overflow:hidden;
+  border:1px solid #285038;border-radius:9px;margin-bottom:18px;
 }
 .prediction-table{
-  width:100%;
-  min-width:0;
-  border-collapse:collapse;
-  text-align:left;
-  background:#0b1b11;
-  table-layout:fixed;
+  width:100%;min-width:0;border-collapse:collapse;
+  text-align:left;background:#0b1b11;table-layout:fixed;
 }
 .prediction-table th{
-  background:#173c25;
-  color:#62ed91;
-  font-size:11px;
-  font-weight:bold;
-  padding:12px 8px;
-  border-bottom:1px solid #31543c;
+  background:#173c25;color:#62ed91;font-size:11px;
+  font-weight:bold;padding:12px 7px;border-bottom:1px solid #31543c;
 }
 .prediction-table td{
-  padding:12px 8px;
-  font-size:12px;
+  padding:12px 7px;font-size:12px;
   border-bottom:1px solid #1c3826;
-  overflow-wrap:anywhere;
-  vertical-align:middle;
+  overflow-wrap:anywhere;vertical-align:middle;
 }
+.prediction-table th:nth-child(1),.prediction-table td:nth-child(1){width:34%}
+.prediction-table th:nth-child(2),.prediction-table td:nth-child(2){width:12%}
+.prediction-table th:nth-child(3),.prediction-table td:nth-child(3){width:20%}
+.prediction-table th:nth-child(4),.prediction-table td:nth-child(4){width:15%}
+.prediction-table th:nth-child(5),.prediction-table td:nth-child(5){width:19%}
 .prediction-table tbody tr:last-child td{border-bottom:none}
 .prediction-table tbody tr:hover{background:#132c1c}
 .club-name{font-weight:bold;color:white}
 .result-awaiting{color:#a5adbd;font-weight:bold}
-.result-won{color:var(--green);font-weight:bold}
-.result-lost{color:var(--red);font-weight:bold}
-.result-void{color:var(--orange);font-weight:bold}
+.result-live{
+  color:#06140d;background:var(--green);
+  display:inline-block;padding:5px 7px;border-radius:5px;
+  font-size:10px;font-weight:900;white-space:nowrap;
+}
+.result-won{color:var(--green);font-weight:bold;white-space:nowrap}
+.result-lost{color:var(--red);font-weight:bold;white-space:nowrap}
 .prediction-empty{color:var(--muted);font-size:14px;padding:12px 0}
 .prediction-group{margin-bottom:20px}
 footer{
-  text-align:center;padding:25px;
-  border-top:1px solid #1c422b;
+  text-align:center;padding:25px;border-top:1px solid #1c422b;
   color:var(--muted);font-size:12px;background:#081b10;
 }
 
-/* MOBILE PREDICTION CARDS - NO SIDEWAYS SWIPING */
+/* MOBILE: KEEP EACH PREDICTION IN ONE ROW */
 @media(max-width:600px){
   header{padding:14px}
   .logo{font-size:18px}
   .hero{padding:55px 15px}
-  .container{padding:18px 10px 35px}
+  .container{padding:18px 8px 35px}
   .member-welcome{padding:13px}
   .filter-panel{padding:10px}
   .filter-row{gap:6px}
   .filter-btn{font-size:10px;padding:8px 10px}
-  .prediction-table-wrap{overflow:visible}
+
+  .prediction-table-wrap{overflow:hidden;width:100%}
   .prediction-table{
-    display:block;
-    width:100%;
-    min-width:0;
+    display:table;width:100%;min-width:0;table-layout:fixed;
   }
-  .prediction-table thead{display:none}
-  .prediction-table tbody{display:block;width:100%}
-  .prediction-table tr{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:0;
-    width:100%;
-    padding:8px;
-    border-bottom:1px solid #285038;
+  .prediction-table thead{display:table-header-group}
+  .prediction-table tbody{display:table-row-group;width:100%}
+  .prediction-table tr{display:table-row;width:auto;padding:0}
+  .prediction-table th{
+    display:table-cell;padding:9px 3px;
+    font-size:9px;white-space:nowrap;
   }
-  .prediction-table tbody tr:last-child{border-bottom:none}
   .prediction-table td{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:7px;
-    width:100%;
-    min-width:0;
-    padding:9px 6px;
-    font-size:11px;
-    white-space:normal;
-    border:0;
-    overflow-wrap:anywhere;
-    text-align:right;
+    display:table-cell;padding:10px 3px;
+    font-size:10px;white-space:normal;
+    overflow-wrap:anywhere;vertical-align:middle;
   }
-  .prediction-table td:before{
-    content:attr(data-label);
-    color:#62ed91;
-    font-size:9px;
-    font-weight:bold;
-    text-align:left;
-    flex-shrink:0;
-  }
+  .prediction-table th:nth-child(1),.prediction-table td:nth-child(1){width:34%}
+  .prediction-table th:nth-child(2),.prediction-table td:nth-child(2){width:11%}
+  .prediction-table th:nth-child(3),.prediction-table td:nth-child(3){width:19%}
+  .prediction-table th:nth-child(4),.prediction-table td:nth-child(4){width:15%}
+  .prediction-table th:nth-child(5),.prediction-table td:nth-child(5){width:21%}
   .prediction-table td.club-name{
-    grid-column:1/-1;
-    justify-content:flex-start;
-    text-align:left;
-    font-size:13px;
-    padding:10px 6px;
-    border-bottom:1px solid #1c3826;
-    margin-bottom:3px;
+    display:table-cell;font-size:10px;
+    padding:10px 3px;margin:0;border-bottom:1px solid #1c3826;
   }
-  .prediction-table td.club-name:before{content:"CLUB:"}
-  .prediction-table td:last-child{justify-content:space-between}
+  .prediction-table td:before{content:none!important}
   .prediction-date{font-size:13px}
   .section-title{font-size:19px}
+  .result-live{font-size:9px;padding:4px 5px}
 }
 </style>
 </head>
@@ -475,16 +366,13 @@ footer{
     </div>
   </div>
 
-  <!-- DATE AND LEAGUE FILTERS -->
   <div class="filter-panel">
     <div class="filter-row" id="dateFilters">
       <button class="filter-btn" data-date="yesterday" onclick="setDateFilter('yesterday',this)">Yesterday</button>
       <button class="filter-btn active" data-date="today" onclick="setDateFilter('today',this)">Today</button>
       <button class="filter-btn" data-date="tomorrow" onclick="setDateFilter('tomorrow',this)">Tomorrow</button>
     </div>
-
     <div class="filter-divider"></div>
-
     <div class="filter-row" id="leagueFilters">
       <button class="filter-btn active" data-league="all" onclick="setLeagueFilter('all',this)">All leagues</button>
       <button class="filter-btn" data-league="premier" onclick="setLeagueFilter('premier',this)">Premier League</button>
@@ -558,6 +446,7 @@ let recoveryInProgress=false;
 let allPredictions=[];
 let selectedDate="today";
 let selectedLeague="all";
+let liveRefreshTimer=null;
 
 function hideAllSections(){
   ["welcome","authSection","memberDashboard"].forEach(id=>
@@ -764,69 +653,101 @@ function dateHeading(date){
   else label=date.toLocaleDateString("en-GB",{weekday:"long"});
   return label+" — "+date.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
 }
+
+/* DISPLAY KICKOFF IN NIGERIA TIME */
 function formatKickoff(value){
-  if(!value)return "Time not set";
+  if(!value)return "Not set";
   const date=new Date(value);
-  if(Number.isNaN(date.getTime()))return "Time not set";
-  return date.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",hour12:true}).replace(/\s/g,"").toLowerCase();
+  if(Number.isNaN(date.getTime()))return "Not set";
+  return date.toLocaleTimeString("en-US",{
+    timeZone:"Africa/Lagos",
+    hour:"numeric",
+    minute:"2-digit",
+    hour12:true
+  }).replace(/\s/g,"").toLowerCase();
 }
+
+/* AUTOMATIC OUTCOME */
 function getResult(item){
   const status=String(item.status||"").toLowerCase().trim();
   const result=String(item.result||"").toLowerCase().trim();
-  if(status==="won"||result==="won")return{text:"Won",symbol:"✅",className:"result-won"};
-  if(status==="lost"||result==="lost")return{text:"Lost",symbol:"❌",className:"result-lost"};
-  if(status==="void"||result==="void")return{text:"Void",symbol:"🚫",className:"result-void"};
-  return{text:"Awaiting",symbol:"",className:"result-awaiting"};
+
+  /* Manual results always take priority */
+  if(["won","win"].includes(status)||["won","win"].includes(result)){
+    return{text:"WON",className:"result-won"};
+  }
+  if(["lost","lose","loss"].includes(status)||["lost","lose","loss"].includes(result)){
+    return{text:"LOST",className:"result-lost"};
+  }
+
+  /* Automatically show LIVE when kickoff time arrives */
+  if(item.kickoff){
+    const kickoffDate=new Date(item.kickoff);
+    if(!Number.isNaN(kickoffDate.getTime())&&Date.now()>=kickoffDate.getTime()){
+      return{text:"LIVE",className:"result-live"};
+    }
+  }
+
+  return{text:"Awaiting",className:"result-awaiting"};
 }
+
 function makePredictionTable(items){
   const wrapper=document.createElement("div");
   wrapper.className="prediction-table-wrap";
+
   const table=document.createElement("table");
   table.className="prediction-table";
+
   const thead=document.createElement("thead");
   const headingRow=document.createElement("tr");
-  ["CLUB","PREDICTION","ODD","TIME","RESULT"].forEach(label=>{
+
+  ["MATCH","ODD","PREDICTION","TIME","OUTCOME"].forEach(label=>{
     const th=document.createElement("th");
     th.textContent=label;
     headingRow.appendChild(th);
   });
+
   thead.appendChild(headingRow);
   table.appendChild(thead);
+
   const tbody=document.createElement("tbody");
+
   items.forEach(item=>{
     const row=document.createElement("tr");
+
     const clubCell=document.createElement("td");
     clubCell.className="club-name";
     clubCell.textContent=(item.home_team||"Home")+" vs "+(item.away_team||"Away");
-    clubCell.setAttribute("data-label","CLUB");
-
-    const predictionCell=document.createElement("td");
-    predictionCell.textContent=item.prediction||"-";
-    predictionCell.setAttribute("data-label","PREDICTION");
 
     const oddsCell=document.createElement("td");
     oddsCell.textContent=item.odds??"-";
-    oddsCell.setAttribute("data-label","ODD");
+
+    const predictionCell=document.createElement("td");
+    predictionCell.textContent=item.prediction||"-";
 
     const timeCell=document.createElement("td");
     timeCell.textContent=formatKickoff(item.kickoff);
-    timeCell.setAttribute("data-label","TIME");
 
-    const resultCell=document.createElement("td");
-    const result=getResult(item);
-    resultCell.className=result.className;
-    resultCell.textContent=result.text+(result.symbol?" "+result.symbol:"");
-    resultCell.setAttribute("data-label","RESULT");
+    const outcomeCell=document.createElement("td");
+    const outcome=getResult(item);
+    outcomeCell.className=outcome.className;
+    outcomeCell.textContent=outcome.text;
 
-    [clubCell,predictionCell,oddsCell,timeCell,resultCell].forEach(cell=>row.appendChild(cell));
+    [clubCell,oddsCell,predictionCell,timeCell,outcomeCell].forEach(cell=>{
+      row.appendChild(cell);
+    });
+
     tbody.appendChild(row);
   });
+
   table.appendChild(tbody);
   wrapper.appendChild(table);
   return wrapper;
 }
+
 function renderPredictionGroup(container,items){
   container.replaceChildren();
+
   if(!items.length){
     const empty=document.createElement("p");
     empty.className="prediction-empty";
@@ -834,68 +755,97 @@ function renderPredictionGroup(container,items){
     container.appendChild(empty);
     return;
   }
+
   const groups=new Map();
+
   items.forEach(item=>{
     const date=item.kickoff?new Date(item.kickoff):null;
     const key=date&&!Number.isNaN(date.getTime())?localDateKey(date):"no-date";
     if(!groups.has(key))groups.set(key,{date:key==="no-date"?null:date,items:[]});
     groups.get(key).items.push(item);
   });
+
   const sorted=Array.from(groups.values()).sort((a,b)=>{
     if(!a.date)return 1;
     if(!b.date)return -1;
     return a.date-b.date;
   });
+
   sorted.forEach(group=>{
     const section=document.createElement("div");
     section.className="prediction-group";
+
     const heading=document.createElement("div");
     heading.className="prediction-date";
     heading.textContent=group.date?dateHeading(group.date):"Date not set";
+
     section.appendChild(heading);
     section.appendChild(makePredictionTable(group.items));
     container.appendChild(section);
   });
 }
+
 function renderAllPredictions(){
   const freeBox=document.getElementById("freePredictions");
   const vipBox=document.getElementById("vipPredictions");
+
   const filtered=allPredictions.filter(item=>matchesDate(item)&&matchesLeague(item));
   const freeItems=filtered.filter(item=>String(item.visibility||"free").toLowerCase()==="free");
   const vipItems=filtered.filter(item=>String(item.visibility||"").toLowerCase()==="vip");
+
   renderPredictionGroup(freeBox,freeItems);
+
   if(currentTier==="vip"||currentIsAdmin){
     renderPredictionGroup(vipBox,vipItems);
   }else{
     vipBox.replaceChildren();
     const locked=document.createElement("div");
     locked.className="card";
+
     const title=document.createElement("h3");
     title.className="gold";
     title.textContent="VIP MEMBERS ONLY";
     locked.appendChild(title);
+
     const description=document.createElement("p");
     description.className="muted";
     description.textContent="VIP predictions are available to approved VIP members. Tap the UPGRADE TO VIP button above to view payment details and request VIP access.";
     locked.appendChild(description);
+
     vipBox.appendChild(locked);
   }
 }
+
 async function loadPredictions(){
   const freeBox=document.getElementById("freePredictions");
   const vipBox=document.getElementById("vipPredictions");
+
   freeBox.textContent="Loading FREE predictions...";
   vipBox.textContent="Loading VIP predictions...";
+
   const {data,error}=await db.from("predictions").select("*").order("kickoff",{ascending:true});
+
   if(error){
     freeBox.textContent="Unable to load predictions. Please refresh.";
     vipBox.textContent="Unable to load VIP predictions.";
     return;
   }
+
   allPredictions=data||[];
   renderAllPredictions();
+
+  /* Refresh the display every 30 seconds so Awaiting changes to LIVE */
+  if(liveRefreshTimer)clearInterval(liveRefreshTimer);
+  liveRefreshTimer=setInterval(()=>{
+    if(currentUser)renderAllPredictions();
+  },30000);
 }
+
 async function logOut(){
+  if(liveRefreshTimer){
+    clearInterval(liveRefreshTimer);
+    liveRefreshTimer=null;
+  }
   await db.auth.signOut();
   currentUser=null;
   currentTier="free";
@@ -921,6 +871,7 @@ db.auth.onAuthStateChange((event,session)=>{
 async function startApp(){
   const params=new URLSearchParams(window.location.search);
   const code=params.get("code");
+
   if(code){
     const {error}=await db.auth.exchangeCodeForSession(code);
     if(error){
@@ -932,6 +883,7 @@ async function startApp(){
     showRecoveryForm();
     return;
   }
+
   if(window.location.hash.includes("type=recovery")){
     const {data,error}=await db.auth.getSession();
     if(error||!data.session){
@@ -942,6 +894,7 @@ async function startApp(){
     showRecoveryForm();
     return;
   }
+
   const {data,error}=await db.auth.getSession();
   if(error){showWelcome();return}
   if(data.session)await loadUser(data.session.user);
