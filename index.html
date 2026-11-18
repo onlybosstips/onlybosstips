@@ -120,7 +120,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--m
 .announcement-box h2{color:var(--green);margin:0 25px 15px;font-size:21px}
 .announcement-box p{color:#fff;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
 .announcement-close{position:absolute;right:10px;top:10px;background:#291817;color:#fff;padding:7px 11px;border-radius:50%;font-size:17px}
-.announcement-timer{color:#a8b9ae;font-size:11px;margin-top:16px}
+.announcement-confirm{width:100%;margin-top:15px;padding:14px;background:var(--green);color:#06140d;border-radius:8px;font-weight:900}
 @media(max-width:500px){
 .admin-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}
 header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
@@ -329,7 +329,7 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <button class="announcement-close" onclick="closeAnnouncement()" aria-label="Close announcement">×</button>
 <h2 id="announcementTitle">📢 IMPORTANT ANNOUNCEMENT</h2>
 <p id="announcementMessage"></p>
-<div class="announcement-timer">This announcement will close automatically.</div>
+<button class="announcement-confirm" onclick="closeAnnouncement()">I HAVE READ THIS — CLOSE</button>
 </div>
 </div>
 
@@ -342,7 +342,7 @@ const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 let currentUser=null,currentTier="free",currentMemberships=[],currentIsAdmin=false,recoveryInProgress=false;
 let allPredictions=[],selectedDate="today",selectedLeague="all",selectedMembership="vip";
-let announcementTimer=null,announcementQueue=[],announcementShowing=false;
+let announcementQueue=[],announcementShowing=false;
 
 function parseMemberships(value){
  const raw=String(value||"free").toLowerCase().split(/[,+|]/).map(x=>x.trim()).filter(Boolean);
@@ -471,27 +471,44 @@ async function loadUser(user){
  currentIsAdmin=!!admin;showDashboard();
 }
 
+// ANNOUNCEMENTS: MEMBERS MUST CLOSE THEMSELVES
+
 function closeAnnouncement(){
- if(announcementTimer){clearTimeout(announcementTimer);announcementTimer=null}
  document.getElementById("announcementOverlay").classList.add("hidden");
  announcementShowing=false;
- setTimeout(showNextAnnouncement,250);
+ showNextAnnouncement();
 }
+
 function showNextAnnouncement(){
  if(announcementShowing||!announcementQueue.length||!currentUser)return;
+
  const announcement=announcementQueue.shift();
  announcementShowing=true;
+
  document.getElementById("announcementMessage").textContent=announcement.message;
  document.getElementById("announcementOverlay").classList.remove("hidden");
- announcementTimer=setTimeout(closeAnnouncement,7000);
 }
+
 async function loadAnnouncements(){
- announcementQueue=[];announcementShowing=false;
- if(announcementTimer){clearTimeout(announcementTimer);announcementTimer=null}
+ announcementQueue=[];
+ announcementShowing=false;
  document.getElementById("announcementOverlay").classList.add("hidden");
- const {data,error}=await db.from("member_announcements").select("id,message,created_at").eq("active",true).order("created_at",{ascending:false});
- if(error){console.error("Announcement loading error:",error.message);return}
- announcementQueue=(data||[]).filter(a=>a.message).map(a=>({id:a.id,message:a.message}));
+
+ const {data,error}=await db
+  .from("member_announcements")
+  .select("id,message,created_at")
+  .eq("active",true)
+  .order("created_at",{ascending:false});
+
+ if(error){
+  console.error("Announcement loading error:",error.message);
+  return;
+ }
+
+ announcementQueue=(data||[])
+  .filter(a=>a.message)
+  .map(a=>({id:a.id,message:a.message}));
+
  showNextAnnouncement();
 }
 
@@ -629,14 +646,16 @@ async function adminUpdateResult(id,value,button){
  await loadPredictions();const m=document.getElementById("adminMessage");if(m)m.textContent="Match result updated successfully.";
 }
 async function logOut(){
- if(announcementTimer)clearTimeout(announcementTimer);
- announcementQueue=[];announcementShowing=false;document.getElementById("announcementOverlay").classList.add("hidden");
+ announcementQueue=[];announcementShowing=false;
+ document.getElementById("announcementOverlay").classList.add("hidden");
  await db.auth.signOut();currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
  document.getElementById("headerButton").textContent="JOIN NOW";document.getElementById("headerButton").classList.remove("hidden");showWelcome();
 }
 db.auth.onAuthStateChange((event)=>{
  if(event==="PASSWORD_RECOVERY")showRecoveryForm();
  if(event==="SIGNED_OUT"&&!recoveryInProgress){
+  announcementQueue=[];announcementShowing=false;
+  document.getElementById("announcementOverlay").classList.add("hidden");
   currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
   document.getElementById("headerButton").textContent="JOIN NOW";document.getElementById("headerButton").classList.remove("hidden");showWelcome();
  }
