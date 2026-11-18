@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,12 +114,53 @@ footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--m
 .streak-stat strong{font-size:20px;color:#fff;overflow-wrap:anywhere}
 .streak-stat strong.green{color:var(--green)}
 .streak-note{color:var(--muted);font-size:10px;line-height:1.5;margin:14px 0 0}
-.announcement-overlay{position:fixed;inset:0;z-index:99999;background:#000d;display:flex;align-items:center;justify-content:center;padding:20px}
-.announcement-box{width:100%;max-width:450px;background:#102719;border:2px solid var(--green);border-radius:15px;padding:25px;box-shadow:0 15px 60px #000b;position:relative;text-align:center}
-.announcement-box h2{color:var(--green);margin:0 25px 15px;font-size:21px}
-.announcement-box p{color:#fff;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
-.announcement-close{position:absolute;right:10px;top:10px;background:#291817;color:#fff;padding:7px 11px;border-radius:50%;font-size:17px}
-.announcement-confirm{width:100%;margin-top:15px;padding:14px;background:var(--green);color:#06140d;border-radius:8px;font-weight:900}
+
+/* COMPACT ANNOUNCEMENT POPUP */
+.announcement-overlay{
+position:fixed;
+inset:0;
+z-index:99999;
+background:#0006;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:15px;
+}
+.announcement-box{
+width:100%;
+max-width:400px;
+max-height:75vh;
+overflow-y:auto;
+background:#102719;
+border:2px solid var(--green);
+border-radius:15px;
+padding:25px;
+box-shadow:0 15px 60px #0008;
+position:relative;
+text-align:center;
+}
+.announcement-box h2{
+color:var(--green);
+margin:0 25px 15px;
+font-size:20px;
+}
+.announcement-box p{
+color:#fff;
+line-height:1.8;
+white-space:pre-wrap;
+overflow-wrap:anywhere;
+}
+.announcement-close{
+position:absolute;
+right:10px;
+top:10px;
+background:#291817;
+color:#fff;
+padding:7px 11px;
+border-radius:50%;
+font-size:20px;
+}
+
 @media(max-width:500px){
 .admin-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}
 header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
@@ -324,12 +364,12 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <button class="logout-bottom" onclick="logOut()">LOG OUT</button>
 </section>
 
+<!-- ANNOUNCEMENT POPUP: X BUTTON ONLY -->
 <div id="announcementOverlay" class="announcement-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="announcementTitle">
 <div class="announcement-box">
 <button class="announcement-close" onclick="closeAnnouncement()" aria-label="Close announcement">×</button>
 <h2 id="announcementTitle">📢 IMPORTANT ANNOUNCEMENT</h2>
 <p id="announcementMessage"></p>
-<button class="announcement-confirm" onclick="closeAnnouncement()">I HAVE READ THIS — CLOSE</button>
 </div>
 </div>
 
@@ -471,7 +511,7 @@ async function loadUser(user){
  currentIsAdmin=!!admin;showDashboard();
 }
 
-// ANNOUNCEMENTS: MEMBERS MUST CLOSE THEMSELVES
+// ANNOUNCEMENTS: X BUTTON ONLY
 
 function closeAnnouncement(){
  document.getElementById("announcementOverlay").classList.add("hidden");
