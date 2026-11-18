@@ -64,18 +64,63 @@ label{font-size:13px;color:#cbd0da}
 .responsible p{color:var(--muted);font-size:12px;line-height:1.8;margin:0}
 .member-responsible .responsible{margin:0;padding:0;border:0}
 .logout-bottom{margin-top:18px;padding:16px;width:100%;border:1px solid #743c3c;background:#291817;color:#ffb1a9;border-radius:9px;font-size:13px}
-.prediction-controls{background:#0b1b11;border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0 20px}
-.control-label{font-size:11px;color:var(--muted);font-weight:bold;letter-spacing:1.5px;margin:2px 0 10px}
 
-/* Date buttons wrap naturally */
-.date-tabs{display:flex;flex-wrap:wrap;gap:8px;overflow:visible;padding:2px 1px 12px}
+/* FREE ODDS FILTERS */
+.prediction-controls{background:#0b1b11;border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0 20px}
 
-/* League buttons use a two-column grid */
-.league-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;width:100%;overflow:visible;padding:2px 1px 9px}
+/* Date buttons: one neat horizontal row */
+.date-tabs{
+  display:flex;
+  flex-wrap:nowrap;
+  gap:8px;
+  width:100%;
+  padding:2px 0 12px;
+}
 
-.date-tab,.league-tab{white-space:normal;min-width:0;width:100%;border:1px solid #31543c;background:#102719;color:#dce9df;padding:11px 7px;border-radius:8px;font-size:12px;text-align:center;line-height:1.3}
-.date-tab.active,.league-tab.active{background:var(--green);color:#06140d;border-color:var(--green)}
-.league-tab{border-radius:20px;padding:12px 5px;font-size:12px;font-weight:bold}
+.date-tab{
+  flex:1 1 0;
+  min-width:0;
+  white-space:nowrap;
+  text-align:center;
+  border:1px solid #31543c;
+  background:#102719;
+  color:#dce9df;
+  padding:9px 5px;
+  border-radius:7px;
+  font-size:12px;
+  font-weight:600;
+}
+
+/* League buttons: neat rows, no horizontal scrolling */
+.league-tabs{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:7px;
+  width:100%;
+  padding:2px 0 3px;
+}
+
+.league-tab{
+  flex:0 1 auto;
+  min-width:0;
+  white-space:nowrap;
+  border:1px solid #31543c;
+  background:#102719;
+  color:#dce9df;
+  padding:8px 11px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:600;
+  line-height:1.3;
+}
+
+.date-tab.active,.league-tab.active{
+  background:var(--green);
+  color:#06140d;
+  border-color:var(--green);
+}
+
 .prediction-date{color:#e8fff0;font-size:15px;font-weight:900;letter-spacing:.4px;margin:22px 0 12px;padding:11px 13px;border-left:4px solid var(--green);border-radius:5px;background:linear-gradient(90deg,#173c25,#0b1b11 85%)}
 .prediction-table-wrap{width:100%;overflow:hidden;border:1px solid var(--line);border-radius:9px;margin-bottom:20px}
 .prediction-table{width:100%;table-layout:fixed;border-collapse:collapse;text-align:left;background:#0b1b11}
@@ -105,11 +150,29 @@ footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--m
 .admin-list-item strong{display:block;margin-bottom:8px}
 .admin-list-item select{padding:9px;background:#08170e;color:#fff;border:1px solid #31543c;border-radius:6px;margin-right:6px}
 .admin-list-item button{padding:9px 12px;margin:4px 3px 0 0}
-@media(max-width:500px){.admin-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}}
-@media(max-width:500px){header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}.container{padding:18px 10px 35px}.member-welcome{padding:18px}.member-welcome-top{gap:12px}.prediction-date{font-size:13px}.prediction-table th{padding:10px 3px}.prediction-table td{padding:10px 3px}.outcome-circle{width:17px;height:17px}}
+
+@media(max-width:500px){
+  .admin-grid{grid-template-columns:1fr}
+  .admin-grid .full{grid-column:auto}
+  header{padding:9px 12px}
+  .logo{font-size:18px}
+  .hero{padding:48px 13px}
+  .container{padding:18px 10px 35px}
+  .member-welcome{padding:18px}
+  .member-welcome-top{gap:12px}
+  .prediction-date{font-size:13px}
+  .prediction-table th{padding:10px 3px}
+  .prediction-table td{padding:10px 3px}
+  .outcome-circle{width:17px;height:17px}
+  .prediction-controls{padding:10px}
+  .date-tab{padding:9px 3px;font-size:11px}
+  .league-tabs{gap:6px}
+  .league-tab{padding:7px 9px;font-size:10px}
+}
 </style>
 </head>
 <body>
+
 <header>
   <div class="brand">
     <div class="logo">ONLYBOSSTIPS</div>
@@ -127,70 +190,174 @@ footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--m
       <button class="secondary" onclick="showAuth('login')">MEMBER LOGIN</button>
     </div>
   </div>
+
   <div class="container">
-    <div class="card"><h2 class="gold">FREE ODDS</h2><p class="muted">Create your free account to access FREE football predictions and match results.</p></div>
-    <div class="card"><h2 class="gold">VIP ODDS</h2><p class="muted">Exclusive VIP predictions available to approved VIP members.</p></div>
-    <div class="card"><h2 class="gold">JOIN OUR COMMUNITY</h2><p class="muted">Register today and become part of ONLYBOSSTIPS.</p><button onclick="showAuth('signup')">SIGN UP FREE</button></div>
+    <div class="card">
+      <h2 class="gold">FREE ODDS</h2>
+      <p class="muted">Create your free account to access FREE football predictions and match results.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="gold">VIP ODDS</h2>
+      <p class="muted">Exclusive VIP predictions available to approved VIP members.</p>
+    </div>
+
+    <div class="card">
+      <h2 class="gold">JOIN OUR COMMUNITY</h2>
+      <p class="muted">Register today and become part of ONLYBOSSTIPS.</p>
+      <button onclick="showAuth('signup')">SIGN UP FREE</button>
+    </div>
+
     <div class="explore-card">
       <h2 class="explore-title">EXPLORE</h2>
       <div class="explore-links">
-        <a class="explore-link" href="#" onclick="openPublicLogin(event)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3"/></svg>Daily predictions</a>
-        <a class="explore-link" href="#" onclick="openPublicLogin(event)"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5M12 7v5l4 2"/></svg>Results &amp; history</a>
-        <a class="explore-link" href="#" onclick="openPublicSignup(event)"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M16 11h6"/></svg>Create free account</a>
+        <a class="explore-link" href="#" onclick="openPublicLogin(event)">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3"/></svg>
+          Daily predictions
+        </a>
+        <a class="explore-link" href="#" onclick="openPublicLogin(event)">
+          <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5M12 7v5l4 2"/></svg>
+          Results &amp; history
+        </a>
+        <a class="explore-link" href="#" onclick="openPublicSignup(event)">
+          <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M16 11h6"/></svg>
+          Create free account
+        </a>
       </div>
-      <div class="responsible"><div class="responsible-heading">PLAY RESPONSIBLY</div><p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p></div>
+
+      <div class="responsible">
+        <div class="responsible-heading">PLAY RESPONSIBLY</div>
+        <p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <section id="authSection" class="container hidden">
   <div class="card form">
-    <div id="signupForm"><h2 class="gold">CREATE ACCOUNT</h2><p class="muted">Join ONLYBOSSTIPS as a FREE MEMBER.</p><label>Email address</label><input id="signupEmail" type="email" placeholder="Enter your email"><label>Password</label><input id="signupPassword" type="password" placeholder="Create a password"><button id="signupButton" onclick="signUp()">CREATE ACCOUNT</button><p class="muted">Already registered? <span class="link" onclick="showAuth('login')">Log in</span></p></div>
-    <div id="loginForm" class="hidden"><h2 class="gold">MEMBER LOGIN</h2><p class="muted">Log in to access your predictions.</p><label>Email address</label><input id="loginEmail" type="email" placeholder="Enter your email"><label>Password</label><input id="loginPassword" type="password" placeholder="Enter password"><button id="loginButton" onclick="logIn()">LOG IN</button><p class="muted"><span class="link" onclick="forgotPassword()">Forgot password?</span></p><p class="muted">Don't have an account? <span class="link" onclick="showAuth('signup')">Sign up</span></p></div>
-    <div id="recoveryForm" class="hidden"><h2 class="gold">RESET PASSWORD</h2><p class="muted">Enter your new password below.</p><label>New password</label><input id="newPassword" type="password" placeholder="Enter new password"><label>Confirm new password</label><input id="confirmPassword" type="password" placeholder="Confirm new password"><button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button></div>
-    <p id="authMessage" class="message"></p><p class="muted"><span class="link" onclick="showWelcome()">Back to home</span></p>
+    <div id="signupForm">
+      <h2 class="gold">CREATE ACCOUNT</h2>
+      <p class="muted">Join ONLYBOSSTIPS as a FREE MEMBER.</p>
+      <label>Email address</label>
+      <input id="signupEmail" type="email" placeholder="Enter your email">
+      <label>Password</label>
+      <input id="signupPassword" type="password" placeholder="Create a password">
+      <button id="signupButton" onclick="signUp()">CREATE ACCOUNT</button>
+      <p class="muted">Already registered? <span class="link" onclick="showAuth('login')">Log in</span></p>
+    </div>
+
+    <div id="loginForm" class="hidden">
+      <h2 class="gold">MEMBER LOGIN</h2>
+      <p class="muted">Log in to access your predictions.</p>
+      <label>Email address</label>
+      <input id="loginEmail" type="email" placeholder="Enter your email">
+      <label>Password</label>
+      <input id="loginPassword" type="password" placeholder="Enter password">
+      <button id="loginButton" onclick="logIn()">LOG IN</button>
+      <p class="muted"><span class="link" onclick="forgotPassword()">Forgot password?</span></p>
+      <p class="muted">Don't have an account? <span class="link" onclick="showAuth('signup')">Sign up</span></p>
+    </div>
+
+    <div id="recoveryForm" class="hidden">
+      <h2 class="gold">RESET PASSWORD</h2>
+      <p class="muted">Enter your new password below.</p>
+      <label>New password</label>
+      <input id="newPassword" type="password" placeholder="Enter new password">
+      <label>Confirm new password</label>
+      <input id="confirmPassword" type="password" placeholder="Confirm new password">
+      <button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button>
+    </div>
+
+    <p id="authMessage" class="message"></p>
+    <p class="muted"><span class="link" onclick="showWelcome()">Back to home</span></p>
   </div>
 </section>
 
 <section id="memberDashboard" class="container hidden">
+
   <div id="adminDashboard" class="admin-panel hidden">
     <h2 class="gold">PRIVATE ADMIN DASHBOARD</h2>
     <p class="muted">Only accounts listed in the Supabase admins table can see these controls.</p>
+
     <h3>ADD NEW PREDICTION</h3>
     <div class="admin-grid">
-      <div><label>Home team</label><input id="adminHome" placeholder="e.g. Chelsea"></div>
-      <div><label>Away team</label><input id="adminAway" placeholder="e.g. Arsenal"></div>
-      <div><label>Odd</label><input id="adminOdds" type="number" step="0.01" min="1" placeholder="1.85"></div>
-      <div><label>Prediction</label><input id="adminPick" placeholder="e.g. Home win"></div>
-      <div><label>Kickoff date and time</label><input id="adminKickoff" type="datetime-local"></div>
-      <div><label>League</label><input id="adminLeague" placeholder="e.g. Premier League"></div>
-      <div><label>Prediction category</label><select id="adminVisibility"><option value="free">FREE</option><option value="vip">VIP</option></select></div>
-      <div><label>Initial outcome</label><select id="adminStatus"><option value="pending">PENDING</option><option value="won">WON</option><option value="lost">LOST</option><option value="void">VOID</option></select></div>
-      <div class="full"><button id="adminAddButton" onclick="adminAddPrediction()">PUBLISH PREDICTION</button></div>
+      <div>
+        <label>Home team</label>
+        <input id="adminHome" placeholder="e.g. Chelsea">
+      </div>
+      <div>
+        <label>Away team</label>
+        <input id="adminAway" placeholder="e.g. Arsenal">
+      </div>
+      <div>
+        <label>Odd</label>
+        <input id="adminOdds" type="number" step="0.01" min="1" placeholder="1.85">
+      </div>
+      <div>
+        <label>Prediction</label>
+        <input id="adminPick" placeholder="e.g. Home win">
+      </div>
+      <div>
+        <label>Kickoff date and time</label>
+        <input id="adminKickoff" type="datetime-local">
+      </div>
+      <div>
+        <label>League</label>
+        <input id="adminLeague" placeholder="e.g. Premier League">
+      </div>
+      <div>
+        <label>Prediction category</label>
+        <select id="adminVisibility">
+          <option value="free">FREE</option>
+          <option value="vip">VIP</option>
+        </select>
+      </div>
+      <div>
+        <label>Initial outcome</label>
+        <select id="adminStatus">
+          <option value="pending">PENDING</option>
+          <option value="won">WON</option>
+          <option value="lost">LOST</option>
+          <option value="void">VOID</option>
+        </select>
+      </div>
+      <div class="full">
+        <button id="adminAddButton" onclick="adminAddPrediction()">PUBLISH PREDICTION</button>
+      </div>
     </div>
+
     <p id="adminMessage" class="message" aria-live="polite"></p>
+
     <h3>UPDATE MATCH RESULTS</h3>
     <p class="muted">Choose WON, LOST or VOID after a match finishes. Unsettled matches automatically show LIVE after kickoff on match day.</p>
     <div id="adminPredictionList"><p class="notice">Loading predictions...</p></div>
   </div>
+
   <div class="member-welcome">
     <div class="member-welcome-top">
-      <div><div class="welcome-label">✦ ─── WELCOME TO ─── ✦</div><h2 class="member-brand">ONLYBOSSTIPS</h2><div class="member-tagline">✧ YOUR FOOTBALL PREDICTION HUB ✧</div></div>
+      <div>
+        <div class="welcome-label">✦ ─── WELCOME TO ─── ✦</div>
+        <h2 class="member-brand">ONLYBOSSTIPS</h2>
+        <div class="member-tagline">✧ YOUR FOOTBALL PREDICTION HUB ✧</div>
+      </div>
     </div>
-    <p id="memberEmail" class="member-email"></p><span id="memberBadge" class="badge">FREE MEMBER</span>
+    <p id="memberEmail" class="member-email"></p>
+    <span id="memberBadge" class="badge">FREE MEMBER</span>
   </div>
 
-  <h2 class="section-title gold" id="freeOddsHeading">FREE ODDS</h2><p class="odds-intro">Daily match predictions and results</p>
+  <h2 class="section-title gold" id="freeOddsHeading">FREE ODDS</h2>
+  <p class="odds-intro">Daily match predictions and results</p>
+
   <div class="prediction-controls">
-    <div class="control-label">Match date</div>
+
     <div class="date-tabs" id="dateTabs">
       <button class="date-tab" data-date="yesterday" onclick="selectDate('yesterday')">Yesterday</button>
       <button class="date-tab active" data-date="today" onclick="selectDate('today')">Today</button>
       <button class="date-tab" data-date="tomorrow" onclick="selectDate('tomorrow')">Tomorrow</button>
     </div>
-    <div class="control-label">Leagues</div>
+
     <div class="league-tabs" id="leagueTabs">
-      <button class="league-tab active" data-league="all" onclick="selectLeague('all')">All Leagues</button>
+      <button class="league-tab active" data-league="all" onclick="selectLeague('all')">All</button>
       <button class="league-tab" data-league="premier league" onclick="selectLeague('premier league')">Premier League</button>
       <button class="league-tab" data-league="bundesliga" onclick="selectLeague('bundesliga')">Bundesliga</button>
       <button class="league-tab" data-league="la liga" onclick="selectLeague('la liga')">La Liga</button>
@@ -199,90 +366,693 @@ footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--m
       <button class="league-tab" data-league="uefa" onclick="selectLeague('uefa')">UEFA</button>
       <button class="league-tab" data-league="world cup" onclick="selectLeague('world cup')">World Cup</button>
     </div>
+
   </div>
+
   <div id="freePredictions"><p class="notice">Loading FREE predictions...</p></div>
 
-  <div id="vipUpgradeArea"><button class="vip-upgrade-button" onclick="toggleVipPayment()"><span id="vipUpgradeButtonText">💎 UPGRADE TO VIP</span></button></div>
-  <div id="vipPaymentPanel" class="card hidden">
-    <h2 class="gold">UPGRADE TO VIP</h2><p class="muted">Get access to exclusive ONLYBOSSTIPS VIP football predictions.</p>
-    <div class="payment-price">₦5,500 <small>monthly</small></div><p class="muted">Transfer your monthly membership payment to the bank account below.</p>
-    <div class="bank-details"><p><strong>Bank:</strong> KUDA BANK</p><p><strong>Account Name:</strong> OLUWANIFELA OMOJOWO</p><p><strong>Account Number:</strong> <span id="bankAccountNumber">2036960699</span></p></div>
-    <button class="payment-button" onclick="copyAccountNumber()">COPY ACCOUNT NUMBER</button><p class="muted">After making your transfer, send your payment receipt to our WhatsApp for verification.</p><button class="payment-button" onclick="sendPaymentWhatsApp()">SEND PAYMENT RECEIPT ON WHATSAPP</button><p class="muted">Your VIP membership will be activated after the administrator confirms your payment.</p><p id="paymentMessage" class="message"></p><button class="secondary close-payment" onclick="toggleVipPayment(false)">CLOSE PAYMENT DETAILS</button>
+  <div id="vipUpgradeArea">
+    <button class="vip-upgrade-button" onclick="toggleVipPayment()">
+      <span id="vipUpgradeButtonText">💎 UPGRADE TO VIP</span>
+    </button>
   </div>
 
-  <h2 class="section-title gold">VIP ODDS</h2><p class="odds-intro">Exclusive predictions for approved VIP members</p><div id="vipPredictions"><p class="notice">Loading VIP predictions...</p></div>
-  <div id="adminNotice" class="card hidden"><h3 class="gold">ADMINISTRATOR ACCOUNT</h3><p class="muted">Your administrator account is recognised. Use the separate private administrator dashboard.</p></div>
-  <div class="member-responsible"><div class="responsible"><div class="responsible-heading">PLAY RESPONSIBLY</div><p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p></div></div>
+  <div id="vipPaymentPanel" class="card hidden">
+    <h2 class="gold">UPGRADE TO VIP</h2>
+    <p class="muted">Get access to exclusive ONLYBOSSTIPS VIP football predictions.</p>
+    <div class="payment-price">₦5,500 <small>monthly</small></div>
+    <p class="muted">Transfer your monthly membership payment to the bank account below.</p>
+
+    <div class="bank-details">
+      <p><strong>Bank:</strong> KUDA BANK</p>
+      <p><strong>Account Name:</strong> OLUWANIFELA OMOJOWO</p>
+      <p><strong>Account Number:</strong> <span id="bankAccountNumber">2036960699</span></p>
+    </div>
+
+    <button class="payment-button" onclick="copyAccountNumber()">COPY ACCOUNT NUMBER</button>
+    <p class="muted">After making your transfer, send your payment receipt to our WhatsApp for verification.</p>
+    <button class="payment-button" onclick="sendPaymentWhatsApp()">SEND PAYMENT RECEIPT ON WHATSAPP</button>
+    <p class="muted">Your VIP membership will be activated after the administrator confirms your payment.</p>
+    <p id="paymentMessage" class="message"></p>
+    <button class="secondary close-payment" onclick="toggleVipPayment(false)">CLOSE PAYMENT DETAILS</button>
+  </div>
+
+  <h2 class="section-title gold">VIP ODDS</h2>
+  <p class="odds-intro">Exclusive predictions for approved VIP members</p>
+  <div id="vipPredictions"><p class="notice">Loading VIP predictions...</p></div>
+
+  <div id="adminNotice" class="card hidden">
+    <h3 class="gold">ADMINISTRATOR ACCOUNT</h3>
+    <p class="muted">Your administrator account is recognised. Use the separate private administrator dashboard.</p>
+  </div>
+
+  <div class="member-responsible">
+    <div class="responsible">
+      <div class="responsible-heading">PLAY RESPONSIBLY</div>
+      <p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p>
+    </div>
+  </div>
+
   <button class="logout-bottom" onclick="logOut()">LOG OUT</button>
 </section>
+
 <footer>ONLYBOSSTIPS © 2026. All rights reserved.</footer>
 
 <script>
 const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
 const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
 let currentUser=null,currentTier="free",currentIsAdmin=false,recoveryInProgress=false;
 let allPredictions=[],selectedDate="today",selectedLeague="all";
 
-function hideAllSections(){["welcome","authSection","memberDashboard"].forEach(id=>document.getElementById(id).classList.add("hidden"))}
-function showWelcome(){hideAllSections();document.getElementById("welcome").classList.remove("hidden");document.getElementById("headerButton").classList.remove("hidden")}
-function showAuth(mode){hideAllSections();document.getElementById("authSection").classList.remove("hidden");document.getElementById("headerButton").classList.remove("hidden");document.getElementById("signupForm").classList.toggle("hidden",mode!=="signup");document.getElementById("loginForm").classList.toggle("hidden",mode!=="login");document.getElementById("recoveryForm").classList.add("hidden");document.getElementById("authMessage").textContent=""}
-function openPublicLogin(e){e.preventDefault();showAuth("login")}
-function openPublicSignup(e){e.preventDefault();showAuth("signup")}
-function showRecoveryForm(){recoveryInProgress=true;hideAllSections();document.getElementById("authSection").classList.remove("hidden");document.getElementById("headerButton").classList.add("hidden");document.getElementById("signupForm").classList.add("hidden");document.getElementById("loginForm").classList.add("hidden");document.getElementById("recoveryForm").classList.remove("hidden");document.getElementById("authMessage").textContent="Enter and confirm your new password."}
-function showDashboard(){hideAllSections();document.getElementById("memberDashboard").classList.remove("hidden");document.getElementById("headerButton").classList.add("hidden");document.getElementById("memberEmail").textContent=currentUser.email||"";const badge=document.getElementById("memberBadge");badge.textContent=currentTier.toUpperCase()+" MEMBER";badge.className=currentTier==="vip"?"badge vip":"badge";document.getElementById("adminNotice").classList.toggle("hidden",!currentIsAdmin);document.getElementById("adminDashboard").classList.toggle("hidden",!currentIsAdmin);document.getElementById("vipUpgradeArea").classList.toggle("hidden",currentTier==="vip"||currentIsAdmin);document.getElementById("vipPaymentPanel").classList.add("hidden");document.getElementById("vipUpgradeButtonText").textContent="💎 UPGRADE TO VIP";loadPredictions()}
-function toggleVipPayment(forceOpen){const panel=document.getElementById("vipPaymentPanel"),txt=document.getElementById("vipUpgradeButtonText");const open=typeof forceOpen==="boolean"?forceOpen:panel.classList.contains("hidden");panel.classList.toggle("hidden",!open);txt.textContent=open?"💎 VIP PAYMENT DETAILS OPEN":"💎 UPGRADE TO VIP";if(open)setTimeout(()=>panel.scrollIntoView({behavior:"smooth",block:"start"}),100)}
-async function copyAccountNumber(){const n="2036960699",m=document.getElementById("paymentMessage");try{await navigator.clipboard.writeText(n);m.textContent="Account number copied successfully."}catch(e){m.textContent="Please copy the account number manually: "+n}}
-function sendPaymentWhatsApp(){if(!currentUser?.email){alert("Please log in before sending your payment confirmation.");return}const msg="Hello ONLYBOSSTIPS Admin. I have paid ₦5,500 for my monthly VIP membership. My registered email is: "+currentUser.email+". I am sending my payment receipt for verification. Please approve my VIP access.";window.open("https://wa.me/2348032413495?text="+encodeURIComponent(msg),"_blank")}
-async function signUp(){const email=document.getElementById("signupEmail").value.trim(),password=document.getElementById("signupPassword").value,m=document.getElementById("authMessage"),b=document.getElementById("signupButton");if(!email||password.length<6){m.textContent="Enter a valid email and a password of at least 6 characters.";return}b.disabled=true;m.textContent="Creating your account...";const {data,error}=await db.auth.signUp({email,password});b.disabled=false;if(error){m.textContent=error.message;return}if(data.session)await loadUser(data.session.user);else m.textContent="Registration successful. Check your email to confirm your account before logging in."}
-async function logIn(){const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPassword").value,m=document.getElementById("authMessage"),b=document.getElementById("loginButton");if(!email||!password){m.textContent="Enter your email and password.";return}b.disabled=true;m.textContent="Logging in...";const {data,error}=await db.auth.signInWithPassword({email,password});b.disabled=false;if(error){m.textContent=error.message;return}await loadUser(data.user)}
-async function forgotPassword(){const email=document.getElementById("loginEmail").value.trim(),m=document.getElementById("authMessage");if(!email){m.textContent="Enter your email address above first.";return}m.textContent="Sending password reset email...";const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/"});m.textContent=error?error.message:"Password reset email sent. Open the email link to return here and create your new password."}
-async function saveNewPassword(){const p=document.getElementById("newPassword").value,c=document.getElementById("confirmPassword").value,m=document.getElementById("authMessage"),b=document.getElementById("savePasswordButton");if(p.length<6){m.textContent="Your password must contain at least 6 characters.";return}if(p!==c){m.textContent="The passwords do not match.";return}b.disabled=true;m.textContent="Updating your password...";const {error}=await db.auth.updateUser({password:p});b.disabled=false;if(error){m.textContent="Password update failed: "+error.message;return}recoveryInProgress=false;m.textContent="Your password has been changed successfully. You can now log in.";document.getElementById("newPassword").value="";document.getElementById("confirmPassword").value="";await db.auth.signOut();window.history.replaceState({},document.title,window.location.pathname);setTimeout(()=>showAuth("login"),1500)}
-async function loadUser(user){currentUser=user;currentTier="free";currentIsAdmin=false;const {data:profile,error}=await db.from("member_profiles").select("membership_tier").eq("user_id",user.id).maybeSingle();if(error){document.getElementById("authMessage").textContent="Could not load your membership. Please try again.";return}if(profile)currentTier=profile.membership_tier||"free";const {data:admin}=await db.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();currentIsAdmin=!!admin;showDashboard()}
-function localDateKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function dateForSelection(choice){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+(choice==="yesterday"?-1:choice==="tomorrow"?1:0));return localDateKey(d)}
-function selectDate(choice){selectedDate=choice;document.querySelectorAll(".date-tab").forEach(b=>b.classList.toggle("active",b.dataset.date===choice));renderAllPredictionViews()}
-function selectLeague(league){selectedLeague=league;document.querySelectorAll(".league-tab").forEach(b=>b.classList.toggle("active",b.dataset.league===league));renderAllPredictionViews()}
-function formatKickoff(v){if(!v)return"Time not set";const d=new Date(v);if(Number.isNaN(d.getTime()))return"Time not set";return d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",hour12:true}).replace(/\s/g,"").toLowerCase()}
+function hideAllSections(){
+  ["welcome","authSection","memberDashboard"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+}
+
+function showWelcome(){
+  hideAllSections();
+  document.getElementById("welcome").classList.remove("hidden");
+  document.getElementById("headerButton").classList.remove("hidden");
+}
+
+function showAuth(mode){
+  hideAllSections();
+  document.getElementById("authSection").classList.remove("hidden");
+  document.getElementById("headerButton").classList.remove("hidden");
+  document.getElementById("signupForm").classList.toggle("hidden",mode!=="signup");
+  document.getElementById("loginForm").classList.toggle("hidden",mode!=="login");
+  document.getElementById("recoveryForm").classList.add("hidden");
+  document.getElementById("authMessage").textContent="";
+}
+
+function openPublicLogin(e){
+  e.preventDefault();
+  showAuth("login");
+}
+
+function openPublicSignup(e){
+  e.preventDefault();
+  showAuth("signup");
+}
+
+function showRecoveryForm(){
+  recoveryInProgress=true;
+  hideAllSections();
+  document.getElementById("authSection").classList.remove("hidden");
+  document.getElementById("headerButton").classList.add("hidden");
+  document.getElementById("signupForm").classList.add("hidden");
+  document.getElementById("loginForm").classList.add("hidden");
+  document.getElementById("recoveryForm").classList.remove("hidden");
+  document.getElementById("authMessage").textContent="Enter and confirm your new password.";
+}
+
+function showDashboard(){
+  hideAllSections();
+  document.getElementById("memberDashboard").classList.remove("hidden");
+  document.getElementById("headerButton").classList.add("hidden");
+  document.getElementById("memberEmail").textContent=currentUser.email||"";
+
+  const badge=document.getElementById("memberBadge");
+  badge.textContent=currentTier.toUpperCase()+" MEMBER";
+  badge.className=currentTier==="vip"?"badge vip":"badge";
+
+  document.getElementById("adminNotice").classList.toggle("hidden",!currentIsAdmin);
+  document.getElementById("adminDashboard").classList.toggle("hidden",!currentIsAdmin);
+  document.getElementById("vipUpgradeArea").classList.toggle("hidden",currentTier==="vip"||currentIsAdmin);
+  document.getElementById("vipPaymentPanel").classList.add("hidden");
+  document.getElementById("vipUpgradeButtonText").textContent="💎 UPGRADE TO VIP";
+
+  loadPredictions();
+}
+
+function toggleVipPayment(forceOpen){
+  const panel=document.getElementById("vipPaymentPanel");
+  const txt=document.getElementById("vipUpgradeButtonText");
+  const open=typeof forceOpen==="boolean"?forceOpen:panel.classList.contains("hidden");
+
+  panel.classList.toggle("hidden",!open);
+  txt.textContent=open?"💎 VIP PAYMENT DETAILS OPEN":"💎 UPGRADE TO VIP";
+
+  if(open)setTimeout(()=>panel.scrollIntoView({behavior:"smooth",block:"start"}),100);
+}
+
+async function copyAccountNumber(){
+  const n="2036960699";
+  const m=document.getElementById("paymentMessage");
+
+  try{
+    await navigator.clipboard.writeText(n);
+    m.textContent="Account number copied successfully.";
+  }catch(e){
+    m.textContent="Please copy the account number manually: "+n;
+  }
+}
+
+function sendPaymentWhatsApp(){
+  if(!currentUser?.email){
+    alert("Please log in before sending your payment confirmation.");
+    return;
+  }
+
+  const msg="Hello ONLYBOSSTIPS Admin. I have paid ₦5,500 for my monthly VIP membership. My registered email is: "+currentUser.email+". I am sending my payment receipt for verification.";
+  window.open("https://wa.me/2348032413495?text="+encodeURIComponent(msg),"_blank");
+}
+
+async function signUp(){
+  const email=document.getElementById("signupEmail").value.trim();
+  const password=document.getElementById("signupPassword").value;
+  const m=document.getElementById("authMessage");
+  const b=document.getElementById("signupButton");
+
+  if(!email||password.length<6){
+    m.textContent="Enter a valid email and a password of at least 6 characters.";
+    return;
+  }
+
+  b.disabled=true;
+  m.textContent="Creating your account...";
+
+  const {data,error}=await db.auth.signUp({email,password});
+  b.disabled=false;
+
+  if(error){
+    m.textContent=error.message;
+    return;
+  }
+
+  if(data.session)await loadUser(data.session.user);
+  else m.textContent="Registration successful. Check your email to confirm your account before logging in.";
+}
+
+async function logIn(){
+  const email=document.getElementById("loginEmail").value.trim();
+  const password=document.getElementById("loginPassword").value;
+  const m=document.getElementById("authMessage");
+  const b=document.getElementById("loginButton");
+
+  if(!email||!password){
+    m.textContent="Enter your email and password.";
+    return;
+  }
+
+  b.disabled=true;
+  m.textContent="Logging in...";
+
+  const {data,error}=await db.auth.signInWithPassword({email,password});
+  b.disabled=false;
+
+  if(error){
+    m.textContent=error.message;
+    return;
+  }
+
+  await loadUser(data.user);
+}
+
+async function forgotPassword(){
+  const email=document.getElementById("loginEmail").value.trim();
+  const m=document.getElementById("authMessage");
+
+  if(!email){
+    m.textContent="Enter your email address above first.";
+    return;
+  }
+
+  m.textContent="Sending password reset email...";
+
+  const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/"});
+
+  m.textContent=error?error.message:"Password reset email sent. Open the email link to return here and create your new password.";
+}
+
+async function saveNewPassword(){
+  const p=document.getElementById("newPassword").value;
+  const c=document.getElementById("confirmPassword").value;
+  const m=document.getElementById("authMessage");
+  const b=document.getElementById("savePasswordButton");
+
+  if(p.length<6){
+    m.textContent="Your password must contain at least 6 characters.";
+    return;
+  }
+
+  if(p!==c){
+    m.textContent="The passwords do not match.";
+    return;
+  }
+
+  b.disabled=true;
+  m.textContent="Updating your password...";
+
+  const {error}=await db.auth.updateUser({password:p});
+  b.disabled=false;
+
+  if(error){
+    m.textContent="Password update failed: "+error.message;
+    return;
+  }
+
+  recoveryInProgress=false;
+  m.textContent="Your password has been changed successfully. You can now log in.";
+
+  document.getElementById("newPassword").value="";
+  document.getElementById("confirmPassword").value="";
+
+  await db.auth.signOut();
+  window.history.replaceState({},document.title,window.location.pathname);
+  setTimeout(()=>showAuth("login"),1500);
+}
+
+async function loadUser(user){
+  currentUser=user;
+  currentTier="free";
+  currentIsAdmin=false;
+
+  const {data:profile,error}=await db.from("member_profiles").select("membership_tier").eq("user_id",user.id).maybeSingle();
+
+  if(error){
+    document.getElementById("authMessage").textContent="Could not load your membership. Please try again.";
+    return;
+  }
+
+  if(profile)currentTier=profile.membership_tier||"free";
+
+  const {data:admin}=await db.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
+  currentIsAdmin=!!admin;
+
+  showDashboard();
+}
+
+function localDateKey(d){
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+
+function dateForSelection(choice){
+  const d=new Date();
+  d.setHours(0,0,0,0);
+  d.setDate(d.getDate()+(choice==="yesterday"?-1:choice==="tomorrow"?1:0));
+  return localDateKey(d);
+}
+
+function selectDate(choice){
+  selectedDate=choice;
+  document.querySelectorAll(".date-tab").forEach(b=>b.classList.toggle("active",b.dataset.date===choice));
+  renderAllPredictionViews();
+}
+
+function selectLeague(league){
+  selectedLeague=league;
+  document.querySelectorAll(".league-tab").forEach(b=>b.classList.toggle("active",b.dataset.league===league));
+  renderAllPredictionViews();
+}
+
+function formatKickoff(v){
+  if(!v)return"Time not set";
+  const d=new Date(v);
+  if(Number.isNaN(d.getTime()))return"Time not set";
+  return d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",hour12:true}).replace(/\s/g,"").toLowerCase();
+}
+
 function getResult(item){
-  const s=String(item.status||"").toLowerCase().trim(),r=String(item.result||"").toLowerCase().trim();
+  const s=String(item.status||"").toLowerCase().trim();
+  const r=String(item.result||"").toLowerCase().trim();
+
   if(s==="won"||r==="won")return{text:"WON",symbol:"✓",className:"result-won"};
   if(s==="lost"||r==="lost")return{text:"LOST",symbol:"×",className:"result-lost"};
   if(s==="void"||r==="void")return{text:"VOID",symbol:"−",className:"result-void"};
-  if(item.kickoff){const kick=new Date(item.kickoff),now=new Date();if(!Number.isNaN(kick.getTime())&&localDateKey(kick)===localDateKey(now)&&kick<=now)return{text:"LIVE",symbol:"•",className:"result-live"};}
+
+  if(item.kickoff){
+    const kick=new Date(item.kickoff);
+    const now=new Date();
+
+    if(!Number.isNaN(kick.getTime())&&localDateKey(kick)===localDateKey(now)&&kick<=now){
+      return{text:"LIVE",symbol:"•",className:"result-live"};
+    }
+  }
+
   return{text:"PENDING",symbol:"",className:"result-awaiting"};
 }
+
 function makePredictionTable(items){
-  const wrap=document.createElement("div");wrap.className="prediction-table-wrap";
-  const table=document.createElement("table");table.className="prediction-table";
-  const thead=document.createElement("thead"),hr=document.createElement("tr");
-  ["MATCH","ODD","PREDICTION","TIME","OUTCOME"].forEach(t=>{const th=document.createElement("th");th.textContent=t;hr.appendChild(th)});
-  thead.appendChild(hr);table.appendChild(thead);
-  const tbody=document.createElement("tbody");
-  items.forEach(p=>{
-    const tr=document.createElement("tr"),match=document.createElement("td"),odd=document.createElement("td"),pred=document.createElement("td"),time=document.createElement("td"),outcome=document.createElement("td");
-    match.className="club-name";match.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away");
-    odd.className="odd-value";odd.textContent=p.odds??"-";
-    pred.className="prediction-value";pred.textContent=p.prediction||"-";
-    time.textContent=formatKickoff(p.kickoff);
-    const r=getResult(p);outcome.className="outcome-cell "+r.className;
-    const badge=document.createElement("span");badge.className="outcome-wrap";
-    if(r.symbol){const circle=document.createElement("span");circle.className="outcome-circle";circle.textContent=r.symbol;badge.appendChild(circle)}
-    const label=document.createElement("span");label.textContent=r.text;badge.appendChild(label);outcome.appendChild(badge);
-    [match,odd,pred,time,outcome].forEach(td=>tr.appendChild(td));tbody.appendChild(tr);
+  const wrap=document.createElement("div");
+  wrap.className="prediction-table-wrap";
+
+  const table=document.createElement("table");
+  table.className="prediction-table";
+
+  const thead=document.createElement("thead");
+  const hr=document.createElement("tr");
+
+  ["MATCH","ODD","PREDICTION","TIME","OUTCOME"].forEach(t=>{
+    const th=document.createElement("th");
+    th.textContent=t;
+    hr.appendChild(th);
   });
-  table.appendChild(tbody);wrap.appendChild(table);return wrap;
+
+  thead.appendChild(hr);
+  table.appendChild(thead);
+
+  const tbody=document.createElement("tbody");
+
+  items.forEach(p=>{
+    const tr=document.createElement("tr");
+    const match=document.createElement("td");
+    const odd=document.createElement("td");
+    const pred=document.createElement("td");
+    const time=document.createElement("td");
+    const outcome=document.createElement("td");
+
+    match.className="club-name";
+    match.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away");
+
+    odd.className="odd-value";
+    odd.textContent=p.odds??"-";
+
+    pred.className="prediction-value";
+    pred.textContent=p.prediction||"-";
+
+    time.textContent=formatKickoff(p.kickoff);
+
+    const r=getResult(p);
+    outcome.className="outcome-cell "+r.className;
+
+    const badge=document.createElement("span");
+    badge.className="outcome-wrap";
+
+    if(r.symbol){
+      const circle=document.createElement("span");
+      circle.className="outcome-circle";
+      circle.textContent=r.symbol;
+      badge.appendChild(circle);
+    }
+
+    const label=document.createElement("span");
+    label.textContent=r.text;
+    badge.appendChild(label);
+    outcome.appendChild(badge);
+
+    [match,odd,pred,time,outcome].forEach(td=>tr.appendChild(td));
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+
+  return wrap;
 }
-function renderPredictionGroup(box,items){box.replaceChildren();if(!items.length){const p=document.createElement("p");p.className="prediction-empty";p.textContent="No predictions available for this date and league.";box.appendChild(p);return}const group=document.createElement("div");group.className="prediction-group";const h=document.createElement("div");h.className="prediction-date";h.textContent=selectedDate.toUpperCase()+" — "+new Date(dateForSelection(selectedDate)+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});group.appendChild(h);group.appendChild(makePredictionTable(items));box.appendChild(group)}
-function filterItems(items){const target=dateForSelection(selectedDate);return items.filter(p=>{if(!p.kickoff)return false;const d=new Date(p.kickoff);if(Number.isNaN(d.getTime())||localDateKey(d)!==target)return false;if(selectedLeague!=="all"&&String(p.league||"").trim().toLowerCase()!==selectedLeague)return false;return true})}
-function renderAllPredictionViews(){const free=allPredictions.filter(p=>String(p.visibility||"free").toLowerCase()==="free");const vip=allPredictions.filter(p=>String(p.visibility||"").toLowerCase()==="vip");renderPredictionGroup(document.getElementById("freePredictions"),filterItems(free));const vipBox=document.getElementById("vipPredictions");if(currentTier==="vip"||currentIsAdmin)renderPredictionGroup(vipBox,filterItems(vip));else{vipBox.replaceChildren();const card=document.createElement("div");card.className="card";const h=document.createElement("h3");h.className="gold";h.textContent="VIP MEMBERS ONLY";const p=document.createElement("p");p.className="muted";p.textContent="VIP predictions are available to approved VIP members. Tap the UPGRADE TO VIP button above to view payment details and request VIP access.";card.append(h,p);vipBox.appendChild(card)}}
-async function loadPredictions(){const free=document.getElementById("freePredictions"),vip=document.getElementById("vipPredictions");free.textContent="Loading FREE predictions...";vip.textContent="Loading VIP predictions...";const {data,error}=await db.from("predictions").select("*").order("kickoff",{ascending:true});if(error){free.textContent="Unable to load predictions. Please refresh.";vip.textContent="Unable to load VIP predictions.";return}allPredictions=data||[];renderAllPredictionViews();if(currentIsAdmin)renderAdminPredictionList()}
-function renderAdminPredictionList(){const box=document.getElementById("adminPredictionList");if(!box)return;box.replaceChildren();if(!allPredictions.length){box.textContent="No predictions have been added yet.";return}allPredictions.forEach(p=>{const item=document.createElement("div");item.className="admin-list-item";const title=document.createElement("strong");title.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away")+" — "+String(p.visibility||"free").toUpperCase();const details=document.createElement("p");details.className="muted";details.textContent="Odd: "+(p.odds??"-")+" | Pick: "+(p.prediction||"-")+" | Kickoff: "+formatKickoff(p.kickoff);const select=document.createElement("select");select.setAttribute("aria-label","Set match outcome");["pending","won","lost","void"].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v.toUpperCase();select.appendChild(o)});select.value=String(p.status||p.result||"pending").toLowerCase();const save=document.createElement("button");save.textContent="SAVE RESULT";save.onclick=()=>adminUpdateResult(p.id,select.value,save);item.append(title,details,select,save);box.appendChild(item)})}
-async function adminAddPrediction(){if(!currentIsAdmin){alert("Administrator access required.");return}const m=document.getElementById("adminMessage"),b=document.getElementById("adminAddButton");const home=document.getElementById("adminHome").value.trim(),away=document.getElementById("adminAway").value.trim(),odds=Number(document.getElementById("adminOdds").value),pick=document.getElementById("adminPick").value.trim(),kick=document.getElementById("adminKickoff").value,league=document.getElementById("adminLeague").value.trim(),visibility=document.getElementById("adminVisibility").value,status=document.getElementById("adminStatus").value;if(!home||!away||!pick||!kick||!Number.isFinite(odds)||odds<=1){m.textContent="Complete all fields and enter valid odds greater than 1.";return}b.disabled=true;m.textContent="Publishing prediction...";const row={home_team:home,away_team:away,odds,prediction:pick,kickoff:new Date(kick).toISOString(),league,visibility,status,result:status==="pending"?null:status};const {error}=await db.from("predictions").insert([row]);b.disabled=false;if(error){m.textContent="Could not publish: "+error.message;return}m.textContent="Prediction published successfully.";["adminHome","adminAway","adminOdds","adminPick","adminKickoff","adminLeague"].forEach(id=>document.getElementById(id).value="");await loadPredictions()}
-async function adminUpdateResult(id,value,button){if(!currentIsAdmin){alert("Administrator access required.");return}if(!id){alert("This prediction has no database ID, so it cannot be updated.");return}button.disabled=true;const update={status:value,result:value==="pending"?null:value};const {error}=await db.from("predictions").update(update).eq("id",id);button.disabled=false;if(error){alert("Could not update result: "+error.message);return}await loadPredictions();const m=document.getElementById("adminMessage");if(m)m.textContent="Match result updated successfully."}
-async function logOut(){await db.auth.signOut();currentUser=null;currentTier="free";currentIsAdmin=false;document.getElementById("headerButton").textContent="JOIN NOW";document.getElementById("headerButton").classList.remove("hidden");showWelcome()}
-db.auth.onAuthStateChange((event)=>{if(event==="PASSWORD_RECOVERY")showRecoveryForm();if(event==="SIGNED_OUT"&&!recoveryInProgress){currentUser=null;currentTier="free";currentIsAdmin=false;document.getElementById("headerButton").textContent="JOIN NOW";document.getElementById("headerButton").classList.remove("hidden");showWelcome()}});
-async function startApp(){const params=new URLSearchParams(window.location.search),code=params.get("code");if(code){const {error}=await db.auth.exchangeCodeForSession(code);if(error){showAuth("login");document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";return}window.history.replaceState({},document.title,window.location.pathname);showRecoveryForm();return}if(window.location.hash.includes("type=recovery")){const {data,error}=await db.auth.getSession();if(error||!data.session){showAuth("login");document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";return}showRecoveryForm();return}const {data,error}=await db.auth.getSession();if(error){showWelcome();return}if(data.session)await loadUser(data.session.user);else showWelcome()}
+
+function renderPredictionGroup(box,items){
+  box.replaceChildren();
+
+  if(!items.length){
+    const p=document.createElement("p");
+    p.className="prediction-empty";
+    p.textContent="No predictions available for this date and league.";
+    box.appendChild(p);
+    return;
+  }
+
+  const group=document.createElement("div");
+  group.className="prediction-group";
+
+  const h=document.createElement("div");
+  h.className="prediction-date";
+  h.textContent=selectedDate.toUpperCase()+" — "+new Date(dateForSelection(selectedDate)+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+
+  group.appendChild(h);
+  group.appendChild(makePredictionTable(items));
+  box.appendChild(group);
+}
+
+function filterItems(items){
+  const target=dateForSelection(selectedDate);
+
+  return items.filter(p=>{
+    if(!p.kickoff)return false;
+
+    const d=new Date(p.kickoff);
+
+    if(Number.isNaN(d.getTime())||localDateKey(d)!==target)return false;
+
+    if(selectedLeague!=="all"&&String(p.league||"").trim().toLowerCase()!==selectedLeague)return false;
+
+    return true;
+  });
+}
+
+function renderAllPredictionViews(){
+  const free=allPredictions.filter(p=>String(p.visibility||"free").toLowerCase()==="free");
+  const vip=allPredictions.filter(p=>String(p.visibility||"").toLowerCase()==="vip");
+
+  renderPredictionGroup(document.getElementById("freePredictions"),filterItems(free));
+
+  const vipBox=document.getElementById("vipPredictions");
+
+  if(currentTier==="vip"||currentIsAdmin){
+    renderPredictionGroup(vipBox,filterItems(vip));
+  }else{
+    vipBox.replaceChildren();
+
+    const card=document.createElement("div");
+    card.className="card";
+
+    const h=document.createElement("h3");
+    h.className="gold";
+    h.textContent="VIP MEMBERS ONLY";
+
+    const p=document.createElement("p");
+    p.className="muted";
+    p.textContent="VIP predictions are available to approved VIP members. Tap the UPGRADE TO VIP button above to view payment details and request VIP access.";
+
+    card.append(h,p);
+    vipBox.appendChild(card);
+  }
+}
+
+async function loadPredictions(){
+  const free=document.getElementById("freePredictions");
+  const vip=document.getElementById("vipPredictions");
+
+  free.textContent="Loading FREE predictions...";
+  vip.textContent="Loading VIP predictions...";
+
+  const {data,error}=await db.from("predictions").select("*").order("kickoff",{ascending:true});
+
+  if(error){
+    free.textContent="Unable to load predictions. Please refresh.";
+    vip.textContent="Unable to load VIP predictions.";
+    return;
+  }
+
+  allPredictions=data||[];
+  renderAllPredictionViews();
+
+  if(currentIsAdmin)renderAdminPredictionList();
+}
+
+function renderAdminPredictionList(){
+  const box=document.getElementById("adminPredictionList");
+  if(!box)return;
+
+  box.replaceChildren();
+
+  if(!allPredictions.length){
+    box.textContent="No predictions have been added yet.";
+    return;
+  }
+
+  allPredictions.forEach(p=>{
+    const item=document.createElement("div");
+    item.className="admin-list-item";
+
+    const title=document.createElement("strong");
+    title.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away")+" — "+String(p.visibility||"free").toUpperCase();
+
+    const details=document.createElement("p");
+    details.className="muted";
+    details.textContent="Odd: "+(p.odds??"-")+" | Pick: "+(p.prediction||"-")+" | Kickoff: "+formatKickoff(p.kickoff);
+
+    const select=document.createElement("select");
+    select.setAttribute("aria-label","Set match outcome");
+
+    ["pending","won","lost","void"].forEach(v=>{
+      const o=document.createElement("option");
+      o.value=v;
+      o.textContent=v.toUpperCase();
+      select.appendChild(o);
+    });
+
+    select.value=String(p.status||p.result||"pending").toLowerCase();
+
+    const save=document.createElement("button");
+    save.textContent="SAVE RESULT";
+    save.onclick=()=>adminUpdateResult(p.id,select.value,save);
+
+    item.append(title,details,select,save);
+    box.appendChild(item);
+  });
+}
+
+async function adminAddPrediction(){
+  if(!currentIsAdmin){
+    alert("Administrator access required.");
+    return;
+  }
+
+  const m=document.getElementById("adminMessage");
+  const b=document.getElementById("adminAddButton");
+
+  const home=document.getElementById("adminHome").value.trim();
+  const away=document.getElementById("adminAway").value.trim();
+  const odds=Number(document.getElementById("adminOdds").value);
+  const pick=document.getElementById("adminPick").value.trim();
+  const kick=document.getElementById("adminKickoff").value;
+  const league=document.getElementById("adminLeague").value.trim();
+  const visibility=document.getElementById("adminVisibility").value;
+  const status=document.getElementById("adminStatus").value;
+
+  if(!home||!away||!pick||!kick||!Number.isFinite(odds)||odds<=1){
+    m.textContent="Complete all fields and enter valid odds greater than 1.";
+    return;
+  }
+
+  b.disabled=true;
+  m.textContent="Publishing prediction...";
+
+  const row={
+    home_team:home,
+    away_team:away,
+    odds,
+    prediction:pick,
+    kickoff:new Date(kick).toISOString(),
+    league,
+    visibility,
+    status,
+    result:status==="pending"?null:status
+  };
+
+  const {error}=await db.from("predictions").insert([row]);
+
+  b.disabled=false;
+
+  if(error){
+    m.textContent="Could not publish: "+error.message;
+    return;
+  }
+
+  m.textContent="Prediction published successfully.";
+
+  ["adminHome","adminAway","adminOdds","adminPick","adminKickoff","adminLeague"].forEach(id=>{
+    document.getElementById(id).value="";
+  });
+
+  await loadPredictions();
+}
+
+async function adminUpdateResult(id,value,button){
+  if(!currentIsAdmin){
+    alert("Administrator access required.");
+    return;
+  }
+
+  if(!id){
+    alert("This prediction has no database ID, so it cannot be updated.");
+    return;
+  }
+
+  button.disabled=true;
+
+  const update={
+    status:value,
+    result:value==="pending"?null:value
+  };
+
+  const {error}=await db.from("predictions").update(update).eq("id",id);
+
+  button.disabled=false;
+
+  if(error){
+    alert("Could not update result: "+error.message);
+    return;
+  }
+
+  await loadPredictions();
+
+  const m=document.getElementById("adminMessage");
+  if(m)m.textContent="Match result updated successfully.";
+}
+
+async function logOut(){
+  await db.auth.signOut();
+
+  currentUser=null;
+  currentTier="free";
+  currentIsAdmin=false;
+
+  document.getElementById("headerButton").textContent="JOIN NOW";
+  document.getElementById("headerButton").classList.remove("hidden");
+
+  showWelcome();
+}
+
+db.auth.onAuthStateChange((event)=>{
+  if(event==="PASSWORD_RECOVERY")showRecoveryForm();
+
+  if(event==="SIGNED_OUT"&&!recoveryInProgress){
+    currentUser=null;
+    currentTier="free";
+    currentIsAdmin=false;
+
+    document.getElementById("headerButton").textContent="JOIN NOW";
+    document.getElementById("headerButton").classList.remove("hidden");
+
+    showWelcome();
+  }
+});
+
+async function startApp(){
+  const params=new URLSearchParams(window.location.search);
+  const code=params.get("code");
+
+  if(code){
+    const {error}=await db.auth.exchangeCodeForSession(code);
+
+    if(error){
+      showAuth("login");
+      document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";
+      return;
+    }
+
+    window.history.replaceState({},document.title,window.location.pathname);
+    showRecoveryForm();
+    return;
+  }
+
+  if(window.location.hash.includes("type=recovery")){
+    const {data,error}=await db.auth.getSession();
+
+    if(error||!data.session){
+      showAuth("login");
+      document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";
+      return;
+    }
+
+    showRecoveryForm();
+    return;
+  }
+
+  const {data,error}=await db.auth.getSession();
+
+  if(error){
+    showWelcome();
+    return;
+  }
+
+  if(data.session)await loadUser(data.session.user);
+  else showWelcome();
+}
+
 startApp();
 </script>
 </body>
