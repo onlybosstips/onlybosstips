@@ -10,126 +10,29 @@
 
 <style>
 *{box-sizing:border-box}
-
-body{
- margin:0;
- background:#06140d;
- color:#f5f7fb;
- font-family:Arial,sans-serif;
-}
-
-header{
- background:#0d2116;
- padding:20px;
- border-bottom:2px solid #35e879;
-}
-h1{
- margin:0;
- color:#35e879;
- font-size:25px;
-}
-
-main{
- max-width:950px;
- margin:25px auto;
- padding:15px;
-}
-
-.panel{
- background:#0d2116;
- padding:22px;
- border-radius:12px;
- margin-bottom:20px;
- border:1px solid #1d4930;
-}
-
-h2{
- color:#35e879;
-}
-
-input,select,button{
- width:100%;
- padding:13px;
- margin:8px 0;
- border-radius:7px;
- border:1px solid #28543a;
- font-size:15px;
-}
-
-input,select{
- background:#06140d;
- color:white;
-}
-
-input:focus,select:focus{
- outline:none;
- border-color:#35e879;
-}
-button{
- background:#35e879;
- color:#06140d;
- font-weight:bold;
- border:0;
- cursor:pointer;
- transition:0.2s;
-}
-
-button:hover{
- background:#22c55e;
-}
-
-button.secondary{
- background:#234b32;
- color:white;
-}
-
-button.danger{
- background:#b52b3b;
- color:white;
-}
-
-.hidden{
- display:none;
-}
-
-.notice{
- padding:12px;
- background:#173b27;
- border:1px solid #285c3c;
- border-radius:7px;
- margin:10px 0;
- line-height:1.5;
-}
-.item{
- background:#102c1c;
- border:1px solid #28543a;
- padding:15px;
- border-radius:8px;
- margin:12px 0;
-}
-
-.item button{
- width:auto;
- margin-right:6px;
-}
-
-small{
- color:#b9d2c1;
-}
-
+body{margin:0;background:#06140d;color:#f5f7fb;font-family:Arial,sans-serif}
+header{background:#0d2116;padding:20px;border-bottom:2px solid #35e879}
+h1{margin:0;color:#35e879;font-size:25px}
+main{max-width:950px;margin:25px auto;padding:15px}
+.panel{background:#0d2116;padding:22px;border-radius:12px;margin-bottom:20px;border:1px solid #1d4930}
+h2{color:#35e879}
+input,select,button{width:100%;padding:13px;margin:8px 0;border-radius:7px;border:1px solid #28543a;font-size:15px}
+input,select{background:#06140d;color:white}
+input:focus,select:focus{outline:none;border-color:#35e879}
+button{background:#35e879;color:#06140d;font-weight:bold;border:0;cursor:pointer}
+button:hover{background:#22c55e}
+button.secondary{background:#234b32;color:white}
+button.danger{background:#b52b3b;color:white}
+.hidden{display:none!important}
+.notice{padding:12px;background:#173b27;border:1px solid #285c3c;border-radius:7px;margin:10px 0;line-height:1.5}
+.item{background:#102c1c;border:1px solid #28543a;padding:15px;border-radius:8px;margin:12px 0}
+.item button{width:auto;margin-right:6px}
+small{color:#b9d2c1}
+.member-tier{color:#35e879;font-weight:bold}
 @media(max-width:600px){
- main{
-  padding:10px;
- }
-
- .panel{
-  padding:16px;
- }
-
- .item button{
-  width:100%;
-  margin:5px 0;
- }
+ main{padding:10px}
+ .panel{padding:16px}
+ .item button{width:100%;margin:5px 0}
 }
 </style>
 </head>
@@ -142,6 +45,7 @@ small{
 </header>
 
 <main>
+
 <section class="panel" id="loginPanel">
 <h2>Administrator Login</h2>
 <p>Sign in with your authorised administrator account.</p>
@@ -157,16 +61,17 @@ Enter your administrator login details.
 </section>
 
 <section id="dashboard" class="hidden">
+
 <div class="panel">
 <h2>Welcome, Administrator</h2>
 <p>You are logged in to the private dashboard.</p>
-
 <button class="secondary" onclick="loadAll()">REFRESH DASHBOARD</button>
 <button class="danger" onclick="logout()">LOG OUT</button>
 </div>
 
 <div class="panel">
 <h2>Post New Prediction</h2>
+
 <input id="league" placeholder="League name">
 <input id="home" placeholder="Home team">
 <input id="away" placeholder="Away team">
@@ -174,27 +79,34 @@ Enter your administrator login details.
 <input id="odds" placeholder="Odds">
 <input id="kickoff" type="datetime-local">
 
+<label>Prediction Category</label>
 <select id="visibility">
 <option value="free">FREE ODDS</option>
 <option value="vip">VIP ODDS</option>
 </select>
 
 <button onclick="savePrediction()">PUBLISH PREDICTION</button>
-
 <div id="postMessage" class="notice"></div>
 </div>
+
 <div class="panel">
 <h2>Manage Predictions and Results</h2>
 <div id="predictionsList">Loading predictions...</div>
 </div>
 
 <div class="panel">
-<h2>Manage VIP Members</h2>
+<h2>Manage Memberships</h2>
+<p class="notice">
+After confirming a member's payment, select the correct membership below and tap UPDATE MEMBERSHIP.
+<br><br>
+VIP: ₦5,500 monthly.
+<br>
+ROLLOVER: ₦4,000 weekly.
+</p>
 <div id="membersList">Loading members...</div>
 </div>
 
 </section>
-
 </main>
 
 <script>
@@ -203,6 +115,7 @@ const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 
 let db=null;
 let currentUser=null;
+
 function message(id,text){
  const el=document.getElementById(id);
  if(el) el.textContent=text;
@@ -222,20 +135,20 @@ function initializeSupabase(){
 }
 
 async function adminLogin(){
- message("loginMessage","LOGIN BUTTON WORKING. Connecting to Supabase...");
-
  if(!initializeSupabase()) return;
+
  const email=document.getElementById("email").value.trim();
  const password=document.getElementById("password").value;
 
- if(!email || !password){
+ if(!email||!password){
   message("loginMessage","Please enter your email and password.");
   return;
  }
 
+ message("loginMessage","Logging in...");
+
  try{
   const {data,error}=await db.auth.signInWithPassword({email,password});
-
   if(error) throw error;
 
   currentUser=data.user;
@@ -245,6 +158,7 @@ async function adminLogin(){
    .select("user_id")
    .eq("user_id",currentUser.id)
    .maybeSingle();
+
   if(adminError) throw adminError;
 
   if(!admin){
@@ -266,8 +180,8 @@ async function adminLogin(){
 
 async function logout(){
  if(db) await db.auth.signOut();
- currentUser=null;
 
+ currentUser=null;
  document.getElementById("dashboard").classList.add("hidden");
  document.getElementById("loginPanel").classList.remove("hidden");
  document.getElementById("password").value="";
@@ -279,6 +193,7 @@ async function loadAll(){
  await loadPredictions();
  await loadMembers();
 }
+
 async function savePrediction(){
  const data={
   league:document.getElementById("league").value.trim(),
@@ -290,7 +205,8 @@ async function savePrediction(){
   visibility:document.getElementById("visibility").value,
   status:"pending"
  };
- if(!data.league || !data.home_team || !data.away_team || !data.prediction || !data.odds){
+
+ if(!data.league||!data.home_team||!data.away_team||!data.prediction||!data.odds||!data.kickoff){
   message("postMessage","Please complete all prediction fields.");
   return;
  }
@@ -307,6 +223,7 @@ async function savePrediction(){
  ["league","home","away","prediction","odds","kickoff"].forEach(id=>{
   document.getElementById(id).value="";
  });
+
  await loadPredictions();
 }
 
@@ -323,12 +240,13 @@ async function loadPredictions(){
   return;
  }
 
- if(!data || !data.length){
+ if(!data||!data.length){
   box.textContent="No predictions have been posted yet.";
   return;
  }
 
- box.innerHTML="";
+ box.replaceChildren();
+
  data.forEach(p=>{
   const item=document.createElement("div");
   item.className="item";
@@ -338,8 +256,9 @@ async function loadPredictions(){
   item.appendChild(heading);
 
   const details=document.createElement("p");
-  details.textContent=(p.league||"")+" | "+(p.prediction||"")+" | Odds: "+(p.odds||"")+" | "+(p.visibility||"free").toUpperCase()+" | "+(p.status||"pending");
+  details.textContent=(p.league||"")+" | "+(p.prediction||"")+" | Odds: "+(p.odds||"")+" | "+(p.visibility||"free").toUpperCase();
   item.appendChild(details);
+
   const resultInput=document.createElement("input");
   resultInput.placeholder="Enter result";
   resultInput.value=p.result||"";
@@ -351,13 +270,12 @@ async function loadPredictions(){
    const option=document.createElement("option");
    option.value=s;
    option.textContent=s.toUpperCase();
-
-   if(p.status===s) option.selected=true;
-
+   if(String(p.status||"pending").toLowerCase()===s) option.selected=true;
    status.appendChild(option);
   });
 
   item.appendChild(status);
+
   const updateButton=document.createElement("button");
   updateButton.textContent="UPDATE RESULT";
   updateButton.onclick=()=>updatePrediction(p.id,resultInput.value,status.value);
@@ -372,6 +290,7 @@ async function loadPredictions(){
   box.appendChild(item);
  });
 }
+
 async function updatePrediction(id,result,status){
  const {error}=await db
   .from("predictions")
@@ -384,7 +303,6 @@ async function updatePrediction(id,result,status){
  }
 
  alert("Prediction updated successfully.");
-
  await loadPredictions();
 }
 
@@ -395,13 +313,13 @@ async function deletePrediction(id){
   .from("predictions")
   .delete()
   .eq("id",id);
+
  if(error){
   alert("Could not delete: "+error.message);
   return;
  }
 
  alert("Prediction deleted.");
-
  await loadPredictions();
 }
 
@@ -417,12 +335,13 @@ async function loadMembers(){
   box.textContent="Could not load members: "+error.message;
   return;
  }
- if(!data || !data.length){
+
+ if(!data||!data.length){
   box.textContent="No members found.";
   return;
  }
 
- box.innerHTML="";
+ box.replaceChildren();
 
  data.forEach(member=>{
   const item=document.createElement("div");
@@ -433,21 +352,26 @@ async function loadMembers(){
   item.appendChild(memberId);
 
   const tier=document.createElement("p");
-  tier.textContent="Membership: "+(member.membership_tier||"free").toUpperCase();
+  tier.className="member-tier";
+  tier.textContent="Current Membership: "+(member.membership_tier||"free").toUpperCase();
   item.appendChild(tier);
+
   const select=document.createElement("select");
 
-  ["free","vip"].forEach(level=>{
+  ["free","vip","rollover"].forEach(level=>{
    const option=document.createElement("option");
    option.value=level;
    option.textContent=level.toUpperCase()+" MEMBER";
 
-   if(member.membership_tier===level) option.selected=true;
+   if(String(member.membership_tier||"free").toLowerCase()===level){
+    option.selected=true;
+   }
 
    select.appendChild(option);
   });
 
   item.appendChild(select);
+
   const updateButton=document.createElement("button");
   updateButton.textContent="UPDATE MEMBERSHIP";
   updateButton.onclick=()=>updateMember(member.user_id,select.value);
@@ -458,6 +382,12 @@ async function loadMembers(){
 }
 
 async function updateMember(userId,tier){
+ const confirmed=confirm(
+  "Confirm changing this member's membership to "+tier.toUpperCase()+"?"
+ );
+
+ if(!confirmed) return;
+
  const {error}=await db
   .from("member_profiles")
   .update({membership_tier:tier})
@@ -467,8 +397,8 @@ async function updateMember(userId,tier){
   alert("Could not update membership: "+error.message);
   return;
  }
- alert("Membership updated to "+tier.toUpperCase()+".");
 
+ alert("Membership successfully updated to "+tier.toUpperCase()+".");
  await loadMembers();
 }
 </script>
