@@ -1,22 +1,41 @@
 
 const express = require("express");
-const cors = require("cors");
 const { createClient } = require("@supabase/supabase-js");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // =====================================
-// BASIC CONFIGURATION
+// CORS CONFIGURATION (NO CORS PACKAGE)
 // =====================================
 
-app.use(cors({
-  origin: [
+app.use((req, res, next) => {
+  const allowedOrigins = [
     "https://onlybosstips.onrender.com"
-  ],
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+  ];
+
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
+
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS"
+  );
+
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization"
+  );
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
 
 app.use(express.json({ limit: "1mb" }));
 
@@ -301,7 +320,7 @@ app.get("/health/football", async (req, res) => {
 });
 
 // =====================================
-// SEARCH FOR MATCH FIXTURES
+// FIXTURE SEARCH
 // =====================================
 
 app.get("/fixtures/search", async (req, res) => {
