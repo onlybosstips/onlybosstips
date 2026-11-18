@@ -14,17 +14,16 @@ body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,sans-ser
 header,section,footer{position:relative;z-index:1}
 header{padding:16px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1c422b;background:#081b10;gap:14px}
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
-.hero-kicker{color:#a8b9ae;font-size:12px;font-weight:800;letter-spacing:3px;margin:0 0 12px}
-.hero h1{font-size:clamp(30px,7vw,54px);line-height:1.1;letter-spacing:1px;margin:0 0 12px}
-.hero h1 .gold{display:block;margin-top:8px}
-.hero-tagline{font-size:11px!important;font-weight:800;letter-spacing:2px;color:#8ce0a5!important;margin:0 0 25px!important}
 .logo{font-size:21px;font-weight:900;color:var(--green);letter-spacing:.5px}
 button{border:0;padding:13px 18px;border-radius:7px;background:var(--green);color:#06140d;font-weight:bold;cursor:pointer}
 button.secondary{background:#203a2b;color:white}
 button:disabled{opacity:.5;cursor:not-allowed}
 .hero{text-align:center;padding:70px 18px;background:radial-gradient(ellipse at top,#174c2c,#06140d 68%)}
-.hero h1{font-size:clamp(32px,7vw,58px);margin:0 0 15px}.gold{color:var(--green)}
+.hero-kicker{color:#a8b9ae;font-size:12px;font-weight:800;letter-spacing:3px;margin:0 0 12px}
+.hero h1{font-size:clamp(32px,7vw,58px);margin:0 0 15px;line-height:1.1}
+.gold{color:var(--green)}
 .hero p{color:var(--muted);line-height:1.8}
+.hero-tagline{font-size:11px!important;font-weight:800;letter-spacing:2px;color:#8ce0a5!important;margin:0 0 25px!important}
 .actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:25px}
 .container{max-width:1100px;margin:auto;padding:25px 18px 60px}
 .card{background:var(--panel);border:1px solid #1c422b;border-radius:12px;padding:20px;margin-bottom:16px}
@@ -33,14 +32,13 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .odds-intro{color:#a8b9ae;font-size:12px;font-weight:600;letter-spacing:.4px;margin:-7px 0 14px}
 .hidden{display:none!important}
 .form{max-width:430px;margin:35px auto}
-input{width:100%;padding:14px;margin:8px 0 16px;background:#08170e;color:white;border:1px solid #31543c;border-radius:7px;font-size:16px}
+input,select{width:100%;padding:14px;margin:8px 0 16px;background:#08170e;color:white;border:1px solid #31543c;border-radius:7px;font-size:16px}
 label{font-size:13px;color:#cbd0da}
 .muted{color:var(--muted);font-size:14px;line-height:1.7}
 .link{color:var(--green);text-decoration:underline;cursor:pointer}
 .badge{display:inline-block;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:#17472b;color:#8ce0a5}
 .badge.vip{background:#294a31;color:#a8ffbd}
 .badge.rollover{background:#493719;color:#ffda8a}
-.notice{color:var(--muted);padding:12px 0}
 .message{margin:12px 0;color:var(--green);font-size:14px;overflow-wrap:anywhere}
 .payment-price{font-size:34px;font-weight:bold;color:var(--green);margin:15px 0}
 .payment-price small{font-size:19px}
@@ -71,7 +69,6 @@ label{font-size:13px;color:#cbd0da}
 .explore-link svg{width:19px;height:19px;stroke:var(--green);fill:none;stroke-width:1.8;flex-shrink:0}
 .responsible{margin-top:25px;padding-top:20px;border-top:1px solid #285038}
 .responsible-heading{display:flex;align-items:center;gap:9px;color:var(--green);font-size:13px;font-weight:900;letter-spacing:1px;margin-bottom:9px}
-.responsible-heading svg{width:19px;height:19px;stroke:var(--green);fill:none;stroke-width:2}
 .responsible p{color:var(--muted);font-size:12px;line-height:1.8;margin:0}
 .member-responsible .responsible{margin:0;padding:0;border:0}
 .logout-bottom{margin-top:18px;padding:16px;width:100%;border:1px solid #743c3c;background:#291817;color:#ffb1a9;border-radius:9px}
@@ -96,8 +93,6 @@ label{font-size:13px;color:#cbd0da}
 .outcome-wrap{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:clamp(8px,2.2vw,11px);font-weight:900;white-space:nowrap}
 .outcome-circle{width:19px;height:19px;border-radius:50%;display:inline-grid;place-items:center;border:2px solid currentColor;font-size:12px;line-height:1;flex-shrink:0}
 .result-won{color:#36d879}.result-lost{color:#ff6262}.result-void{color:#b5bec4}.result-live{color:#ffbd4a}.result-awaiting{color:#a5adbd}
-.result-live .outcome-circle{border-color:#ffbd4a;box-shadow:0 0 0 3px #ffbd4a22}
-.result-awaiting{color:#a5adbd;font-weight:bold}.result-won{color:#36d879;font-weight:bold}.result-lost{color:var(--red);font-weight:bold}.result-void{color:var(--orange);font-weight:bold}
 .prediction-empty{color:var(--muted);font-size:14px;padding:12px 0}
 .prediction-group{margin-bottom:22px}
 footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--muted);font-size:12px;background:#081b10}
@@ -120,6 +115,12 @@ footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--m
 .streak-stat strong{font-size:20px;color:#fff;overflow-wrap:anywhere}
 .streak-stat strong.green{color:var(--green)}
 .streak-note{color:var(--muted);font-size:10px;line-height:1.5;margin:14px 0 0}
+.announcement-overlay{position:fixed;inset:0;z-index:99999;background:#000d;display:flex;align-items:center;justify-content:center;padding:20px}
+.announcement-box{width:100%;max-width:450px;background:#102719;border:2px solid var(--green);border-radius:15px;padding:25px;box-shadow:0 15px 60px #000b;position:relative;text-align:center}
+.announcement-box h2{color:var(--green);margin:0 25px 15px;font-size:21px}
+.announcement-box p{color:#fff;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+.announcement-close{position:absolute;right:10px;top:10px;background:#291817;color:#fff;padding:7px 11px;border-radius:50%;font-size:17px}
+.announcement-timer{color:#a8b9ae;font-size:11px;margin-top:16px}
 @media(max-width:500px){
 .admin-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}
 header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
@@ -136,253 +137,201 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <body>
 
 <header>
-  <div class="brand"><div class="logo">ONLYBOSSTIPS</div></div>
-  <button id="headerButton" onclick="showAuth('signup')">JOIN NOW</button>
+<div class="brand"><div class="logo">ONLYBOSSTIPS</div></div>
+<button id="headerButton" onclick="showAuth('signup')">JOIN NOW</button>
 </header>
 
 <section id="welcome">
-  <div class="hero">
-    <div class="hero-kicker">✦ ─── WELCOME TO ─── ✦</div>
-    <h1><span class="gold">ONLYBOSSTIPS</span></h1>
-    <p class="hero-tagline">✧ YOUR FOOTBALL PREDICTION HUB ✧</p>
-    <div class="actions">
-      <button onclick="showAuth('signup')">CREATE FREE ACCOUNT</button>
-      <button class="secondary" onclick="showAuth('login')">MEMBER LOGIN</button>
-    </div>
-  </div>
-  <div class="container">
-    <div class="card">
-      <h2 class="gold">FREE ODDS</h2>
-      <p class="muted">Create your free account to access FREE football predictions and match results.</p>
-    </div>
-    <div class="card">
-      <h2 class="gold">VIP ODDS</h2>
-      <p class="muted">Exclusive VIP predictions available to approved VIP members.</p>
-    </div>
-    <div class="card">
-      <h2 class="gold">ROLLOVER EXCLUSIVE MEMBER</h2>
-      <p class="muted">Get access to exclusive VIP predictions with a weekly membership payment of ₦4,000.</p>
-    </div>
-    <div class="card">
-      <h2 class="gold">JOIN OUR COMMUNITY</h2>
-      <p class="muted">Register today and become part of ONLYBOSSTIPS.</p>
-      <button onclick="showAuth('signup')">SIGN UP FREE</button>
-    </div>
-    <div class="explore-card">
-      <h2 class="explore-title">EXPLORE</h2>
-      <div class="explore-links">
-        <a class="explore-link" href="#" onclick="openPublicLogin(event)">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3"/></svg>Daily predictions
-        </a>
-        <a class="explore-link" href="#" onclick="openPublicLogin(event)">
-          <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5M12 7v5l4 2"/></svg>Results &amp; history
-        </a>
-        <a class="explore-link" href="#" onclick="openPublicSignup(event)">
-          <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M16 11h6"/></svg>Create free account
-        </a>
-      </div>
-      <div class="responsible">
-        <div class="responsible-heading">PLAY RESPONSIBLY</div>
-        <p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p>
-      </div>
-    </div>
-  </div>
+<div class="hero">
+<div class="hero-kicker">✦ ─── WELCOME TO ─── ✦</div>
+<h1><span class="gold">ONLYBOSSTIPS</span></h1>
+<p class="hero-tagline">✧ YOUR FOOTBALL PREDICTION HUB ✧</p>
+<div class="actions">
+<button onclick="showAuth('signup')">CREATE FREE ACCOUNT</button>
+<button class="secondary" onclick="showAuth('login')">MEMBER LOGIN</button>
+</div>
+</div>
+<div class="container">
+<div class="card"><h2 class="gold">FREE ODDS</h2><p class="muted">Create your free account to access FREE football predictions and match results.</p></div>
+<div class="card"><h2 class="gold">VIP ODDS</h2><p class="muted">Exclusive VIP predictions available to approved VIP members.</p></div>
+<div class="card"><h2 class="gold">ROLLOVER EXCLUSIVE MEMBER</h2><p class="muted">Exclusive Rollover predictions available to approved Rollover members.</p></div>
+<div class="card"><h2 class="gold">JOIN OUR COMMUNITY</h2><p class="muted">Register today and become part of ONLYBOSSTIPS.</p><button onclick="showAuth('signup')">SIGN UP FREE</button></div>
+<div class="explore-card">
+<h2 class="explore-title">EXPLORE</h2>
+<div class="explore-links">
+<a class="explore-link" href="#" onclick="openPublicLogin(event)">Daily predictions</a>
+<a class="explore-link" href="#" onclick="openPublicLogin(event)">Results &amp; history</a>
+<a class="explore-link" href="#" onclick="openPublicSignup(event)">Create free account</a>
+</div>
+<div class="responsible"><div class="responsible-heading">PLAY RESPONSIBLY</div><p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p></div>
+</div>
+</div>
 </section>
 
 <section id="authSection" class="container hidden">
-  <div class="card form">
-    <div id="signupForm">
-      <h2 class="gold">CREATE ACCOUNT</h2>
-      <p class="muted">Join ONLYBOSSTIPS as a FREE MEMBER.</p>
-      <label>Email address</label>
-      <input id="signupEmail" type="email" placeholder="Enter your email">
-      <label>Password</label>
-      <input id="signupPassword" type="password" placeholder="Create a password">
-      <button id="signupButton" onclick="signUp()">CREATE ACCOUNT</button>
-      <p class="muted">Already registered? <span class="link" onclick="showAuth('login')">Log in</span></p>
-    </div>
-    <div id="loginForm" class="hidden">
-      <h2 class="gold">MEMBER LOGIN</h2>
-      <p class="muted">Log in to access your predictions.</p>
-      <label>Email address</label>
-      <input id="loginEmail" type="email" placeholder="Enter your email">
-      <label>Password</label>
-      <input id="loginPassword" type="password" placeholder="Enter password">
-      <button id="loginButton" onclick="logIn()">LOG IN</button>
-      <p class="muted"><span class="link" onclick="forgotPassword()">Forgot password?</span></p>
-      <p class="muted">Don't have an account? <span class="link" onclick="showAuth('signup')">Sign up</span></p>
-    </div>
-    <div id="recoveryForm" class="hidden">
-      <h2 class="gold">RESET PASSWORD</h2>
-      <p class="muted">Enter your new password below.</p>
-      <label>New password</label>
-      <input id="newPassword" type="password" placeholder="Enter new password">
-      <label>Confirm new password</label>
-      <input id="confirmPassword" type="password" placeholder="Confirm new password">
-      <button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button>
-    </div>
-    <p id="authMessage" class="message"></p>
-    <p class="muted"><span class="link" onclick="showWelcome()">Back to home</span></p>
-  </div>
+<div class="card form">
+<div id="signupForm">
+<h2 class="gold">CREATE ACCOUNT</h2><p class="muted">Join ONLYBOSSTIPS as a FREE MEMBER.</p>
+<label>Email address</label><input id="signupEmail" type="email" placeholder="Enter your email">
+<label>Password</label><input id="signupPassword" type="password" placeholder="Create a password">
+<button id="signupButton" onclick="signUp()">CREATE ACCOUNT</button>
+<p class="muted">Already registered? <span class="link" onclick="showAuth('login')">Log in</span></p>
+</div>
+<div id="loginForm" class="hidden">
+<h2 class="gold">MEMBER LOGIN</h2><p class="muted">Log in to access your predictions.</p>
+<label>Email address</label><input id="loginEmail" type="email" placeholder="Enter your email">
+<label>Password</label><input id="loginPassword" type="password" placeholder="Enter password">
+<button id="loginButton" onclick="logIn()">LOG IN</button>
+<p class="muted"><span class="link" onclick="forgotPassword()">Forgot password?</span></p>
+<p class="muted">Don't have an account? <span class="link" onclick="showAuth('signup')">Sign up</span></p>
+</div>
+<div id="recoveryForm" class="hidden">
+<h2 class="gold">RESET PASSWORD</h2><p class="muted">Enter your new password below.</p>
+<label>New password</label><input id="newPassword" type="password" placeholder="Enter new password">
+<label>Confirm new password</label><input id="confirmPassword" type="password" placeholder="Confirm new password">
+<button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button>
+</div>
+<p id="authMessage" class="message"></p>
+<p class="muted"><span class="link" onclick="showWelcome()">Back to home</span></p>
+</div>
 </section>
 
 <section id="memberDashboard" class="container hidden">
-  <div id="adminDashboard" class="admin-panel hidden">
-    <h2 class="gold">PRIVATE ADMIN DASHBOARD</h2>
-    <p class="muted">Only accounts listed in the Supabase admins table can see these controls.</p>
-    <h3>ADD NEW PREDICTION</h3>
-    <div class="admin-grid">
-      <div><label>Home team</label><input id="adminHome" placeholder="e.g. Chelsea"></div>
-      <div><label>Away team</label><input id="adminAway" placeholder="e.g. Arsenal"></div>
-      <div><label>Odd</label><input id="adminOdds" type="number" step="0.01" min="1" placeholder="1.85"></div>
-      <div><label>Prediction</label><input id="adminPick" placeholder="e.g. Home win"></div>
-      <div><label>Kickoff date and time</label><input id="adminKickoff" type="datetime-local"></div>
-      <div><label>League</label><input id="adminLeague" placeholder="e.g. Premier League"></div>
-      <div>
-        <label>Prediction category</label>
-        <select id="adminVisibility"><option value="free">FREE</option><option value="vip">VIP</option></select>
-      </div>
-      <div>
-        <label>Initial outcome</label>
-        <select id="adminStatus"><option value="pending">PENDING</option><option value="won">WON</option><option value="lost">LOST</option><option value="void">VOID</option></select>
-      </div>
-      <div class="full"><button id="adminAddButton" onclick="adminAddPrediction()">PUBLISH PREDICTION</button></div>
-    </div>
-    <p id="adminMessage" class="message" aria-live="polite"></p>
-    <h3>UPDATE MATCH RESULTS</h3>
-    <p class="muted">Choose WON, LOST or VOID after a match finishes. Unsettled matches automatically show LIVE after kickoff on match day.</p>
-    <div id="adminPredictionList"><p class="notice">Loading predictions...</p></div>
-  </div>
+<div id="adminDashboard" class="admin-panel hidden">
+<h2 class="gold">PRIVATE ADMIN DASHBOARD</h2>
+<p class="muted">Only accounts listed in the Supabase admins table can see these controls.</p>
+<h3>ADD NEW PREDICTION</h3>
+<div class="admin-grid">
+<div><label>Home team</label><input id="adminHome" placeholder="e.g. Chelsea"></div>
+<div><label>Away team</label><input id="adminAway" placeholder="e.g. Arsenal"></div>
+<div><label>Odd</label><input id="adminOdds" type="number" step="0.01" min="1" placeholder="1.85"></div>
+<div><label>Prediction</label><input id="adminPick" placeholder="e.g. Home win"></div>
+<div><label>Kickoff date and time</label><input id="adminKickoff" type="datetime-local"></div>
+<div><label>League</label><input id="adminLeague" placeholder="e.g. Premier League"></div>
+<div><label>Prediction category</label><select id="adminVisibility"><option value="free">FREE</option><option value="vip">VIP</option><option value="rollover">ROLLOVER</option></select></div>
+<div><label>Initial outcome</label><select id="adminStatus"><option value="pending">PENDING</option><option value="won">WON</option><option value="lost">LOST</option><option value="void">VOID</option></select></div>
+<div class="full"><button id="adminAddButton" onclick="adminAddPrediction()">PUBLISH PREDICTION</button></div>
+</div>
+<p id="adminMessage" class="message" aria-live="polite"></p>
+<h3>UPDATE MATCH RESULTS</h3>
+<p class="muted">Choose WON, LOST or VOID after a match finishes. Unsettled matches automatically show LIVE after kickoff on match day.</p>
+<div id="adminPredictionList"><p class="notice">Loading predictions...</p></div>
+</div>
 
-  <div class="member-welcome">
-    <div class="member-welcome-top">
-      <div>
-        <div class="welcome-label">✦ ─── WELCOME TO ─── ✦</div>
-        <h2 class="member-brand">ONLYBOSSTIPS</h2>
-        <div class="member-tagline">✧ YOUR FOOTBALL PREDICTION HUB ✧</div>
-      </div>
-    </div>
+<div class="member-welcome">
+<div class="member-welcome-top"><div>
+<div class="welcome-label">✦ ─── WELCOME TO ─── ✦</div>
+<h2 class="member-brand">ONLYBOSSTIPS</h2>
+<div class="member-tagline">✧ YOUR FOOTBALL PREDICTION HUB ✧</div>
+</div></div>
+<div class="member-profile-row">
+<div class="member-avatar" aria-label="Member profile icon"><svg viewBox="0 0 24 24"><path d="M12 12a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Zm0 2c-4.1 0-7.4 2.1-7.4 4.8V21h14.8v-2.2c0-2.7-3.3-4.8-7.4-4.8Z"/></svg></div>
+<div><p id="memberEmail" class="member-email"></p><div class="member-email-label">MEMBER ACCOUNT</div></div>
+</div>
+<span id="memberBadge" class="badge">FREE MEMBER</span>
+</div>
 
-    <div class="member-profile-row">
-      <div class="member-avatar" aria-label="Member profile icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 12a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Zm0 2c-4.1 0-7.4 2.1-7.4 4.8V21h14.8v-2.2c0-2.7-3.3-4.8-7.4-4.8Z"/>
-        </svg>
-      </div>
-      <div>
-        <p id="memberEmail" class="member-email"></p>
-        <div class="member-email-label">MEMBER ACCOUNT</div>
-      </div>
-    </div>
-    <span id="memberBadge" class="badge">FREE MEMBER</span>
-  </div>
+<h2 class="section-title gold">FREE ODDS</h2>
+<p class="odds-intro">Daily match predictions and results</p>
+<div class="prediction-controls">
+<div class="date-tabs" id="dateTabs">
+<button class="date-tab" data-date="yesterday" onclick="selectDate('yesterday')">Yesterday</button>
+<button class="date-tab active" data-date="today" onclick="selectDate('today')">Today</button>
+<button class="date-tab" data-date="tomorrow" onclick="selectDate('tomorrow')">Tomorrow</button>
+</div>
+<div class="league-tabs" id="leagueTabs">
+<button class="league-tab active" data-league="all" onclick="selectLeague('all')">All</button>
+<button class="league-tab" data-league="premier league" onclick="selectLeague('premier league')">Premier League</button>
+<button class="league-tab" data-league="bundesliga" onclick="selectLeague('bundesliga')">Bundesliga</button>
+<button class="league-tab" data-league="la liga" onclick="selectLeague('la liga')">La Liga</button>
+<button class="league-tab" data-league="ligue 1" onclick="selectLeague('ligue 1')">Ligue 1</button>
+<button class="league-tab" data-league="afcon" onclick="selectLeague('afcon')">AFCON</button>
+<button class="league-tab" data-league="uefa" onclick="selectLeague('uefa')">UEFA</button>
+<button class="league-tab" data-league="world cup" onclick="selectLeague('world cup')">World Cup</button>
+</div>
+</div>
+<div id="freePredictions"><p class="notice">Loading FREE predictions...</p></div>
 
-  <h2 class="section-title gold" id="freeOddsHeading">FREE ODDS</h2>
-  <p class="odds-intro">Daily match predictions and results</p>
-  <div class="prediction-controls">
-    <div class="date-tabs" id="dateTabs">
-      <button class="date-tab" data-date="yesterday" onclick="selectDate('yesterday')">Yesterday</button>
-      <button class="date-tab active" data-date="today" onclick="selectDate('today')">Today</button>
-      <button class="date-tab" data-date="tomorrow" onclick="selectDate('tomorrow')">Tomorrow</button>
-    </div>
-    <div class="league-tabs" id="leagueTabs">
-      <button class="league-tab active" data-league="all" onclick="selectLeague('all')">All</button>
-      <button class="league-tab" data-league="premier league" onclick="selectLeague('premier league')">Premier League</button>
-      <button class="league-tab" data-league="bundesliga" onclick="selectLeague('bundesliga')">Bundesliga</button>
-      <button class="league-tab" data-league="la liga" onclick="selectLeague('la liga')">La Liga</button>
-      <button class="league-tab" data-league="ligue 1" onclick="selectLeague('ligue 1')">Ligue 1</button>
-      <button class="league-tab" data-league="afcon" onclick="selectLeague('afcon')">AFCON</button>
-      <button class="league-tab" data-league="uefa" onclick="selectLeague('uefa')">UEFA</button>
-      <button class="league-tab" data-league="world cup" onclick="selectLeague('world cup')">World Cup</button>
-    </div>
-  </div>
-  <div id="freePredictions"><p class="notice">Loading FREE predictions...</p></div>
+<div id="membershipUpgradeArea"><button class="vip-upgrade-button" onclick="toggleMembershipPayment()"><span id="membershipButtonText">💎 VIEW MEMBERSHIP PLANS</span></button></div>
 
-  <div id="membershipUpgradeArea">
-    <button class="vip-upgrade-button" onclick="toggleMembershipPayment()">
-      <span id="membershipButtonText">💎 VIEW MEMBERSHIP PLANS</span>
-    </button>
-  </div>
+<div id="membershipPaymentPanel" class="card hidden">
+<h2 class="gold">CHOOSE YOUR MEMBERSHIP</h2>
+<p class="muted">Each plan unlocks its own exclusive predictions after payment verification.</p>
+<div class="membership-choice" id="vipMembershipChoice">
+<h3>💎 VIP MEMBERSHIP</h3><div class="payment-price">₦5,500 <small>monthly</small></div>
+<p>Access to exclusive ONLYBOSSTIPS VIP football predictions.</p>
+<button id="vipPaymentButton" onclick="selectMembership('vip')">PAY FOR VIP MEMBERSHIP</button>
+</div>
+<div class="membership-choice" id="rolloverMembershipChoice">
+<h3>🏆 ROLLOVER EXCLUSIVE MEMBER</h3><div class="payment-price">₦4,000 <small>Weekly</small></div>
+<p>Access to exclusive ONLYBOSSTIPS Rollover predictions with weekly membership payment.</p>
+<button id="rolloverPaymentButton" class="rollover-button" onclick="selectMembership('rollover')">PAY FOR ROLLOVER EXCLUSIVE</button>
+</div>
+<div id="selectedPaymentDetails" class="hidden">
+<h3 id="selectedPlanTitle" class="gold">PAYMENT DETAILS</h3>
+<p id="selectedPlanDescription" class="muted"></p>
+<div class="bank-details">
+<p><strong>Bank:</strong> STERLING BANK</p>
+<p><strong>Account Name:</strong> OLUWANIFELA OMOJOWO</p>
+<p><strong>Account Number:</strong> <span id="bankAccountNumber">0121973273</span></p>
+</div>
+<button class="payment-button" onclick="copyAccountNumber()">COPY ACCOUNT NUMBER</button>
+<p class="muted">After making your transfer, send your payment receipt to our WhatsApp for verification.</p>
+<button class="payment-button" onclick="sendPaymentWhatsApp()">SEND PAYMENT RECEIPT ON WHATSAPP</button>
+<p class="muted">Your membership will be activated after the administrator confirms your payment.</p>
+<p id="paymentMessage" class="message"></p>
+</div>
+<button class="secondary close-payment" onclick="toggleMembershipPayment(false)">CLOSE PAYMENT DETAILS</button>
+</div>
 
-  <div id="membershipPaymentPanel" class="card hidden">
-    <h2 class="gold">CHOOSE YOUR MEMBERSHIP</h2>
-    <p class="muted">Choose the membership plan you want. Both plans provide access to exclusive VIP predictions after payment verification.</p>
+<h2 class="section-title gold">VIP ODDS</h2>
+<p class="odds-intro">Exclusive predictions for approved VIP members</p>
+<div id="vipPredictions"><p class="notice">Loading VIP predictions...</p></div>
 
-    <div class="membership-choice" id="vipMembershipChoice">
-      <h3>💎 VIP MEMBERSHIP</h3>
-      <div class="payment-price">₦5,500 <small>monthly</small></div>
-      <p>Access to exclusive ONLYBOSSTIPS VIP football predictions.</p>
-      <button id="vipPaymentButton" onclick="selectMembership('vip')">PAY FOR VIP MEMBERSHIP</button>
-    </div>
+<h2 class="section-title gold">ROLLOVER ODDS</h2>
+<p class="odds-intro">Exclusive predictions for approved Rollover members</p>
+<div id="rolloverPredictions"><p class="notice">Loading Rollover predictions...</p></div>
 
-    <div class="membership-choice" id="rolloverMembershipChoice">
-      <h3>🏆 ROLLOVER EXCLUSIVE MEMBER</h3>
-      <div class="payment-price">₦4,000 <small>Weekly</small></div>
-      <p>Access to exclusive ONLYBOSSTIPS VIP football predictions with weekly membership payment.</p>
-      <button id="rolloverPaymentButton" class="rollover-button" onclick="selectMembership('rollover')">PAY FOR ROLLOVER EXCLUSIVE</button>
-    </div>
+<div id="adminNotice" class="card hidden"><h3 class="gold">ADMINISTRATOR ACCOUNT</h3><p class="muted">Your administrator account is recognised. Use the private administrator dashboard.</p></div>
 
-    <div id="selectedPaymentDetails" class="hidden">
-      <h3 id="selectedPlanTitle" class="gold">PAYMENT DETAILS</h3>
-      <p id="selectedPlanDescription" class="muted"></p>
-      <div class="bank-details">
-        <p><strong>Bank:</strong> STERLING BANK</p>
-        <p><strong>Account Name:</strong> OLUWANIFELA OMOJOWO</p>
-        <p><strong>Account Number:</strong> <span id="bankAccountNumber">0121973273</span></p>
-      </div>
-      <button class="payment-button" onclick="copyAccountNumber()">COPY ACCOUNT NUMBER</button>
-      <p class="muted">After making your transfer, send your payment receipt to our WhatsApp for verification.</p>
-      <button class="payment-button" onclick="sendPaymentWhatsApp()">SEND PAYMENT RECEIPT ON WHATSAPP</button>
-      <p class="muted">Your membership will be activated after the administrator confirms your payment.</p>
-      <p id="paymentMessage" class="message"></p>
-    </div>
-    <button class="secondary close-payment" onclick="toggleMembershipPayment(false)">CLOSE PAYMENT DETAILS</button>
-  </div>
+<div id="winningStreakDashboard" class="streak-dashboard">
+<h2 class="streak-heading">🏆 WINNING STREAK DASHBOARD</h2>
+<p class="streak-intro">Our recorded prediction results, separated by FREE, VIP and ROLLOVER odds. Statistics update when match results are updated.</p>
+<div class="streak-grid">
+<div class="streak-card"><h3>🟢 FREE ODDS RECORD</h3><div class="streak-stats">
+<div class="streak-stat"><small>TOTAL WINS</small><strong id="freeWins" class="green">0</strong></div>
+<div class="streak-stat"><small>TOTAL LOSSES</small><strong id="freeLosses">0</strong></div>
+<div class="streak-stat"><small>WIN RATE</small><strong id="freeWinRate">0%</strong></div>
+<div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="freeStreak" class="green">0</strong></div>
+</div></div>
+<div class="streak-card"><h3>💎 VIP ODDS RECORD</h3><div class="streak-stats">
+<div class="streak-stat"><small>TOTAL WINS</small><strong id="vipWins" class="green">0</strong></div>
+<div class="streak-stat"><small>TOTAL LOSSES</small><strong id="vipLosses">0</strong></div>
+<div class="streak-stat"><small>WIN RATE</small><strong id="vipWinRate">0%</strong></div>
+<div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="vipStreak" class="green">0</strong></div>
+</div></div>
+<div class="streak-card"><h3>🏆 ROLLOVER ODDS RECORD</h3><div class="streak-stats">
+<div class="streak-stat"><small>TOTAL WINS</small><strong id="rolloverWins" class="green">0</strong></div>
+<div class="streak-stat"><small>TOTAL LOSSES</small><strong id="rolloverLosses">0</strong></div>
+<div class="streak-stat"><small>WIN RATE</small><strong id="rolloverWinRate">0%</strong></div>
+<div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="rolloverStreak" class="green">0</strong></div>
+</div></div>
+</div>
+<p class="streak-note">Statistics are calculated from recorded WON and LOST results only. Pending, live and void predictions are not counted. Past results do not guarantee future outcomes.</p>
+</div>
 
-  <h2 class="section-title gold">VIP ODDS</h2>
-  <p class="odds-intro">Exclusive predictions for approved VIP and Rollover Exclusive members</p>
-  <div id="vipPredictions"><p class="notice">Loading VIP predictions...</p></div>
-
-  <div id="adminNotice" class="card hidden">
-    <h3 class="gold">ADMINISTRATOR ACCOUNT</h3>
-    <p class="muted">Your administrator account is recognised. Use the separate private administrator dashboard.</p>
-  </div>
-
-  <!-- WINNING STREAK DASHBOARD: intentionally placed immediately above PLAY RESPONSIBLY -->
-  <div id="winningStreakDashboard" class="streak-dashboard">
-    <h2 class="streak-heading">🏆 WINNING STREAK DASHBOARD</h2>
-    <p class="streak-intro">Our recorded prediction results, separated by FREE and VIP odds. Statistics update when match results are updated.</p>
-    <div class="streak-grid">
-      <div class="streak-card">
-        <h3>🟢 FREE ODDS RECORD</h3>
-        <div class="streak-stats">
-          <div class="streak-stat"><small>TOTAL WINS</small><strong id="freeWins" class="green">0</strong></div>
-          <div class="streak-stat"><small>TOTAL LOSSES</small><strong id="freeLosses">0</strong></div>
-          <div class="streak-stat"><small>WIN RATE</small><strong id="freeWinRate">0%</strong></div>
-          <div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="freeStreak" class="green">0</strong></div>
-        </div>
-      </div>
-      <div class="streak-card">
-        <h3>💎 VIP ODDS RECORD</h3>
-        <div class="streak-stats">
-          <div class="streak-stat"><small>TOTAL WINS</small><strong id="vipWins" class="green">0</strong></div>
-          <div class="streak-stat"><small>TOTAL LOSSES</small><strong id="vipLosses">0</strong></div>
-          <div class="streak-stat"><small>WIN RATE</small><strong id="vipWinRate">0%</strong></div>
-          <div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="vipStreak" class="green">0</strong></div>
-        </div>
-      </div>
-    </div>
-    <p class="streak-note">Statistics are calculated from recorded WON and LOST results only. Pending, live and void predictions are not counted. Past results do not guarantee future outcomes.</p>
-  </div>
-
-  <div class="member-responsible">
-    <div class="responsible">
-      <div class="responsible-heading">PLAY RESPONSIBLY</div>
-      <p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p>
-    </div>
-  </div>
-  <button class="logout-bottom" onclick="logOut()">LOG OUT</button>
+<div class="member-responsible"><div class="responsible"><div class="responsible-heading">PLAY RESPONSIBLY</div><p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p></div></div>
+<button class="logout-bottom" onclick="logOut()">LOG OUT</button>
 </section>
+
+<div id="announcementOverlay" class="announcement-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="announcementTitle">
+<div class="announcement-box">
+<button class="announcement-close" onclick="closeAnnouncement()" aria-label="Close announcement">×</button>
+<h2 id="announcementTitle">📢 IMPORTANT ANNOUNCEMENT</h2>
+<p id="announcementMessage"></p>
+<div class="announcement-timer">This announcement will close automatically.</div>
+</div>
+</div>
 
 <footer>ONLYBOSSTIPS © 2026. All rights reserved.</footer>
 
@@ -392,487 +341,320 @@ const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 let currentUser=null,currentTier="free",currentMemberships=[],currentIsAdmin=false,recoveryInProgress=false;
-let allPredictions=[],selectedDate="today",selectedLeague="all";
-let selectedMembership="vip";
+let allPredictions=[],selectedDate="today",selectedLeague="all",selectedMembership="vip";
+let announcementTimer=null,announcementQueue=[],announcementShowing=false;
 
 function parseMemberships(value){
-  const raw=String(value||"free").toLowerCase().split(/[,+|]/).map(x=>x.trim()).filter(Boolean);
-  const memberships=[];
-  raw.forEach(level=>{
-    if(level==="vip"||level==="rollover"){
-      if(!memberships.includes(level))memberships.push(level);
-    }
-  });
-  return memberships;
+ const raw=String(value||"free").toLowerCase().split(/[,+|]/).map(x=>x.trim()).filter(Boolean);
+ return [...new Set(raw.filter(x=>x==="vip"||x==="rollover"))];
 }
-
 function membershipLabel(){
-  if(currentMemberships.includes("vip")&&currentMemberships.includes("rollover"))return "VIP + ROLLOVER MEMBER";
-  if(currentMemberships.includes("rollover"))return "ROLLOVER EXCLUSIVE MEMBER";
-  if(currentMemberships.includes("vip"))return "VIP MEMBER";
-  return "FREE MEMBER";
+ if(currentMemberships.includes("vip")&&currentMemberships.includes("rollover"))return "VIP + ROLLOVER MEMBER";
+ if(currentMemberships.includes("rollover"))return "ROLLOVER EXCLUSIVE MEMBER";
+ if(currentMemberships.includes("vip"))return "VIP MEMBER";
+ return "FREE MEMBER";
 }
+function hasVipAccess(){return currentMemberships.includes("vip")||currentIsAdmin}
+function hasRolloverAccess(){return currentMemberships.includes("rollover")||currentIsAdmin}
 
-function hasVipAccess(){
-  return currentMemberships.includes("vip")||currentMemberships.includes("rollover")||currentIsAdmin;
-}
-
-function hideAllSections(){
-  ["welcome","authSection","memberDashboard"].forEach(id=>document.getElementById(id).classList.add("hidden"));
-}
-
-function showWelcome(){
-  hideAllSections();
-  document.getElementById("welcome").classList.remove("hidden");
-  document.getElementById("headerButton").classList.remove("hidden");
-}
-
+function hideAllSections(){["welcome","authSection","memberDashboard"].forEach(id=>document.getElementById(id).classList.add("hidden"))}
+function showWelcome(){hideAllSections();document.getElementById("welcome").classList.remove("hidden");document.getElementById("headerButton").classList.remove("hidden")}
 function showAuth(mode){
-  hideAllSections();
-  document.getElementById("authSection").classList.remove("hidden");
-  document.getElementById("headerButton").classList.remove("hidden");
-  document.getElementById("signupForm").classList.toggle("hidden",mode!=="signup");
-  document.getElementById("loginForm").classList.toggle("hidden",mode!=="login");
-  document.getElementById("recoveryForm").classList.add("hidden");
-  document.getElementById("authMessage").textContent="";
+ hideAllSections();document.getElementById("authSection").classList.remove("hidden");document.getElementById("headerButton").classList.remove("hidden");
+ document.getElementById("signupForm").classList.toggle("hidden",mode!=="signup");
+ document.getElementById("loginForm").classList.toggle("hidden",mode!=="login");
+ document.getElementById("recoveryForm").classList.add("hidden");document.getElementById("authMessage").textContent="";
 }
-
 function openPublicLogin(e){e.preventDefault();showAuth("login")}
 function openPublicSignup(e){e.preventDefault();showAuth("signup")}
-
 function showRecoveryForm(){
-  recoveryInProgress=true;
-  hideAllSections();
-  document.getElementById("authSection").classList.remove("hidden");
-  document.getElementById("headerButton").classList.add("hidden");
-  document.getElementById("signupForm").classList.add("hidden");
-  document.getElementById("loginForm").classList.add("hidden");
-  document.getElementById("recoveryForm").classList.remove("hidden");
-  document.getElementById("authMessage").textContent="Enter and confirm your new password.";
+ recoveryInProgress=true;hideAllSections();document.getElementById("authSection").classList.remove("hidden");document.getElementById("headerButton").classList.add("hidden");
+ document.getElementById("signupForm").classList.add("hidden");document.getElementById("loginForm").classList.add("hidden");document.getElementById("recoveryForm").classList.remove("hidden");
+ document.getElementById("authMessage").textContent="Enter and confirm your new password.";
 }
 
 function updateMembershipPlanButtons(){
-  const hasVip=currentMemberships.includes("vip");
-  const hasRollover=currentMemberships.includes("rollover");
-  const vipButton=document.getElementById("vipPaymentButton");
-  const rolloverButton=document.getElementById("rolloverPaymentButton");
-  const vipChoice=document.getElementById("vipMembershipChoice");
-  const rolloverChoice=document.getElementById("rolloverMembershipChoice");
-
-  vipButton.disabled=hasVip;
-  vipButton.textContent=hasVip?"VIP MEMBERSHIP ALREADY ACTIVE":"PAY FOR VIP MEMBERSHIP";
-  rolloverButton.disabled=hasRollover;
-  rolloverButton.textContent=hasRollover?"ROLLOVER MEMBERSHIP ALREADY ACTIVE":"PAY FOR ROLLOVER EXCLUSIVE";
-
-  vipChoice.style.opacity=hasVip?".65":"1";
-  rolloverChoice.style.opacity=hasRollover?".65":"1";
-
-  const bothActive=hasVip&&hasRollover;
-  document.getElementById("membershipUpgradeArea").classList.toggle("hidden",bothActive);
+ const hasVip=currentMemberships.includes("vip"),hasRollover=currentMemberships.includes("rollover");
+ const vb=document.getElementById("vipPaymentButton"),rb=document.getElementById("rolloverPaymentButton");
+ vb.disabled=hasVip;vb.textContent=hasVip?"VIP MEMBERSHIP ALREADY ACTIVE":"PAY FOR VIP MEMBERSHIP";
+ rb.disabled=hasRollover;rb.textContent=hasRollover?"ROLLOVER MEMBERSHIP ALREADY ACTIVE":"PAY FOR ROLLOVER EXCLUSIVE";
+ document.getElementById("vipMembershipChoice").style.opacity=hasVip?".65":"1";
+ document.getElementById("rolloverMembershipChoice").style.opacity=hasRollover?".65":"1";
+ document.getElementById("membershipUpgradeArea").classList.toggle("hidden",hasVip&&hasRollover);
 }
-
 function showDashboard(){
-  hideAllSections();
-  document.getElementById("memberDashboard").classList.remove("hidden");
-  document.getElementById("headerButton").classList.add("hidden");
-  document.getElementById("memberEmail").textContent=currentUser.email||"";
-
-  const badge=document.getElementById("memberBadge");
-  badge.textContent=currentIsAdmin?"ADMINISTRATOR":membershipLabel();
-  badge.className="badge";
-  if(currentMemberships.includes("rollover"))badge.classList.add("rollover");
-  else if(currentMemberships.includes("vip"))badge.classList.add("vip");
-
-  document.getElementById("adminNotice").classList.toggle("hidden",!currentIsAdmin);
-  document.getElementById("adminDashboard").classList.toggle("hidden",!currentIsAdmin);
-  updateMembershipPlanButtons();
-  document.getElementById("membershipPaymentPanel").classList.add("hidden");
-  document.getElementById("membershipButtonText").textContent="💎 VIEW MEMBERSHIP PLANS";
-  loadPredictions();
+ hideAllSections();document.getElementById("memberDashboard").classList.remove("hidden");document.getElementById("headerButton").classList.add("hidden");
+ document.getElementById("memberEmail").textContent=currentUser.email||"";
+ const badge=document.getElementById("memberBadge");badge.textContent=currentIsAdmin?"ADMINISTRATOR":membershipLabel();badge.className="badge";
+ if(currentMemberships.includes("rollover"))badge.classList.add("rollover");else if(currentMemberships.includes("vip"))badge.classList.add("vip");
+ document.getElementById("adminNotice").classList.toggle("hidden",!currentIsAdmin);
+ document.getElementById("adminDashboard").classList.toggle("hidden",!currentIsAdmin);
+ updateMembershipPlanButtons();document.getElementById("membershipPaymentPanel").classList.add("hidden");
+ document.getElementById("membershipButtonText").textContent="💎 VIEW MEMBERSHIP PLANS";
+ loadPredictions();
+ loadAnnouncements();
 }
-
 function toggleMembershipPayment(forceOpen){
-  const panel=document.getElementById("membershipPaymentPanel");
-  const open=typeof forceOpen==="boolean"?forceOpen:panel.classList.contains("hidden");
-  panel.classList.toggle("hidden",!open);
-  if(open)setTimeout(()=>panel.scrollIntoView({behavior:"smooth",block:"start"}),100);
+ const panel=document.getElementById("membershipPaymentPanel");
+ const open=typeof forceOpen==="boolean"?forceOpen:panel.classList.contains("hidden");
+ panel.classList.toggle("hidden",!open);
+ if(open)setTimeout(()=>panel.scrollIntoView({behavior:"smooth",block:"start"}),100);
 }
-
 function selectMembership(plan){
-  if(currentMemberships.includes(plan)){
-    document.getElementById("paymentMessage").textContent="This membership is already active on your account.";
-    document.getElementById("selectedPaymentDetails").classList.remove("hidden");
-    return;
-  }
-
-  selectedMembership=plan;
-  const details=document.getElementById("selectedPaymentDetails");
-  details.classList.remove("hidden");
-
-  const title=document.getElementById("selectedPlanTitle");
-  const description=document.getElementById("selectedPlanDescription");
-
-  if(plan==="rollover"){
-    title.textContent="ROLLOVER EXCLUSIVE MEMBER PAYMENT";
-    description.textContent="You selected ROLLOVER EXCLUSIVE MEMBER — ₦4,000 Weekly.";
-  }else{
-    title.textContent="VIP MEMBERSHIP PAYMENT";
-    description.textContent="You selected VIP MEMBERSHIP — ₦5,500 monthly.";
-  }
-
-  document.getElementById("paymentMessage").textContent="";
-  setTimeout(()=>details.scrollIntoView({behavior:"smooth",block:"start"}),100);
+ if(currentMemberships.includes(plan)){
+  document.getElementById("paymentMessage").textContent="This membership is already active on your account.";
+  document.getElementById("selectedPaymentDetails").classList.remove("hidden");return;
+ }
+ selectedMembership=plan;document.getElementById("selectedPaymentDetails").classList.remove("hidden");
+ document.getElementById("selectedPlanTitle").textContent=plan==="rollover"?"ROLLOVER EXCLUSIVE MEMBER PAYMENT":"VIP MEMBERSHIP PAYMENT";
+ document.getElementById("selectedPlanDescription").textContent=plan==="rollover"?"You selected ROLLOVER EXCLUSIVE MEMBER — ₦4,000 Weekly.":"You selected VIP MEMBERSHIP — ₦5,500 monthly.";
+ document.getElementById("paymentMessage").textContent="";
+ setTimeout(()=>document.getElementById("selectedPaymentDetails").scrollIntoView({behavior:"smooth",block:"start"}),100);
 }
-
 async function copyAccountNumber(){
-  const n="0121973273";
-  const m=document.getElementById("paymentMessage");
-  try{
-    await navigator.clipboard.writeText(n);
-    m.textContent="Sterling Bank account number copied successfully.";
-  }catch(e){
-    m.textContent="Please copy the account number manually: "+n;
-  }
+ const n="0121973273",m=document.getElementById("paymentMessage");
+ try{await navigator.clipboard.writeText(n);m.textContent="Sterling Bank account number copied successfully."}
+ catch(e){m.textContent="Please copy the account number manually: "+n}
 }
-
 function sendPaymentWhatsApp(){
-  if(!currentUser?.email){
-    alert("Please log in before sending your payment confirmation.");
-    return;
-  }
-
-  const amount=selectedMembership==="rollover"?"₦4,000 Weekly":"₦5,500 monthly";
-  const plan=selectedMembership==="rollover"?"ROLLOVER EXCLUSIVE MEMBER":"VIP MEMBERSHIP";
-  const msg="Hello ONLYBOSSTIPS Admin. I have paid "+amount+" for "+plan+". My registered email is: "+currentUser.email+". I am sending my payment receipt for verification.";
-  window.open("https://wa.me/2348032413495?text="+encodeURIComponent(msg),"_blank");
+ if(!currentUser?.email){alert("Please log in before sending your payment confirmation.");return}
+ const amount=selectedMembership==="rollover"?"₦4,000 Weekly":"₦5,500 monthly";
+ const plan=selectedMembership==="rollover"?"ROLLOVER EXCLUSIVE MEMBER":"VIP MEMBERSHIP";
+ const msg="Hello ONLYBOSSTIPS Admin. I have paid "+amount+" for "+plan+". My registered email is: "+currentUser.email+". I am sending my payment receipt for verification.";
+ window.open("https://wa.me/2348032413495?text="+encodeURIComponent(msg),"_blank");
 }
 
 async function signUp(){
-  const email=document.getElementById("signupEmail").value.trim();
-  const password=document.getElementById("signupPassword").value;
-  const m=document.getElementById("authMessage");
-  const b=document.getElementById("signupButton");
-
-  if(!email||password.length<6){m.textContent="Enter a valid email and a password of at least 6 characters.";return}
-  b.disabled=true;m.textContent="Creating your account...";
-  const {data,error}=await db.auth.signUp({email,password});
-  b.disabled=false;
-  if(error){m.textContent=error.message;return}
-  if(data.session)await loadUser(data.session.user);
-  else m.textContent="Registration successful. Check your email to confirm your account before logging in.";
+ const email=document.getElementById("signupEmail").value.trim(),password=document.getElementById("signupPassword").value;
+ const m=document.getElementById("authMessage"),b=document.getElementById("signupButton");
+ if(!email||password.length<6){m.textContent="Enter a valid email and a password of at least 6 characters.";return}
+ b.disabled=true;m.textContent="Creating your account...";
+ const {data,error}=await db.auth.signUp({email,password});b.disabled=false;
+ if(error){m.textContent=error.message;return}
+ if(data.session)await loadUser(data.session.user);else m.textContent="Registration successful. Check your email to confirm your account before logging in.";
 }
-
 async function logIn(){
-  const email=document.getElementById("loginEmail").value.trim();
-  const password=document.getElementById("loginPassword").value;
-  const m=document.getElementById("authMessage");
-  const b=document.getElementById("loginButton");
-
-  if(!email||!password){m.textContent="Enter your email and password.";return}
-  b.disabled=true;m.textContent="Logging in...";
-  const {data,error}=await db.auth.signInWithPassword({email,password});
-  b.disabled=false;
-  if(error){m.textContent=error.message;return}
-  await loadUser(data.user);
+ const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPassword").value;
+ const m=document.getElementById("authMessage"),b=document.getElementById("loginButton");
+ if(!email||!password){m.textContent="Enter your email and password.";return}
+ b.disabled=true;m.textContent="Logging in...";
+ const {data,error}=await db.auth.signInWithPassword({email,password});b.disabled=false;
+ if(error){m.textContent=error.message;return}
+ await loadUser(data.user);
 }
-
 async function forgotPassword(){
-  const email=document.getElementById("loginEmail").value.trim();
-  const m=document.getElementById("authMessage");
-  if(!email){m.textContent="Enter your email address above first.";return}
-  m.textContent="Sending password reset email...";
-  const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/"});
-  m.textContent=error?error.message:"Password reset email sent. Open the email link to return here and create your new password.";
+ const email=document.getElementById("loginEmail").value.trim(),m=document.getElementById("authMessage");
+ if(!email){m.textContent="Enter your email address above first.";return}
+ m.textContent="Sending password reset email...";
+ const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/"});
+ m.textContent=error?error.message:"Password reset email sent. Open the email link to return here and create your new password.";
 }
-
 async function saveNewPassword(){
-  const p=document.getElementById("newPassword").value;
-  const c=document.getElementById("confirmPassword").value;
-  const m=document.getElementById("authMessage");
-  const b=document.getElementById("savePasswordButton");
-  if(p.length<6){m.textContent="Your password must contain at least 6 characters.";return}
-  if(p!==c){m.textContent="The passwords do not match.";return}
-  b.disabled=true;m.textContent="Updating your password...";
-  const {error}=await db.auth.updateUser({password:p});
-  b.disabled=false;
-  if(error){m.textContent="Password update failed: "+error.message;return}
-  recoveryInProgress=false;
-  m.textContent="Your password has been changed successfully. You can now log in.";
-  document.getElementById("newPassword").value="";
-  document.getElementById("confirmPassword").value="";
-  await db.auth.signOut();
-  window.history.replaceState({},document.title,window.location.pathname);
-  setTimeout(()=>showAuth("login"),1500);
+ const p=document.getElementById("newPassword").value,c=document.getElementById("confirmPassword").value;
+ const m=document.getElementById("authMessage"),b=document.getElementById("savePasswordButton");
+ if(p.length<6){m.textContent="Your password must contain at least 6 characters.";return}
+ if(p!==c){m.textContent="The passwords do not match.";return}
+ b.disabled=true;m.textContent="Updating your password...";
+ const {error}=await db.auth.updateUser({password:p});b.disabled=false;
+ if(error){m.textContent="Password update failed: "+error.message;return}
+ recoveryInProgress=false;m.textContent="Your password has been changed successfully. You can now log in.";
+ document.getElementById("newPassword").value="";document.getElementById("confirmPassword").value="";
+ await db.auth.signOut();window.history.replaceState({},document.title,window.location.pathname);
+ setTimeout(()=>showAuth("login"),1500);
+}
+async function loadUser(user){
+ currentUser=user;currentTier="free";currentMemberships=[];currentIsAdmin=false;
+ const {data:profile,error}=await db.from("member_profiles").select("membership_tier").eq("user_id",user.id).maybeSingle();
+ if(error){document.getElementById("authMessage").textContent="Could not load your membership. Please try again.";return}
+ if(profile){currentTier=String(profile.membership_tier||"free").toLowerCase();currentMemberships=parseMemberships(profile.membership_tier)}
+ const {data:admin}=await db.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
+ currentIsAdmin=!!admin;showDashboard();
 }
 
-async function loadUser(user){
-  currentUser=user;
-  currentTier="free";
-  currentMemberships=[];
-  currentIsAdmin=false;
-
-  const {data:profile,error}=await db.from("member_profiles").select("membership_tier").eq("user_id",user.id).maybeSingle();
-  if(error){
-    document.getElementById("authMessage").textContent="Could not load your membership. Please try again.";
-    return;
-  }
-
-  if(profile){
-    currentTier=String(profile.membership_tier||"free").toLowerCase();
-    currentMemberships=parseMemberships(profile.membership_tier);
-  }
-
-  const {data:admin}=await db.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
-  currentIsAdmin=!!admin;
-  showDashboard();
+function closeAnnouncement(){
+ if(announcementTimer){clearTimeout(announcementTimer);announcementTimer=null}
+ document.getElementById("announcementOverlay").classList.add("hidden");
+ announcementShowing=false;
+ setTimeout(showNextAnnouncement,250);
+}
+function showNextAnnouncement(){
+ if(announcementShowing||!announcementQueue.length||!currentUser)return;
+ const announcement=announcementQueue.shift();
+ announcementShowing=true;
+ document.getElementById("announcementMessage").textContent=announcement.message;
+ document.getElementById("announcementOverlay").classList.remove("hidden");
+ announcementTimer=setTimeout(closeAnnouncement,7000);
+}
+async function loadAnnouncements(){
+ announcementQueue=[];announcementShowing=false;
+ if(announcementTimer){clearTimeout(announcementTimer);announcementTimer=null}
+ document.getElementById("announcementOverlay").classList.add("hidden");
+ const {data,error}=await db.from("member_announcements").select("id,message,created_at").eq("active",true).order("created_at",{ascending:false});
+ if(error){console.error("Announcement loading error:",error.message);return}
+ announcementQueue=(data||[]).filter(a=>a.message).map(a=>({id:a.id,message:a.message}));
+ showNextAnnouncement();
 }
 
 function localDateKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-
 function dateForSelection(choice){
-  const d=new Date();d.setHours(0,0,0,0);
-  d.setDate(d.getDate()+(choice==="yesterday"?-1:choice==="tomorrow"?1:0));
-  return localDateKey(d);
+ const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+(choice==="yesterday"?-1:choice==="tomorrow"?1:0));return localDateKey(d);
 }
-
-function selectDate(choice){
-  selectedDate=choice;
-  document.querySelectorAll(".date-tab").forEach(b=>b.classList.toggle("active",b.dataset.date===choice));
-  renderAllPredictionViews();
-}
-
-function selectLeague(league){
-  selectedLeague=league;
-  document.querySelectorAll(".league-tab").forEach(b=>b.classList.toggle("active",b.dataset.league===league));
-  renderAllPredictionViews();
-}
-
+function selectDate(choice){selectedDate=choice;document.querySelectorAll(".date-tab").forEach(b=>b.classList.toggle("active",b.dataset.date===choice));renderAllPredictionViews()}
+function selectLeague(league){selectedLeague=league;document.querySelectorAll(".league-tab").forEach(b=>b.classList.toggle("active",b.dataset.league===league));renderAllPredictionViews()}
 function formatKickoff(v){
-  if(!v)return"Time not set";
-  const d=new Date(v);
-  if(Number.isNaN(d.getTime()))return"Time not set";
-  return d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",hour12:true}).replace(/\s/g,"").toLowerCase();
+ if(!v)return"Time not set";const d=new Date(v);if(Number.isNaN(d.getTime()))return"Time not set";
+ return d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",hour12:true}).replace(/\s/g,"").toLowerCase();
 }
-
 function getResult(item){
-  const s=String(item.status||"").toLowerCase().trim();
-  const r=String(item.result||"").toLowerCase().trim();
-  if(s==="won"||r==="won")return{text:"WON",symbol:"✓",className:"result-won"};
-  if(s==="lost"||r==="lost")return{text:"LOST",symbol:"×",className:"result-lost"};
-  if(s==="void"||r==="void")return{text:"VOID",symbol:"−",className:"result-void"};
-  if(item.kickoff){
-    const kick=new Date(item.kickoff),now=new Date();
-    if(!Number.isNaN(kick.getTime())&&localDateKey(kick)===localDateKey(now)&&kick<=now)return{text:"LIVE",symbol:"•",className:"result-live"};
-  }
-  return{text:"PENDING",symbol:"",className:"result-awaiting"};
+ const s=String(item.status||"").toLowerCase().trim(),r=String(item.result||"").toLowerCase().trim();
+ if(s==="won"||r==="won")return{text:"WON",symbol:"✓",className:"result-won"};
+ if(s==="lost"||r==="lost")return{text:"LOST",symbol:"×",className:"result-lost"};
+ if(s==="void"||r==="void")return{text:"VOID",symbol:"−",className:"result-void"};
+ if(item.kickoff){const kick=new Date(item.kickoff),now=new Date();if(!Number.isNaN(kick.getTime())&&localDateKey(kick)===localDateKey(now)&&kick<=now)return{text:"LIVE",symbol:"•",className:"result-live"}}
+ return{text:"PENDING",symbol:"",className:"result-awaiting"};
 }
-
-/* Calculates statistics from actual saved prediction results only. */
 function calculateStreakStats(visibility){
-  const settled=allPredictions
-    .filter(p=>String(p.visibility||"free").toLowerCase()===visibility)
-    .map(p=>({prediction:p,result:getResult(p).text,date:new Date(p.kickoff||p.created_at||0).getTime()}))
-    .filter(p=>p.result==="WON"||p.result==="LOST"||p.result==="VOID")
-    .sort((a,b)=>b.date-a.date);
-
-  let wins=0,losses=0;
-  settled.forEach(p=>{
-    if(p.result==="WON")wins++;
-    if(p.result==="LOST")losses++;
-  });
-
-  let streak=0;
-  for(const p of settled){
-    if(p.result==="VOID")continue;
-    if(p.result==="WON")streak++;
-    else if(p.result==="LOST")break;
-  }
-
-  const total=wins+losses;
-  const rate=total?Math.round((wins/total)*100):0;
-  return{wins,losses,rate,streak};
+ const settled=allPredictions.filter(p=>String(p.visibility||"free").toLowerCase()===visibility)
+ .map(p=>({result:getResult(p).text,date:new Date(p.kickoff||p.created_at||0).getTime()}))
+ .filter(p=>["WON","LOST","VOID"].includes(p.result)).sort((a,b)=>b.date-a.date);
+ let wins=0,losses=0;
+ settled.forEach(p=>{if(p.result==="WON")wins++;if(p.result==="LOST")losses++});
+ let streak=0;
+ for(const p of settled){if(p.result==="VOID")continue;if(p.result==="WON")streak++;else if(p.result==="LOST")break}
+ const total=wins+losses;
+ return{wins,losses,rate:total?Math.round(wins/total*100):0,streak};
 }
-
 function updateWinningStreakDashboard(){
-  const free=calculateStreakStats("free");
-  const vip=calculateStreakStats("vip");
-
-  document.getElementById("freeWins").textContent=free.wins;
-  document.getElementById("freeLosses").textContent=free.losses;
-  document.getElementById("freeWinRate").textContent=free.rate+"%";
-  document.getElementById("freeStreak").textContent=free.streak;
-
-  document.getElementById("vipWins").textContent=vip.wins;
-  document.getElementById("vipLosses").textContent=vip.losses;
-  document.getElementById("vipWinRate").textContent=vip.rate+"%";
-  document.getElementById("vipStreak").textContent=vip.streak;
+ ["free","vip","rollover"].forEach(level=>{
+  const s=calculateStreakStats(level);
+  document.getElementById(level+"Wins").textContent=s.wins;
+  document.getElementById(level+"Losses").textContent=s.losses;
+  document.getElementById(level+"WinRate").textContent=s.rate+"%";
+  document.getElementById(level+"Streak").textContent=s.streak;
+ });
 }
-
 function makePredictionTable(items){
-  const wrap=document.createElement("div");wrap.className="prediction-table-wrap";
-  const table=document.createElement("table");table.className="prediction-table";
-  const thead=document.createElement("thead"),hr=document.createElement("tr");
-  ["MATCH","ODD","PREDICTION","TIME","OUTCOME"].forEach(t=>{const th=document.createElement("th");th.textContent=t;hr.appendChild(th)});
-  thead.appendChild(hr);table.appendChild(thead);
-  const tbody=document.createElement("tbody");
-
-  items.forEach(p=>{
-    const tr=document.createElement("tr");
-    const match=document.createElement("td"),odd=document.createElement("td"),pred=document.createElement("td"),time=document.createElement("td"),outcome=document.createElement("td");
-    match.className="club-name";match.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away");
-    odd.className="odd-value";odd.textContent=p.odds??"-";
-    pred.className="prediction-value";pred.textContent=p.prediction||"-";
-    time.textContent=formatKickoff(p.kickoff);
-    const r=getResult(p);outcome.className="outcome-cell "+r.className;
-    const badge=document.createElement("span");badge.className="outcome-wrap";
-    if(r.symbol){const circle=document.createElement("span");circle.className="outcome-circle";circle.textContent=r.symbol;badge.appendChild(circle)}
-    const label=document.createElement("span");label.textContent=r.text;badge.appendChild(label);
-    outcome.appendChild(badge);
-    [match,odd,pred,time,outcome].forEach(td=>tr.appendChild(td));
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody);wrap.appendChild(table);return wrap;
+ const wrap=document.createElement("div");wrap.className="prediction-table-wrap";
+ const table=document.createElement("table");table.className="prediction-table";
+ const thead=document.createElement("thead"),hr=document.createElement("tr");
+ ["MATCH","ODD","PREDICTION","TIME","OUTCOME"].forEach(t=>{const th=document.createElement("th");th.textContent=t;hr.appendChild(th)});
+ thead.appendChild(hr);table.appendChild(thead);const tbody=document.createElement("tbody");
+ items.forEach(p=>{
+  const tr=document.createElement("tr"),match=document.createElement("td"),odd=document.createElement("td"),pred=document.createElement("td"),time=document.createElement("td"),outcome=document.createElement("td");
+  match.className="club-name";match.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away");
+  odd.className="odd-value";odd.textContent=p.odds??"-";pred.className="prediction-value";pred.textContent=p.prediction||"-";time.textContent=formatKickoff(p.kickoff);
+  const r=getResult(p);outcome.className="outcome-cell "+r.className;
+  const badge=document.createElement("span");badge.className="outcome-wrap";
+  if(r.symbol){const circle=document.createElement("span");circle.className="outcome-circle";circle.textContent=r.symbol;badge.appendChild(circle)}
+  const label=document.createElement("span");label.textContent=r.text;badge.appendChild(label);outcome.appendChild(badge);
+  [match,odd,pred,time,outcome].forEach(td=>tr.appendChild(td));tbody.appendChild(tr);
+ });
+ table.appendChild(tbody);wrap.appendChild(table);return wrap;
 }
-
 function renderPredictionGroup(box,items){
-  box.replaceChildren();
-  if(!items.length){
-    const p=document.createElement("p");p.className="prediction-empty";
-    p.textContent="No predictions available for this date and league.";box.appendChild(p);return;
-  }
-  const group=document.createElement("div");group.className="prediction-group";
-  const h=document.createElement("div");h.className="prediction-date";
-  h.textContent=selectedDate.toUpperCase()+" — "+new Date(dateForSelection(selectedDate)+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
-  group.appendChild(h);group.appendChild(makePredictionTable(items));box.appendChild(group);
+ box.replaceChildren();
+ if(!items.length){const p=document.createElement("p");p.className="prediction-empty";p.textContent="No predictions available for this date and league.";box.appendChild(p);return}
+ const group=document.createElement("div");group.className="prediction-group";
+ const h=document.createElement("div");h.className="prediction-date";
+ h.textContent=selectedDate.toUpperCase()+" — "+new Date(dateForSelection(selectedDate)+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+ group.appendChild(h);group.appendChild(makePredictionTable(items));box.appendChild(group);
 }
-
 function filterItems(items){
-  const target=dateForSelection(selectedDate);
-  return items.filter(p=>{
-    if(!p.kickoff)return false;
-    const d=new Date(p.kickoff);
-    if(Number.isNaN(d.getTime())||localDateKey(d)!==target)return false;
-    if(selectedLeague!=="all"&&String(p.league||"").trim().toLowerCase()!==selectedLeague)return false;
-    return true;
-  });
+ const target=dateForSelection(selectedDate);
+ return items.filter(p=>{
+  if(!p.kickoff)return false;const d=new Date(p.kickoff);
+  if(Number.isNaN(d.getTime())||localDateKey(d)!==target)return false;
+  if(selectedLeague!=="all"&&String(p.league||"").trim().toLowerCase()!==selectedLeague)return false;
+  return true;
+ });
 }
-
+function renderLocked(box,title,message){
+ box.replaceChildren();const card=document.createElement("div");card.className="card";
+ const h=document.createElement("h3");h.className="gold";h.textContent=title;
+ const p=document.createElement("p");p.className="muted";p.textContent=message;
+ card.append(h,p);box.appendChild(card);
+}
 function renderAllPredictionViews(){
-  const free=allPredictions.filter(p=>String(p.visibility||"free").toLowerCase()==="free");
-  const vip=allPredictions.filter(p=>String(p.visibility||"").toLowerCase()==="vip");
-  renderPredictionGroup(document.getElementById("freePredictions"),filterItems(free));
-  const vipBox=document.getElementById("vipPredictions");
-  if(hasVipAccess()){
-    renderPredictionGroup(vipBox,filterItems(vip));
-  }else{
-    vipBox.replaceChildren();
-    const card=document.createElement("div");card.className="card";
-    const h=document.createElement("h3");h.className="gold";h.textContent="VIP MEMBERS ONLY";
-    const p=document.createElement("p");p.className="muted";
-    p.textContent="VIP predictions are available to approved VIP and Rollover Exclusive members. Tap VIEW MEMBERSHIP PLANS above to view payment details and request access.";
-    card.append(h,p);vipBox.appendChild(card);
-  }
+ const free=allPredictions.filter(p=>String(p.visibility||"free").toLowerCase()==="free");
+ const vip=allPredictions.filter(p=>String(p.visibility||"").toLowerCase()==="vip");
+ const rollover=allPredictions.filter(p=>String(p.visibility||"").toLowerCase()==="rollover");
+ renderPredictionGroup(document.getElementById("freePredictions"),filterItems(free));
+ if(hasVipAccess())renderPredictionGroup(document.getElementById("vipPredictions"),filterItems(vip));
+ else renderLocked(document.getElementById("vipPredictions"),"VIP MEMBERS ONLY","VIP predictions are available to approved VIP members. Tap VIEW MEMBERSHIP PLANS to request VIP access.");
+ if(hasRolloverAccess())renderPredictionGroup(document.getElementById("rolloverPredictions"),filterItems(rollover));
+ else renderLocked(document.getElementById("rolloverPredictions"),"ROLLOVER MEMBERS ONLY","Rollover predictions are available to approved Rollover members. Tap VIEW MEMBERSHIP PLANS to request Rollover access.");
 }
-
 async function loadPredictions(){
-  const free=document.getElementById("freePredictions"),vip=document.getElementById("vipPredictions");
-  free.textContent="Loading FREE predictions...";vip.textContent="Loading VIP predictions...";
-  const {data,error}=await db.from("predictions").select("*").order("kickoff",{ascending:true});
-  if(error){free.textContent="Unable to load predictions. Please refresh.";vip.textContent="Unable to load VIP predictions.";return}
-  allPredictions=data||[];
-  renderAllPredictionViews();
-  updateWinningStreakDashboard();
-  if(currentIsAdmin)renderAdminPredictionList();
+ const free=document.getElementById("freePredictions"),vip=document.getElementById("vipPredictions"),rollover=document.getElementById("rolloverPredictions");
+ free.textContent="Loading FREE predictions...";vip.textContent="Loading VIP predictions...";rollover.textContent="Loading Rollover predictions...";
+ const {data,error}=await db.from("predictions").select("*").order("kickoff",{ascending:true});
+ if(error){free.textContent="Unable to load predictions. Please refresh.";vip.textContent="Unable to load VIP predictions.";rollover.textContent="Unable to load Rollover predictions.";return}
+ allPredictions=data||[];renderAllPredictionViews();updateWinningStreakDashboard();if(currentIsAdmin)renderAdminPredictionList();
 }
-
 function renderAdminPredictionList(){
-  const box=document.getElementById("adminPredictionList");if(!box)return;
-  box.replaceChildren();
-  if(!allPredictions.length){box.textContent="No predictions have been added yet.";return}
-  allPredictions.forEach(p=>{
-    const item=document.createElement("div");item.className="admin-list-item";
-    const title=document.createElement("strong");
-    title.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away")+" — "+String(p.visibility||"free").toUpperCase();
-    const details=document.createElement("p");details.className="muted";
-    details.textContent="Odd: "+(p.odds??"-")+" | Pick: "+(p.prediction||"-")+" | Kickoff: "+formatKickoff(p.kickoff);
-    const select=document.createElement("select");select.setAttribute("aria-label","Set match outcome");
-    ["pending","won","lost","void"].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v.toUpperCase();select.appendChild(o)});
-    select.value=String(p.status||p.result||"pending").toLowerCase();
-    const save=document.createElement("button");save.textContent="SAVE RESULT";save.onclick=()=>adminUpdateResult(p.id,select.value,save);
-    item.append(title,details,select,save);box.appendChild(item);
-  });
+ const box=document.getElementById("adminPredictionList");if(!box)return;box.replaceChildren();
+ if(!allPredictions.length){box.textContent="No predictions have been added yet.";return}
+ allPredictions.forEach(p=>{
+  const item=document.createElement("div");item.className="admin-list-item";
+  const title=document.createElement("strong");title.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away")+" — "+String(p.visibility||"free").toUpperCase();
+  const details=document.createElement("p");details.className="muted";details.textContent="Odd: "+(p.odds??"-")+" | Pick: "+(p.prediction||"-")+" | Kickoff: "+formatKickoff(p.kickoff);
+  const select=document.createElement("select");select.setAttribute("aria-label","Set match outcome");
+  ["pending","won","lost","void"].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v.toUpperCase();select.appendChild(o)});
+  select.value=String(p.status||p.result||"pending").toLowerCase();
+  const save=document.createElement("button");save.textContent="SAVE RESULT";save.onclick=()=>adminUpdateResult(p.id,select.value,save);
+  item.append(title,details,select,save);box.appendChild(item);
+ });
 }
-
 async function adminAddPrediction(){
-  if(!currentIsAdmin){alert("Administrator access required.");return}
-  const m=document.getElementById("adminMessage"),b=document.getElementById("adminAddButton");
-  const home=document.getElementById("adminHome").value.trim();
-  const away=document.getElementById("adminAway").value.trim();
-  const odds=Number(document.getElementById("adminOdds").value);
-  const pick=document.getElementById("adminPick").value.trim();
-  const kick=document.getElementById("adminKickoff").value;
-  const league=document.getElementById("adminLeague").value.trim();
-  const visibility=document.getElementById("adminVisibility").value;
-  const status=document.getElementById("adminStatus").value;
-  if(!home||!away||!pick||!kick||!Number.isFinite(odds)||odds<=1){m.textContent="Complete all fields and enter valid odds greater than 1.";return}
-  b.disabled=true;m.textContent="Publishing prediction...";
-  const row={home_team:home,away_team:away,odds,prediction:pick,kickoff:new Date(kick).toISOString(),league,visibility,status,result:status==="pending"?null:status};
-  const {error}=await db.from("predictions").insert([row]);
-  b.disabled=false;
-  if(error){m.textContent="Could not publish: "+error.message;return}
-  m.textContent="Prediction published successfully.";
-  ["adminHome","adminAway","adminOdds","adminPick","adminKickoff","adminLeague"].forEach(id=>document.getElementById(id).value="");
-  await loadPredictions();
+ if(!currentIsAdmin){alert("Administrator access required.");return}
+ const m=document.getElementById("adminMessage"),b=document.getElementById("adminAddButton");
+ const home=document.getElementById("adminHome").value.trim(),away=document.getElementById("adminAway").value.trim();
+ const odds=Number(document.getElementById("adminOdds").value),pick=document.getElementById("adminPick").value.trim();
+ const kick=document.getElementById("adminKickoff").value,league=document.getElementById("adminLeague").value.trim();
+ const visibility=document.getElementById("adminVisibility").value,status=document.getElementById("adminStatus").value;
+ if(!home||!away||!pick||!kick||!Number.isFinite(odds)||odds<=1){m.textContent="Complete all fields and enter valid odds greater than 1.";return}
+ b.disabled=true;m.textContent="Publishing prediction...";
+ const row={home_team:home,away_team:away,odds,prediction:pick,kickoff:new Date(kick).toISOString(),league,visibility,status,result:status==="pending"?null:status};
+ const {error}=await db.from("predictions").insert([row]);b.disabled=false;
+ if(error){m.textContent="Could not publish: "+error.message;return}
+ m.textContent="Prediction published successfully.";
+ ["adminHome","adminAway","adminOdds","adminPick","adminKickoff","adminLeague"].forEach(id=>document.getElementById(id).value="");
+ await loadPredictions();
 }
-
 async function adminUpdateResult(id,value,button){
-  if(!currentIsAdmin){alert("Administrator access required.");return}
-  if(!id){alert("This prediction has no database ID, so it cannot be updated.");return}
-  button.disabled=true;
-  const update={status:value,result:value==="pending"?null:value};
-  const {error}=await db.from("predictions").update(update).eq("id",id);
-  button.disabled=false;
-  if(error){alert("Could not update result: "+error.message);return}
-  await loadPredictions();
-  const m=document.getElementById("adminMessage");if(m)m.textContent="Match result updated successfully.";
+ if(!currentIsAdmin){alert("Administrator access required.");return}
+ if(!id){alert("This prediction has no database ID, so it cannot be updated.");return}
+ button.disabled=true;const {error}=await db.from("predictions").update({status:value,result:value==="pending"?null:value}).eq("id",id);button.disabled=false;
+ if(error){alert("Could not update result: "+error.message);return}
+ await loadPredictions();const m=document.getElementById("adminMessage");if(m)m.textContent="Match result updated successfully.";
 }
-
 async function logOut(){
-  await db.auth.signOut();
-  currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
-  document.getElementById("headerButton").textContent="JOIN NOW";
-  document.getElementById("headerButton").classList.remove("hidden");
-  showWelcome();
+ if(announcementTimer)clearTimeout(announcementTimer);
+ announcementQueue=[];announcementShowing=false;document.getElementById("announcementOverlay").classList.add("hidden");
+ await db.auth.signOut();currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
+ document.getElementById("headerButton").textContent="JOIN NOW";document.getElementById("headerButton").classList.remove("hidden");showWelcome();
 }
-
 db.auth.onAuthStateChange((event)=>{
-  if(event==="PASSWORD_RECOVERY")showRecoveryForm();
-  if(event==="SIGNED_OUT"&&!recoveryInProgress){
-    currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
-    document.getElementById("headerButton").textContent="JOIN NOW";
-    document.getElementById("headerButton").classList.remove("hidden");
-    showWelcome();
-  }
+ if(event==="PASSWORD_RECOVERY")showRecoveryForm();
+ if(event==="SIGNED_OUT"&&!recoveryInProgress){
+  currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
+  document.getElementById("headerButton").textContent="JOIN NOW";document.getElementById("headerButton").classList.remove("hidden");showWelcome();
+ }
 });
-
 async function startApp(){
-  const params=new URLSearchParams(window.location.search);
-  const code=params.get("code");
-  if(code){
-    const {error}=await db.auth.exchangeCodeForSession(code);
-    if(error){showAuth("login");document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";return}
-    window.history.replaceState({},document.title,window.location.pathname);
-    showRecoveryForm();return;
-  }
-  if(window.location.hash.includes("type=recovery")){
-    const {data,error}=await db.auth.getSession();
-    if(error||!data.session){showAuth("login");document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";return}
-    showRecoveryForm();return;
-  }
+ const params=new URLSearchParams(window.location.search),code=params.get("code");
+ if(code){
+  const {error}=await db.auth.exchangeCodeForSession(code);
+  if(error){showAuth("login");document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";return}
+  window.history.replaceState({},document.title,window.location.pathname);showRecoveryForm();return;
+ }
+ if(window.location.hash.includes("type=recovery")){
   const {data,error}=await db.auth.getSession();
-  if(error){showWelcome();return}
-  if(data.session)await loadUser(data.session.user);
-  else showWelcome();
+  if(error||!data.session){showAuth("login");document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";return}
+  showRecoveryForm();return;
+ }
+ const {data,error}=await db.auth.getSession();if(error){showWelcome();return}
+ if(data.session)await loadUser(data.session.user);else showWelcome();
 }
 startApp();
 </script>
