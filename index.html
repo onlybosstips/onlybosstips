@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -583,17 +582,32 @@ function formatKickoff(v){
  if(Number.isNaN(d.getTime()))return"Time not set";
  return d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",hour12:true}).replace(/\s/g,"").toLowerCase();
 }
+
+/* AUTOMATIC LIVE MATCH STATUS */
 function getResult(item){
- const s=String(item.status||"").toLowerCase().trim(),r=String(item.result||"").toLowerCase().trim();
- if(s==="won"||r==="won")return{text:"WON",symbol:"✓",className:"result-won"};
- if(s==="lost"||r==="lost")return{text:"LOST",symbol:"×",className:"result-lost"};
- if(s==="void"||r==="void")return{text:"VOID",symbol:"−",className:"result-void"};
+ const s=String(item.status||"").toLowerCase().trim();
+ const r=String(item.result||"").toLowerCase().trim();
+
+ if(s==="won"||r==="won")
+  return{text:"WON",symbol:"✓",className:"result-won"};
+
+ if(s==="lost"||r==="lost")
+  return{text:"LOST",symbol:"×",className:"result-lost"};
+
+ if(s==="void"||r==="void")
+  return{text:"VOID",symbol:"−",className:"result-void"};
+
  if(item.kickoff){
-  const kick=new Date(item.kickoff),now=new Date();
-  if(!Number.isNaN(kick.getTime())&&localDateKey(kick)===localDateKey(now)&&kick<=now)return{text:"LIVE",symbol:"•",className:"result-live"};
+  const kick=new Date(item.kickoff);
+  const now=new Date();
+
+  if(!Number.isNaN(kick.getTime())&&kick<=now)
+   return{text:"LIVE",symbol:"•",className:"result-live"};
  }
+
  return{text:"PENDING",symbol:"",className:"result-awaiting"};
 }
+
 function calculateStreakStats(visibility){
  const settled=allPredictions.filter(p=>String(p.visibility||"free").toLowerCase()===visibility)
  .map(p=>({result:getResult(p).text,date:new Date(p.kickoff||p.created_at||0).getTime()}))
@@ -800,6 +814,21 @@ async function startApp(){
  if(data.session)await loadUser(data.session.user);else showWelcome();
 }
 startApp();
+
+/* AUTOMATIC LIVE STATUS REFRESH EVERY 30 SECONDS */
+setInterval(()=>{
+ const dashboard=document.getElementById("memberDashboard");
+
+ if(
+  currentUser&&
+  dashboard&&
+  !dashboard.classList.contains("hidden")
+ ){
+  renderAllPredictionViews();
+  updateWinningStreakDashboard();
+ }
+},30000);
+
 </script>
 </body>
 </html>
