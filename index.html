@@ -73,8 +73,43 @@ label{font-size:13px;color:#cbd0da}
 .responsible p{color:var(--muted);font-size:12px;line-height:1.8;margin:0}
 .member-responsible .responsible{margin:0;padding:0;border:0}
 .logout-bottom{margin-top:18px;padding:16px;width:100%;border:1px solid #743c3c;background:#291817;color:#ffb1a9;border-radius:9px}
-.selected-calendar-date{display:flex;align-items:center;gap:9px;margin:0 0 15px;padding:12px 14px;background:#102719;border:1px solid #285038;border-radius:9px;color:#8ce0a5;font-size:14px;font-weight:800;letter-spacing:.4px}
-.selected-calendar-date .calendar-icon{font-size:19px}
+
+/* PROFESSIONAL CALENDAR DATE */
+.selected-calendar-date{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ margin:0 0 15px;
+ padding:12px 14px;
+ background:linear-gradient(90deg,#102a1a,#0b1b11);
+ border:1px solid #285038;
+ border-radius:9px;
+ color:#e8fff0;
+ font-size:14px;
+ font-weight:700;
+ letter-spacing:.4px;
+ box-shadow:0 3px 12px #00000020;
+}
+.calendar-icon{
+ width:22px;
+ height:22px;
+ flex:0 0 22px;
+ color:var(--green);
+ stroke:currentColor;
+ fill:none;
+ stroke-width:1.7;
+ stroke-linecap:round;
+ stroke-linejoin:round;
+}
+.calendar-icon .calendar-page{
+ fill:#35e87918;
+ stroke:var(--green);
+}
+.calendar-icon .calendar-dots{
+ fill:var(--green);
+ stroke:none;
+}
+
 .prediction-controls{background:#0b1b11;border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0 20px}
 .date-tabs{display:flex;flex-wrap:nowrap;gap:8px;width:100%;padding:2px 0 12px}
 .date-tab{flex:1 1 0;min-width:0;white-space:nowrap;text-align:center;border:1px solid #31543c;background:#102719;color:#dce9df;padding:9px 5px;border-radius:7px;font-size:12px;font-weight:600}
@@ -238,7 +273,15 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 
 <h2 class="section-title gold">FREE ODDS</h2>
 <div class="selected-calendar-date">
-<span class="calendar-icon">📅</span>
+<svg class="calendar-icon" viewBox="0 0 24 24" aria-hidden="true">
+ <rect class="calendar-page" x="3" y="5" width="18" height="16" rx="2.2"/>
+ <path d="M8 3.5v4M16 3.5v4M3.5 10h17"/>
+ <circle class="calendar-dots" cx="8" cy="14" r="1"/>
+ <circle class="calendar-dots" cx="12" cy="14" r="1"/>
+ <circle class="calendar-dots" cx="16" cy="14" r="1"/>
+ <circle class="calendar-dots" cx="8" cy="17.5" r="1"/>
+ <circle class="calendar-dots" cx="12" cy="17.5" r="1"/>
+</svg>
 <span id="selectedCalendarDate">Today</span>
 </div>
 <p class="odds-intro">Daily match predictions and results</p>
@@ -482,7 +525,6 @@ async function loadUser(user){
 }
 
 // ANNOUNCEMENTS
-
 function closeAnnouncement(){
  document.getElementById("announcementOverlay").classList.add("hidden");
  announcementShowing=false;
