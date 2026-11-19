@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,7 +58,8 @@ label{font-size:13px;color:#cbd0da}
 .member-brand{font-size:clamp(23px,6vw,31px);font-weight:900;color:var(--green);letter-spacing:1px;margin:0}
 .member-tagline{font-size:9px;color:#91a397;letter-spacing:1.5px;margin-top:5px}
 .member-profile-row{display:flex;align-items:center;gap:12px;margin:14px 0}
-.member-avatar{width:43px;height:43px;min-width:43px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.member-avatar{width:43px;height:43px;min-width:43px;border-radius:50%;background:#fff;display:grid;place-items:center;position:relative}
+.member-avatar:after{content:"";position:absolute;width:11px;height:11px;right:-1px;bottom:0;background:#25e66b;border:2px solid #0d2116;border-radius:50%;box-shadow:0 0 7px #25e66b}
 .member-avatar svg{width:25px;height:25px;fill:#183c27}
 .member-email{color:#fff;font-size:13px;font-weight:bold;overflow-wrap:anywhere;margin:0}
 .member-email-label{font-size:10px;color:#a8b9ae;margin-top:4px}
@@ -71,6 +73,8 @@ label{font-size:13px;color:#cbd0da}
 .responsible p{color:var(--muted);font-size:12px;line-height:1.8;margin:0}
 .member-responsible .responsible{margin:0;padding:0;border:0}
 .logout-bottom{margin-top:18px;padding:16px;width:100%;border:1px solid #743c3c;background:#291817;color:#ffb1a9;border-radius:9px}
+.selected-calendar-date{display:flex;align-items:center;gap:9px;margin:0 0 15px;padding:12px 14px;background:#102719;border:1px solid #285038;border-radius:9px;color:#8ce0a5;font-size:14px;font-weight:800;letter-spacing:.4px}
+.selected-calendar-date .calendar-icon{font-size:19px}
 .prediction-controls{background:#0b1b11;border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0 20px}
 .date-tabs{display:flex;flex-wrap:nowrap;gap:8px;width:100%;padding:2px 0 12px}
 .date-tab{flex:1 1 0;min-width:0;white-space:nowrap;text-align:center;border:1px solid #31543c;background:#102719;color:#dce9df;padding:9px 5px;border-radius:7px;font-size:12px;font-weight:600}
@@ -115,51 +119,12 @@ footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--m
 .streak-stat strong.green{color:var(--green)}
 .streak-note{color:var(--muted);font-size:10px;line-height:1.5;margin:14px 0 0}
 
-/* COMPACT ANNOUNCEMENT POPUP */
-.announcement-overlay{
-position:fixed;
-inset:0;
-z-index:99999;
-background:#0006;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:15px;
-}
-.announcement-box{
-width:100%;
-max-width:400px;
-max-height:75vh;
-overflow-y:auto;
-background:#102719;
-border:2px solid var(--green);
-border-radius:15px;
-padding:25px;
-box-shadow:0 15px 60px #0008;
-position:relative;
-text-align:center;
-}
-.announcement-box h2{
-color:var(--green);
-margin:0 25px 15px;
-font-size:20px;
-}
-.announcement-box p{
-color:#fff;
-line-height:1.8;
-white-space:pre-wrap;
-overflow-wrap:anywhere;
-}
-.announcement-close{
-position:absolute;
-right:10px;
-top:10px;
-background:#291817;
-color:#fff;
-padding:7px 11px;
-border-radius:50%;
-font-size:20px;
-}
+/* ANNOUNCEMENT POPUP */
+.announcement-overlay{position:fixed;inset:0;z-index:99999;background:#0006;display:flex;align-items:center;justify-content:center;padding:15px}
+.announcement-box{width:100%;max-width:400px;max-height:75vh;overflow-y:auto;background:#102719;border:2px solid var(--green);border-radius:15px;padding:25px;box-shadow:0 15px 60px #0008;position:relative;text-align:center}
+.announcement-box h2{color:var(--green);margin:0 25px 15px;font-size:20px}
+.announcement-box p{color:#fff;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+.announcement-close{position:absolute;right:10px;top:10px;background:#291817;color:#fff;padding:7px 11px;border-radius:50%;font-size:20px}
 
 @media(max-width:500px){
 .admin-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}
@@ -265,13 +230,17 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <div class="member-tagline">✧ YOUR FOOTBALL PREDICTION HUB ✧</div>
 </div></div>
 <div class="member-profile-row">
-<div class="member-avatar" aria-label="Member profile icon"><svg viewBox="0 0 24 24"><path d="M12 12a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Zm0 2c-4.1 0-7.4 2.1-7.4 4.8V21h14.8v-2.2c0-2.7-3.3-4.8-7.4-4.8Z"/></svg></div>
+<div class="member-avatar" aria-label="Member profile icon with online indicator"><svg viewBox="0 0 24 24"><path d="M12 12a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Zm0 2c-4.1 0-7.4 2.1-7.4 4.8V21h14.8v-2.2c0-2.7-3.3-4.8-7.4-4.8Z"/></svg></div>
 <div><p id="memberEmail" class="member-email"></p><div class="member-email-label">MEMBER ACCOUNT</div></div>
 </div>
 <span id="memberBadge" class="badge">FREE MEMBER</span>
 </div>
 
 <h2 class="section-title gold">FREE ODDS</h2>
+<div class="selected-calendar-date">
+<span class="calendar-icon">📅</span>
+<span id="selectedCalendarDate">Today</span>
+</div>
 <p class="odds-intro">Daily match predictions and results</p>
 <div class="prediction-controls">
 <div class="date-tabs" id="dateTabs">
@@ -288,6 +257,7 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <button class="league-tab" data-league="afcon" onclick="selectLeague('afcon')">AFCON</button>
 <button class="league-tab" data-league="uefa" onclick="selectLeague('uefa')">UEFA</button>
 <button class="league-tab" data-league="world cup" onclick="selectLeague('world cup')">World Cup</button>
+<button class="league-tab" data-league="other leagues" onclick="selectLeague('other leagues')">Other Leagues</button>
 </div>
 </div>
 <div id="freePredictions"><p class="notice">Loading FREE predictions...</p></div>
@@ -364,7 +334,6 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <button class="logout-bottom" onclick="logOut()">LOG OUT</button>
 </section>
 
-<!-- ANNOUNCEMENT POPUP: X BUTTON ONLY -->
 <div id="announcementOverlay" class="announcement-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="announcementTitle">
 <div class="announcement-box">
 <button class="announcement-close" onclick="closeAnnouncement()" aria-label="Close announcement">×</button>
@@ -431,6 +400,7 @@ function showDashboard(){
  document.getElementById("adminDashboard").classList.toggle("hidden",!currentIsAdmin);
  updateMembershipPlanButtons();document.getElementById("membershipPaymentPanel").classList.add("hidden");
  document.getElementById("membershipButtonText").textContent="💎 VIEW MEMBERSHIP PLANS";
+ updateSelectedCalendarDate();
  loadPredictions();
  loadAnnouncements();
 }
@@ -511,55 +481,64 @@ async function loadUser(user){
  currentIsAdmin=!!admin;showDashboard();
 }
 
-// ANNOUNCEMENTS: X BUTTON ONLY
+// ANNOUNCEMENTS
 
 function closeAnnouncement(){
  document.getElementById("announcementOverlay").classList.add("hidden");
  announcementShowing=false;
  showNextAnnouncement();
 }
-
 function showNextAnnouncement(){
  if(announcementShowing||!announcementQueue.length||!currentUser)return;
-
  const announcement=announcementQueue.shift();
  announcementShowing=true;
-
  document.getElementById("announcementMessage").textContent=announcement.message;
  document.getElementById("announcementOverlay").classList.remove("hidden");
 }
-
 async function loadAnnouncements(){
  announcementQueue=[];
  announcementShowing=false;
  document.getElementById("announcementOverlay").classList.add("hidden");
-
- const {data,error}=await db
-  .from("member_announcements")
-  .select("id,message,created_at")
-  .eq("active",true)
-  .order("created_at",{ascending:false});
-
- if(error){
-  console.error("Announcement loading error:",error.message);
-  return;
- }
-
- announcementQueue=(data||[])
-  .filter(a=>a.message)
-  .map(a=>({id:a.id,message:a.message}));
-
+ const {data,error}=await db.from("member_announcements").select("id,message,created_at").eq("active",true).order("created_at",{ascending:false});
+ if(error){console.error("Announcement loading error:",error.message);return}
+ announcementQueue=(data||[]).filter(a=>a.message).map(a=>({id:a.id,message:a.message}));
  showNextAnnouncement();
 }
 
 function localDateKey(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function dateForSelection(choice){
- const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+(choice==="yesterday"?-1:choice==="tomorrow"?1:0));return localDateKey(d);
+ const d=new Date();d.setHours(0,0,0,0);
+ d.setDate(d.getDate()+(choice==="yesterday"?-1:choice==="tomorrow"?1:0));
+ return localDateKey(d);
 }
-function selectDate(choice){selectedDate=choice;document.querySelectorAll(".date-tab").forEach(b=>b.classList.toggle("active",b.dataset.date===choice));renderAllPredictionViews()}
-function selectLeague(league){selectedLeague=league;document.querySelectorAll(".league-tab").forEach(b=>b.classList.toggle("active",b.dataset.league===league));renderAllPredictionViews()}
+
+/* CALENDAR DATE DISPLAY */
+function updateSelectedCalendarDate(){
+ const element=document.getElementById("selectedCalendarDate");
+ if(!element)return;
+ const dateKey=dateForSelection(selectedDate);
+ const parts=dateKey.split("-").map(Number);
+ const date=new Date(parts[0],parts[1]-1,parts[2]);
+ element.textContent=date.toLocaleDateString("en-GB",{
+  weekday:"long",day:"numeric",month:"long",year:"numeric"
+ });
+}
+
+function selectDate(choice){
+ selectedDate=choice;
+ document.querySelectorAll(".date-tab").forEach(b=>b.classList.toggle("active",b.dataset.date===choice));
+ updateSelectedCalendarDate();
+ renderAllPredictionViews();
+}
+function selectLeague(league){
+ selectedLeague=league;
+ document.querySelectorAll(".league-tab").forEach(b=>b.classList.toggle("active",b.dataset.league===league));
+ renderAllPredictionViews();
+}
 function formatKickoff(v){
- if(!v)return"Time not set";const d=new Date(v);if(Number.isNaN(d.getTime()))return"Time not set";
+ if(!v)return"Time not set";
+ const d=new Date(v);
+ if(Number.isNaN(d.getTime()))return"Time not set";
  return d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit",hour12:true}).replace(/\s/g,"").toLowerCase();
 }
 function getResult(item){
@@ -567,7 +546,10 @@ function getResult(item){
  if(s==="won"||r==="won")return{text:"WON",symbol:"✓",className:"result-won"};
  if(s==="lost"||r==="lost")return{text:"LOST",symbol:"×",className:"result-lost"};
  if(s==="void"||r==="void")return{text:"VOID",symbol:"−",className:"result-void"};
- if(item.kickoff){const kick=new Date(item.kickoff),now=new Date();if(!Number.isNaN(kick.getTime())&&localDateKey(kick)===localDateKey(now)&&kick<=now)return{text:"LIVE",symbol:"•",className:"result-live"}}
+ if(item.kickoff){
+  const kick=new Date(item.kickoff),now=new Date();
+  if(!Number.isNaN(kick.getTime())&&localDateKey(kick)===localDateKey(now)&&kick<=now)return{text:"LIVE",symbol:"•",className:"result-live"};
+ }
  return{text:"PENDING",symbol:"",className:"result-awaiting"};
 }
 function calculateStreakStats(visibility){
@@ -595,34 +577,61 @@ function makePredictionTable(items){
  const table=document.createElement("table");table.className="prediction-table";
  const thead=document.createElement("thead"),hr=document.createElement("tr");
  ["MATCH","ODD","PREDICTION","TIME","OUTCOME"].forEach(t=>{const th=document.createElement("th");th.textContent=t;hr.appendChild(th)});
- thead.appendChild(hr);table.appendChild(thead);const tbody=document.createElement("tbody");
+ thead.appendChild(hr);table.appendChild(thead);
+ const tbody=document.createElement("tbody");
  items.forEach(p=>{
   const tr=document.createElement("tr"),match=document.createElement("td"),odd=document.createElement("td"),pred=document.createElement("td"),time=document.createElement("td"),outcome=document.createElement("td");
   match.className="club-name";match.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away");
-  odd.className="odd-value";odd.textContent=p.odds??"-";pred.className="prediction-value";pred.textContent=p.prediction||"-";time.textContent=formatKickoff(p.kickoff);
+  odd.className="odd-value";odd.textContent=p.odds??"-";
+  pred.className="prediction-value";pred.textContent=p.prediction||"-";
+  time.textContent=formatKickoff(p.kickoff);
   const r=getResult(p);outcome.className="outcome-cell "+r.className;
   const badge=document.createElement("span");badge.className="outcome-wrap";
   if(r.symbol){const circle=document.createElement("span");circle.className="outcome-circle";circle.textContent=r.symbol;badge.appendChild(circle)}
-  const label=document.createElement("span");label.textContent=r.text;badge.appendChild(label);outcome.appendChild(badge);
-  [match,odd,pred,time,outcome].forEach(td=>tr.appendChild(td));tbody.appendChild(tr);
+  const label=document.createElement("span");label.textContent=r.text;badge.appendChild(label);
+  outcome.appendChild(badge);
+  [match,odd,pred,time,outcome].forEach(td=>tr.appendChild(td));
+  tbody.appendChild(tr);
  });
  table.appendChild(tbody);wrap.appendChild(table);return wrap;
 }
 function renderPredictionGroup(box,items){
  box.replaceChildren();
- if(!items.length){const p=document.createElement("p");p.className="prediction-empty";p.textContent="No predictions available for this date and league.";box.appendChild(p);return}
+ if(!items.length){
+  const p=document.createElement("p");p.className="prediction-empty";
+  p.textContent="No predictions available for this date and league.";
+  box.appendChild(p);return;
+ }
  const group=document.createElement("div");group.className="prediction-group";
  const h=document.createElement("div");h.className="prediction-date";
- h.textContent=selectedDate.toUpperCase()+" — "+new Date(dateForSelection(selectedDate)+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+ const dateNames={yesterday:"Yesterday",today:"Today",tomorrow:"Tomorrow"};
+ const dateKey=dateForSelection(selectedDate);
+ const parts=dateKey.split("-").map(Number);
+ const date=new Date(parts[0],parts[1]-1,parts[2]);
+ h.textContent=(dateNames[selectedDate]||"Today")+" — "+date.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
  group.appendChild(h);group.appendChild(makePredictionTable(items));box.appendChild(group);
 }
+
+/* FILTERS INCLUDING OTHER LEAGUES */
 function filterItems(items){
  const target=dateForSelection(selectedDate);
+ const listedLeagues=[
+  "premier league",
+  "bundesliga",
+  "la liga",
+  "ligue 1",
+  "afcon",
+  "uefa",
+  "world cup"
+ ];
  return items.filter(p=>{
-  if(!p.kickoff)return false;const d=new Date(p.kickoff);
+  if(!p.kickoff)return false;
+  const d=new Date(p.kickoff);
   if(Number.isNaN(d.getTime())||localDateKey(d)!==target)return false;
-  if(selectedLeague!=="all"&&String(p.league||"").trim().toLowerCase()!==selectedLeague)return false;
-  return true;
+  const league=String(p.league||"").trim().toLowerCase();
+  if(selectedLeague==="all")return true;
+  if(selectedLeague==="other leagues")return league!==""&&!listedLeagues.includes(league);
+  return league===selectedLeague;
  });
 }
 function renderLocked(box,title,message){
@@ -643,22 +652,35 @@ function renderAllPredictionViews(){
 }
 async function loadPredictions(){
  const free=document.getElementById("freePredictions"),vip=document.getElementById("vipPredictions"),rollover=document.getElementById("rolloverPredictions");
- free.textContent="Loading FREE predictions...";vip.textContent="Loading VIP predictions...";rollover.textContent="Loading Rollover predictions...";
+ free.textContent="Loading FREE predictions...";
+ vip.textContent="Loading VIP predictions...";
+ rollover.textContent="Loading Rollover predictions...";
  const {data,error}=await db.from("predictions").select("*").order("kickoff",{ascending:true});
- if(error){free.textContent="Unable to load predictions. Please refresh.";vip.textContent="Unable to load VIP predictions.";rollover.textContent="Unable to load Rollover predictions.";return}
- allPredictions=data||[];renderAllPredictionViews();updateWinningStreakDashboard();if(currentIsAdmin)renderAdminPredictionList();
+ if(error){
+  free.textContent="Unable to load predictions. Please refresh.";
+  vip.textContent="Unable to load VIP predictions.";
+  rollover.textContent="Unable to load Rollover predictions.";
+  return;
+ }
+ allPredictions=data||[];
+ renderAllPredictionViews();
+ updateWinningStreakDashboard();
+ if(currentIsAdmin)renderAdminPredictionList();
 }
 function renderAdminPredictionList(){
  const box=document.getElementById("adminPredictionList");if(!box)return;box.replaceChildren();
  if(!allPredictions.length){box.textContent="No predictions have been added yet.";return}
  allPredictions.forEach(p=>{
   const item=document.createElement("div");item.className="admin-list-item";
-  const title=document.createElement("strong");title.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away")+" — "+String(p.visibility||"free").toUpperCase();
-  const details=document.createElement("p");details.className="muted";details.textContent="Odd: "+(p.odds??"-")+" | Pick: "+(p.prediction||"-")+" | Kickoff: "+formatKickoff(p.kickoff);
+  const title=document.createElement("strong");
+  title.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away")+" — "+String(p.visibility||"free").toUpperCase();
+  const details=document.createElement("p");details.className="muted";
+  details.textContent="Odd: "+(p.odds??"-")+" | Pick: "+(p.prediction||"-")+" | Kickoff: "+formatKickoff(p.kickoff);
   const select=document.createElement("select");select.setAttribute("aria-label","Set match outcome");
   ["pending","won","lost","void"].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v.toUpperCase();select.appendChild(o)});
   select.value=String(p.status||p.result||"pending").toLowerCase();
-  const save=document.createElement("button");save.textContent="SAVE RESULT";save.onclick=()=>adminUpdateResult(p.id,select.value,save);
+  const save=document.createElement("button");save.textContent="SAVE RESULT";
+  save.onclick=()=>adminUpdateResult(p.id,select.value,save);
   item.append(title,details,select,save);box.appendChild(item);
  });
 }
@@ -669,7 +691,9 @@ async function adminAddPrediction(){
  const odds=Number(document.getElementById("adminOdds").value),pick=document.getElementById("adminPick").value.trim();
  const kick=document.getElementById("adminKickoff").value,league=document.getElementById("adminLeague").value.trim();
  const visibility=document.getElementById("adminVisibility").value,status=document.getElementById("adminStatus").value;
- if(!home||!away||!pick||!kick||!Number.isFinite(odds)||odds<=1){m.textContent="Complete all fields and enter valid odds greater than 1.";return}
+ if(!home||!away||!pick||!kick||!Number.isFinite(odds)||odds<=1){
+  m.textContent="Complete all fields and enter valid odds greater than 1.";return;
+ }
  b.disabled=true;m.textContent="Publishing prediction...";
  const row={home_team:home,away_team:away,odds,prediction:pick,kickoff:new Date(kick).toISOString(),league,visibility,status,result:status==="pending"?null:status};
  const {error}=await db.from("predictions").insert([row]);b.disabled=false;
@@ -681,15 +705,21 @@ async function adminAddPrediction(){
 async function adminUpdateResult(id,value,button){
  if(!currentIsAdmin){alert("Administrator access required.");return}
  if(!id){alert("This prediction has no database ID, so it cannot be updated.");return}
- button.disabled=true;const {error}=await db.from("predictions").update({status:value,result:value==="pending"?null:value}).eq("id",id);button.disabled=false;
+ button.disabled=true;
+ const {error}=await db.from("predictions").update({status:value,result:value==="pending"?null:value}).eq("id",id);
+ button.disabled=false;
  if(error){alert("Could not update result: "+error.message);return}
- await loadPredictions();const m=document.getElementById("adminMessage");if(m)m.textContent="Match result updated successfully.";
+ await loadPredictions();
+ const m=document.getElementById("adminMessage");
+ if(m)m.textContent="Match result updated successfully.";
 }
 async function logOut(){
  announcementQueue=[];announcementShowing=false;
  document.getElementById("announcementOverlay").classList.add("hidden");
  await db.auth.signOut();currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
- document.getElementById("headerButton").textContent="JOIN NOW";document.getElementById("headerButton").classList.remove("hidden");showWelcome();
+ document.getElementById("headerButton").textContent="JOIN NOW";
+ document.getElementById("headerButton").classList.remove("hidden");
+ showWelcome();
 }
 db.auth.onAuthStateChange((event)=>{
  if(event==="PASSWORD_RECOVERY")showRecoveryForm();
@@ -697,22 +727,34 @@ db.auth.onAuthStateChange((event)=>{
   announcementQueue=[];announcementShowing=false;
   document.getElementById("announcementOverlay").classList.add("hidden");
   currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
-  document.getElementById("headerButton").textContent="JOIN NOW";document.getElementById("headerButton").classList.remove("hidden");showWelcome();
+  document.getElementById("headerButton").textContent="JOIN NOW";
+  document.getElementById("headerButton").classList.remove("hidden");
+  showWelcome();
  }
 });
 async function startApp(){
  const params=new URLSearchParams(window.location.search),code=params.get("code");
  if(code){
   const {error}=await db.auth.exchangeCodeForSession(code);
-  if(error){showAuth("login");document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";return}
-  window.history.replaceState({},document.title,window.location.pathname);showRecoveryForm();return;
+  if(error){
+   showAuth("login");
+   document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";
+   return;
+  }
+  window.history.replaceState({},document.title,window.location.pathname);
+  showRecoveryForm();return;
  }
  if(window.location.hash.includes("type=recovery")){
   const {data,error}=await db.auth.getSession();
-  if(error||!data.session){showAuth("login");document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";return}
+  if(error||!data.session){
+   showAuth("login");
+   document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";
+   return;
+  }
   showRecoveryForm();return;
  }
- const {data,error}=await db.auth.getSession();if(error){showWelcome();return}
+ const {data,error}=await db.auth.getSession();
+ if(error){showWelcome();return}
  if(data.session)await loadUser(data.session.user);else showWelcome();
 }
 startApp();
