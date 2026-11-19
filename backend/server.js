@@ -5,10 +5,6 @@ const { createClient } = require("@supabase/supabase-js");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// =====================================
-// CORS CONFIGURATION (NO CORS PACKAGE)
-// =====================================
-
 app.use((req, res, next) => {
   const allowedOrigins = [
     "https://onlybosstips.onrender.com"
@@ -20,11 +16,8 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", origin);
   }
 
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS"
-  );
-
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader(
     "Access-Control-Allow-Headers",
     "Content-Type, Authorization"
@@ -62,16 +55,53 @@ if (supabaseUrl && supabaseSecretKey) {
 }
 
 // =====================================
-// API-FOOTBALL CONFIGURATION
+// SPORTAPI CONFIGURATION
 // =====================================
 
-const footballApiKey = process.env.API_FOOTBALL_KEY;
+const sportApiKey = process.env.SPORTAPI_KEY;
+const sportApiUrl = "https://sportapi.ai/api";
 
-const footballApiUrl =
-  "https://v3.football.api-sports.io";
+async function sportApiRequest(endpoint) {
+  if (!sportApiKey) {
+    throw new Error("SPORTAPI_KEY is missing in Render.");
+  }
+
+  const response = await fetch(
+    `${sportApiUrl}${endpoint}`,
+    {
+      method: "GET",
+      headers: {
+        "X-Api-Key": sportApiKey
+      },
+      signal: AbortSignal.timeout(20000)
+    }
+  );
+
+  const responseText = await response.text();
+
+  let data;
+
+  try {
+    data = JSON.parse(responseText);
+  } catch {
+    throw new Error(
+      `SportAPI returned invalid JSON. HTTP ${response.status}`
+    );
+  }
+
+  if (!response.ok || data.success === false) {
+    throw new Error(
+      `SportAPI HTTP ${response.status}: ${
+        data.message || JSON.stringify(data.error || "Request failed")
+      }`
+    );
+  }
+
+  return data;
+}
 
 // =====================================
-// TEAM NAME HELPERS
+// GENERAL HELPERS
 // =====================================
 
 function normalizeTeam(name) {
@@ -88,71 +118,23 @@ function teamMatches(first, second) {
 
   if (!a || !b) return false;
 
-  return (
-    a === b ||
-    a.includes(b) ||
-    b.includes(a)
+  return a === b || a.includes(b) || b.includes(a);
+}
+
+function safeNumber(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function finalStatus(status) {
+  return ["FT", "AET", "PENS"].includes(
+    String(status || "").toUpperCase()
   );
 }
 
-// =====================================
-// API-FOOTBALL REQUEST HELPER
-// =====================================
-
-async function footballRequest(endpoint) {
-  if (!footballApiKey) {
-    throw new Error("API_FOOTBALL_KEY is missing in Render.");
-  }
-
-  try {
-    const response = await fetch(
-      `${footballApiUrl}${endpoint}`,
-      {
-        method: "GET",
-        headers: {
-          "x-apisports-key": footballApiKey
-        },
-        signal: AbortSignal.timeout(20000)
-      }
-    );
-
-    const responseText = await response.text();
-
-    let data;
-
-    try {
-      data = JSON.parse(responseText);
-    } catch {
-      console.error(
-        "API-Football returned invalid JSON. HTTP:",
-        response.status
-      );
-
-      throw new Error(
-        `API-Football returned invalid JSON. HTTP ${response.status}`
-      );
-    }
-
-    if (!response.ok || Object.keys(data.errors || {}).length > 0) {
-      console.error("API-Football diagnostic:", {
-        httpStatus: response.status,
-        errors: data.errors || {},
-        message: data.message || "No message returned"
-      });
-
-      throw new Error(
-        `API-Football HTTP ${response.status}: ${
-          JSON.stringify(data.errors || data.message)
-        }`
-      );
-    }
-
-    return data;
-
-  } catch (error) {
-    console.error("Football API error:", error.message);
-    throw error;
-  }
+function parseMinute(value) {
+  const match = String(value || "").match(/\d+/);
+  return match ? Number(match[0]) : 9999;
 }
 
 // =====================================
@@ -208,7 +190,6 @@ async function requireAdmin(req, res, next) {
     }
 
     req.adminUser = userData.user;
-
     next();
 
   } catch (error) {
@@ -222,19 +203,16 @@ async function requireAdmin(req, res, next) {
 }
 
 // =====================================
-// HOME ROUTE
+// HEALTH CHECKS
 // =====================================
 
 app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: "ONLYBOSSTIPS API is running."
+    message: "ONLYBOSSTIPS API is running.",
+    provider: "SportAPI"
   });
 });
-
-// =====================================
-// GENERAL HEALTH CHECK
-// =====================================
 
 app.get("/health", (req, res) => {
   res.json({
@@ -242,10 +220,6 @@ app.get("/health", (req, res) => {
     message: "ONLYBOSSTIPS backend is online."
   });
 });
-
-// =====================================
-// DATABASE HEALTH CHECK
-// =====================================
 
 app.get("/health/database", async (req, res) => {
   try {
@@ -261,14 +235,7 @@ app.get("/health/database", async (req, res) => {
       .select("id")
       .limit(1);
 
-    if (error) {
-      console.error("Database health error:", error.message);
-
-      return res.status(500).json({
-        success: false,
-        message: "Unable to verify database connection."
-      });
-    }
+    if (error) throw error;
 
     return res.json({
       success: true,
@@ -285,35 +252,29 @@ app.get("/health/database", async (req, res) => {
   }
 });
 
-// =====================================
-// API-FOOTBALL HEALTH CHECK
-// =====================================
-
 app.get("/health/football", async (req, res) => {
   try {
-    if (!footballApiKey) {
-      return res.status(500).json({
-        success: false,
-        message: "API_FOOTBALL_KEY is missing in Render."
-      });
-    }
+    const date = new Date().toISOString().slice(0, 10);
 
-    await footballRequest("/status");
+    const data = await sportApiRequest(
+      `/fixtures/date/${date}`
+    );
 
     return res.json({
       success: true,
-      message: "ONLYBOSSTIPS is connected to API-Football."
+      message: "ONLYBOSSTIPS is connected to SportAPI.",
+      provider: "SportAPI",
+      fixtures_returned: Array.isArray(data.data)
+        ? data.data.length
+        : 0
     });
 
   } catch (error) {
-    console.error(
-      "Football health check failed:",
-      error.message
-    );
+    console.error("SportAPI health check failed:", error.message);
 
     return res.status(502).json({
       success: false,
-      message: "Unable to verify API-Football connection.",
+      message: "Unable to verify SportAPI connection.",
       diagnostic: error.message
     });
   }
@@ -343,38 +304,36 @@ app.get("/fixtures/search", async (req, res) => {
       });
     }
 
-    const data = await footballRequest(
-      `/fixtures?date=${encodeURIComponent(date)}`
+    const data = await sportApiRequest(
+      `/fixtures/date/${encodeURIComponent(date)}`
     );
 
-    const fixtures = (data.response || [])
+    const fixtures = (data.data || [])
       .filter(item => {
         return (
-          teamMatches(item.teams.home.name, home) &&
-          teamMatches(item.teams.away.name, away)
+          teamMatches(item.home_team, home) &&
+          teamMatches(item.away_team, away)
         );
       })
       .map(item => ({
-        fixture_id: item.fixture.id,
-        date: item.fixture.date,
-        timezone: item.fixture.timezone,
-        status: item.fixture.status.short,
-        league: item.league.name,
-        country: item.league.country,
-        home_team: item.teams.home.name,
-        away_team: item.teams.away.name,
-        home_team_id: item.teams.home.id,
-        away_team_id: item.teams.away.id
+        fixture_id: item.id,
+        date: item.date,
+        kickoff_utc: item.kickoff_utc,
+        status: item.status,
+        minute: item.minute,
+        league: item.league_name,
+        home_team: item.home_team,
+        away_team: item.away_team,
+        home_team_id: item.home_id,
+        away_team_id: item.away_id,
+        home_score: item.home_score,
+        away_score: item.away_score
       }));
 
     return res.json({
       success: true,
-      message: "Possible fixtures found. Confirm the correct match before linking.",
-      requested: {
-        home,
-        away,
-        date
-      },
+      message: "Possible SportAPI fixtures found. Confirm the correct match before linking.",
+      requested: { home, away, date },
       count: fixtures.length,
       fixtures
     });
@@ -432,25 +391,22 @@ app.post(
         });
       }
 
-      const fixtureData = await footballRequest(
-        `/fixtures?id=${encodeURIComponent(fixtureId)}`
+      const fixtureData = await sportApiRequest(
+        `/fixtures/${encodeURIComponent(fixtureId)}`
       );
 
-      const fixture = fixtureData.response?.[0];
+      const fixture = fixtureData.fixture;
 
       if (!fixture) {
         return res.status(404).json({
           success: false,
-          message: "Fixture not found on API-Football."
+          message: "Fixture not found on SportAPI."
         });
       }
 
-      const homeTeam = fixture.teams.home.name;
-      const awayTeam = fixture.teams.away.name;
-
       if (
-        !teamMatches(prediction.home_team, homeTeam) ||
-        !teamMatches(prediction.away_team, awayTeam)
+        !teamMatches(prediction.home_team, fixture.home_team) ||
+        !teamMatches(prediction.away_team, fixture.away_team)
       ) {
         return res.status(400).json({
           success: false,
@@ -460,14 +416,16 @@ app.post(
             away: prediction.away_team
           },
           fixture: {
-            home: homeTeam,
-            away: awayTeam
+            home: fixture.home_team,
+            away: fixture.away_team
           }
         });
       }
 
       const predictionTime = new Date(prediction.kickoff).getTime();
-      const fixtureTime = new Date(fixture.fixture.date).getTime();
+      const fixtureTime = new Date(
+        fixture.kickoff_utc || fixture.datetime
+      ).getTime();
 
       if (
         !Number.isFinite(predictionTime) ||
@@ -492,39 +450,34 @@ app.post(
         });
       }
 
+      const update = {
+        api_fixture_id: fixture.id,
+        fixture_status: fixture.status,
+        tracking_updated_at: new Date().toISOString()
+      };
+
       const {
         data: updatedPrediction,
         error: updateError
       } = await supabase
         .from("predictions")
-        .update({
-          api_fixture_id: fixture.fixture.id,
-          fixture_status: fixture.fixture.status.short,
-          tracking_updated_at: new Date().toISOString()
-        })
+        .update(update)
         .eq("id", predictionId)
         .select()
         .single();
 
-      if (updateError) {
-        console.error("Fixture linking database error:", updateError.message);
-
-        return res.status(500).json({
-          success: false,
-          message: "Unable to save the fixture link."
-        });
-      }
+      if (updateError) throw updateError;
 
       return res.json({
         success: true,
         message: "Fixture successfully linked to prediction.",
         prediction: updatedPrediction,
         fixture: {
-          fixture_id: fixture.fixture.id,
-          home_team: homeTeam,
-          away_team: awayTeam,
-          kickoff: fixture.fixture.date,
-          status: fixture.fixture.status.short
+          fixture_id: fixture.id,
+          home_team: fixture.home_team,
+          away_team: fixture.away_team,
+          kickoff: fixture.kickoff_utc || fixture.datetime,
+          status: fixture.status
         }
       });
 
@@ -541,9 +494,591 @@ app.post(
 );
 
 // =====================================
+// MARKET SETTLEMENT HELPERS
+// =====================================
+
+function overUnderResult(actual, selection, line) {
+  if (actual === null || line === null) return null;
+
+  const choice = String(selection || "").toLowerCase();
+
+  if (choice.includes("over")) {
+    if (actual > line) return "won";
+    if (actual < line) return "lost";
+    return "void";
+  }
+
+  if (choice.includes("under")) {
+    if (actual < line) return "won";
+    if (actual > line) return "lost";
+    return "void";
+  }
+
+  return null;
+}
+
+function getTeamSide(prediction, type) {
+  const team = String(prediction.market_team || "").toLowerCase();
+
+  if (team === "home") return "home";
+  if (team === "away") return "away";
+
+  const lower = String(type || "").toLowerCase();
+
+  if (lower.includes("home")) return "home";
+  if (lower.includes("away")) return "away";
+
+  return null;
+}
+
+function getStat(stats, side, key) {
+  if (!stats || !stats[side]) return null;
+  return safeNumber(stats[side][key]);
+}
+
+function settlePrediction(prediction, fixture, events, stats) {
+  const category = String(
+    prediction.market_category || ""
+  ).toLowerCase();
+
+  const type = String(
+    prediction.market_type || ""
+  ).toLowerCase();
+
+  const selection = String(
+    prediction.market_selection || ""
+  ).toLowerCase().trim();
+
+  const line = safeNumber(prediction.market_line);
+
+  const home = safeNumber(fixture.home_score);
+  const away = safeNumber(fixture.away_score);
+
+  if (home === null || away === null) return null;
+
+  // FULL-TIME MATCH RESULT
+
+  if (
+    category.includes("match result") ||
+    type.includes("full time result") ||
+    type.includes("draw no bet")
+  ) {
+    const result = home > away ? "home" :
+      home < away ? "away" : "draw";
+
+    if (type.includes("draw no bet")) {
+      if (result === "draw") return "void";
+
+      const wanted = type.includes("away") ? "away" : "home";
+      return result === wanted ? "won" : "lost";
+    }
+
+    let wanted = null;
+
+    if (type.includes("home win")) wanted = "home";
+    else if (type.includes("away win")) wanted = "away";
+    else if (type.includes("draw")) wanted = "draw";
+    else if (selection.includes("home")) wanted = "home";
+    else if (selection.includes("away")) wanted = "away";
+    else if (selection.includes("draw")) wanted = "draw";
+
+    if (!wanted) return null;
+
+    return result === wanted ? "won" : "lost";
+  }
+
+  // DOUBLE CHANCE
+
+  if (category.includes("double chance")) {
+    const result = home > away ? "home" :
+      home < away ? "away" : "draw";
+
+    if (
+      selection.includes("1x") ||
+      type.includes("home or draw")
+    ) {
+      return ["home", "draw"].includes(result) ? "won" : "lost";
+    }
+
+    if (
+      selection.includes("x2") ||
+      type.includes("draw or away")
+    ) {
+      return ["draw", "away"].includes(result) ? "won" : "lost";
+    }
+
+    if (
+      selection.includes("12") ||
+      type.includes("home or away")
+    ) {
+      return result !== "draw" ? "won" : "lost";
+    }
+
+    return null;
+  }
+
+  // BOTH TEAMS TO SCORE
+
+  if (
+    category.includes("both teams to score") ||
+    type.includes("both teams to score") ||
+    type.includes("btts")
+  ) {
+    const bothScored = home > 0 && away > 0;
+
+    const wantsYes =
+      selection.includes("yes") ||
+      type.includes("yes");
+
+    const wantsNo =
+      selection.includes("no") ||
+      type.includes("no");
+
+    if (wantsYes) return bothScored ? "won" : "lost";
+    if (wantsNo) return bothScored ? "lost" : "won";
+
+    return null;
+  }
+
+  // TOTAL AND TEAM GOALS
+
+  if (
+    category.includes("goals") ||
+    type.includes("total goals") ||
+    type.includes("team goals")
+  ) {
+    if (line === null) return null;
+
+    let actual = null;
+
+    if (type.includes("home team goals")) actual = home;
+    else if (type.includes("away team goals")) actual = away;
+    else actual = home + away;
+
+    return overUnderResult(actual, selection, line);
+  }
+
+  // HALF-TIME MARKETS
+
+  if (
+    category.includes("half time") ||
+    type.includes("half time")
+  ) {
+    const htHome = safeNumber(fixture.ht_home);
+    const htAway = safeNumber(fixture.ht_away);
+
+    if (htHome === null || htAway === null) return null;
+
+    if (type.includes("half time result")) {
+      const result = htHome > htAway ? "home" :
+        htHome < htAway ? "away" : "draw";
+
+      const wanted = type.includes("home") ? "home" :
+        type.includes("away") ? "away" :
+        type.includes("draw") ? "draw" : selection;
+
+      if (!["home", "away", "draw"].includes(wanted)) return null;
+
+      return result === wanted ? "won" : "lost";
+    }
+
+    if (type.includes("half time goals")) {
+      if (line === null) return null;
+
+      return overUnderResult(
+        htHome + htAway,
+        selection,
+        line
+      );
+    }
+
+    return null;
+  }
+
+  // CORRECT SCORE
+
+  if (category.includes("correct score") || type.includes("correct score")) {
+    const scoreMatch = selection.match(/(\d+)\s*[-:]\s*(\d+)/);
+
+    if (!scoreMatch) return null;
+
+    const wantedHome = Number(scoreMatch[1]);
+    const wantedAway = Number(scoreMatch[2]);
+
+    return home === wantedHome && away === wantedAway
+      ? "won"
+      : "lost";
+  }
+
+  // TEAM STATISTICS
+
+  if (!stats || !stats.available || !stats.data) {
+    return null;
+  }
+
+  const statMarkets = [
+    {
+      words: ["foul"],
+      category: "foul",
+      key: "fouls",
+      total: true
+    },
+    {
+      words: ["yellow card"],
+      category: "card",
+      key: "yellow_cards",
+      total: true
+    },
+    {
+      words: ["shot on target"],
+      category: "shot",
+      key: "shots_on_target",
+      total: true
+    },
+    {
+      words: ["total shots", "team shots"],
+      category: "shot",
+      key: "shots",
+      total: true
+    },
+    {
+      words: ["saves"],
+      category: "goalkeeper",
+      key: "saves",
+      total: true
+    }
+  ];
+
+  for (const market of statMarkets) {
+    const matchesMarket =
+      market.words.some(word => type.includes(word)) ||
+      category.includes(market.category);
+
+    if (!matchesMarket) continue;
+
+    if (line === null) return null;
+
+    const side = getTeamSide(prediction, type);
+
+    if (side) {
+      const actual = getStat(stats.data, side, market.key);
+      return overUnderResult(actual, selection, line);
+    }
+
+    const homeValue = getStat(stats.data, "home", market.key);
+    const awayValue = getStat(stats.data, "away", market.key);
+
+    if (homeValue === null || awayValue === null) return null;
+
+    return overUnderResult(
+      homeValue + awayValue,
+      selection,
+      line
+    );
+  }
+
+  // PLAYER GOAL MARKETS: ONLY ANYTIME SCORER
+
+  if (
+    category.includes("player goals") &&
+    type.includes("anytime goalscorer")
+  ) {
+    const playerName = String(
+      prediction.player_name || prediction.market_selection || ""
+    ).trim().toLowerCase();
+
+    if (!playerName || !Array.isArray(events)) return null;
+
+    const scored = events.some(event =>
+      String(event.event_type || "").toLowerCase() === "goal" &&
+      String(event.player_name || "").trim().toLowerCase() === playerName
+    );
+
+    return scored ? "won" : "lost";
+  }
+
+  // PLAYER CARD MARKETS
+
+  if (
+    category.includes("player cards") &&
+    type.includes("player to receive a card")
+  ) {
+    const playerName = String(
+      prediction.player_name || prediction.market_selection || ""
+    ).trim().toLowerCase();
+
+    if (!playerName || !Array.isArray(events)) return null;
+
+    const booked = events.some(event => {
+      const eventType = String(event.event_type || "").toLowerCase();
+
+      return (
+        eventType.includes("card") &&
+        String(event.player_name || "").trim().toLowerCase() === playerName
+      );
+    });
+
+    return booked ? "won" : "lost";
+  }
+
+  // FIRST SUBSTITUTION TEAM
+
+  if (
+    category.includes("substitutions") &&
+    type.includes("team to make first substitution")
+  ) {
+    if (!Array.isArray(events)) return null;
+
+    const substitutions = events
+      .filter(event =>
+        String(event.event_type || "").toLowerCase().includes("substitution")
+      )
+      .sort((a, b) => parseMinute(a.minute) - parseMinute(b.minute));
+
+    if (!substitutions.length) return null;
+
+    const firstSide = String(
+      substitutions[0].team_side || ""
+    ).toLowerCase();
+
+    if (!["home", "away"].includes(firstSide)) return null;
+
+    const wanted = selection.includes("home") ? "home" :
+      selection.includes("away") ? "away" : null;
+
+    if (!wanted) return null;
+
+    return firstSide === wanted ? "won" : "lost";
+  }
+
+  // CORNERS AND UNSUPPORTED MARKETS
+  // These remain pending for manual review.
+
+  return null;
+}
+
+// =====================================
+// AUTOMATIC MATCH TRACKING
+// =====================================
+
+let trackingBusy = false;
+
+async function trackPredictions() {
+  if (!supabase || !sportApiKey || trackingBusy) return;
+
+  trackingBusy = true;
+
+  try {
+    const {
+      data: predictions,
+      error
+    } = await supabase
+      .from("predictions")
+      .select("*")
+      .eq("status", "pending")
+      .not("api_fixture_id", "is", null)
+      .limit(200);
+
+    if (error) throw error;
+
+    if (!predictions || !predictions.length) return;
+
+    const now = Date.now();
+
+    const activePredictions = predictions.filter(prediction => {
+      const kickoff = new Date(prediction.kickoff).getTime();
+
+      if (!Number.isFinite(kickoff)) return false;
+
+      const alreadyFinal = finalStatus(prediction.fixture_status);
+
+      return !alreadyFinal && kickoff <= now + 30 * 60 * 1000;
+    });
+
+    if (!activePredictions.length) return;
+
+    // One daily fixture request can cover several predictions.
+
+    const dateGroups = new Map();
+
+    for (const prediction of activePredictions) {
+      const date = new Date(prediction.kickoff)
+        .toISOString()
+        .slice(0, 10);
+
+      if (!dateGroups.has(date)) {
+        dateGroups.set(date, []);
+      }
+
+      dateGroups.get(date).push(prediction);
+    }
+
+    for (const [date, group] of dateGroups) {
+      try {
+        const dailyData = await sportApiRequest(
+          `/fixtures/date/${date}`
+        );
+
+        const fixtures = dailyData.data || [];
+
+        for (const prediction of group) {
+          const fixture = fixtures.find(item =>
+            String(item.id) === String(prediction.api_fixture_id)
+          );
+
+          if (!fixture) continue;
+
+          const status = String(fixture.status || "").toUpperCase();
+
+          const update = {
+            fixture_status: fixture.status,
+            home_score: safeNumber(fixture.home_score),
+            away_score: safeNumber(fixture.away_score),
+            tracking_updated_at: new Date().toISOString()
+          };
+
+          // Save live score and status without changing prediction result.
+
+          if (!finalStatus(status)) {
+            const { error: liveError } = await supabase
+              .from("predictions")
+              .update(update)
+              .eq("id", prediction.id);
+
+            if (liveError) {
+              console.error("Live update error:", liveError.message);
+            }
+
+            continue;
+          }
+
+          // A cancelled fixture is void.
+          // A postponed or suspended fixture is not automatically void.
+
+          if (status === "CANCELLED") {
+            const { error: voidError } = await supabase
+              .from("predictions")
+              .update({
+                ...update,
+                status: "void",
+                result: "Fixture cancelled"
+              })
+              .eq("id", prediction.id);
+
+            if (voidError) {
+              console.error("Void update error:", voidError.message);
+            }
+
+            continue;
+          }
+
+          // Retrieve detailed final match data.
+
+          const [
+            detailResult,
+            eventsResult,
+            statsResult
+          ] = await Promise.allSettled([
+            sportApiRequest(`/fixtures/${fixture.id}`),
+            sportApiRequest(`/fixtures/${fixture.id}/events`),
+            sportApiRequest(`/fixtures/${fixture.id}/stats`)
+          ]);
+
+          const detail = detailResult.status === "fulfilled"
+            ? detailResult.value.fixture || fixture
+            : fixture;
+
+          const events = eventsResult.status === "fulfilled"
+            ? eventsResult.value.data || []
+            : null;
+
+          const stats = statsResult.status === "fulfilled"
+            ? statsResult.value
+            : null;
+
+          const outcome = settlePrediction(
+            prediction,
+            detail,
+            events,
+            stats
+          );
+
+          const statistics = {
+            provider: "SportAPI",
+            fixture_id: fixture.id,
+            events_available: Array.isArray(events),
+            stats_available: Boolean(stats && stats.available),
+            settlement_checked_at: new Date().toISOString(),
+            settlement: outcome || "manual_review_required"
+          };
+
+          const finalUpdate = {
+            ...update,
+            half_time_home_score: safeNumber(detail.ht_home),
+            half_time_away_score: safeNumber(detail.ht_away),
+            statistics
+          };
+
+          if (outcome) {
+            finalUpdate.status = outcome;
+            finalUpdate.result = outcome.toUpperCase();
+          }
+
+          const { error: finalError } = await supabase
+            .from("predictions")
+            .update(finalUpdate)
+            .eq("id", prediction.id);
+
+          if (finalError) {
+            console.error("Final settlement error:", finalError.message);
+          } else if (outcome) {
+            console.log(
+              `Prediction ${prediction.id} settled: ${outcome}`
+            );
+          } else {
+            console.log(
+              `Prediction ${prediction.id} requires manual review.`
+            );
+          }
+        }
+
+      } catch (error) {
+        console.error(
+          `Tracking error for ${date}:`,
+          error.message
+        );
+      }
+    }
+
+  } catch (error) {
+    console.error("Automatic tracking error:", error.message);
+
+  } finally {
+    trackingBusy = false;
+  }
+}
+
+// Run tracking every three minutes.
+// Predictions are grouped by fixture date to reduce API requests.
+
+setInterval(trackPredictions, 3 * 60 * 1000);
+
+// =====================================
 // START SERVER
 // =====================================
 
 app.listen(PORT, () => {
   console.log(`ONLYBOSSTIPS API running on port ${PORT}`);
+  console.log("Football provider: SportAPI");
+
+  if (!sportApiKey) {
+    console.error("WARNING: SPORTAPI_KEY is missing.");
+  }
+
+  if (!supabase) {
+    console.error("WARNING: Supabase is not configured.");
+  }
+
+  // Start the first tracking check after the server starts.
+  setTimeout(trackPredictions, 15000);
 });
