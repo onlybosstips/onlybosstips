@@ -281,7 +281,7 @@ app.get("/health/football", async (req, res) => {
 });
 
 // =====================================
-// FIXTURE SEARCH
+// FIXTURE SEARCH - DIAGNOSTIC VERSION
 // =====================================
 
 app.get("/fixtures/search", async (req, res) => {
@@ -308,34 +308,70 @@ app.get("/fixtures/search", async (req, res) => {
       `/fixtures/date/${encodeURIComponent(date)}`
     );
 
-    const fixtures = (data.data || [])
-      .filter(item => {
-        return (
-          teamMatches(item.home_team, home) &&
-          teamMatches(item.away_team, away)
-        );
-      })
-      .map(item => ({
-        fixture_id: item.id,
-        date: item.date,
-        kickoff_utc: item.kickoff_utc,
-        status: item.status,
-        minute: item.minute,
-        league: item.league_name,
-        home_team: item.home_team,
-        away_team: item.away_team,
-        home_team_id: item.home_id,
-        away_team_id: item.away_id,
-        home_score: item.home_score,
-        away_score: item.away_score
-      }));
+    const fixtures = Array.isArray(data.data)
+      ? data.data
+      : [];
+
+    console.log("SPORTAPI FIXTURE SEARCH");
+    console.log("Requested date:", date);
+    console.log("Response keys:", Object.keys(data));
+    console.log("Total fixtures returned:", fixtures.length);
+
+    console.log(
+      "First five fixtures:",
+      JSON.stringify(
+        fixtures.slice(0, 5).map(item => ({
+          id: item.id,
+          home_team: item.home_team,
+          away_team: item.away_team,
+          date: item.date,
+          kickoff_utc: item.kickoff_utc
+        })),
+        null,
+        2
+      )
+    );
+
+    const matches = fixtures.filter(item => {
+      return (
+        teamMatches(item.home_team, home) &&
+        teamMatches(item.away_team, away)
+      );
+    });
+
+    const results = matches.map(item => ({
+      fixture_id: item.id,
+      date: item.date,
+      kickoff_utc: item.kickoff_utc,
+      status: item.status,
+      minute: item.minute,
+      league: item.league_name,
+      home_team: item.home_team,
+      away_team: item.away_team,
+      home_team_id: item.home_id,
+      away_team_id: item.away_id,
+      home_score: item.home_score,
+      away_score: item.away_score
+    }));
 
     return res.json({
       success: true,
-      message: "Possible SportAPI fixtures found. Confirm the correct match before linking.",
-      requested: { home, away, date },
-      count: fixtures.length,
-      fixtures
+      diagnostic: true,
+      requested: {
+        home,
+        away,
+        date
+      },
+      sportapi_response_keys: Object.keys(data),
+      total_fixtures_returned: fixtures.length,
+      matching_fixtures: results.length,
+      sample_fixtures: fixtures.slice(0, 5).map(item => ({
+        id: item.id,
+        home_team: item.home_team,
+        away_team: item.away_team,
+        date: item.date
+      })),
+      fixtures: results
     });
 
   } catch (error) {
