@@ -5,6 +5,10 @@ const { createClient } = require("@supabase/supabase-js");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// =====================================
+// CORS
+// =====================================
+
 app.use((req, res, next) => {
   const allowedOrigins = [
     "https://onlybosstips.onrender.com"
@@ -122,6 +126,10 @@ function teamMatches(first, second) {
 }
 
 function safeNumber(value) {
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
 }
@@ -144,6 +152,8 @@ function parseMinute(value) {
 async function requireAdmin(req, res, next) {
   try {
     if (!supabase) {
+      console.error("ADMIN AUTH: Supabase is not configured.");
+
       return res.status(500).json({
         success: false,
         message: "Database connection is not configured."
@@ -153,25 +163,43 @@ async function requireAdmin(req, res, next) {
     const authorization = req.headers.authorization || "";
 
     if (!authorization.startsWith("Bearer ")) {
+      console.error("ADMIN AUTH: Missing bearer token.");
+
       return res.status(401).json({
         success: false,
         message: "Admin authentication required."
       });
     }
 
-    const token = authorization.substring(7);
+    const token = authorization.substring(7).trim();
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Admin authentication required."
+      });
+    }
+
+    // Verify the user's Supabase login token.
 
     const {
       data: userData,
       error: userError
     } = await supabase.auth.getUser(token);
 
-    if (userError || !userData.user) {
+    if (userError || !userData || !userData.user) {
+      console.error("ADMIN TOKEN VERIFICATION FAILED:", {
+        message: userError?.message || "No user returned",
+        code: userError?.code || null
+      });
+
       return res.status(401).json({
         success: false,
         message: "Invalid or expired login session."
       });
     }
+
+    // Check whether the authenticated user exists in admins.
 
     const {
       data: admin,
@@ -182,18 +210,42 @@ async function requireAdmin(req, res, next) {
       .eq("user_id", userData.user.id)
       .maybeSingle();
 
-    if (adminError || !admin) {
+    if (adminError) {
+      console.error("ADMIN TABLE LOOKUP FAILED:", {
+        message: adminError.message,
+        code: adminError.code,
+        details: adminError.details,
+        hint: adminError.hint
+      });
+
+      return res.status(500).json({
+        success: false,
+        message: "Unable to check administrator record."
+      });
+    }
+
+    if (!admin) {
+      console.error(
+        "ADMIN RECORD NOT FOUND FOR AUTHENTICATED USER."
+      );
+
       return res.status(403).json({
         success: false,
         message: "Administrator access denied."
       });
     }
 
+    console.log("ADMIN AUTHENTICATION SUCCESSFUL.");
+
     req.adminUser = userData.user;
-    next();
+
+    return next();
 
   } catch (error) {
-    console.error("Admin authentication error:", error.message);
+    console.error(
+      "Admin authentication error:",
+      error.message
+    );
 
     return res.status(500).json({
       success: false,
@@ -281,7 +333,7 @@ app.get("/health/football", async (req, res) => {
 });
 
 // =====================================
-// FIXTURE SEARCH - DIAGNOSTIC VERSION
+// FIXTURE SEARCH
 // =====================================
 
 app.get("/fixtures/search", async (req, res) => {
@@ -413,7 +465,19 @@ app.post(
         .eq("id", predictionId)
         .maybeSingle();
 
-      if (predictionError || !prediction) {
+      if (predictionError) {
+        console.error(
+          "PREDICTION LOOKUP ERROR:",
+          predictionError.message
+        );
+
+        return res.status(500).json({
+          success: false,
+          message: "Unable to retrieve prediction."
+        });
+      }
+
+      if (!prediction) {
         return res.status(404).json({
           success: false,
           message: "Prediction not found."
@@ -458,7 +522,10 @@ app.post(
         });
       }
 
-      const predictionTime = new Date(prediction.kickoff).getTime();
+      const predictionTime = new Date(
+        prediction.kickoff
+      ).getTime();
+
       const fixtureTime = new Date(
         fixture.kickoff_utc || fixture.datetime
       ).getTime();
@@ -503,6 +570,10 @@ app.post(
         .single();
 
       if (updateError) throw updateError;
+
+      console.log(
+        `Fixture ${fixture.id} linked to prediction ${predictionId}.`
+      );
 
       return res.json({
         success: true,
@@ -554,7 +625,9 @@ function overUnderResult(actual, selection, line) {
 }
 
 function getTeamSide(prediction, type) {
-  const team = String(prediction.market_team || "").toLowerCase();
+  const team = String(
+    prediction.market_team || ""
+  ).toLowerCase();
 
   if (team === "home") return "home";
   if (team === "away") return "away";
@@ -569,6 +642,7 @@ function getTeamSide(prediction, type) {
 
 function getStat(stats, side, key) {
   if (!stats || !stats[side]) return null;
+
   return safeNumber(stats[side][key]);
 }
 
@@ -606,6 +680,7 @@ function settlePrediction(prediction, fixture, events, stats) {
       if (result === "draw") return "void";
 
       const wanted = type.includes("away") ? "away" : "home";
+
       return result === wanted ? "won" : "lost";
     }
 
@@ -676,6 +751,27 @@ function settlePrediction(prediction, fixture, events, stats) {
     return null;
   }
 
+  // PLAYER GOAL MARKETS
+  // This must come before general goals markets.
+
+  if (
+    category.includes("player goals") &&
+    type.includes("anytime goalscorer")
+  ) {
+    const playerName = String(
+      prediction.player_name || prediction.market_selection || ""
+    ).trim().toLowerCase();
+
+    if (!playerName || !Array.isArray(events)) return null;
+
+    const scored = events.some(event =>
+      String(event.event_type || "").toLowerCase() === "goal" &&
+      String(event.player_name || "").trim().toLowerCase() === playerName
+    );
+
+    return scored ? "won" : "lost";
+  }
+
   // TOTAL AND TEAM GOALS
 
   if (
@@ -687,9 +783,13 @@ function settlePrediction(prediction, fixture, events, stats) {
 
     let actual = null;
 
-    if (type.includes("home team goals")) actual = home;
-    else if (type.includes("away team goals")) actual = away;
-    else actual = home + away;
+    if (type.includes("home team goals")) {
+      actual = home;
+    } else if (type.includes("away team goals")) {
+      actual = away;
+    } else {
+      actual = home + away;
+    }
 
     return overUnderResult(actual, selection, line);
   }
@@ -713,7 +813,9 @@ function settlePrediction(prediction, fixture, events, stats) {
         type.includes("away") ? "away" :
         type.includes("draw") ? "draw" : selection;
 
-      if (!["home", "away", "draw"].includes(wanted)) return null;
+      if (!["home", "away", "draw"].includes(wanted)) {
+        return null;
+      }
 
       return result === wanted ? "won" : "lost";
     }
@@ -733,7 +835,10 @@ function settlePrediction(prediction, fixture, events, stats) {
 
   // CORRECT SCORE
 
-  if (category.includes("correct score") || type.includes("correct score")) {
+  if (
+    category.includes("correct score") ||
+    type.includes("correct score")
+  ) {
     const scoreMatch = selection.match(/(\d+)\s*[-:]\s*(\d+)/);
 
     if (!scoreMatch) return null;
@@ -798,6 +903,7 @@ function settlePrediction(prediction, fixture, events, stats) {
 
     if (side) {
       const actual = getStat(stats.data, side, market.key);
+
       return overUnderResult(actual, selection, line);
     }
 
@@ -813,26 +919,6 @@ function settlePrediction(prediction, fixture, events, stats) {
     );
   }
 
-  // PLAYER GOAL MARKETS: ONLY ANYTIME SCORER
-
-  if (
-    category.includes("player goals") &&
-    type.includes("anytime goalscorer")
-  ) {
-    const playerName = String(
-      prediction.player_name || prediction.market_selection || ""
-    ).trim().toLowerCase();
-
-    if (!playerName || !Array.isArray(events)) return null;
-
-    const scored = events.some(event =>
-      String(event.event_type || "").toLowerCase() === "goal" &&
-      String(event.player_name || "").trim().toLowerCase() === playerName
-    );
-
-    return scored ? "won" : "lost";
-  }
-
   // PLAYER CARD MARKETS
 
   if (
@@ -846,7 +932,9 @@ function settlePrediction(prediction, fixture, events, stats) {
     if (!playerName || !Array.isArray(events)) return null;
 
     const booked = events.some(event => {
-      const eventType = String(event.event_type || "").toLowerCase();
+      const eventType = String(
+        event.event_type || ""
+      ).toLowerCase();
 
       return (
         eventType.includes("card") &&
@@ -867,9 +955,13 @@ function settlePrediction(prediction, fixture, events, stats) {
 
     const substitutions = events
       .filter(event =>
-        String(event.event_type || "").toLowerCase().includes("substitution")
+        String(event.event_type || "")
+          .toLowerCase()
+          .includes("substitution")
       )
-      .sort((a, b) => parseMinute(a.minute) - parseMinute(b.minute));
+      .sort((a, b) =>
+        parseMinute(a.minute) - parseMinute(b.minute)
+      );
 
     if (!substitutions.length) return null;
 
@@ -922,25 +1014,32 @@ async function trackPredictions() {
     const now = Date.now();
 
     const activePredictions = predictions.filter(prediction => {
-      const kickoff = new Date(prediction.kickoff).getTime();
+      const kickoff = new Date(
+        prediction.kickoff
+      ).getTime();
 
       if (!Number.isFinite(kickoff)) return false;
 
-      const alreadyFinal = finalStatus(prediction.fixture_status);
+      const alreadyFinal = finalStatus(
+        prediction.fixture_status
+      );
 
-      return !alreadyFinal && kickoff <= now + 30 * 60 * 1000;
+      return (
+        !alreadyFinal &&
+        kickoff <= now + 30 * 60 * 1000
+      );
     });
 
     if (!activePredictions.length) return;
 
-    // One daily fixture request can cover several predictions.
+    // Group predictions by fixture date.
 
     const dateGroups = new Map();
 
     for (const prediction of activePredictions) {
-      const date = new Date(prediction.kickoff)
-        .toISOString()
-        .slice(0, 10);
+      const date = new Date(
+        prediction.kickoff
+      ).toISOString().slice(0, 10);
 
       if (!dateGroups.has(date)) {
         dateGroups.set(date, []);
@@ -955,7 +1054,9 @@ async function trackPredictions() {
           `/fixtures/date/${date}`
         );
 
-        const fixtures = dailyData.data || [];
+        const fixtures = Array.isArray(dailyData.data)
+          ? dailyData.data
+          : [];
 
         for (const prediction of group) {
           const fixture = fixtures.find(item =>
@@ -964,7 +1065,9 @@ async function trackPredictions() {
 
           if (!fixture) continue;
 
-          const status = String(fixture.status || "").toUpperCase();
+          const status = String(
+            fixture.status || ""
+          ).toUpperCase();
 
           const update = {
             fixture_status: fixture.status,
@@ -973,23 +1076,7 @@ async function trackPredictions() {
             tracking_updated_at: new Date().toISOString()
           };
 
-          // Save live score and status without changing prediction result.
-
-          if (!finalStatus(status)) {
-            const { error: liveError } = await supabase
-              .from("predictions")
-              .update(update)
-              .eq("id", prediction.id);
-
-            if (liveError) {
-              console.error("Live update error:", liveError.message);
-            }
-
-            continue;
-          }
-
-          // A cancelled fixture is void.
-          // A postponed or suspended fixture is not automatically void.
+          // CANCELLED FIXTURES ARE VOID.
 
           if (status === "CANCELLED") {
             const { error: voidError } = await supabase
@@ -1002,7 +1089,32 @@ async function trackPredictions() {
               .eq("id", prediction.id);
 
             if (voidError) {
-              console.error("Void update error:", voidError.message);
+              console.error(
+                "Void update error:",
+                voidError.message
+              );
+            } else {
+              console.log(
+                `Prediction ${prediction.id} marked void: fixture cancelled.`
+              );
+            }
+
+            continue;
+          }
+
+          // Save live scores without changing prediction result.
+
+          if (!finalStatus(status)) {
+            const { error: liveError } = await supabase
+              .from("predictions")
+              .update(update)
+              .eq("id", prediction.id);
+
+            if (liveError) {
+              console.error(
+                "Live update error:",
+                liveError.message
+              );
             }
 
             continue;
@@ -1066,7 +1178,10 @@ async function trackPredictions() {
             .eq("id", prediction.id);
 
           if (finalError) {
-            console.error("Final settlement error:", finalError.message);
+            console.error(
+              "Final settlement error:",
+              finalError.message
+            );
           } else if (outcome) {
             console.log(
               `Prediction ${prediction.id} settled: ${outcome}`
@@ -1087,24 +1202,34 @@ async function trackPredictions() {
     }
 
   } catch (error) {
-    console.error("Automatic tracking error:", error.message);
+    console.error(
+      "Automatic tracking error:",
+      error.message
+    );
 
   } finally {
     trackingBusy = false;
   }
 }
 
-// Run tracking every three minutes.
-// Predictions are grouped by fixture date to reduce API requests.
+// =====================================
+// TRACKING SCHEDULE
+// =====================================
 
-setInterval(trackPredictions, 3 * 60 * 1000);
+setInterval(
+  trackPredictions,
+  3 * 60 * 1000
+);
 
 // =====================================
 // START SERVER
 // =====================================
 
 app.listen(PORT, () => {
-  console.log(`ONLYBOSSTIPS API running on port ${PORT}`);
+  console.log(
+    `ONLYBOSSTIPS API running on port ${PORT}`
+  );
+
   console.log("Football provider: SportAPI");
 
   if (!sportApiKey) {
@@ -1115,6 +1240,8 @@ app.listen(PORT, () => {
     console.error("WARNING: Supabase is not configured.");
   }
 
-  // Start the first tracking check after the server starts.
-  setTimeout(trackPredictions, 15000);
+  setTimeout(
+    trackPredictions,
+    15000
+  );
 });
