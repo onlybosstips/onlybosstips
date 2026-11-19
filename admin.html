@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,7 @@
 <meta name="theme-color" content="#06140d">
 <title>ONLYBOSSTIPS Admin Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#06140d;color:#f5f7fb;font-family:Arial,sans-serif}
@@ -42,6 +44,20 @@ small{color:#b9d2c1}
 .market-preview{background:#173b27;padding:12px;border-radius:7px;color:#d8f7e2;margin:10px 0;line-height:1.5}
 .fixture-choice{display:block;width:100%;text-align:left;background:#173b27;color:#e9fff0;border:1px solid #35e879;padding:12px;margin:8px 0}
 .fixture-choice:hover{background:#225b38}
+.refresh-indicator{
+ position:fixed;
+ top:0;
+ left:50%;
+ transform:translateX(-50%);
+ z-index:9999;
+ background:#35e879;
+ color:#06140d;
+ padding:9px 18px;
+ border-radius:0 0 10px 10px;
+ font-size:13px;
+ font-weight:bold;
+ display:none;
+}
 @media(max-width:600px){
  main{padding:10px}
  .panel{padding:16px}
@@ -51,6 +67,10 @@ small{color:#b9d2c1}
 </head>
 
 <body>
+
+<div id="refreshIndicator" class="refresh-indicator">
+Refreshing dashboard...
+</div>
 
 <header>
 <h1>ONLYBOSSTIPS</h1>
@@ -73,8 +93,13 @@ small{color:#b9d2c1}
 <div class="panel">
 <h2>Welcome, Administrator</h2>
 <p>You are logged in to the private dashboard.</p>
-<button class="secondary" onclick="loadAll()">REFRESH DASHBOARD</button>
-<button class="danger" onclick="logout()">LOG OUT</button>
+<div class="notice">
+Automatic prediction cleanup is active.
+<br>
+Nigeria time: Africa/Lagos (WAT).
+<br>
+Predictions older than Yesterday are removed automatically.
+</div>
 </div>
 
 <!-- POST PREDICTIONS -->
@@ -219,6 +244,14 @@ A member can have VIP and Rollover at the same time. FREE odds remain available 
 <div id="membersList">Loading members...</div>
 </div>
 
+<!-- LOGOUT AT THE BOTTOM -->
+
+<div class="panel" style="text-align:center">
+<h3>Administrator Account</h3>
+<p class="field-help">Log out securely when you have finished managing ONLYBOSSTIPS.</p>
+<button class="danger" onclick="logout()">LOG OUT</button>
+</div>
+
 </section>
 </main>
 
@@ -229,6 +262,7 @@ const BACKEND_URL="https://onlybosstips-api.onrender.com";
 
 let db=null;
 let currentUser=null;
+let refreshing=false;
 
 /* MARKET CATALOGUE */
 
@@ -244,13 +278,11 @@ const marketOptions={
 "Home Win to Nil",
 "Away Win to Nil"
 ],
-
 "Double Chance":[
 "Home or Draw (1X)",
 "Draw or Away (X2)",
 "Home or Away (12)"
 ],
-
 "Goals":[
 "Total Goals Over/Under",
 "Home Team Goals Over/Under",
@@ -268,7 +300,6 @@ const marketOptions={
 "Home Win by 2 or More",
 "Away Win by 2 or More"
 ],
-
 "Both Teams to Score":[
 "Both Teams to Score - Yes",
 "Both Teams to Score - No",
@@ -277,7 +308,6 @@ const marketOptions={
 "Home to Score in Both Halves",
 "Away to Score in Both Halves"
 ],
-
 "Half Time":[
 "Half Time Result - Home",
 "Half Time Result - Draw",
@@ -292,7 +322,6 @@ const marketOptions={
 "Goal Before Half Time",
 "No Goal in First Half"
 ],
-
 "Correct Score":[
 "Correct Score - Full Time",
 "Correct Score - Half Time",
@@ -302,7 +331,6 @@ const marketOptions={
 "Correct Score - Draw",
 "Correct Score - Away Win"
 ],
-
 "Handicap":[
 "Asian Handicap - Home",
 "Asian Handicap - Away",
@@ -320,7 +348,6 @@ const marketOptions={
 "Away +1.5 Handicap",
 "Away +2.0 Handicap"
 ],
-
 "Corners":[
 "Total Corners Over/Under",
 "Home Team Corners Over/Under",
@@ -339,7 +366,6 @@ const marketOptions={
 "Home Team Most Corners",
 "Away Team Most Corners"
 ],
-
 "Fouls":[
 "Total Match Fouls Over/Under",
 "Home Team Fouls Over/Under",
@@ -352,7 +378,6 @@ const marketOptions={
 "Player to Commit a Foul",
 "Player Total Fouls Over/Under"
 ],
-
 "Cards":[
 "Total Cards Over/Under",
 "Total Yellow Cards Over/Under",
@@ -368,7 +393,6 @@ const marketOptions={
 "Red Card in Match - Yes/No",
 "Half Time Cards Over/Under"
 ],
-
 "Shots":[
 "Total Shots Over/Under",
 "Home Team Shots Over/Under",
@@ -381,7 +405,6 @@ const marketOptions={
 "Player Total Shots Over/Under",
 "Player Shots on Target Over/Under"
 ],
-
 "Player Goals":[
 "Anytime Goalscorer",
 "First Goalscorer",
@@ -394,7 +417,6 @@ const marketOptions={
 "Player to Score First Half",
 "Player to Score Second Half"
 ],
-
 "Player Shots":[
 "Player Total Shots Over/Under",
 "Player Shots on Target Over/Under",
@@ -403,20 +425,17 @@ const marketOptions={
 "Player to Have 3+ Shots",
 "Player to Miss a Big Chance"
 ],
-
 "Player Assists":[
 "Anytime Assist",
 "First Assist",
 "Player to Record 2+ Assists",
 "Player to Create a Big Chance"
 ],
-
 "Player Cards":[
 "Player to Receive a Card",
 "Player to Receive a Yellow Card",
 "Player to Receive a Red Card"
 ],
-
 "Player Fouls":[
 "Player to Commit a Foul",
 "Player Fouls Over/Under",
@@ -424,7 +443,6 @@ const marketOptions={
 "Player to Be Fouled",
 "Player to Be Fouled 2+ Times"
 ],
-
 "Substitutions":[
 "First Substitution - Home",
 "First Substitution - Away",
@@ -436,7 +454,6 @@ const marketOptions={
 "Home Team Substitutions Over/Under",
 "Away Team Substitutions Over/Under"
 ],
-
 "Goalkeeper":[
 "Goalkeeper Total Saves Over/Under",
 "Home Goalkeeper Saves",
@@ -444,14 +461,12 @@ const marketOptions={
 "Goalkeeper to Keep a Clean Sheet",
 "Goalkeeper to Concede"
 ],
-
 "Offsides":[
 "Total Offsides Over/Under",
 "Home Team Offsides Over/Under",
 "Away Team Offsides Over/Under",
 "Most Offsides"
 ],
-
 "Special Markets":[
 "Penalty Awarded - Yes/No",
 "Penalty Scored - Yes/No",
@@ -466,7 +481,6 @@ const marketOptions={
 "Away Team to Win Either Half",
 "Match to Have No Goals"
 ],
-
 "Custom Market":[
 "Custom market"
 ]
@@ -488,6 +502,78 @@ function initializeSupabase(){
   db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
  }
  return true;
+}
+
+/* NIGERIA DATE HELPERS */
+
+function nigeriaToday(){
+ const parts=new Intl.DateTimeFormat("en-CA",{
+  timeZone:"Africa/Lagos",
+  year:"numeric",
+  month:"2-digit",
+  day:"2-digit"
+ }).formatToParts(new Date());
+
+ const get=type=>parts.find(p=>p.type===type)?.value;
+
+ return get("year")+"-"+get("month")+"-"+get("day");
+}
+
+function nigeriaYesterday(){
+ const today=nigeriaToday();
+ const [year,month,day]=today.split("-").map(Number);
+
+ const date=new Date(Date.UTC(year,month-1,day-1));
+
+ return date.getUTCFullYear()+"-"+
+  String(date.getUTCMonth()+1).padStart(2,"0")+"-"+
+  String(date.getUTCDate()).padStart(2,"0");
+}
+
+function kickoffDateOnly(value){
+ if(!value)return null;
+
+ const match=String(value).match(/^(\d{4}-\d{2}-\d{2})/);
+
+ return match?match[1]:null;
+}
+
+/*
+RULE:
+Yesterday remains.
+Today remains.
+Tomorrow remains.
+Anything before Yesterday is deleted.
+*/
+
+async function cleanupExpiredPredictions(){
+ const{data,error}=await db
+  .from("predictions")
+  .select("id,kickoff");
+
+ if(error)throw error;
+
+ const yesterday=nigeriaYesterday();
+
+ const expired=(data||[])
+  .filter(p=>{
+   const matchDate=kickoffDateOnly(p.kickoff);
+   return matchDate&&matchDate<yesterday;
+  })
+  .map(p=>p.id);
+
+ if(!expired.length)return 0;
+
+ const{error:deleteError}=await db
+  .from("predictions")
+  .delete()
+  .in("id",expired);
+
+ if(deleteError)throw deleteError;
+
+ console.log(expired.length+" expired prediction(s) deleted.");
+
+ return expired.length;
 }
 
 /* MARKET FORM */
@@ -616,8 +702,20 @@ async function logout(){
  message("loginMessage","You have logged out.");
 }
 
+/* LOAD DASHBOARD AND CLEAN EXPIRED PREDICTIONS */
+
 async function loadAll(){
  if(!db||!currentUser)return;
+
+ try{
+  const removed=await cleanupExpiredPredictions();
+
+  if(removed>0){
+   console.log(removed+" old prediction(s) automatically removed.");
+  }
+ }catch(error){
+  console.error("Automatic prediction cleanup failed:",error);
+ }
 
  await Promise.all([
   loadPredictions(),
@@ -625,6 +723,46 @@ async function loadAll(){
   loadAnnouncements()
  ]);
 }
+
+/* SWIPE-DOWN REFRESH */
+
+let touchStartY=0;
+
+window.addEventListener("touchstart",event=>{
+ if(window.scrollY<=0&&event.touches.length===1){
+  touchStartY=event.touches[0].clientY;
+ }else{
+  touchStartY=0;
+ }
+},{passive:true});
+
+window.addEventListener("touchend",async event=>{
+ if(!currentUser||refreshing||touchStartY===0)return;
+
+ const distance=event.changedTouches[0].clientY-touchStartY;
+ touchStartY=0;
+
+ if(window.scrollY<=0&&distance>100){
+  refreshing=true;
+
+  const indicator=document.getElementById("refreshIndicator");
+  indicator.style.display="block";
+  indicator.textContent="Refreshing dashboard...";
+
+  try{
+   await loadAll();
+   indicator.textContent="Dashboard updated";
+  }catch(error){
+   indicator.textContent="Refresh failed";
+   console.error(error);
+  }
+
+  setTimeout(()=>{
+   indicator.style.display="none";
+   refreshing=false;
+  },900);
+ }
+},{passive:true});
 
 /* SPORTAPI FIXTURE SEARCH AND LINKING */
 
@@ -952,6 +1090,10 @@ async function loadPredictions(){
   details.textContent=(p.league||"")+" | "+(p.prediction||"")+" | Odds: "+(p.odds||"");
   item.appendChild(details);
 
+  const date=document.createElement("p");
+  date.textContent="Kickoff: "+(p.kickoff||"Not available");
+  item.appendChild(date);
+
   if(p.market_category){
    const market=document.createElement("p");
    market.textContent="Market: "+p.market_category+
@@ -1048,7 +1190,7 @@ async function updatePrediction(id,result,status){
  await loadPredictions();
 }
 
-/* DELETE PREDICTION */
+/* MANUAL DELETE PREDICTION */
 
 async function deletePrediction(id){
  if(!confirm("Are you sure you want to delete this prediction?"))return;
