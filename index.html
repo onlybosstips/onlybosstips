@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -108,8 +107,30 @@ label{font-size:13px;color:#cbd0da}
 .prediction-controls{background:#0b1b11;border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0 20px}
 .date-tabs{display:flex;flex-wrap:nowrap;gap:8px;width:100%;padding:2px 0 12px}
 .date-tab{flex:1 1 0;min-width:0;white-space:nowrap;text-align:center;border:1px solid #31543c;background:#102719;color:#dce9df;padding:9px 5px;border-radius:7px;font-size:12px;font-weight:600}
-.league-tabs{display:flex;flex-wrap:wrap;align-items:center;gap:7px;width:100%;padding:2px 0 3px}
-.league-tab{flex:0 1 auto;min-width:0;white-space:nowrap;border:1px solid #31543c;background:#102719;color:#dce9df;padding:8px 11px;border-radius:20px;font-size:11px;font-weight:600;line-height:1.3}
+.league-tabs{
+ display:grid;
+ grid-template-columns:repeat(6,minmax(0,1fr));
+ align-items:stretch;
+ gap:5px;
+ width:100%;
+ padding:2px 0 3px;
+}
+.league-tab{
+ width:100%;
+ min-width:0;
+ min-height:34px;
+ white-space:normal;
+ overflow-wrap:anywhere;
+ text-align:center;
+ border:1px solid #31543c;
+ background:#102719;
+ color:#dce9df;
+ padding:6px 2px;
+ border-radius:20px;
+ font-size:clamp(8px,2vw,10px);
+ font-weight:600;
+ line-height:1.15;
+}
 .date-tab.active,.league-tab.active{background:var(--green);color:#06140d;border-color:var(--green)}
 .prediction-date{color:#e8fff0;font-size:15px;font-weight:900;letter-spacing:.4px;margin:22px 0 12px;padding:11px 13px;border-left:4px solid var(--green);border-radius:5px;background:linear-gradient(90deg,#173c25,#0b1b11 85%)}
 .prediction-table-wrap{width:100%;overflow:hidden;border:1px solid var(--line);border-radius:9px;margin-bottom:20px}
@@ -166,7 +187,8 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 .prediction-table th{padding:10px 3px}.prediction-table td{padding:10px 3px}
 .outcome-circle{width:17px;height:17px}.prediction-controls{padding:10px}
 .date-tab{padding:9px 3px;font-size:11px}
-.league-tabs{gap:6px}.league-tab{padding:7px 9px;font-size:10px}
+.league-tabs{gap:5px}
+.league-tab{padding:6px 2px;font-size:8px}
 .streak-dashboard{padding:13px}.streak-grid{grid-template-columns:1fr}.streak-card{padding:13px}
 }
 </style>
@@ -233,7 +255,7 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <button class="password-toggle" type="button" onclick="togglePassword('loginPassword',this)" aria-label="Show password" title="Show password">
 <svg viewBox="0 0 24 24" aria-hidden="true">
 <path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/>
-<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a16 16 0 0 1-3.1 3.9M6.2 6.2C3.5 8 2 12 2 12s3.6 7 10 7c1.4 0 2.6-.3 3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
 </svg>
 </button>
 </div>
@@ -260,7 +282,7 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <button class="password-toggle" type="button" onclick="togglePassword('confirmPassword',this)" aria-label="Show password" title="Show password">
 <svg viewBox="0 0 24 24" aria-hidden="true">
 <path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/>
-<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a16 16 0 0 1-3.1 3.9M6.2 6.2C3.5 8 2 12 2 12s3.6 7 10 7c1.4 0 2.6-.3 3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
 </svg>
 </button>
 </div>
@@ -336,6 +358,8 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <button class="league-tab" data-league="uefa" onclick="selectLeague('uefa')">UEFA</button>
 <button class="league-tab" data-league="world cup" onclick="selectLeague('world cup')">World Cup</button>
 <button class="league-tab" data-league="other leagues" onclick="selectLeague('other leagues')">Other Leagues</button>
+<button class="league-tab" data-league="tennis" onclick="selectLeague('tennis')">Tennis</button>
+<button class="league-tab" data-league="basketball" onclick="selectLeague('basketball')">Basketball</button>
 </div>
 </div>
 <div id="freePredictions"><p class="notice">Loading FREE predictions...</p></div>
@@ -423,7 +447,7 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <footer>ONLYBOSSTIPS © 2026. All rights reserved.</footer>
 
 <script>
-const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
+ const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
 const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
@@ -750,7 +774,7 @@ function renderPredictionGroup(box,items){
 }
 function filterItems(items){
  const target=dateForSelection(selectedDate);
- const listedLeagues=["premier league","bundesliga","la liga","ligue 1","afcon","uefa","world cup"];
+ const listedLeagues=["premier league","bundesliga","la liga","ligue 1","afcon","uefa","world cup","tennis","basketball"];
  return items.filter(p=>{
   if(!p.kickoff)return false;
   const d=new Date(p.kickoff);
