@@ -406,284 +406,128 @@ let currentUser=null,currentTier="free",currentMemberships=[],currentIsAdmin=fal
 let allPredictions=[],selectedDate="today",selectedLeague="all",selectedMembership="vip";
 let announcementQueue=[],announcementShowing=false;
 
+/* TEAM LOGOS AND NATIONAL FLAGS */
+const teamLogoCache=new Map();
 
-/* AUTOMATIC CLUB BADGES AND NATIONAL FLAGS */
-
-const teamLogoCache = new Map();
-
-function normalizeTeamName(name) {
- return String(name || "")
-  .normalize("NFD")
-  .replace(/[\u0300-\u036f]/g, "")
-  .toLowerCase()
-  .replace(/[^a-z0-9]/g, "");
+function normalizeTeamName(name){
+ return String(name||"").normalize("NFD")
+  .replace(/[\u0300-\u036f]/g,"")
+  .toLowerCase().replace(/[^a-z0-9]/g,"");
 }
 
-/* COUNTRY FLAGS */
-const countryFlags = {
- nigeria:"ng", england:"gb-eng", brazil:"br", france:"fr",
- argentina:"ar", spain:"es", germany:"de", italy:"it",
- portugal:"pt", netherlands:"nl", holland:"nl", belgium:"be",
- scotland:"gb-sct", wales:"gb-wls", northernireland:"gb-nir",
- usa:"us", unitedstates:"us", unitedstatesofamerica:"us",
- mexico:"mx", canada:"ca", japan:"jp", southkorea:"kr",
- korearepublic:"kr", australia:"au", ghana:"gh", senegal:"sn",
- morocco:"ma", egypt:"eg", ivorycoast:"ci", cotedivoire:"ci",
- cameroon:"cm", southafrica:"za", uruguay:"uy", colombia:"co",
- chile:"cl", denmark:"dk", sweden:"se", norway:"no",
- switzerland:"ch", turkey:"tr", turkiye:"tr", croatia:"hr",
- serbia:"rs", poland:"pl", ukraine:"ua", greece:"gr",
- austria:"at", czechrepublic:"cz", czechia:"cz", iran:"ir",
- saudiarabia:"sa", qatar:"qa", newzealand:"nz", jamaica:"jm",
- congodr:"cd", drcongo:"cd",
- democraticrepublicofthecongo:"cd", koreadpr:"kp",
- russia:"ru", panama:"pa", costarica:"cr"
+const countryFlags={
+ nigeria:"ng",england:"gb-eng",brazil:"br",france:"fr",
+ argentina:"ar",spain:"es",germany:"de",italy:"it",
+ portugal:"pt",netherlands:"nl",holland:"nl",belgium:"be",
+ scotland:"gb-sct",wales:"gb-wls",northernireland:"gb-nir",
+ usa:"us",unitedstates:"us",unitedstatesofamerica:"us",
+ mexico:"mx",canada:"ca",japan:"jp",southkorea:"kr",
+ korearepublic:"kr",australia:"au",ghana:"gh",senegal:"sn",
+ morocco:"ma",egypt:"eg",ivorycoast:"ci",cotedivoire:"ci",
+ cameroon:"cm",southafrica:"za",uruguay:"uy",colombia:"co",
+ chile:"cl",denmark:"dk",sweden:"se",norway:"no",
+ switzerland:"ch",turkey:"tr",turkiye:"tr",croatia:"hr",
+ serbia:"rs",poland:"pl",ukraine:"ua",greece:"gr",
+ austria:"at",czechrepublic:"cz",czechia:"cz",iran:"ir",
+ saudiarabia:"sa",qatar:"qa",newzealand:"nz",jamaica:"jm",
+ congodr:"cd",drcongo:"cd",
+ democraticrepublicofthecongo:"cd",koreadpr:"kp",
+ russia:"ru",panama:"pa",costarica:"cr"
 };
 
-/* COUNTRY ALIASES */
-const countryAliases = {
- supereagles:"nigeria",
- threeeagles:"england",
- blackstars:"ghana",
- atlaslions:"morocco",
- lesbleus:"france",
- selecao:"brazil",
- albiceleste:"argentina",
- oranje:"netherlands",
- azzurri:"italy"
+/* Keys and aliases are normalized, so spaces and punctuation do not break lookup. */
+const teamAliases={
+ "al nassr club":["Al-Nassr FC","Al Nassr FC"],
+ "al nassr":["Al-Nassr FC","Al Nassr FC"],
+ "bayern munich":["FC Bayern München","Bayern Munich"],
+ "cologne":["1. FC Köln","FC Cologne"],
+ "bodo glimt":["Bodø/Glimt","FK Bodø/Glimt"],
+ "manchester united":["Manchester United FC"],
+ "manchester city":["Manchester City FC"],
+ "chelsea":["Chelsea FC"],
+ "arsenal":["Arsenal FC"],
+ "liverpool":["Liverpool FC"],
+ "tottenham":["Tottenham Hotspur FC"],
+ "real madrid":["Real Madrid CF"],
+ "barcelona":["FC Barcelona"],
+ "atletico madrid":["Atlético de Madrid"],
+ "paris saint germain":["Paris Saint-Germain FC"],
+ "psg":["Paris Saint-Germain FC"],
+ "inter":["Inter Milan","FC Internazionale Milano"],
+ "ac milan":["Milan"],
+ "juventus":["Juventus FC"],
+ "borussia dortmund":["Borussia Dortmund"],
+ "rb leipzig":["RasenBallsport Leipzig"]
 };
 
-/* KNOWN CLUB BADGES */
-const knownClubBadges = {
- arsenal:"57",
- astonvilla:"58",
- chelsea:"61",
- everton:"62",
- fulham:"63",
- liverpool:"64",
- manchestercity:"65",
- manchesterunited:"66",
- newcastleunited:"67",
- tottenham:"73",
- westhamunited:"563",
- wolverhamptonwanderers:"76",
- realmadrid:"86",
- barcelona:"81",
- atletico:"78",
- atleticomadrid:"78",
- bayernmunich:"5",
- borussiadortmund:"4",
- psg:"524",
- juventus:"109",
- inter:"108",
- acmilan:"98"
-};
-
-/* CLUB NAME ALIASES */
-const teamAliases = {
- manunited:"manchesterunited",
- manutd:"manchesterunited",
- manchesterunitedfc:"manchesterunited",
- mancity:"manchestercity",
- manchestercityfc:"manchestercity",
- spurs:"tottenham",
- tottenhamhotspur:"tottenham",
- atleticomadrid:"atletico",
- realmadridcf:"realmadrid",
- fcbarcelona:"barcelona",
- bayern:"bayernmunich",
- fcbayern:"bayernmunich",
- fcbayernmunchen:"bayernmunich",
- dortmund:"borussiadortmund",
- intermilan:"inter",
- fcinternazionalemilano:"inter",
- milan:"acmilan",
- parissaintgermain:"psg",
- parissaintgermainfc:"psg"
-};
-
-/* NORMALIZE ALIASES */
-const normalizedTeamAliases = {};
-
-Object.keys(teamAliases).forEach(key => {
- normalizedTeamAliases[normalizeTeamName(key)] =
-  normalizeTeamName(teamAliases[key]);
+const normalizedTeamAliases={};
+Object.keys(teamAliases).forEach(key=>{
+ normalizedTeamAliases[normalizeTeamName(key)]=teamAliases[key];
 });
 
-/* CLUB SEARCH ALTERNATIVES */
-const clubSearchNames = {
- manchesterunited:["Manchester United FC"],
- manchestercity:["Manchester City FC"],
- tottenham:["Tottenham Hotspur FC"],
- atletico:["Atletico Madrid","Atletico de Madrid"],
- realmadrid:["Real Madrid CF"],
- barcelona:["FC Barcelona"],
- bayernmunich:["FC Bayern Munchen","Bayern Munich"],
- borussiadortmund:["Borussia Dortmund"],
- inter:["Inter Milan","FC Internazionale Milano"],
- acmilan:["AC Milan","Milan"],
- psg:["Paris Saint-Germain FC"]
-};
-
-/* FOOTBALL CHECK */
-function isFootballLeague(league) {
- const value = String(league || "").toLowerCase();
- return !value.includes("tennis") &&
-        !value.includes("basketball");
+function isFootballLeague(league){
+ const value=String(league||"").toLowerCase();
+ return !value.includes("tennis")&&!value.includes("basketball");
 }
 
-/* COUNTRY FLAG LOOKUP */
-function getCountryFlag(teamName) {
- let key = normalizeTeamName(teamName);
-
- key = key
-  .replace(/nationalfootballteam$/, "")
-  .replace(/footballteam$/, "")
-  .replace(/nationalteam$/, "");
-
- key = countryAliases[key] || key;
-
- const code = countryFlags[key];
-
- return code
-  ? "https://flagcdn.com/w40/" + code + ".png"
-  : "";
+function getCountryFlag(teamName){
+ const code=countryFlags[normalizeTeamName(teamName)];
+ return code?"https://flagcdn.com/w40/"+code+".png":"";
 }
 
-/* KNOWN CLUB BADGE LOOKUP */
-function getKnownClubBadge(teamName) {
- let key = normalizeTeamName(teamName);
- key = normalizedTeamAliases[key] || key;
+async function searchClubBadge(teamName){
+ const key=normalizeTeamName(teamName);
+ const aliases=normalizedTeamAliases[key]||[];
+ const searchNames=[...new Set([teamName,...aliases])];
 
- const id = knownClubBadges[key];
-
- return id
-  ? "https://crests.football-data.org/" + id + ".png"
-  : "";
-}
-
-/* AUTOMATIC CLUB BADGE SEARCH */
-async function searchClubBadge(teamName) {
- const originalKey = normalizeTeamName(teamName);
- const canonicalKey =
-  normalizedTeamAliases[originalKey] || originalKey;
-
- const acceptedNames = new Set([originalKey, canonicalKey]);
-
- Object.keys(normalizedTeamAliases).forEach(alias => {
-  if (normalizedTeamAliases[alias] === canonicalKey) {
-   acceptedNames.add(alias);
-  }
- });
-
- const searchNames = [
-  teamName,
-  ...(clubSearchNames[canonicalKey] || [])
- ];
-
- for (const searchName of [...new Set(searchNames)]) {
-  try {
-   const url =
-    "https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=" +
-    encodeURIComponent(searchName);
-
-   const response = await fetch(url);
-   if (!response.ok) continue;
-
-   const data = await response.json();
-   const teams = Array.isArray(data.teams) ? data.teams : [];
-
-   const match = teams.find(team =>
-    String(team.strSport || "").toLowerCase() === "soccer" &&
-    team.strTeamBadge &&
-    acceptedNames.has(normalizeTeamName(team.strTeam))
+ for(const searchName of searchNames){
+  try{
+   const url="https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t="+encodeURIComponent(searchName);
+   const response=await fetch(url);
+   if(!response.ok)continue;
+   const data=await response.json();
+   const teams=Array.isArray(data.teams)?data.teams:[];
+   const soccerTeams=teams.filter(team=>
+    String(team.strSport||"").toLowerCase()==="soccer"&&team.strTeamBadge
    );
 
-   if (match) return match.strTeamBadge;
+   let match=soccerTeams.find(team=>normalizeTeamName(team.strTeam)===key);
 
-  } catch (error) {
-   console.warn("Club badge lookup failed:", searchName, error);
+   if(!match){
+    for(const alias of aliases){
+     const aliasKey=normalizeTeamName(alias);
+     match=soccerTeams.find(team=>normalizeTeamName(team.strTeam)===aliasKey);
+     if(match)break;
+    }
+   }
+
+   if(match)return match.strTeamBadge;
+  }catch(error){
+   console.warn("Club badge lookup failed:",searchName,error);
   }
  }
-
  return "";
 }
 
-/* GET TEAM LOGO */
-async function getTeamLogo(teamName, league) {
- if (!isFootballLeague(league)) return "";
+async function getTeamLogo(teamName,league){
+ if(!isFootballLeague(league))return "";
+ const name=String(teamName||"").trim();
+ if(!name)return "";
 
- const name = String(teamName || "").trim();
- if (!name) return "";
+ const flag=getCountryFlag(name);
+ if(flag)return flag;
 
- const flag = getCountryFlag(name);
- if (flag) return flag;
+ const key=normalizeTeamName(name);
+ if(teamLogoCache.has(key))return teamLogoCache.get(key);
 
- const key = normalizeTeamName(name);
-
- if (teamLogoCache.has(key)) {
-  return teamLogoCache.get(key);
- }
-
- const knownBadge = getKnownClubBadge(name);
-
- if (knownBadge) {
-  teamLogoCache.set(key, knownBadge);
-  return knownBadge;
- }
-
- const promise = searchClubBadge(name);
- teamLogoCache.set(key, promise);
-
- const result = await promise;
- teamLogoCache.set(key, result);
-
+ const lookup=searchClubBadge(name);
+ teamLogoCache.set(key,lookup);
+ const result=await lookup;
+ teamLogoCache.set(key,result);
  return result;
 }
 
-/* DISPLAY TEAM AND LOGO */
-function createTeamDisplay(teamName, league) {
- const team = document.createElement("div");
- team.className = "match-team";
-
- const name = document.createElement("span");
- name.className = "team-name";
- name.textContent = teamName || "Unknown";
-
- if (isFootballLeague(league)) {
-  const logo = document.createElement("img");
-
-  logo.className = "team-logo";
-  logo.alt = "";
-  logo.loading = "lazy";
-  logo.referrerPolicy = "no-referrer";
-  logo.style.display = "none";
-
-  if (getCountryFlag(teamName)) {
-   logo.classList.add("flag");
-  }
-
-  logo.onload = () => {
-   logo.style.display = "block";
-  };
-
-  logo.onerror = () => {
-   logo.style.display = "none";
-  };
-
-  team.appendChild(logo);
-
-  getTeamLogo(teamName, league).then(url => {
-   if (url && logo.isConnected) {
-    logo.src = url;
-   }
-  });
- }
-
- team.appendChild(name);
- return team;
-}
-
+function createTeamDisplay(teamName,league){
  const team=document.createElement("div");
  team.className="match-team";
 
