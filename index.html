@@ -74,11 +74,31 @@ label{font-size:13px;color:#cbd0da}
 .member-responsible .responsible{margin:0;padding:0;border:0}
 .logout-bottom{margin-top:18px;padding:16px;width:100%;border:1px solid #743c3c;background:#291817;color:#ffb1a9;border-radius:9px}
 
-/* PASSWORD SHOW/HIDE CONTROLS */
+/* PROFESSIONAL PASSWORD VISIBILITY CONTROLS */
 .password-field{position:relative;width:100%;margin:8px 0 16px}
 .password-field input{width:100%;margin:0;padding:14px 52px 14px 14px}
-.password-toggle{position:absolute;right:7px;top:50%;transform:translateY(-50%);background:transparent;color:var(--green);padding:9px 10px;border:0;font-size:19px;line-height:1;border-radius:6px}
-.password-toggle:focus{outline:2px solid var(--green);outline-offset:2px}
+.password-toggle{
+ position:absolute;
+ right:5px;
+ top:50%;
+ transform:translateY(-50%);
+ width:40px;
+ height:40px;
+ display:grid;
+ place-items:center;
+ padding:0;
+ background:transparent;
+ color:#a8b9ae;
+ border:0;
+ border-radius:7px;
+ transition:color .2s ease,background .2s ease;
+}
+.password-toggle:hover{background:#173c25;color:var(--green)}
+.password-toggle:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.password-toggle svg{width:21px;height:21px;display:block;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.password-toggle .eye-slash{display:none}
+.password-toggle.is-visible .eye-open{display:none}
+.password-toggle.is-visible .eye-slash{display:block}
 
 /* PROFESSIONAL CALENDAR DATE */
 .selected-calendar-date{display:flex;align-items:center;gap:10px;margin:0 0 15px;padding:12px 14px;background:linear-gradient(90deg,#102a1a,#0b1b11);border:1px solid #285038;border-radius:9px;color:#e8fff0;font-size:14px;font-weight:700;letter-spacing:.4px;box-shadow:0 3px 12px #00000020}
@@ -193,7 +213,12 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <label>Password</label>
 <div class="password-field">
 <input id="signupPassword" type="password" placeholder="Create a password" autocomplete="new-password">
-<button class="password-toggle" type="button" onclick="togglePassword('signupPassword',this)" aria-label="Show password" title="Show password">👁</button>
+<button class="password-toggle" type="button" onclick="togglePassword('signupPassword',this)" aria-label="Show password" title="Show password">
+<svg viewBox="0 0 24 24" aria-hidden="true">
+<path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/>
+<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a16 16 0 0 1-3.1 3.9M6.2 6.2C3.5 8 2 12 2 12s3.6 7 10 7c1.4 0 2.6-.3 3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+</svg>
+</button>
 </div>
 <button id="signupButton" onclick="signUp()">CREATE ACCOUNT</button>
 <p class="muted">Already registered? <span class="link" onclick="showAuth('login')">Log in</span></p>
@@ -205,7 +230,12 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <label>Password</label>
 <div class="password-field">
 <input id="loginPassword" type="password" placeholder="Enter password" autocomplete="current-password">
-<button class="password-toggle" type="button" onclick="togglePassword('loginPassword',this)" aria-label="Show password" title="Show password">👁</button>
+<button class="password-toggle" type="button" onclick="togglePassword('loginPassword',this)" aria-label="Show password" title="Show password">
+<svg viewBox="0 0 24 24" aria-hidden="true">
+<path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/>
+<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a16 16 0 0 1-3.1 3.9M6.2 6.2C3.5 8 2 12 2 12s3.6 7 10 7c1.4 0 2.6-.3 3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+</svg>
+</button>
 </div>
 <button id="loginButton" onclick="logIn()">LOG IN</button>
 <p class="muted"><span class="link" onclick="forgotPassword()">Forgot password?</span></p>
@@ -217,12 +247,22 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <label>New password</label>
 <div class="password-field">
 <input id="newPassword" type="password" placeholder="Enter new password" autocomplete="new-password">
-<button class="password-toggle" type="button" onclick="togglePassword('newPassword',this)" aria-label="Show password" title="Show password">👁</button>
+<button class="password-toggle" type="button" onclick="togglePassword('newPassword',this)" aria-label="Show password" title="Show password">
+<svg viewBox="0 0 24 24" aria-hidden="true">
+<path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/>
+<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a16 16 0 0 1-3.1 3.9M6.2 6.2C3.5 8 2 12 2 12s3.6 7 10 7c1.4 0 2.6-.3 3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+</svg>
+</button>
 </div>
 <label>Confirm new password</label>
 <div class="password-field">
 <input id="confirmPassword" type="password" placeholder="Confirm new password" autocomplete="new-password">
-<button class="password-toggle" type="button" onclick="togglePassword('confirmPassword',this)" aria-label="Show password" title="Show password">👁</button>
+<button class="password-toggle" type="button" onclick="togglePassword('confirmPassword',this)" aria-label="Show password" title="Show password">
+<svg viewBox="0 0 24 24" aria-hidden="true">
+<path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/>
+<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7a16 16 0 0 1-3.1 3.9M6.2 6.2C3.5 8 2 12 2 12s3.6 7 10 7c1.4 0 2.6-.3 3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+</svg>
+</button>
 </div>
 <button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button>
 </div>
@@ -404,12 +444,14 @@ function membershipLabel(){
 function hasVipAccess(){return currentMemberships.includes("vip")||currentIsAdmin}
 function hasRolloverAccess(){return currentMemberships.includes("rollover")||currentIsAdmin}
 
+/* PROFESSIONAL SVG PASSWORD SHOW/HIDE */
 function togglePassword(inputId,button){
  const input=document.getElementById(inputId);
- if(!input)return;
+ if(!input||!button)return;
+
  const visible=input.type==="password";
  input.type=visible?"text":"password";
- button.textContent=visible?"🙈":"👁";
+ button.classList.toggle("is-visible",visible);
  button.setAttribute("aria-label",visible?"Hide password":"Show password");
  button.setAttribute("title",visible?"Hide password":"Show password");
 }
@@ -842,10 +884,6 @@ async function startApp(){
   window.history.replaceState({},document.title,window.location.pathname);
 
   if(authType==="signup"){
-   /*
-    * Email is confirmed. Sign out the temporary confirmation session
-    * so the member is taken to the login page as requested.
-    */
    await db.auth.signOut({scope:"local"});
    recoveryInProgress=false;
    showAuth("login","Your email has been confirmed successfully! Your ONLYBOSSTIPS account is ready. Please log in.");
@@ -857,12 +895,10 @@ async function startApp(){
    return;
   }
 
-  /* Older password reset links may not contain an auth marker. */
   showRecoveryForm();
   return;
  }
 
- /* Support older Supabase recovery links that use URL hash tokens. */
  if(window.location.hash.includes("type=recovery")){
   const {data,error}=await db.auth.getSession();
   if(error||!data.session){
