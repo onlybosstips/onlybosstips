@@ -1,218 +1,175 @@
 
-/* IMPROVED TEAM LOGOS AND NATIONAL FLAGS */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#06140d">
+<title>ONLYBOSSTIPS | Football Predictions</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--green:#35e879;--bg:#06140d;--panel:#0d2116;--muted:#a8b9ae;--white:#fff;--line:#285038;--red:#ff5252;--orange:#ffad42}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,sans-serif;position:relative;isolation:isolate;min-height:100vh}
+header,section,footer{position:relative;z-index:1}
+header{padding:16px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1c422b;background:#081b10;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{font-size:21px;font-weight:900;color:var(--green);letter-spacing:.5px}
+button{border:0;padding:13px 18px;border-radius:7px;background:var(--green);color:#06140d;font-weight:bold;cursor:pointer}
+button.secondary{background:#203a2b;color:white}
+button:disabled{opacity:.5;cursor:not-allowed}
+.hero{text-align:center;padding:70px 18px;background:radial-gradient(ellipse at top,#174c2c,#06140d 68%)}
+.hero-kicker{color:#a8b9ae;font-size:12px;font-weight:800;letter-spacing:3px;margin:0 0 12px}
+.hero h1{font-size:clamp(32px,7vw,58px);margin:0 0 15px;line-height:1.1}
+.gold{color:var(--green)}
+.hero p{color:var(--muted);line-height:1.8}
+.hero-tagline{font-size:11px!important;font-weight:800;letter-spacing:2px;color:#8ce0a5!important;margin:0 0 25px!important}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:25px}
+.container{max-width:1100px;margin:auto;padding:25px 18px 60px}
+.card{background:var(--panel);border:1px solid #1c422b;border-radius:12px;padding:20px;margin-bottom:16px}
+.section-title{font-size:21px;font-weight:900;letter-spacing:1.5px;margin:30px 0 15px;padding:0 0 10px;border-bottom:1px solid #285038;text-shadow:0 2px 12px #35e87920}
+.section-title:before{content:"";display:inline-block;width:5px;height:19px;background:var(--green);border-radius:5px;margin-right:10px;vertical-align:-3px}
+.odds-intro{color:#a8b9ae;font-size:12px;font-weight:600;letter-spacing:.4px;margin:-7px 0 14px}
+.hidden{display:none!important}
+.form{max-width:430px;margin:35px auto}
+input,select{width:100%;padding:14px;margin:8px 0 16px;background:#08170e;color:white;border:1px solid #31543c;border-radius:7px;font-size:16px}
+label{font-size:13px;color:#cbd0da}
+.muted{color:var(--muted);font-size:14px;line-height:1.7}
+.link{color:var(--green);text-decoration:underline;cursor:pointer}
+.badge{display:inline-block;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:#17472b;color:#8ce0a5}
+.badge.vip{background:#294a31;color:#a8ffbd}
+.badge.rollover{background:#493719;color:#ffda8a}
+.message{margin:12px 0;color:var(--green);font-size:14px;overflow-wrap:anywhere}
+.payment-price{font-size:34px;font-weight:bold;color:var(--green);margin:15px 0}
+.payment-price small{font-size:19px}
+.bank-details{background:#08170e;border:1px solid #31543c;border-radius:9px;padding:15px;margin:15px 0;line-height:2;overflow-wrap:anywhere}
+.bank-details p{margin:5px 0}
+.payment-button,.vip-upgrade-button,.close-payment{width:100%;margin-top:10px}
+.vip-upgrade-button{padding:16px;font-size:15px;border-radius:9px;margin:5px 0 20px;box-shadow:0 4px 18px #35e87920}
+.membership-choice{background:#102719;border:1px solid #31543c;border-radius:10px;padding:15px;margin:12px 0}
+.membership-choice h3{margin:0 0 8px;color:var(--green);font-size:16px}
+.membership-choice p{margin:5px 0;color:var(--muted);font-size:13px;line-height:1.6}
+.membership-choice button{width:100%;margin-top:10px}
+.rollover-button{background:#c89b43;color:#171006}
+.member-welcome{padding:22px;background:radial-gradient(ellipse at top right,#17472b 0%,transparent 65%),linear-gradient(135deg,#102a1a,#0b1b11);border:1px solid #285038;border-radius:15px;margin-bottom:28px;box-shadow:0 8px 25px #00000025}
+.member-welcome-top{display:flex;align-items:center;gap:15px;margin-bottom:20px}
+.welcome-label{display:flex;align-items:center;gap:9px;color:#c9b16c;font-size:10px;font-weight:bold;letter-spacing:3px;margin-bottom:6px}
+.welcome-label:before,.welcome-label:after{content:"";display:block;height:2px;width:17px;background:var(--green);border-radius:5px}
+.member-brand{font-size:clamp(23px,6vw,31px);font-weight:900;color:var(--green);letter-spacing:1px;margin:0}
+.member-tagline{font-size:9px;color:#91a397;letter-spacing:1.5px;margin-top:5px}
+.member-profile-row{display:flex;align-items:center;gap:12px;margin:14px 0}
+.member-avatar{width:43px;height:43px;min-width:43px;border-radius:50%;background:#fff;display:grid;place-items:center;position:relative}
+.member-avatar:after{content:"";position:absolute;width:11px;height:11px;right:-1px;bottom:0;background:#25e66b;border:2px solid #0d2116;border-radius:50%;box-shadow:0 0 7px #25e66b}
+.member-avatar svg{width:25px;height:25px;fill:#183c27}
+.member-email{color:#fff;font-size:13px;font-weight:bold;overflow-wrap:anywhere;margin:0}
+.member-email-label{font-size:10px;color:#a8b9ae;margin-top:4px}
+.explore-card,.member-responsible{background:linear-gradient(145deg,#102a1a,#0b1b11);border:1px solid #285038;border-radius:12px;padding:21px;margin-top:30px}
+.explore-title{color:var(--green);font-size:19px;font-weight:900;letter-spacing:2px;margin:0 0 18px}
+.explore-links{display:flex;flex-direction:column;gap:16px}
+.explore-link{display:flex;align-items:center;gap:12px;color:#e6eee8;font-size:14px;text-decoration:none;cursor:pointer}
+.explore-link svg{width:19px;height:19px;stroke:var(--green);fill:none;stroke-width:1.8;flex-shrink:0}
+.responsible{margin-top:25px;padding-top:20px;border-top:1px solid #285038}
+.responsible-heading{display:flex;align-items:center;gap:9px;color:var(--green);font-size:13px;font-weight:900;letter-spacing:1px;margin-bottom:9px}
+.responsible p{color:var(--muted);font-size:12px;line-height:1.8;margin:0}
+.member-responsible .responsible{margin:0;padding:0;border:0}
+.logout-bottom{margin-top:18px;padding:16px;width:100%;border:1px solid #743c3c;background:#291817;color:#ffb1a9;border-radius:9px}
 
-const teamLogoCache = new Map();
+/* PASSWORD VISIBILITY */
+.password-field{position:relative;width:100%;margin:8px 0 16px}
+.password-field input{width:100%;margin:0;padding:14px 52px 14px 14px}
+.password-toggle{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;padding:0;background:transparent;color:#a8b9ae;border:0;border-radius:7px;transition:color .2s ease,background .2s ease}
+.password-toggle:hover{background:#173c25;color:var(--green)}
+.password-toggle:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.password-toggle svg{width:21px;height:21px;display:block;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.password-toggle .eye-slash{display:none}
+.password-toggle.is-visible .eye-open{display:none}
+.password-toggle.is-visible .eye-slash{display:block}
 
-function normalizeTeamName(name) {
- return String(name || "")
-  .normalize("NFD")
-  .replace(/[\u0300-\u036f]/g, "")
-  .toLowerCase()
-  .replace(/[^a-z0-9]/g, "");
+/* CALENDAR */
+.selected-calendar-date{display:flex;align-items:center;gap:10px;margin:0 0 15px;padding:12px 14px;background:linear-gradient(90deg,#102a1a,#0b1b11);border:1px solid #285038;border-radius:9px;color:#e8fff0;font-size:14px;font-weight:700;letter-spacing:.4px;box-shadow:0 3px 12px #00000020}
+.calendar-icon{width:22px;height:22px;flex:0 0 22px;color:var(--green);stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.calendar-icon .calendar-page{fill:#35e87918;stroke:var(--green)}
+.calendar-icon .calendar-dots{fill:var(--green);stroke:none}
+.prediction-controls{background:#0b1b11;border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0 20px}
+.date-tabs{display:flex;flex-wrap:nowrap;gap:8px;width:100%;padding:2px 0 12px}
+.date-tab{flex:1 1 0;min-width:0;white-space:nowrap;text-align:center;border:1px solid #31543c;background:#102719;color:#dce9df;padding:9px 5px;border-radius:7px;font-size:12px;font-weight:600}
+.league-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-items:stretch;gap:5px;width:100%;padding:2px 0 3px}
+.league-tab{width:100%;min-width:0;min-height:34px;white-space:normal;overflow-wrap:anywhere;text-align:center;border:1px solid #31543c;background:#102719;color:#dce9df;padding:6px 2px;border-radius:20px;font-size:clamp(8px,2vw,10px);font-weight:600;line-height:1.15}
+.date-tab.active,.league-tab.active{background:var(--green);color:#06140d;border-color:var(--green)}
+.prediction-date{color:#e8fff0;font-size:15px;font-weight:900;letter-spacing:.4px;margin:22px 0 12px;padding:11px 13px;border-left:4px solid var(--green);border-radius:5px;background:linear-gradient(90deg,#173c25,#0b1b11 85%)}
+.prediction-table-wrap{width:100%;overflow:hidden;border:1px solid var(--line);border-radius:9px;margin-bottom:20px}
+.prediction-table{width:100%;table-layout:fixed;border-collapse:collapse;text-align:left;background:#0b1b11}
+.prediction-table th{background:#173c25;color:#8cf2ac;font-size:clamp(8px,2.2vw,11px);font-weight:900;letter-spacing:.35px;padding:11px 5px;white-space:normal;border-bottom:1px solid #31543c}
+.prediction-table th:nth-child(1){width:34%}.prediction-table th:nth-child(2){width:11%}.prediction-table th:nth-child(3){width:21%}.prediction-table th:nth-child(4){width:15%}.prediction-table th:nth-child(5){width:19%}
+.prediction-table td{padding:11px 5px;font-size:clamp(9px,2.5vw,12px);border-bottom:1px solid #1c3826;vertical-align:middle;white-space:normal;overflow-wrap:anywhere}
+.prediction-table tbody tr:last-child td{border-bottom:none}
+.prediction-table tbody tr:hover{background:#132c1c}
+.club-name{font-weight:800;color:white;line-height:1.35}
+
+/* TEAM BADGES AND COUNTRY FLAGS */
+.match-teams{display:flex;flex-direction:column;gap:7px;min-width:0}
+.match-team{display:flex;align-items:center;gap:6px;min-width:0;line-height:1.25}
+.team-logo{width:21px;height:21px;flex:0 0 21px;object-fit:contain;border-radius:50%;background:#fff;padding:2px}
+.team-logo.flag{object-fit:cover;padding:0;border-radius:3px}
+.team-logo.hidden-logo{display:none}
+.team-name{min-width:0;overflow-wrap:anywhere;font-weight:800;color:#fff}
+.match-vs{font-size:8px;color:var(--muted);padding-left:27px;line-height:1}
+.odd-value{font-weight:800;color:#f0f7f2;font-variant-numeric:tabular-nums}
+.prediction-value{color:#d5e8da;font-weight:700}
+.outcome-cell{text-align:center}
+.outcome-wrap{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:clamp(8px,2.2vw,11px);font-weight:900;white-space:nowrap}
+.outcome-circle{width:19px;height:19px;border-radius:50%;display:inline-grid;place-items:center;border:2px solid currentColor;font-size:12px;line-height:1;flex-shrink:0}
+.result-won{color:#36d879}.result-lost{color:#ff6262}.result-void{color:#b5bec4}.result-live{color:#ffbd4a}.result-awaiting{color:#a5adbd}
+.result-live .outcome-circle{animation:livePulse 1.8s ease-in-out infinite}
+.result-live .outcome-wrap > span:last-child{animation:liveTextGlow 1.8s ease-in-out infinite}
+@keyframes livePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 #ffbd4a40}50%{transform:scale(1.13);box-shadow:0 0 12px 4px #ffbd4a80}}
+@keyframes liveTextGlow{0%,100%{text-shadow:0 0 2px #ffbd4a40}50%{text-shadow:0 0 10px #ffbd4a}}
+@media(prefers-reduced-motion:reduce){.result-live .outcome-circle,.result-live .outcome-wrap > span:last-child{animation:none}}
+.prediction-empty{color:var(--muted);font-size:14px;padding:12px 0}
+.prediction-group{margin-bottom:22px}
+footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--muted);font-size:12px;background:#081b10}
+.admin-panel{border:1px solid #4a8a5d;background:#0b1b11;border-radius:12px;padding:18px;margin:24px 0}
+.admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.admin-grid .full{grid-column:1/-1}
+.admin-grid input,.admin-grid select{width:100%;padding:12px;background:#08170e;color:#fff;border:1px solid #31543c;border-radius:7px;font-size:15px;margin:6px 0 12px}
+.admin-list-item{border:1px solid #31543c;border-radius:9px;padding:12px;margin:10px 0;background:#102719}
+.admin-list-item strong{display:block;margin-bottom:8px}
+.admin-list-item select{padding:9px;background:#08170e;color:#fff;border:1px solid #31543c;border-radius:6px;margin-right:6px}
+.admin-list-item button{padding:9px 12px;margin:4px 3px 0 0}
+.streak-dashboard{background:linear-gradient(145deg,#102a1a,#0b1b11);border:1px solid #39734a;border-radius:13px;padding:18px;margin:30px 0 22px}
+.streak-heading{color:var(--green);font-size:19px;font-weight:900;letter-spacing:1px;margin:0 0 6px}
+.streak-intro{color:var(--muted);font-size:12px;line-height:1.6;margin:0 0 16px}
+.streak-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.streak-card{background:#08170e;border:1px solid #285038;border-radius:10px;padding:14px;min-width:0}
+.streak-card h3{color:#8ce0a5;font-size:14px;margin:0 0 13px}
+.streak-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 8px}
+.streak-stat small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}
+.streak-stat strong{font-size:20px;color:#fff;overflow-wrap:anywhere}
+.streak-stat strong.green{color:var(--green)}
+.streak-note{color:var(--muted);font-size:10px;line-height:1.5;margin:14px 0 0}
+.announcement-overlay{position:fixed;inset:0;z-index:99999;background:#0006;display:flex;align-items:center;justify-content:center;padding:15px}
+.announcement-box{width:100%;max-width:400px;max-height:75vh;overflow-y:auto;background:#102719;border:2px solid var(--green);border-radius:15px;padding:25px;box-shadow:0 15px 60px #0008;position:relative;text-align:center}
+.announcement-box h2{color:var(--green);margin:0 25px 15px;font-size:20px}
+.announcement-box p{color:#fff;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+.announcement-close{position:absolute;right:10px;top:10px;background:#291817;color:#fff;padding:7px 11px;border-radius:50%;font-size:20px}
+@media(max-width:500px){
+.admin-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}
+header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
+.container{padding:18px 10px 35px}.member-welcome{padding:18px}
+.member-welcome-top{gap:12px}.prediction-date{font-size:13px}
+.prediction-table th{padding:10px 3px}.prediction-table td{padding:10px 3px}
+.outcome-circle{width:17px;height:17px}.prediction-controls{padding:10px}
+.date-tab{padding:9px 3px;font-size:11px}
+.league-tabs{gap:5px}
+.league-tab{padding:6px 2px;font-size:8px}
+.streak-dashboard{padding:13px}.streak-grid{grid-template-columns:1fr}.streak-card{padding:13px}
+.match-team{gap:4px}.team-logo{width:18px;height:18px;flex-basis:18px}
+.match-vs{padding-left:23px}
 }
+</style>
+</head>
+<body>
 
-const countryFlags = {
- nigeria:"ng",
- england:"gb-eng",
- brazil:"br",
- france:"fr",
- argentina:"ar",
- spain:"es",
- germany:"de",
- italy:"it",
- portugal:"pt",
- netherlands:"nl",
- holland:"nl",
- belgium:"be",
- scotland:"gb-sct",
- wales:"gb-wls",
- northernireland:"gb-nir",
- usa:"us",
- unitedstates:"us",
- unitedstatesofamerica:"us",
- mexico:"mx",
- canada:"ca",
- japan:"jp",
- southkorea:"kr",
- korearepublic:"kr",
- australia:"au",
- ghana:"gh",
- senegal:"sn",
- morocco:"ma",
- egypt:"eg",
- ivorycoast:"ci",
- cotedivoire:"ci",
- cameroon:"cm",
- southafrica:"za",
- uruguay:"uy",
- colombia:"co",
- chile:"cl",
- denmark:"dk",
- sweden:"se",
- norway:"no",
- switzerland:"ch",
- turkey:"tr",
- turkiye:"tr",
- croatia:"hr",
- serbia:"rs",
- poland:"pl",
- ukraine:"ua",
- greece:"gr",
- austria:"at",
- czechrepublic:"cz",
- czechia:"cz",
- iran:"ir",
- saudiarabia:"sa",
- qatar:"qa",
- newzealand:"nz",
- jamaica:"jm",
- cong odr:"cd",
- drcongo:"cd",
- democraticrepublicofthecongo:"cd"
-};
-
-/* Alternative names for clubs */
-const teamAliases = {
- "al nassr club":["Al-Nassr FC","Al Nassr FC"],
- "al nassr":["Al-Nassr FC","Al Nassr FC"],
- "bayern munich":["FC Bayern München","Bayern Munich"],
- "cologne":["1. FC Köln","FC Cologne"],
- "bodoe glimt":["Bodø/Glimt","FK Bodø/Glimt"],
- "manchester united":["Manchester United FC"],
- "manchester city":["Manchester City FC"],
- "chelsea":["Chelsea FC"],
- "arsenal":["Arsenal FC"],
- "liverpool":["Liverpool FC"],
- "tottenham":["Tottenham Hotspur FC"],
- "real madrid":["Real Madrid CF"],
- "barcelona":["FC Barcelona"],
- "atletico madrid":["Atlético de Madrid"],
- "paris saint germain":["Paris Saint-Germain FC"],
- "psg":["Paris Saint-Germain FC"],
- "inter":["Inter Milan","FC Internazionale Milano"],
- "ac milan":["Milan"],
- "juventus":["Juventus FC"],
- "borussia dortmund":["Borussia Dortmund"],
- "rb leipzig":["RasenBallsport Leipzig"]
-};
-
-function isFootballLeague(league) {
- const value = String(league || "").toLowerCase();
- return !value.includes("tennis") &&
-        !value.includes("basketball");
-}
-
-function getCountryFlag(teamName) {
- const key = normalizeTeamName(teamName);
- const code = countryFlags[key];
- return code ? "https://flagcdn.com/w40/" + code + ".png" : "";
-}
-
-async function searchClubBadge(teamName) {
- const key = normalizeTeamName(teamName);
- const aliases = teamAliases[key] || [];
- const searchNames = [...new Set([teamName, ...aliases])];
-
- for (const searchName of searchNames) {
-  try {
-   const url =
-    "https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=" +
-    encodeURIComponent(searchName);
-
-   const response = await fetch(url);
-
-   if (!response.ok) continue;
-
-   const data = await response.json();
-   const teams = Array.isArray(data.teams) ? data.teams : [];
-
-   const exact = teams.find(team =>
-    String(team.strSport || "").toLowerCase() === "soccer" &&
-    normalizeTeamName(team.strTeam) === key &&
-    team.strTeamBadge
-   );
-
-   const aliasMatch = teams.find(team =>
-    String(team.strSport || "").toLowerCase() === "soccer" &&
-    aliases.some(alias =>
-     normalizeTeamName(team.strTeam) === normalizeTeamName(alias)
-    ) &&
-    team.strTeamBadge
-   );
-
-   const match = exact || aliasMatch;
-
-   if (match) return match.strTeamBadge;
-  } catch (error) {
-   console.warn("Club badge lookup failed:", searchName, error);
-  }
- }
-
- return "";
-}
-
-async function getTeamLogo(teamName, league) {
- if (!isFootballLeague(league)) return "";
-
- const name = String(teamName || "").trim();
- if (!name) return "";
-
- const flag = getCountryFlag(name);
- if (flag) return flag;
-
- const key = normalizeTeamName(name);
-
- if (teamLogoCache.has(key)) {
-  return teamLogoCache.get(key);
- }
-
- const lookup = searchClubBadge(name);
- teamLogoCache.set(key, lookup);
-
- const result = await lookup;
- teamLogoCache.set(key, result);
-
- return result;
-}
-
-function createTeamDisplay(teamName, league) {
- const team = document.createElement("div");
- team.className = "match-team";
-
- const name = document.createElement("span");
- name.className = "team-name";
- name.textContent = teamName || "Unknown";
-
- if (isFootballLeague(league)) {
-  const logo = document.createElement("img");
-  logo.className = "team-logo";
-  logo.alt = "";
-  logo.loading = "lazy";
-  logo.style.display = "none";
-
-  const flag = getCountryFlag(teamName);
-  if (flag) logo.classList.add("flag");
-
-  logo.onload = () => {
-   logo.style.display = "block";
-  };
-
-  logo.onerror = () => {
-   logo.style.display = "none";
-  };
-
-  getTeamLogo(teamName, league).then(url => {
-   if (url && logo.isConnected) {
-    logo.src = url;
-   }
-  });
-
-  team.appendChild(logo);
- }
-
- team.appendChild(name);
- return team;
-}
 <header>
 <div class="brand"><div class="logo">ONLYBOSSTIPS</div></div>
 <button id="headerButton" onclick="showAuth('signup')">JOIN NOW</button>
@@ -254,7 +211,10 @@ function createTeamDisplay(teamName, league) {
 <div class="password-field">
 <input id="signupPassword" type="password" placeholder="Create a password" autocomplete="new-password">
 <button class="password-toggle" type="button" onclick="togglePassword('signupPassword',this)" aria-label="Show password" title="Show password">
-<svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true">
+<path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/>
+<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+</svg>
 </button>
 </div>
 <button id="signupButton" onclick="signUp()">CREATE ACCOUNT</button>
@@ -268,7 +228,10 @@ function createTeamDisplay(teamName, league) {
 <div class="password-field">
 <input id="loginPassword" type="password" placeholder="Enter password" autocomplete="current-password">
 <button class="password-toggle" type="button" onclick="togglePassword('loginPassword',this)" aria-label="Show password" title="Show password">
-<svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true">
+<path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/>
+<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+</svg>
 </button>
 </div>
 <button id="loginButton" onclick="logIn()">LOG IN</button>
@@ -282,14 +245,20 @@ function createTeamDisplay(teamName, league) {
 <div class="password-field">
 <input id="newPassword" type="password" placeholder="Enter new password" autocomplete="new-password">
 <button class="password-toggle" type="button" onclick="togglePassword('newPassword',this)" aria-label="Show password" title="Show password">
-<svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true">
+<path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/>
+<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+</svg>
 </button>
 </div>
 <label>Confirm new password</label>
 <div class="password-field">
 <input id="confirmPassword" type="password" placeholder="Confirm new password" autocomplete="new-password">
 <button class="password-toggle" type="button" onclick="togglePassword('confirmPassword',this)" aria-label="Show password" title="Show password">
-<svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true">
+<path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/>
+<path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+</svg>
 </button>
 </div>
 <button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button>
@@ -336,7 +305,15 @@ function createTeamDisplay(teamName, league) {
 
 <h2 class="section-title gold">FREE ODDS</h2>
 <div class="selected-calendar-date">
-<svg class="calendar-icon" viewBox="0 0 24 24" aria-hidden="true"><rect class="calendar-page" x="3" y="5" width="18" height="16" rx="2.2"/><path d="M8 3.5v4M16 3.5v4M3.5 10h17"/><circle class="calendar-dots" cx="8" cy="14" r="1"/><circle class="calendar-dots" cx="12" cy="14" r="1"/><circle class="calendar-dots" cx="16" cy="14" r="1"/><circle class="calendar-dots" cx="8" cy="17.5" r="1"/><circle class="calendar-dots" cx="12" cy="17.5" r="1"/></svg>
+<svg class="calendar-icon" viewBox="0 0 24 24" aria-hidden="true">
+ <rect class="calendar-page" x="3" y="5" width="18" height="16" rx="2.2"/>
+ <path d="M8 3.5v4M16 3.5v4M3.5 10h17"/>
+ <circle class="calendar-dots" cx="8" cy="14" r="1"/>
+ <circle class="calendar-dots" cx="12" cy="14" r="1"/>
+ <circle class="calendar-dots" cx="16" cy="14" r="1"/>
+ <circle class="calendar-dots" cx="8" cy="17.5" r="1"/>
+ <circle class="calendar-dots" cx="12" cy="17.5" r="1"/>
+</svg>
 <span id="selectedCalendarDate">Today</span>
 </div>
 <p class="odds-intro">Daily match predictions and results</p>
@@ -443,6 +420,7 @@ function createTeamDisplay(teamName, league) {
 </div>
 
 <footer>ONLYBOSSTIPS © 2026. All rights reserved.</footer>
+
 <script>
 const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
 const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
@@ -455,153 +433,98 @@ let announcementQueue=[],announcementShowing=false;
 /* TEAM LOGOS AND NATIONAL FLAGS */
 const teamLogoCache=new Map();
 
-function normalizeTeamName(name){
- return String(name||"").normalize("NFD")
-  .replace(/[\u0300-\u036f]/g,"")
-  .toLowerCase().replace(/[^a-z0-9]/g,"");
-}
-
 const countryFlags={
- nigeria:"ng",england:"gb-eng",brazil:"br",france:"fr",
- argentina:"ar",spain:"es",germany:"de",italy:"it",
- portugal:"pt",netherlands:"nl",holland:"nl",belgium:"be",
- scotland:"gb-sct",wales:"gb-wls",northernireland:"gb-nir",
- usa:"us",unitedstates:"us",unitedstatesofamerica:"us",
- mexico:"mx",canada:"ca",japan:"jp",southkorea:"kr",
- korearepublic:"kr",australia:"au",ghana:"gh",senegal:"sn",
- morocco:"ma",egypt:"eg",ivorycoast:"ci",cotedivoire:"ci",
- cameroon:"cm",southafrica:"za",uruguay:"uy",colombia:"co",
- chile:"cl",denmark:"dk",sweden:"se",norway:"no",
- switzerland:"ch",turkey:"tr",turkiye:"tr",croatia:"hr",
- serbia:"rs",poland:"pl",ukraine:"ua",greece:"gr",
- austria:"at",czechrepublic:"cz",czechia:"cz",iran:"ir",
- saudiarabia:"sa",qatar:"qa",newzealand:"nz",jamaica:"jm",
- congodr:"cd",drcongo:"cd",
- democraticrepublicofthecongo:"cd",koreadpr:"kp",
- russia:"ru",panama:"pa",costarica:"cr"
+ "nigeria":"ng","england":"gb-eng","brazil":"br","france":"fr",
+ "argentina":"ar","spain":"es","germany":"de","italy":"it",
+ "portugal":"pt","netherlands":"nl","holland":"nl","belgium":"be",
+ "scotland":"gb-sct","wales":"gb-wls","northern ireland":"gb-nir",
+ "usa":"us","united states":"us","united states of america":"us",
+ "mexico":"mx","canada":"ca","japan":"jp","south korea":"kr",
+ "korea republic":"kr","australia":"au","ghana":"gh","senegal":"sn",
+ "morocco":"ma","egypt":"eg","ivory coast":"ci","cote d'ivoire":"ci",
+ "cameroon":"cm","south africa":"za","uruguay":"uy","colombia":"co",
+ "chile":"cl","denmark":"dk","sweden":"se","norway":"no",
+ "switzerland":"ch","turkey":"tr","türkiye":"tr","croatia":"hr",
+ "serbia":"rs","poland":"pl","ukraine":"ua","greece":"gr",
+ "austria":"at","czech republic":"cz","czechia":"cz","iran":"ir",
+ "saudi arabia":"sa","qatar":"qa","new zealand":"nz","jamaica":"jm",
+ "congo dr":"cd","dr congo":"cd",
+ "democratic republic of the congo":"cd"
 };
 
-/* Keys and aliases are normalized, so spaces and punctuation do not break lookup. */
-const teamAliases={
- "al nassr club":["Al-Nassr FC","Al Nassr FC"],
- "al nassr":["Al-Nassr FC","Al Nassr FC"],
- "bayern munich":["FC Bayern München","Bayern Munich"],
- "cologne":["1. FC Köln","FC Cologne"],
- "bodo glimt":["Bodø/Glimt","FK Bodø/Glimt"],
- "manchester united":["Manchester United FC"],
- "manchester city":["Manchester City FC"],
- "chelsea":["Chelsea FC"],
- "arsenal":["Arsenal FC"],
- "liverpool":["Liverpool FC"],
- "tottenham":["Tottenham Hotspur FC"],
- "real madrid":["Real Madrid CF"],
- "barcelona":["FC Barcelona"],
- "atletico madrid":["Atlético de Madrid"],
- "paris saint germain":["Paris Saint-Germain FC"],
- "psg":["Paris Saint-Germain FC"],
- "inter":["Inter Milan","FC Internazionale Milano"],
- "ac milan":["Milan"],
- "juventus":["Juventus FC"],
- "borussia dortmund":["Borussia Dortmund"],
- "rb leipzig":["RasenBallsport Leipzig"]
-};
-
-const normalizedTeamAliases={};
-Object.keys(teamAliases).forEach(key=>{
- normalizedTeamAliases[normalizeTeamName(key)]=teamAliases[key];
-});
+function normalizeTeamName(name){
+ return String(name||"").toLowerCase().replace(/[^a-z0-9]/g,"");
+}
 
 function isFootballLeague(league){
  const value=String(league||"").toLowerCase();
  return !value.includes("tennis")&&!value.includes("basketball");
 }
 
-function getCountryFlag(teamName){
- const code=countryFlags[normalizeTeamName(teamName)];
- return code?"https://flagcdn.com/w40/"+code+".png":"";
-}
-
-async function searchClubBadge(teamName){
- const key=normalizeTeamName(teamName);
- const aliases=normalizedTeamAliases[key]||[];
- const searchNames=[...new Set([teamName,...aliases])];
-
- for(const searchName of searchNames){
-  try{
-   const url="https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t="+encodeURIComponent(searchName);
-   const response=await fetch(url);
-   if(!response.ok)continue;
-   const data=await response.json();
-   const teams=Array.isArray(data.teams)?data.teams:[];
-   const soccerTeams=teams.filter(team=>
-    String(team.strSport||"").toLowerCase()==="soccer"&&team.strTeamBadge
-   );
-
-   let match=soccerTeams.find(team=>normalizeTeamName(team.strTeam)===key);
-
-   if(!match){
-    for(const alias of aliases){
-     const aliasKey=normalizeTeamName(alias);
-     match=soccerTeams.find(team=>normalizeTeamName(team.strTeam)===aliasKey);
-     if(match)break;
-    }
-   }
-
-   if(match)return match.strTeamBadge;
-  }catch(error){
-   console.warn("Club badge lookup failed:",searchName,error);
-  }
- }
- return "";
-}
-
 async function getTeamLogo(teamName,league){
  if(!isFootballLeague(league))return "";
+
  const name=String(teamName||"").trim();
  if(!name)return "";
 
- const flag=getCountryFlag(name);
- if(flag)return flag;
+ const countryCode=countryFlags[name.toLowerCase()];
+ if(countryCode)return "https://flagcdn.com/w40/"+countryCode+".png";
 
- const key=normalizeTeamName(name);
- if(teamLogoCache.has(key))return teamLogoCache.get(key);
+ const cacheKey=normalizeTeamName(name);
+ if(teamLogoCache.has(cacheKey))return teamLogoCache.get(cacheKey);
 
- const lookup=searchClubBadge(name);
- teamLogoCache.set(key,lookup);
- const result=await lookup;
- teamLogoCache.set(key,result);
- return result;
+ const lookup=(async()=>{
+  try{
+   const url="https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t="+encodeURIComponent(name);
+   const response=await fetch(url);
+   if(!response.ok)return "";
+   const data=await response.json();
+   const teams=data.teams||[];
+
+   const exactMatch=teams.find(team=>
+    String(team.strSport||"").toLowerCase()==="soccer"&&
+    normalizeTeamName(team.strTeam)===cacheKey&&
+    team.strTeamBadge
+   );
+
+   return exactMatch?exactMatch.strTeamBadge:"";
+  }catch(error){
+   return "";
+  }
+ })();
+
+ teamLogoCache.set(cacheKey,lookup);
+ return lookup;
 }
 
 function createTeamDisplay(teamName,league){
  const team=document.createElement("div");
  team.className="match-team";
 
+ const logo=document.createElement("img");
+ logo.className="team-logo";
+ logo.alt="";
+ logo.style.display="none";
+ logo.loading="lazy";
+ logo.referrerPolicy="no-referrer";
+
  const name=document.createElement("span");
  name.className="team-name";
  name.textContent=teamName||"Unknown";
 
- if(isFootballLeague(league)){
-  const logo=document.createElement("img");
-  logo.className="team-logo";
-  logo.alt="";
-  logo.loading="lazy";
-  logo.referrerPolicy="no-referrer";
-  logo.style.display="none";
+ team.appendChild(logo);
+ team.appendChild(name);
 
-  if(getCountryFlag(teamName))logo.classList.add("flag");
-
+ getTeamLogo(teamName,league).then(logoUrl=>{
+  if(!logoUrl)return;
   logo.onload=()=>{logo.style.display="block"};
   logo.onerror=()=>{logo.style.display="none"};
+  if(countryFlags[String(teamName||"").toLowerCase()]){
+   logo.classList.add("flag");
+  }
+  logo.src=logoUrl;
+ });
 
-  team.appendChild(logo);
-
-  getTeamLogo(teamName,league).then(url=>{
-   if(url&&logo.isConnected)logo.src=url;
-  });
- }
-
- team.appendChild(name);
  return team;
 }
 
@@ -705,12 +628,17 @@ async function signUp(){
  if(!email||password.length<6){m.textContent="Enter a valid email and a password of at least 6 characters.";return}
  b.disabled=true;m.textContent="Creating your account...";
  try{
-  const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:window.location.origin+"/?auth=signup"}});
+  const {data,error}=await db.auth.signUp({
+   email,password,
+   options:{emailRedirectTo:window.location.origin+"/?auth=signup"}
+  });
   if(error){m.textContent=error.message;return}
   if(data.session){await loadUser(data.session.user)}
   else{m.textContent="Registration successful! A confirmation link has been sent to your Gmail. Open it to confirm your email, then return here to log in."}
- }catch(error){m.textContent="Something went wrong. Please try again.";console.error("Signup error:",error)}
- finally{b.disabled=false}
+ }catch(error){
+  m.textContent="Something went wrong. Please try again.";
+  console.error("Signup error:",error);
+ }finally{b.disabled=false}
 }
 
 /* LOGIN */
@@ -724,8 +652,10 @@ async function logIn(){
   if(error){m.textContent=error.message;return}
   recoveryInProgress=false;
   await loadUser(data.user);
- }catch(error){m.textContent="Login failed. Please try again.";console.error("Login error:",error)}
- finally{b.disabled=false}
+ }catch(error){
+  m.textContent="Login failed. Please try again.";
+  console.error("Login error:",error);
+ }finally{b.disabled=false}
 }
 
 /* PASSWORD RECOVERY */
@@ -736,7 +666,10 @@ async function forgotPassword(){
  try{
   const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/?auth=recovery"});
   m.textContent=error?error.message:"Password reset email sent. Check your Gmail inbox and spam folder. Open the reset link to create a new password.";
- }catch(error){m.textContent="Could not send the reset email. Please try again.";console.error("Password reset request error:",error)}
+ }catch(error){
+  m.textContent="Could not send the reset email. Please try again.";
+  console.error("Password reset request error:",error);
+ }
 }
 async function saveNewPassword(){
  const p=document.getElementById("newPassword").value,c=document.getElementById("confirmPassword").value;
@@ -754,8 +687,10 @@ async function saveNewPassword(){
   await db.auth.signOut({scope:"local"});
   window.history.replaceState({},document.title,window.location.pathname);
   setTimeout(()=>showAuth("login","Your password has been changed successfully. Please log in with your new password."),1200);
- }catch(error){m.textContent="Password update failed. Please request a new reset link and try again.";console.error("Password update error:",error)}
- finally{b.disabled=false}
+ }catch(error){
+  m.textContent="Password update failed. Please request a new reset link and try again.";
+  console.error("Password update error:",error);
+ }finally{b.disabled=false}
 }
 
 async function loadUser(user){
@@ -864,7 +799,7 @@ function makePredictionTable(items){
  const thead=document.createElement("thead"),hr=document.createElement("tr");
  ["MATCH","ODD","PREDICTION","TIME","OUTCOME"].forEach(t=>{const th=document.createElement("th");th.textContent=t;hr.appendChild(th)});
  thead.appendChild(hr);table.appendChild(thead);
-  const tbody=document.createElement("tbody");
+ const tbody=document.createElement("tbody");
 
  items.forEach(p=>{
   const tr=document.createElement("tr"),match=document.createElement("td"),odd=document.createElement("td"),pred=document.createElement("td"),time=document.createElement("td"),outcome=document.createElement("td");
@@ -873,11 +808,14 @@ function makePredictionTable(items){
   const teams=document.createElement("div");
   teams.className="match-teams";
   const leagueName=p.league||p.sport||"";
+
   teams.appendChild(createTeamDisplay(p.home_team||"Home",leagueName));
+
   const versus=document.createElement("div");
   versus.className="match-vs";
   versus.textContent="VS";
   teams.appendChild(versus);
+
   teams.appendChild(createTeamDisplay(p.away_team||"Away",leagueName));
   match.appendChild(teams);
 
@@ -894,6 +832,7 @@ function makePredictionTable(items){
   [match,odd,pred,time,outcome].forEach(td=>tr.appendChild(td));
   tbody.appendChild(tr);
  });
+
  table.appendChild(tbody);wrap.appendChild(table);return wrap;
 }
 
