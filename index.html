@@ -74,42 +74,17 @@ label{font-size:13px;color:#cbd0da}
 .member-responsible .responsible{margin:0;padding:0;border:0}
 .logout-bottom{margin-top:18px;padding:16px;width:100%;border:1px solid #743c3c;background:#291817;color:#ffb1a9;border-radius:9px}
 
-/* PROFESSIONAL CALENDAR DATE */
-.selected-calendar-date{
- display:flex;
- align-items:center;
- gap:10px;
- margin:0 0 15px;
- padding:12px 14px;
- background:linear-gradient(90deg,#102a1a,#0b1b11);
- border:1px solid #285038;
- border-radius:9px;
- color:#e8fff0;
- font-size:14px;
- font-weight:700;
- letter-spacing:.4px;
- box-shadow:0 3px 12px #00000020;
-}
-.calendar-icon{
- width:22px;
- height:22px;
- flex:0 0 22px;
- color:var(--green);
- stroke:currentColor;
- fill:none;
- stroke-width:1.7;
- stroke-linecap:round;
- stroke-linejoin:round;
-}
-.calendar-icon .calendar-page{
- fill:#35e87918;
- stroke:var(--green);
-}
-.calendar-icon .calendar-dots{
- fill:var(--green);
- stroke:none;
-}
+/* PASSWORD SHOW/HIDE CONTROLS */
+.password-field{position:relative;width:100%;margin:8px 0 16px}
+.password-field input{width:100%;margin:0;padding:14px 52px 14px 14px}
+.password-toggle{position:absolute;right:7px;top:50%;transform:translateY(-50%);background:transparent;color:var(--green);padding:9px 10px;border:0;font-size:19px;line-height:1;border-radius:6px}
+.password-toggle:focus{outline:2px solid var(--green);outline-offset:2px}
 
+/* PROFESSIONAL CALENDAR DATE */
+.selected-calendar-date{display:flex;align-items:center;gap:10px;margin:0 0 15px;padding:12px 14px;background:linear-gradient(90deg,#102a1a,#0b1b11);border:1px solid #285038;border-radius:9px;color:#e8fff0;font-size:14px;font-weight:700;letter-spacing:.4px;box-shadow:0 3px 12px #00000020}
+.calendar-icon{width:22px;height:22px;flex:0 0 22px;color:var(--green);stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.calendar-icon .calendar-page{fill:#35e87918;stroke:var(--green)}
+.calendar-icon .calendar-dots{fill:var(--green);stroke:none}
 .prediction-controls{background:#0b1b11;border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0 20px}
 .date-tabs{display:flex;flex-wrap:nowrap;gap:8px;width:100%;padding:2px 0 12px}
 .date-tab{flex:1 1 0;min-width:0;white-space:nowrap;text-align:center;border:1px solid #31543c;background:#102719;color:#dce9df;padding:9px 5px;border-radius:7px;font-size:12px;font-weight:600}
@@ -131,39 +106,11 @@ label{font-size:13px;color:#cbd0da}
 .outcome-wrap{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:clamp(8px,2.2vw,11px);font-weight:900;white-space:nowrap}
 .outcome-circle{width:19px;height:19px;border-radius:50%;display:inline-grid;place-items:center;border:2px solid currentColor;font-size:12px;line-height:1;flex-shrink:0}
 .result-won{color:#36d879}.result-lost{color:#ff6262}.result-void{color:#b5bec4}.result-live{color:#ffbd4a}.result-awaiting{color:#a5adbd}
-
-/* ONLYBOSSTIPS LIVE PULSE ANIMATION */
-.result-live .outcome-circle{
- animation:livePulse 1.8s ease-in-out infinite;
-}
-.result-live .outcome-wrap > span:last-child{
- animation:liveTextGlow 1.8s ease-in-out infinite;
-}
-@keyframes livePulse{
- 0%,100%{
-  transform:scale(1);
-  box-shadow:0 0 0 0 #ffbd4a40;
- }
- 50%{
-  transform:scale(1.13);
-  box-shadow:0 0 12px 4px #ffbd4a80;
- }
-}
-@keyframes liveTextGlow{
- 0%,100%{
-  text-shadow:0 0 2px #ffbd4a40;
- }
- 50%{
-  text-shadow:0 0 10px #ffbd4a;
- }
-}
-@media(prefers-reduced-motion:reduce){
- .result-live .outcome-circle,
- .result-live .outcome-wrap > span:last-child{
-  animation:none;
- }
-}
-
+.result-live .outcome-circle{animation:livePulse 1.8s ease-in-out infinite}
+.result-live .outcome-wrap > span:last-child{animation:liveTextGlow 1.8s ease-in-out infinite}
+@keyframes livePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 #ffbd4a40}50%{transform:scale(1.13);box-shadow:0 0 12px 4px #ffbd4a80}}
+@keyframes liveTextGlow{0%,100%{text-shadow:0 0 2px #ffbd4a40}50%{text-shadow:0 0 10px #ffbd4a}}
+@media(prefers-reduced-motion:reduce){.result-live .outcome-circle,.result-live .outcome-wrap > span:last-child{animation:none}}
 .prediction-empty{color:var(--muted);font-size:14px;padding:12px 0}
 .prediction-group{margin-bottom:22px}
 footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--muted);font-size:12px;background:#081b10}
@@ -186,14 +133,11 @@ footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--m
 .streak-stat strong{font-size:20px;color:#fff;overflow-wrap:anywhere}
 .streak-stat strong.green{color:var(--green)}
 .streak-note{color:var(--muted);font-size:10px;line-height:1.5;margin:14px 0 0}
-
-/* ANNOUNCEMENT POPUP */
 .announcement-overlay{position:fixed;inset:0;z-index:99999;background:#0006;display:flex;align-items:center;justify-content:center;padding:15px}
 .announcement-box{width:100%;max-width:400px;max-height:75vh;overflow-y:auto;background:#102719;border:2px solid var(--green);border-radius:15px;padding:25px;box-shadow:0 15px 60px #0008;position:relative;text-align:center}
 .announcement-box h2{color:var(--green);margin:0 25px 15px;font-size:20px}
 .announcement-box p{color:#fff;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
 .announcement-close{position:absolute;right:10px;top:10px;background:#291817;color:#fff;padding:7px 11px;border-radius:50%;font-size:20px}
-
 @media(max-width:500px){
 .admin-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}
 header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
@@ -246,25 +190,43 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <div id="signupForm">
 <h2 class="gold">CREATE ACCOUNT</h2><p class="muted">Join ONLYBOSSTIPS as a FREE MEMBER.</p>
 <label>Email address</label><input id="signupEmail" type="email" placeholder="Enter your email">
-<label>Password</label><input id="signupPassword" type="password" placeholder="Create a password">
+<label>Password</label>
+<div class="password-field">
+<input id="signupPassword" type="password" placeholder="Create a password" autocomplete="new-password">
+<button class="password-toggle" type="button" onclick="togglePassword('signupPassword',this)" aria-label="Show password" title="Show password">👁</button>
+</div>
 <button id="signupButton" onclick="signUp()">CREATE ACCOUNT</button>
 <p class="muted">Already registered? <span class="link" onclick="showAuth('login')">Log in</span></p>
 </div>
+
 <div id="loginForm" class="hidden">
 <h2 class="gold">MEMBER LOGIN</h2><p class="muted">Log in to access your predictions.</p>
 <label>Email address</label><input id="loginEmail" type="email" placeholder="Enter your email">
-<label>Password</label><input id="loginPassword" type="password" placeholder="Enter password">
+<label>Password</label>
+<div class="password-field">
+<input id="loginPassword" type="password" placeholder="Enter password" autocomplete="current-password">
+<button class="password-toggle" type="button" onclick="togglePassword('loginPassword',this)" aria-label="Show password" title="Show password">👁</button>
+</div>
 <button id="loginButton" onclick="logIn()">LOG IN</button>
 <p class="muted"><span class="link" onclick="forgotPassword()">Forgot password?</span></p>
 <p class="muted">Don't have an account? <span class="link" onclick="showAuth('signup')">Sign up</span></p>
 </div>
+
 <div id="recoveryForm" class="hidden">
 <h2 class="gold">RESET PASSWORD</h2><p class="muted">Enter your new password below.</p>
-<label>New password</label><input id="newPassword" type="password" placeholder="Enter new password">
-<label>Confirm new password</label><input id="confirmPassword" type="password" placeholder="Confirm new password">
+<label>New password</label>
+<div class="password-field">
+<input id="newPassword" type="password" placeholder="Enter new password" autocomplete="new-password">
+<button class="password-toggle" type="button" onclick="togglePassword('newPassword',this)" aria-label="Show password" title="Show password">👁</button>
+</div>
+<label>Confirm new password</label>
+<div class="password-field">
+<input id="confirmPassword" type="password" placeholder="Confirm new password" autocomplete="new-password">
+<button class="password-toggle" type="button" onclick="togglePassword('confirmPassword',this)" aria-label="Show password" title="Show password">👁</button>
+</div>
 <button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button>
 </div>
-<p id="authMessage" class="message"></p>
+<p id="authMessage" class="message" aria-live="polite"></p>
 <p class="muted"><span class="link" onclick="showWelcome()">Back to home</span></p>
 </div>
 </section>
@@ -442,13 +404,24 @@ function membershipLabel(){
 function hasVipAccess(){return currentMemberships.includes("vip")||currentIsAdmin}
 function hasRolloverAccess(){return currentMemberships.includes("rollover")||currentIsAdmin}
 
+function togglePassword(inputId,button){
+ const input=document.getElementById(inputId);
+ if(!input)return;
+ const visible=input.type==="password";
+ input.type=visible?"text":"password";
+ button.textContent=visible?"🙈":"👁";
+ button.setAttribute("aria-label",visible?"Hide password":"Show password");
+ button.setAttribute("title",visible?"Hide password":"Show password");
+}
+
 function hideAllSections(){["welcome","authSection","memberDashboard"].forEach(id=>document.getElementById(id).classList.add("hidden"))}
 function showWelcome(){hideAllSections();document.getElementById("welcome").classList.remove("hidden");document.getElementById("headerButton").classList.remove("hidden")}
-function showAuth(mode){
+function showAuth(mode,message){
  hideAllSections();document.getElementById("authSection").classList.remove("hidden");document.getElementById("headerButton").classList.remove("hidden");
  document.getElementById("signupForm").classList.toggle("hidden",mode!=="signup");
  document.getElementById("loginForm").classList.toggle("hidden",mode!=="login");
- document.getElementById("recoveryForm").classList.add("hidden");document.getElementById("authMessage").textContent="";
+ document.getElementById("recoveryForm").classList.add("hidden");
+ document.getElementById("authMessage").textContent=message||"";
 }
 function openPublicLogin(e){e.preventDefault();showAuth("login")}
 function openPublicSignup(e){e.preventDefault();showAuth("signup")}
@@ -510,44 +483,94 @@ function sendPaymentWhatsApp(){
  window.open("https://wa.me/2348032413495?text="+encodeURIComponent(msg),"_blank");
 }
 
+/* CREATE ACCOUNT AND SEND EMAIL CONFIRMATION */
 async function signUp(){
  const email=document.getElementById("signupEmail").value.trim(),password=document.getElementById("signupPassword").value;
  const m=document.getElementById("authMessage"),b=document.getElementById("signupButton");
  if(!email||password.length<6){m.textContent="Enter a valid email and a password of at least 6 characters.";return}
  b.disabled=true;m.textContent="Creating your account...";
- const {data,error}=await db.auth.signUp({email,password});b.disabled=false;
- if(error){m.textContent=error.message;return}
- if(data.session)await loadUser(data.session.user);else m.textContent="Registration successful. Check your email to confirm your account before logging in.";
+ try{
+  const {data,error}=await db.auth.signUp({
+   email,
+   password,
+   options:{
+    emailRedirectTo:window.location.origin+"/?auth=signup"
+   }
+  });
+  if(error){m.textContent=error.message;return}
+  if(data.session){
+   await loadUser(data.session.user);
+  }else{
+   m.textContent="Registration successful! A confirmation link has been sent to your Gmail. Open it to confirm your email, then return here to log in.";
+  }
+ }catch(error){
+  m.textContent="Something went wrong. Please try again.";
+  console.error("Signup error:",error);
+ }finally{
+  b.disabled=false;
+ }
 }
+
+/* MEMBER LOGIN */
 async function logIn(){
  const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPassword").value;
  const m=document.getElementById("authMessage"),b=document.getElementById("loginButton");
  if(!email||!password){m.textContent="Enter your email and password.";return}
  b.disabled=true;m.textContent="Logging in...";
- const {data,error}=await db.auth.signInWithPassword({email,password});b.disabled=false;
- if(error){m.textContent=error.message;return}
- await loadUser(data.user);
+ try{
+  const {data,error}=await db.auth.signInWithPassword({email,password});
+  if(error){m.textContent=error.message;return}
+  recoveryInProgress=false;
+  await loadUser(data.user);
+ }catch(error){
+  m.textContent="Login failed. Please try again.";
+  console.error("Login error:",error);
+ }finally{
+  b.disabled=false;
+ }
 }
+
+/* SEND PASSWORD RECOVERY EMAIL TO THE MEMBER'S GMAIL */
 async function forgotPassword(){
  const email=document.getElementById("loginEmail").value.trim(),m=document.getElementById("authMessage");
  if(!email){m.textContent="Enter your email address above first.";return}
  m.textContent="Sending password reset email...";
- const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/"});
- m.textContent=error?error.message:"Password reset email sent. Open the email link to return here and create your new password.";
+ try{
+  const {error}=await db.auth.resetPasswordForEmail(email,{
+   redirectTo:window.location.origin+"/?auth=recovery"
+  });
+  m.textContent=error?error.message:"Password reset email sent. Check your Gmail inbox and spam folder. Open the reset link to create a new password.";
+ }catch(error){
+  m.textContent="Could not send the reset email. Please try again.";
+  console.error("Password reset request error:",error);
+ }
 }
+
+/* SAVE THE NEW PASSWORD */
 async function saveNewPassword(){
  const p=document.getElementById("newPassword").value,c=document.getElementById("confirmPassword").value;
  const m=document.getElementById("authMessage"),b=document.getElementById("savePasswordButton");
  if(p.length<6){m.textContent="Your password must contain at least 6 characters.";return}
  if(p!==c){m.textContent="The passwords do not match.";return}
  b.disabled=true;m.textContent="Updating your password...";
- const {error}=await db.auth.updateUser({password:p});b.disabled=false;
- if(error){m.textContent="Password update failed: "+error.message;return}
- recoveryInProgress=false;m.textContent="Your password has been changed successfully. You can now log in.";
- document.getElementById("newPassword").value="";document.getElementById("confirmPassword").value="";
- await db.auth.signOut();window.history.replaceState({},document.title,window.location.pathname);
- setTimeout(()=>showAuth("login"),1500);
+ try{
+  const {error}=await db.auth.updateUser({password:p});
+  if(error){m.textContent="Password update failed: "+error.message;return}
+  recoveryInProgress=false;
+  m.textContent="Your password has been changed successfully. You can now log in.";
+  document.getElementById("newPassword").value="";
+  document.getElementById("confirmPassword").value="";
+  await db.auth.signOut({scope:"local"});
+  window.history.replaceState({},document.title,window.location.pathname);
+  setTimeout(()=>showAuth("login","Your password has been changed successfully. Please log in with your new password."),1200);
+ }catch(error){
+  m.textContent="Password update failed. Please request a new reset link and try again.";
+  console.error("Password update error:",error);
+ }finally{
+  b.disabled=false;
+ }
 }
+
 async function loadUser(user){
  currentUser=user;currentTier="free";currentMemberships=[];currentIsAdmin=false;
  const {data:profile,error}=await db.from("member_profiles").select("membership_tier").eq("user_id",user.id).maybeSingle();
@@ -586,19 +609,14 @@ function dateForSelection(choice){
  d.setDate(d.getDate()+(choice==="yesterday"?-1:choice==="tomorrow"?1:0));
  return localDateKey(d);
 }
-
-/* CALENDAR DATE DISPLAY */
 function updateSelectedCalendarDate(){
  const element=document.getElementById("selectedCalendarDate");
  if(!element)return;
  const dateKey=dateForSelection(selectedDate);
  const parts=dateKey.split("-").map(Number);
  const date=new Date(parts[0],parts[1]-1,parts[2]);
- element.textContent=date.toLocaleDateString("en-GB",{
-  weekday:"long",day:"numeric",month:"long",year:"numeric"
- });
+ element.textContent=date.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
 }
-
 function selectDate(choice){
  selectedDate=choice;
  document.querySelectorAll(".date-tab").forEach(b=>b.classList.toggle("active",b.dataset.date===choice));
@@ -621,27 +639,15 @@ function formatKickoff(v){
 function getResult(item){
  const s=String(item.status||"").toLowerCase().trim();
  const r=String(item.result||"").toLowerCase().trim();
-
- if(s==="won"||r==="won")
-  return{text:"WON",symbol:"✓",className:"result-won"};
-
- if(s==="lost"||r==="lost")
-  return{text:"LOST",symbol:"×",className:"result-lost"};
-
- if(s==="void"||r==="void")
-  return{text:"VOID",symbol:"−",className:"result-void"};
-
+ if(s==="won"||r==="won")return{text:"WON",symbol:"✓",className:"result-won"};
+ if(s==="lost"||r==="lost")return{text:"LOST",symbol:"×",className:"result-lost"};
+ if(s==="void"||r==="void")return{text:"VOID",symbol:"−",className:"result-void"};
  if(item.kickoff){
-  const kick=new Date(item.kickoff);
-  const now=new Date();
-
-  if(!Number.isNaN(kick.getTime())&&kick<=now)
-   return{text:"LIVE",symbol:"•",className:"result-live"};
+  const kick=new Date(item.kickoff),now=new Date();
+  if(!Number.isNaN(kick.getTime())&&kick<=now)return{text:"LIVE",symbol:"•",className:"result-live"};
  }
-
  return{text:"PENDING",symbol:"",className:"result-awaiting"};
 }
-
 function calculateStreakStats(visibility){
  const settled=allPredictions.filter(p=>String(p.visibility||"free").toLowerCase()===visibility)
  .map(p=>({result:getResult(p).text,date:new Date(p.kickoff||p.created_at||0).getTime()}))
@@ -695,25 +701,14 @@ function renderPredictionGroup(box,items){
  const group=document.createElement("div");group.className="prediction-group";
  const h=document.createElement("div");h.className="prediction-date";
  const dateNames={yesterday:"Yesterday",today:"Today",tomorrow:"Tomorrow"};
- const dateKey=dateForSelection(selectedDate);
- const parts=dateKey.split("-").map(Number);
+ const dateKey=dateForSelection(selectedDate),parts=dateKey.split("-").map(Number);
  const date=new Date(parts[0],parts[1]-1,parts[2]);
  h.textContent=(dateNames[selectedDate]||"Today")+" — "+date.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
  group.appendChild(h);group.appendChild(makePredictionTable(items));box.appendChild(group);
 }
-
-/* FILTERS INCLUDING OTHER LEAGUES */
 function filterItems(items){
  const target=dateForSelection(selectedDate);
- const listedLeagues=[
-  "premier league",
-  "bundesliga",
-  "la liga",
-  "ligue 1",
-  "afcon",
-  "uefa",
-  "world cup"
- ];
+ const listedLeagues=["premier league","bundesliga","la liga","ligue 1","afcon","uefa","world cup"];
  return items.filter(p=>{
   if(!p.kickoff)return false;
   const d=new Date(p.kickoff);
@@ -811,6 +806,8 @@ async function logOut(){
  document.getElementById("headerButton").classList.remove("hidden");
  showWelcome();
 }
+
+/* AUTHENTICATION EVENTS */
 db.auth.onAuthStateChange((event)=>{
  if(event==="PASSWORD_RECOVERY")showRecoveryForm();
  if(event==="SIGNED_OUT"&&!recoveryInProgress){
@@ -822,27 +819,60 @@ db.auth.onAuthStateChange((event)=>{
   showWelcome();
  }
 });
+
+/* HANDLE EMAIL CONFIRMATION AND PASSWORD RESET LINKS SEPARATELY */
 async function startApp(){
- const params=new URLSearchParams(window.location.search),code=params.get("code");
+ const params=new URLSearchParams(window.location.search);
+ const code=params.get("code");
+ const authType=params.get("auth");
+
  if(code){
-  const {error}=await db.auth.exchangeCodeForSession(code);
+  const {data,error}=await db.auth.exchangeCodeForSession(code);
+
   if(error){
-   showAuth("login");
-   document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";
+   window.history.replaceState({},document.title,window.location.pathname);
+   showAuth("login",
+    authType==="signup"
+     ?"This email confirmation link is invalid or has expired. Please request a new confirmation email."
+     :"This password reset link is invalid or has expired. Please request a new one."
+   );
    return;
   }
+
   window.history.replaceState({},document.title,window.location.pathname);
-  showRecoveryForm();return;
+
+  if(authType==="signup"){
+   /*
+    * Email is confirmed. Sign out the temporary confirmation session
+    * so the member is taken to the login page as requested.
+    */
+   await db.auth.signOut({scope:"local"});
+   recoveryInProgress=false;
+   showAuth("login","Your email has been confirmed successfully! Your ONLYBOSSTIPS account is ready. Please log in.");
+   return;
+  }
+
+  if(authType==="recovery"){
+   showRecoveryForm();
+   return;
+  }
+
+  /* Older password reset links may not contain an auth marker. */
+  showRecoveryForm();
+  return;
  }
+
+ /* Support older Supabase recovery links that use URL hash tokens. */
  if(window.location.hash.includes("type=recovery")){
   const {data,error}=await db.auth.getSession();
   if(error||!data.session){
-   showAuth("login");
-   document.getElementById("authMessage").textContent="This password reset link is invalid or has expired. Request a new one.";
+   showAuth("login","This password reset link is invalid or has expired. Request a new one.");
    return;
   }
-  showRecoveryForm();return;
+  showRecoveryForm();
+  return;
  }
+
  const {data,error}=await db.auth.getSession();
  if(error){showWelcome();return}
  if(data.session)await loadUser(data.session.user);else showWelcome();
@@ -852,17 +882,11 @@ startApp();
 /* AUTOMATIC LIVE STATUS REFRESH EVERY 30 SECONDS */
 setInterval(()=>{
  const dashboard=document.getElementById("memberDashboard");
-
- if(
-  currentUser&&
-  dashboard&&
-  !dashboard.classList.contains("hidden")
- ){
+ if(currentUser&&dashboard&&!dashboard.classList.contains("hidden")){
   renderAllPredictionViews();
   updateWinningStreakDashboard();
  }
 },30000);
-
 </script>
 </body>
 </html>
