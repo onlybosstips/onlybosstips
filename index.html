@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -130,6 +131,39 @@ label{font-size:13px;color:#cbd0da}
 .outcome-wrap{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:clamp(8px,2.2vw,11px);font-weight:900;white-space:nowrap}
 .outcome-circle{width:19px;height:19px;border-radius:50%;display:inline-grid;place-items:center;border:2px solid currentColor;font-size:12px;line-height:1;flex-shrink:0}
 .result-won{color:#36d879}.result-lost{color:#ff6262}.result-void{color:#b5bec4}.result-live{color:#ffbd4a}.result-awaiting{color:#a5adbd}
+
+/* ONLYBOSSTIPS LIVE PULSE ANIMATION */
+.result-live .outcome-circle{
+ animation:livePulse 1.8s ease-in-out infinite;
+}
+.result-live .outcome-wrap > span:last-child{
+ animation:liveTextGlow 1.8s ease-in-out infinite;
+}
+@keyframes livePulse{
+ 0%,100%{
+  transform:scale(1);
+  box-shadow:0 0 0 0 #ffbd4a40;
+ }
+ 50%{
+  transform:scale(1.13);
+  box-shadow:0 0 12px 4px #ffbd4a80;
+ }
+}
+@keyframes liveTextGlow{
+ 0%,100%{
+  text-shadow:0 0 2px #ffbd4a40;
+ }
+ 50%{
+  text-shadow:0 0 10px #ffbd4a;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ .result-live .outcome-circle,
+ .result-live .outcome-wrap > span:last-child{
+  animation:none;
+ }
+}
+
 .prediction-empty{color:var(--muted);font-size:14px;padding:12px 0}
 .prediction-group{margin-bottom:22px}
 footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--muted);font-size:12px;background:#081b10}
