@@ -3,151 +3,151 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101010">
+<meta name="theme-color" content="#000000">
 <title>ONLYBOSSTIPS | Sports Predictions & News</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
- --red:#E32636;
- --red-dark:#B91C2B;
- --bg:#101010;
- --panel:#1B1B1B;
- --panel2:#242424;
- --muted:#A6A6A6;
+ --red:#FFFFFF;
+ --red-dark:#CCCCCC;
+ --bg:#000000;
+ --panel:#111111;
+ --panel2:#202020;
+ --muted:#AAAAAA;
  --white:#FFFFFF;
  --line:#333333;
- --green:#20B66B;
- --gold:#F0B429;
+ --green:#FFFFFF;
+ --gold:#FFFFFF;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:#fff;font-family:Arial,sans-serif;min-height:100vh}
+body{margin:0;background:#000;color:#fff;font-family:Arial,sans-serif;min-height:100vh}
 header,section,footer{position:relative;z-index:1}
 header{
  padding:15px 6%;display:flex;justify-content:space-between;
  align-items:center;border-bottom:1px solid var(--line);
- background:#090909;gap:14px;position:sticky;top:0;z-index:100
+ background:#000;gap:14px;position:sticky;top:0;z-index:100
 }
 .brand{display:flex;align-items:center;gap:10px;min-width:0}
 .logo{font-size:21px;font-weight:900;color:#fff;letter-spacing:.7px}
-.logo:before{content:"";display:inline-block;width:5px;height:22px;background:var(--red);margin-right:9px;vertical-align:-4px;border-radius:3px}
+.logo:before{content:"";display:inline-block;width:5px;height:22px;background:#fff;margin-right:9px;vertical-align:-4px;border-radius:3px}
 button{
  border:0;padding:13px 18px;border-radius:7px;
- background:var(--red);color:#fff;font-weight:bold;cursor:pointer;
+ background:#fff;color:#000;font-weight:bold;cursor:pointer;
  transition:background .2s,transform .2s
 }
-button:hover{background:var(--red-dark);transform:translateY(-1px)}
-button.secondary{background:#333;color:#fff;border:1px solid #555}
+button:hover{background:#ddd;transform:translateY(-1px)}
+button.secondary{background:#222;color:#fff;border:1px solid #555}
 button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .hero{
  text-align:center;padding:70px 18px;
- background:radial-gradient(ellipse at top,#3A171B,#171717 65%,#101010);
- color:#fff;border-bottom:1px solid #382024
+ background:linear-gradient(180deg,#171717,#000);
+ color:#fff;border-bottom:1px solid #333
 }
-.hero-kicker{color:#FF929B;font-size:12px;font-weight:800;letter-spacing:3px;margin:0 0 12px}
+.hero-kicker{color:#fff;font-size:12px;font-weight:800;letter-spacing:3px;margin:0 0 12px}
 .hero h1{font-size:clamp(32px,7vw,58px);margin:0 0 15px;line-height:1.1}
-.gold{color:var(--red)}
+.gold{color:#fff}
 .hero .gold{color:#fff}
-.hero p{color:#D0D0D0;line-height:1.8}
-.hero-tagline{font-size:11px!important;font-weight:800;letter-spacing:2px;color:#FF929B!important;margin:0 0 25px!important}
+.hero p{color:#ccc;line-height:1.8}
+.hero-tagline{font-size:11px!important;font-weight:800;letter-spacing:2px;color:#ccc!important;margin:0 0 25px!important}
 .actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:25px}
 .container{max-width:1100px;margin:auto;padding:25px 18px 60px}
 .card{
- background:var(--panel);border:1px solid var(--line);border-radius:12px;
+ background:#111;border:1px solid #333;border-radius:12px;
  padding:20px;margin-bottom:16px;box-shadow:0 5px 18px #0003
 }
 .section-title{
  font-size:21px;font-weight:900;letter-spacing:1.5px;
- margin:30px 0 15px;padding:0 0 10px;border-bottom:1px solid var(--line);
+ margin:30px 0 15px;padding:0 0 10px;border-bottom:1px solid #333;
  color:#fff
 }
 .section-title:before{
  content:"";display:inline-block;width:5px;height:19px;
- background:var(--red);border-radius:5px;margin-right:10px;vertical-align:-3px
+ background:#fff;border-radius:5px;margin-right:10px;vertical-align:-3px
 }
-.odds-intro{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.4px;margin:-7px 0 14px}
+.odds-intro{color:#aaa;font-size:12px;font-weight:600;letter-spacing:.4px;margin:-7px 0 14px}
 .hidden{display:none!important}
 .form{max-width:430px;margin:35px auto}
 input,select{
- width:100%;padding:14px;margin:8px 0 16px;background:#111;
+ width:100%;padding:14px;margin:8px 0 16px;background:#080808;
  color:#fff;border:1px solid #444;border-radius:7px;font-size:16px
 }
-input:focus,select:focus{outline:2px solid #E3263666;border-color:var(--red)}
-label{font-size:13px;color:#CCC}
-.muted{color:var(--muted);font-size:14px;line-height:1.7}
-.link{color:#FF737E;text-decoration:underline;cursor:pointer}
+input:focus,select:focus{outline:2px solid #ffffff55;border-color:#fff}
+label{font-size:13px;color:#ccc}
+.muted{color:#aaa;font-size:14px;line-height:1.7}
+.link{color:#fff;text-decoration:underline;cursor:pointer}
 .badge{display:inline-block;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:#333;color:#fff}
-.badge.vip{background:#54232A;color:#FFB8BE}
-.badge.rollover{background:#3B3030;color:#FFD6D9}
-.message{margin:12px 0;color:#FF929B;font-size:14px;overflow-wrap:anywhere}
-.payment-price{font-size:34px;font-weight:bold;color:#FF6B76;margin:15px 0}
+.badge.vip{background:#fff;color:#000}
+.badge.rollover{background:#444;color:#fff}
+.message{margin:12px 0;color:#fff;font-size:14px;overflow-wrap:anywhere}
+.payment-price{font-size:34px;font-weight:bold;color:#fff;margin:15px 0}
 .payment-price small{font-size:19px}
-.bank-details{background:#111;border:1px solid #444;border-radius:9px;padding:15px;margin:15px 0;line-height:2;overflow-wrap:anywhere}
+.bank-details{background:#080808;border:1px solid #444;border-radius:9px;padding:15px;margin:15px 0;line-height:2;overflow-wrap:anywhere}
 .bank-details p{margin:5px 0}
 .payment-button,.vip-upgrade-button,.close-payment{width:100%;margin-top:10px}
-.vip-upgrade-button{padding:16px;font-size:15px;border-radius:9px;margin:5px 0 20px;box-shadow:0 4px 18px #E3263625}
-.membership-choice{background:#202020;border:1px solid #444;border-radius:10px;padding:15px;margin:12px 0}
+.vip-upgrade-button{padding:16px;font-size:15px;border-radius:9px;margin:5px 0 20px;box-shadow:0 4px 18px #0005}
+.membership-choice{background:#181818;border:1px solid #444;border-radius:10px;padding:15px;margin:12px 0}
 .membership-choice h3{margin:0 0 8px;color:#fff;font-size:16px}
 .membership-choice p{margin:5px 0;color:#bbb;font-size:13px;line-height:1.6}
 .membership-choice button{width:100%;margin-top:10px}
 .rollover-button{background:#333;color:#fff;border:1px solid #666}
 .member-welcome{
- padding:22px;background:linear-gradient(135deg,#1B1B1B,#35171B);
- border:1px solid #6D252D;border-radius:15px;margin-bottom:28px;
+ padding:22px;background:linear-gradient(135deg,#171717,#000);
+ border:1px solid #444;border-radius:15px;margin-bottom:20px;
  box-shadow:0 8px 25px #0005;color:#fff
 }
 .member-welcome-top{display:flex;align-items:center;gap:15px;margin-bottom:20px}
-.welcome-label{display:flex;align-items:center;gap:9px;color:#FF929B;font-size:10px;font-weight:bold;letter-spacing:3px;margin-bottom:6px}
-.welcome-label:before,.welcome-label:after{content:"";display:block;height:2px;width:17px;background:var(--red);border-radius:5px}
+.welcome-label{display:flex;align-items:center;gap:9px;color:#fff;font-size:10px;font-weight:bold;letter-spacing:3px;margin-bottom:6px}
+.welcome-label:before,.welcome-label:after{content:"";display:block;height:2px;width:17px;background:#fff;border-radius:5px}
 .member-brand{font-size:clamp(23px,6vw,31px);font-weight:900;color:#fff;letter-spacing:1px;margin:0}
 .member-tagline{font-size:9px;color:#ccc;letter-spacing:1.5px;margin-top:5px}
 .member-profile-row{display:flex;align-items:center;gap:12px;margin:14px 0}
 .member-avatar{width:43px;height:43px;min-width:43px;border-radius:50%;background:#fff;display:grid;place-items:center;position:relative}
-.member-avatar:after{content:"";position:absolute;width:11px;height:11px;right:-1px;bottom:0;background:#25B96A;border:2px solid #1B1B1B;border-radius:50%}
+.member-avatar:after{content:"";position:absolute;width:11px;height:11px;right:-1px;bottom:0;background:#fff;border:2px solid #171717;border-radius:50%}
 .member-avatar svg{width:25px;height:25px;fill:#222}
 .member-email{color:#fff;font-size:13px;font-weight:bold;overflow-wrap:anywhere;margin:0}
 .member-email-label{font-size:10px;color:#bbb;margin-top:4px}
-.explore-card,.member-responsible{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:21px;margin-top:30px}
+.explore-card,.member-responsible{background:#111;border:1px solid #333;border-radius:12px;padding:21px;margin-top:30px}
 .explore-title{color:#fff;font-size:19px;font-weight:900;letter-spacing:2px;margin:0 0 18px}
 .explore-links{display:flex;flex-direction:column;gap:16px}
 .explore-link{display:flex;align-items:center;gap:12px;color:#ddd;font-size:14px;text-decoration:none;cursor:pointer}
-.explore-link svg{width:19px;height:19px;stroke:var(--red);fill:none;stroke-width:1.8;flex-shrink:0}
-.responsible{margin-top:25px;padding-top:20px;border-top:1px solid var(--line)}
+.explore-link svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:1.8;flex-shrink:0}
+.responsible{margin-top:25px;padding-top:20px;border-top:1px solid #333}
 .responsible-heading{display:flex;align-items:center;gap:9px;color:#fff;font-size:13px;font-weight:900;letter-spacing:1px;margin-bottom:9px}
 .responsible p{color:#aaa;font-size:12px;line-height:1.8;margin:0}
 .member-responsible .responsible{margin:0;padding:0;border:0}
-.logout-bottom{margin-top:18px;padding:16px;width:100%;border:1px solid #71343A;background:#35191D;color:#FF929B;border-radius:9px}
+.logout-bottom{margin-top:18px;padding:16px;width:100%;border:1px solid #555;background:#222;color:#fff;border-radius:9px}
 
 /* PASSWORD VISIBILITY */
 .password-field{position:relative;width:100%;margin:8px 0 16px}
 .password-field input{width:100%;margin:0;padding:14px 52px 14px 14px}
 .password-toggle{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;padding:0;background:transparent;color:#aaa;border:0;border-radius:7px}
 .password-toggle:hover{background:#333;color:#fff}
-.password-toggle:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.password-toggle:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .password-toggle svg{width:21px;height:21px;display:block;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .password-toggle .eye-slash{display:none}
 .password-toggle.is-visible .eye-open{display:none}
 .password-toggle.is-visible .eye-slash{display:block}
 
 /* CALENDAR AND PREDICTIONS */
-.selected-calendar-date{display:flex;align-items:center;gap:10px;margin:0 0 15px;padding:12px 14px;background:#202020;border:1px solid #444;border-radius:9px;color:#fff;font-size:14px;font-weight:700;letter-spacing:.4px}
-.calendar-icon{width:22px;height:22px;flex:0 0 22px;color:var(--red);stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.calendar-icon .calendar-page{fill:#E3263618;stroke:var(--red)}
-.calendar-icon .calendar-dots{fill:var(--red);stroke:none}
-.prediction-controls{background:#1B1B1B;border:1px solid #444;border-radius:10px;padding:12px;margin:12px 0 20px}
+.selected-calendar-date{display:flex;align-items:center;gap:10px;margin:0 0 15px;padding:12px 14px;background:#181818;border:1px solid #444;border-radius:9px;color:#fff;font-size:14px;font-weight:700;letter-spacing:.4px}
+.calendar-icon{width:22px;height:22px;flex:0 0 22px;color:#fff;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.calendar-icon .calendar-page{fill:#fff18;stroke:#fff}
+.calendar-icon .calendar-dots{fill:#fff;stroke:none}
+.prediction-controls{background:#111;border:1px solid #444;border-radius:10px;padding:12px;margin:12px 0 20px}
 .date-tabs{display:flex;flex-wrap:nowrap;gap:8px;width:100%;padding:2px 0 12px}
 .date-tab{flex:1 1 0;min-width:0;white-space:nowrap;text-align:center;border:1px solid #444;background:#292929;color:#ddd;padding:9px 5px;border-radius:7px;font-size:12px;font-weight:600}
 .league-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-items:stretch;gap:5px;width:100%;padding:2px 0 3px}
 .league-tab{width:100%;min-width:0;min-height:34px;white-space:normal;overflow-wrap:anywhere;text-align:center;border:1px solid #444;background:#292929;color:#ddd;padding:6px 2px;border-radius:20px;font-size:clamp(8px,2vw,10px);font-weight:600;line-height:1.15}
-.date-tab.active,.league-tab.active{background:var(--red);color:#fff;border-color:var(--red)}
-.prediction-date{color:#fff;font-size:15px;font-weight:900;letter-spacing:.4px;margin:22px 0 12px;padding:11px 13px;border-left:4px solid var(--red);border-radius:5px;background:#292929}
+.date-tab.active,.league-tab.active{background:#fff;color:#000;border-color:#fff}
+.prediction-date{color:#fff;font-size:15px;font-weight:900;letter-spacing:.4px;margin:22px 0 12px;padding:11px 13px;border-left:4px solid #fff;border-radius:5px;background:#292929}
 .prediction-table-wrap{width:100%;overflow:hidden;border:1px solid #444;border-radius:9px;margin-bottom:20px}
-.prediction-table{width:100%;table-layout:fixed;border-collapse:collapse;text-align:left;background:#1B1B1B}
-.prediction-table th{background:#292929;color:#FF929B;font-size:clamp(8px,2.2vw,11px);font-weight:900;letter-spacing:.35px;padding:11px 5px;white-space:normal;border-bottom:1px solid #444}
+.prediction-table{width:100%;table-layout:fixed;border-collapse:collapse;text-align:left;background:#111}
+.prediction-table th{background:#292929;color:#fff;font-size:clamp(8px,2.2vw,11px);font-weight:900;letter-spacing:.35px;padding:11px 5px;white-space:normal;border-bottom:1px solid #444}
 .prediction-table th:nth-child(1){width:40%}.prediction-table th:nth-child(2){width:10%}.prediction-table th:nth-child(3){width:20%}.prediction-table th:nth-child(4){width:13%}.prediction-table th:nth-child(5){width:17%}
 .prediction-table td{padding:11px 5px;font-size:clamp(9px,2.5vw,12px);border-bottom:1px solid #333;vertical-align:middle;white-space:normal;overflow-wrap:anywhere;color:#ddd}
 .prediction-table tbody tr:last-child td{border-bottom:none}
-.prediction-table tbody tr:hover{background:#292020}
+.prediction-table tbody tr:hover{background:#222}
 .club-name{font-weight:800;color:#fff;line-height:1.35}
 .match-teams{display:flex;flex-direction:row;align-items:center;gap:5px;min-width:0;white-space:nowrap}
 .match-team{display:inline-flex;align-items:center;min-width:0;line-height:1.25}
@@ -158,65 +158,65 @@ label{font-size:13px;color:#CCC}
 .outcome-cell{text-align:center}
 .outcome-wrap{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:clamp(8px,2.2vw,11px);font-weight:900;white-space:nowrap}
 .outcome-circle{width:19px;height:19px;border-radius:50%;display:inline-grid;place-items:center;border:2px solid currentColor;font-size:12px;line-height:1;flex-shrink:0}
-.result-won{color:#20B66B}.result-lost{color:#FF5966}.result-void{color:#aaa}.result-live{color:#F0B429}.result-awaiting{color:#aaa}
+.result-won{color:#fff}.result-lost{color:#ccc}.result-void{color:#aaa}.result-live{color:#fff}.result-awaiting{color:#aaa}
 .result-live .outcome-circle{animation:livePulse 1.8s ease-in-out infinite}
 .result-live .outcome-wrap>span:last-child{animation:liveTextGlow 1.8s ease-in-out infinite}
-@keyframes livePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 #F0B42940}50%{transform:scale(1.13);box-shadow:0 0 12px 4px #F0B42960}}
-@keyframes liveTextGlow{0%,100%{text-shadow:0 0 2px #F0B42940}50%{text-shadow:0 0 10px #F0B429}}
+@keyframes livePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 #ffffff22}50%{transform:scale(1.13);box-shadow:0 0 12px 4px #ffffff33}}
+@keyframes liveTextGlow{0%,100%{text-shadow:0 0 2px #ffffff22}50%{text-shadow:0 0 10px #fff}}
 @media(prefers-reduced-motion:reduce){.result-live .outcome-circle,.result-live .outcome-wrap>span:last-child{animation:none}}
 .prediction-empty{color:#aaa;font-size:14px;padding:12px 0}
 .prediction-group{margin-bottom:22px}
-footer{text-align:center;padding:25px;border-top:1px solid #333;color:#aaa;font-size:12px;background:#090909}
-.admin-panel{border:1px solid #7D3038;background:#1B1B1B;border-radius:12px;padding:18px;margin:24px 0}
+footer{text-align:center;padding:25px;border-top:1px solid #333;color:#aaa;font-size:12px;background:#000}
+.admin-panel{border:1px solid #555;background:#111;border-radius:12px;padding:18px;margin:24px 0}
 .admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .admin-grid .full{grid-column:1/-1}
-.admin-grid input,.admin-grid select{width:100%;padding:12px;background:#111;color:#fff;border:1px solid #444;border-radius:7px;font-size:15px;margin:6px 0 12px}
-.admin-list-item{border:1px solid #444;border-radius:9px;padding:12px;margin:10px 0;background:#202020}
+.admin-grid input,.admin-grid select{width:100%;padding:12px;background:#080808;color:#fff;border:1px solid #444;border-radius:7px;font-size:15px;margin:6px 0 12px}
+.admin-list-item{border:1px solid #444;border-radius:9px;padding:12px;margin:10px 0;background:#181818}
 .admin-list-item strong{display:block;margin-bottom:8px;color:#fff}
-.admin-list-item select{padding:9px;background:#111;color:#fff;border:1px solid #444;border-radius:6px;margin-right:6px}
+.admin-list-item select{padding:9px;background:#080808;color:#fff;border:1px solid #444;border-radius:6px;margin-right:6px}
 .admin-list-item button{padding:9px 12px;margin:4px 3px 0 0}
-.streak-dashboard{background:#1B1B1B;border:1px solid #633039;border-radius:13px;padding:18px;margin:30px 0 22px}
+.streak-dashboard{background:#111;border:1px solid #444;border-radius:13px;padding:18px;margin:30px 0 22px}
 .streak-heading{color:#fff;font-size:19px;font-weight:900;letter-spacing:1px;margin:0 0 6px}
 .streak-intro{color:#aaa;font-size:12px;line-height:1.6;margin:0 0 16px}
 .streak-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.streak-card{background:#242424;border:1px solid #444;border-radius:10px;padding:14px;min-width:0}
+.streak-card{background:#202020;border:1px solid #444;border-radius:10px;padding:14px;min-width:0}
 .streak-card h3{color:#fff;font-size:14px;margin:0 0 13px}
 .streak-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 8px}
 .streak-stat small{display:block;color:#aaa;font-size:10px;margin-bottom:5px}
 .streak-stat strong{font-size:20px;color:#fff;overflow-wrap:anywhere}
-.streak-stat strong.green{color:#20B66B}
+.streak-stat strong.green{color:#fff}
 .streak-note{color:#aaa;font-size:10px;line-height:1.5;margin:14px 0 0}
 .announcement-overlay{position:fixed;inset:0;z-index:99999;background:#000C;display:flex;align-items:center;justify-content:center;padding:15px}
-.announcement-box{width:100%;max-width:400px;max-height:75vh;overflow-y:auto;background:#1B1B1B;border:2px solid var(--red);border-radius:15px;padding:25px;box-shadow:0 15px 60px #0009;position:relative;text-align:center}
+.announcement-box{width:100%;max-width:400px;max-height:75vh;overflow-y:auto;background:#111;border:2px solid #fff;border-radius:15px;padding:25px;box-shadow:0 15px 60px #0009;position:relative;text-align:center}
 .announcement-box h2{color:#fff;margin:0 25px 15px;font-size:20px}
 .announcement-box p{color:#ddd;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
-.announcement-close{position:absolute;right:10px;top:10px;background:var(--red);color:#fff;padding:7px 11px;border-radius:50%;font-size:20px}
+.announcement-close{position:absolute;right:10px;top:10px;background:#fff;color:#000;padding:7px 11px;border-radius:50%;font-size:20px}
 
 /* PROFESSIONAL AUTOMATIC SPORTS NEWS CAROUSEL */
-.sports-news-section{max-width:1100px;margin:22px auto 0;padding:0 18px}
+.sports-news-section{max-width:1100px;margin:22px auto 25px;padding:0 18px}
 .sports-news-heading{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px}
 .sports-news-heading h2{font-size:17px;font-weight:900;letter-spacing:1px;margin:0;color:#fff}
-.sports-news-heading h2 span{color:var(--red)}
-.news-live{display:flex;align-items:center;gap:6px;color:#FF929B;font-size:10px;font-weight:900;letter-spacing:1px}
-.news-live:before{content:"";width:7px;height:7px;background:var(--red);border-radius:50%;box-shadow:0 0 9px var(--red);animation:newsPulse 1.5s infinite}
+.sports-news-heading h2 span{color:#fff}
+.news-live{display:flex;align-items:center;gap:6px;color:#fff;font-size:10px;font-weight:900;letter-spacing:1px}
+.news-live:before{content:"";width:7px;height:7px;background:#fff;border-radius:50%;box-shadow:0 0 9px #fff;animation:newsPulse 1.5s infinite}
 @keyframes newsPulse{50%{opacity:.35}}
-.news-carousel{position:relative;overflow:hidden;border-radius:13px;background:#1B1B1B;border:1px solid #383838}
+.news-carousel{position:relative;overflow:hidden;border-radius:13px;background:#111;border:1px solid #383838}
 .news-track{display:flex;transition:transform .65s cubic-bezier(.22,.7,.25,1);will-change:transform}
 .news-card{position:relative;flex:0 0 100%;min-width:0;height:clamp(240px,43vw,390px);overflow:hidden;background:#242424}
 .news-card-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .news-card:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000E 0%,#0009 48%,#0002 100%),linear-gradient(0deg,#0009,transparent 55%);pointer-events:none}
 .news-card-content{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:clamp(18px,4vw,32px);max-width:760px}
-.news-card-category{display:inline-block;background:var(--red);color:#fff;font-size:10px;font-weight:900;letter-spacing:1px;padding:7px 10px;border-radius:4px;margin-bottom:12px}
+.news-card-category{display:inline-block;background:#fff;color:#000;font-size:10px;font-weight:900;letter-spacing:1px;padding:7px 10px;border-radius:4px;margin-bottom:12px}
 .news-card-title{font-size:clamp(20px,4vw,32px);line-height:1.2;font-weight:900;color:#fff;margin:0 0 12px;text-shadow:0 2px 8px #000}
 .news-card-meta{display:flex;align-items:center;gap:10px;color:#ddd;font-size:11px;font-weight:700}
-.news-card-meta .news-source{color:#FF929B}
+.news-card-meta .news-source{color:#fff}
 .news-card-link{position:absolute;inset:0;z-index:3;text-decoration:none}
 .news-carousel-controls{position:absolute;right:14px;top:14px;z-index:5;display:flex;gap:7px}
 .news-arrow{width:36px;height:36px;padding:0;border-radius:50%;background:#111D;border:1px solid #FFFFFF55;color:#fff;font-size:22px;display:grid;place-items:center}
-.news-arrow:hover{background:var(--red)}
+.news-arrow:hover{background:#fff;color:#000}
 .news-dots{display:flex;justify-content:center;align-items:center;gap:7px;padding:12px;background:#171717}
 .news-dot{width:7px;height:7px;padding:0;border-radius:20px;background:#555;transition:all .25s}
-.news-dot.active{width:23px;background:var(--red)}
+.news-dot.active{width:23px;background:#fff}
 .news-loading{padding:35px 18px;text-align:center;color:#aaa;font-size:13px}
 .news-error{padding:25px 18px;text-align:center;color:#aaa;font-size:13px}
 @media(max-width:600px){
@@ -230,7 +230,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #333;color:#aaa;font-
  .streak-dashboard{padding:13px}.streak-grid{grid-template-columns:1fr}
  .streak-card{padding:13px}.match-teams{gap:4px}.match-vs{font-size:8px}
  .admin-grid{grid-template-columns:1fr}.admin-grid .full{grid-column:auto}
- .sports-news-section{padding:0 10px;margin-top:15px}
+ .sports-news-section{padding:0 10px;margin-top:18px}
  .news-card{height:280px}
  .news-card:after{background:linear-gradient(0deg,#000E 0%,#0008 55%,#0002 100%)}
  .news-card-content{padding:18px}
@@ -246,27 +246,8 @@ footer{text-align:center;padding:25px;border-top:1px solid #333;color:#aaa;font-
  <button id="headerButton" onclick="showAuth('signup')">JOIN NOW</button>
 </header>
 
-<!-- PROFESSIONAL SPORTS NEWS CAROUSEL -->
-<section class="sports-news-section" id="sportsNewsSection" aria-label="Latest sports news">
- <div class="sports-news-heading">
-  <h2><span>TOP</span> SPORTS STORIES</h2>
-  <span class="news-live">LATEST NEWS</span>
- </div>
- <div class="news-carousel" id="newsCarousel">
-  <div class="news-track" id="newsTrack">
-   <div class="news-loading">Loading the latest sports news...</div>
-  </div>
-  <div class="news-carousel-controls">
-   <button class="news-arrow" type="button" onclick="changeSportsNews(-1)" aria-label="Previous story">‹</button>
-   <button class="news-arrow" type="button" onclick="changeSportsNews(1)" aria-label="Next story">›</button>
-  </div>
- </div>
- <div class="news-dots" id="newsDots" aria-label="Sports news slides"></div>
-</section>
-
 <section id="welcome">
  <div class="hero">
-  <div class="hero-kicker">✦ ─── WELCOME TO ─── ✦</div>
   <h1><span class="gold">ONLYBOSSTIPS</span></h1>
   <p class="hero-tagline">✧ YOUR FOOTBALL PREDICTION HUB ✧</p>
   <div class="actions">
@@ -328,14 +309,14 @@ footer{text-align:center;padding:25px;border-top:1px solid #333;color:#aaa;font-
    <div class="password-field">
     <input id="newPassword" type="password" placeholder="Enter new password" autocomplete="new-password">
     <button class="password-toggle" type="button" onclick="togglePassword('newPassword',this)" aria-label="Show password" title="Show password">
-     <svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7-3.6 7-10 7-10 7-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+     <svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
     </button>
    </div>
    <label>Confirm new password</label>
    <div class="password-field">
     <input id="confirmPassword" type="password" placeholder="Confirm new password" autocomplete="new-password">
     <button class="password-toggle" type="button" onclick="togglePassword('confirmPassword',this)" aria-label="Show password" title="Show password">
-     <svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7-3.6 7-10 7-10 7-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+     <svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
     </button>
    </div>
    <button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button>
@@ -369,7 +350,6 @@ footer{text-align:center;padding:25px;border-top:1px solid #333;color:#aaa;font-
 
  <div class="member-welcome">
   <div class="member-welcome-top"><div>
-   <div class="welcome-label">✦ ─── WELCOME TO ─── ✦</div>
    <h2 class="member-brand">ONLYBOSSTIPS</h2>
    <div class="member-tagline">✧ YOUR FOOTBALL PREDICTION HUB ✧</div>
   </div></div>
@@ -379,6 +359,24 @@ footer{text-align:center;padding:25px;border-top:1px solid #333;color:#aaa;font-
   </div>
   <span id="memberBadge" class="badge">FREE MEMBER</span>
  </div>
+
+ <!-- SPORTS NEWS NOW APPEARS ONLY AFTER MEMBER LOGIN -->
+ <section class="sports-news-section" id="sportsNewsSection" aria-label="Latest sports news">
+  <div class="sports-news-heading">
+   <h2><span>TOP</span> SPORTS STORIES</h2>
+   <span class="news-live">LATEST NEWS</span>
+  </div>
+  <div class="news-carousel" id="newsCarousel">
+   <div class="news-track" id="newsTrack">
+    <div class="news-loading">Loading the latest sports news...</div>
+   </div>
+   <div class="news-carousel-controls">
+    <button class="news-arrow" type="button" onclick="changeSportsNews(-1)" aria-label="Previous story">‹</button>
+    <button class="news-arrow" type="button" onclick="changeSportsNews(1)" aria-label="Next story">›</button>
+   </div>
+  </div>
+  <div class="news-dots" id="newsDots" aria-label="Sports news slides"></div>
+ </section>
 
  <h2 class="section-title gold">FREE ODDS</h2>
  <div class="selected-calendar-date">
@@ -408,17 +406,17 @@ footer{text-align:center;padding:25px;border-top:1px solid #333;color:#aaa;font-
  </div>
  <div id="freePredictions"><p class="notice">Loading FREE predictions...</p></div>
 
- <div id="membershipUpgradeArea"><button class="vip-upgrade-button" onclick="toggleMembershipPayment()"><span id="membershipButtonText">💎 VIEW MEMBERSHIP PLANS</span></button></div>
+ <div id="membershipUpgradeArea"><button class="vip-upgrade-button" onclick="toggleMembershipPayment()"><span id="membershipButtonText">VIEW MEMBERSHIP PLANS</span></button></div>
  <div id="membershipPaymentPanel" class="card hidden">
   <h2 class="gold">CHOOSE YOUR MEMBERSHIP</h2>
   <p class="muted">Each plan unlocks its own exclusive predictions after payment verification.</p>
   <div class="membership-choice" id="vipMembershipChoice">
-   <h3>💎 VIP MEMBERSHIP</h3><div class="payment-price">₦5,500 <small>monthly</small></div>
+   <h3>VIP MEMBERSHIP</h3><div class="payment-price">₦5,500 <small>monthly</small></div>
    <p>Access to exclusive ONLYBOSSTIPS VIP football predictions.</p>
    <button id="vipPaymentButton" onclick="selectMembership('vip')">PAY FOR VIP MEMBERSHIP</button>
   </div>
   <div class="membership-choice" id="rolloverMembershipChoice">
-   <h3>🏆 ROLLOVER EXCLUSIVE MEMBER</h3><div class="payment-price">₦4,000 <small>Weekly</small></div>
+   <h3>ROLLOVER EXCLUSIVE MEMBER</h3><div class="payment-price">₦4,000 <small>Weekly</small></div>
    <p>Access to exclusive ONLYBOSSTIPS Rollover predictions with weekly membership payment.</p>
    <button id="rolloverPaymentButton" class="rollover-button" onclick="selectMembership('rollover')">PAY FOR ROLLOVER EXCLUSIVE</button>
   </div>
@@ -445,25 +443,25 @@ footer{text-align:center;padding:25px;border-top:1px solid #333;color:#aaa;font-
  <h2 class="section-title gold">ROLLOVER ODDS</h2>
  <p class="odds-intro">Exclusive predictions for approved Rollover members</p>
  <div id="rolloverPredictions"><p class="notice">Loading Rollover predictions...</p></div>
-  <div id="adminNotice" class="card hidden"><h3 class="gold">ADMINISTRATOR ACCOUNT</h3><p class="muted">Your administrator account is recognised. Use the private administrator dashboard.</p></div>
+ <div id="adminNotice" class="card hidden"><h3 class="gold">ADMINISTRATOR ACCOUNT</h3><p class="muted">Your administrator account is recognised. Use the private administrator dashboard.</p></div>
 
  <div id="winningStreakDashboard" class="streak-dashboard">
-  <h2 class="streak-heading">🏆 WINNING STREAK DASHBOARD</h2>
+  <h2 class="streak-heading">WINNING STREAK DASHBOARD</h2>
   <p class="streak-intro">Our recorded prediction results, separated by FREE, VIP and ROLLOVER odds. Statistics update when match results are updated.</p>
   <div class="streak-grid">
-   <div class="streak-card"><h3>🟢 FREE ODDS RECORD</h3><div class="streak-stats">
+   <div class="streak-card"><h3>FREE ODDS RECORD</h3><div class="streak-stats">
     <div class="streak-stat"><small>TOTAL WINS</small><strong id="freeWins" class="green">0</strong></div>
     <div class="streak-stat"><small>TOTAL LOSSES</small><strong id="freeLosses">0</strong></div>
     <div class="streak-stat"><small>WIN RATE</small><strong id="freeWinRate">0%</strong></div>
     <div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="freeStreak" class="green">0</strong></div>
    </div></div>
-   <div class="streak-card"><h3>💎 VIP ODDS RECORD</h3><div class="streak-stats">
+   <div class="streak-card"><h3>VIP ODDS RECORD</h3><div class="streak-stats">
     <div class="streak-stat"><small>TOTAL WINS</small><strong id="vipWins" class="green">0</strong></div>
     <div class="streak-stat"><small>TOTAL LOSSES</small><strong id="vipLosses">0</strong></div>
     <div class="streak-stat"><small>WIN RATE</small><strong id="vipWinRate">0%</strong></div>
     <div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="vipStreak" class="green">0</strong></div>
    </div></div>
-   <div class="streak-card"><h3>🏆 ROLLOVER ODDS RECORD</h3><div class="streak-stats">
+   <div class="streak-card"><h3>ROLLOVER ODDS RECORD</h3><div class="streak-stats">
     <div class="streak-stat"><small>TOTAL WINS</small><strong id="rolloverWins" class="green">0</strong></div>
     <div class="streak-stat"><small>TOTAL LOSSES</small><strong id="rolloverLosses">0</strong></div>
     <div class="streak-stat"><small>WIN RATE</small><strong id="rolloverWinRate">0%</strong></div>
@@ -480,7 +478,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #333;color:#aaa;font-
 <div id="announcementOverlay" class="announcement-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="announcementTitle">
  <div class="announcement-box">
   <button class="announcement-close" onclick="closeAnnouncement()" aria-label="Close announcement">×</button>
-  <h2 id="announcementTitle">📢 IMPORTANT ANNOUNCEMENT</h2>
+  <h2 id="announcementTitle">IMPORTANT ANNOUNCEMENT</h2>
   <p id="announcementMessage"></p>
  </div>
 </div>
@@ -488,7 +486,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #333;color:#aaa;font-
 <footer>ONLYBOSSTIPS © 2026. All rights reserved.</footer>
 
 <script>
-const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
+ const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
 const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
@@ -519,6 +517,7 @@ let sportsNewsTimer=null;
 let sportsNewsRefreshTimer=null;
 let newsTouchStartX=0;
 let newsTouchEndX=0;
+let sportsNewsStarted=false;
 
 function getXmlText(element,names){
  for(const name of names){
@@ -741,6 +740,9 @@ async function loadSportsNews(){
 }
 
 function startSportsNews(){
+ if(sportsNewsStarted)return;
+ sportsNewsStarted=true;
+
  loadSportsNews();
 
  if(sportsNewsRefreshTimer)clearInterval(sportsNewsRefreshTimer);
@@ -863,10 +865,13 @@ function showDashboard(){
 
  updateMembershipPlanButtons();
  document.getElementById("membershipPaymentPanel").classList.add("hidden");
- document.getElementById("membershipButtonText").textContent="💎 VIEW MEMBERSHIP PLANS";
+ document.getElementById("membershipButtonText").textContent="VIEW MEMBERSHIP PLANS";
  updateSelectedCalendarDate();
  loadPredictions();
  loadAnnouncements();
+
+ /* Start news only after the member dashboard is shown */
+ startSportsNews();
 }
 
 function toggleMembershipPayment(forceOpen){
@@ -1490,8 +1495,6 @@ setInterval(()=>{
  }
 },30000);
 
-/* START SPORTS NEWS CAROUSEL */
-startSportsNews();
 </script>
 </body>
 </html>
