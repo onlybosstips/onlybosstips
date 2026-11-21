@@ -80,39 +80,76 @@ button.secondary{
  box-shadow:none
 }
 button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* PREMIUM BLACK-AND-RED FOOTBALL WELCOME HERO */
 .hero{
  text-align:center;
- padding:70px 18px;
+ padding:85px 18px;
+ min-height:390px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
  background:
- radial-gradient(ellipse at 50% 0%,#6f1022 0%,#241016 35%,transparent 72%),
- linear-gradient(180deg,#171216,#0b0b0e 85%);
+  linear-gradient(90deg,#070709F2 0%,#09090bd9 45%,#09090b9c 100%),
+  linear-gradient(0deg,#09090b 0%,transparent 45%,#09090b55 100%),
+  url("https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1800&auto=format&fit=crop") center 48%/cover no-repeat;
  color:#fff;
- border-bottom:1px solid #5b1826;
+ border-bottom:1px solid #7b1729;
  position:relative;
  overflow:hidden
 }
 .hero:before{
  content:"";
  position:absolute;
- width:340px;
- height:340px;
- border-radius:50%;
- background:#e509250d;
- filter:blur(55px);
- top:-180px;
- left:calc(50% - 170px);
+ inset:0;
+ background:
+  radial-gradient(ellipse at 50% 0%,#e5092530,transparent 65%),
+  linear-gradient(135deg,#e5092510,transparent 55%);
  pointer-events:none
 }
-.hero-kicker{color:#ff5268;font-size:12px;font-weight:800;letter-spacing:3px;margin:0 0 12px}
-.hero h1{font-size:clamp(32px,7vw,58px);margin:0 0 15px;line-height:1.1}
+.hero>*{
+ position:relative;
+ z-index:1
+}
+.hero-kicker{
+ color:#ff5268;
+ font-size:12px;
+ font-weight:800;
+ letter-spacing:3px;
+ margin:0 0 12px
+}
+.hero h1{
+ font-size:clamp(32px,7vw,58px);
+ margin:0 0 15px;
+ line-height:1.1;
+ text-shadow:0 4px 20px #000
+}
 .gold{color:#ff4059}
 .hero .gold{
  color:#fff;
- text-shadow:0 0 22px #e5092555
+ text-shadow:0 0 22px #e5092555,0 4px 15px #000
 }
-.hero p{color:#c5c1c5;line-height:1.8}
-.hero-tagline{font-size:11px!important;font-weight:800;letter-spacing:2px;color:#ff8796!important;margin:0 0 25px!important}
-.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:25px}
+.hero p{
+ color:#e0dce0;
+ line-height:1.8;
+ text-shadow:0 2px 8px #000
+}
+.hero-tagline{
+ font-size:11px!important;
+ font-weight:800;
+ letter-spacing:2px;
+ color:#ff8796!important;
+ margin:0 0 25px!important
+}
+.actions{
+ display:flex;
+ justify-content:center;
+ gap:12px;
+ flex-wrap:wrap;
+ margin-top:25px
+}
+
 .container{max-width:1100px;margin:auto;padding:25px 18px 60px}
 .card{
  background:linear-gradient(145deg,#19191e,#111114);
@@ -379,7 +416,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #3b252d;color:#999;fo
 .news-loading{padding:35px 18px;text-align:center;color:#aaa;font-size:13px}
 .news-error{padding:25px 18px;text-align:center;color:#aaa;font-size:13px}
 @media(max-width:600px){
- header{padding:10px 12px}.logo{font-size:17px}.hero{padding:48px 13px}
+ header{padding:10px 12px}.logo{font-size:17px}.hero{padding:48px 13px;min-height:350px}
  .container{padding:18px 10px 35px}.member-welcome{padding:18px}
  .member-welcome-top{gap:12px}.prediction-date{font-size:13px}
  .prediction-table th{padding:10px 3px}.prediction-table td{padding:10px 3px}
@@ -407,8 +444,10 @@ footer{text-align:center;padding:25px;border-top:1px solid #3b252d;color:#999;fo
 
 <section id="welcome">
  <div class="hero">
+  <p class="hero-kicker">✦ ─── WELCOME TO ─── ✦</p>
   <h1><span class="gold">ONLYBOSSTIPS</span></h1>
   <p class="hero-tagline">✧ YOUR FOOTBALL PREDICTION HUB ✧</p>
+  <p>YOUR HOME FOR FOOTBALL PREDICTIONS, RESULTS AND EXCLUSIVE ODDS.</p>
   <div class="actions">
    <button onclick="showAuth('signup')">CREATE FREE ACCOUNT</button>
    <button class="secondary" onclick="showAuth('login')">MEMBER LOGIN</button>
@@ -595,8 +634,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #3b252d;color:#999;fo
   </div>
   <button class="secondary close-payment" onclick="toggleMembershipPayment(false)">CLOSE PAYMENT DETAILS</button>
  </div>
-
- <h2 class="section-title gold">VIP ODDS</h2>
+  <h2 class="section-title gold">VIP ODDS</h2>
  <p class="odds-intro">Exclusive predictions for approved VIP members</p>
  <div id="vipPredictions"><p class="notice">Loading VIP predictions...</p></div>
  <h2 class="section-title gold">ROLLOVER ODDS</h2>
