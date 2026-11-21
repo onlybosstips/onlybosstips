@@ -100,19 +100,15 @@ label{font-size:13px;color:#cbd0da}
 .prediction-table-wrap{width:100%;overflow:hidden;border:1px solid var(--line);border-radius:9px;margin-bottom:20px}
 .prediction-table{width:100%;table-layout:fixed;border-collapse:collapse;text-align:left;background:#0b1b11}
 .prediction-table th{background:#173c25;color:#8cf2ac;font-size:clamp(8px,2.2vw,11px);font-weight:900;letter-spacing:.35px;padding:11px 5px;white-space:normal;border-bottom:1px solid #31543c}
-.prediction-table th:nth-child(1){width:34%}.prediction-table th:nth-child(2){width:11%}.prediction-table th:nth-child(3){width:21%}.prediction-table th:nth-child(4){width:15%}.prediction-table th:nth-child(5){width:19%}
+.prediction-table th:nth-child(1){width:40%}.prediction-table th:nth-child(2){width:10%}.prediction-table th:nth-child(3){width:20%}.prediction-table th:nth-child(4){width:13%}.prediction-table th:nth-child(5){width:17%}
 .prediction-table td{padding:11px 5px;font-size:clamp(9px,2.5vw,12px);border-bottom:1px solid #1c3826;vertical-align:middle;white-space:normal;overflow-wrap:anywhere}
 .prediction-table tbody tr:last-child td{border-bottom:none}
 .prediction-table tbody tr:hover{background:#132c1c}
 .club-name{font-weight:800;color:white;line-height:1.35}
-.match-teams{display:flex;flex-direction:column;gap:7px;min-width:0}
-.match-team{display:flex;align-items:center;gap:6px;min-width:0;line-height:1.25}
-.team-logo{width:21px;height:21px;flex:0 0 21px;object-fit:contain;border-radius:50%;background:#fff;padding:2px}
-.team-logo.flag{object-fit:cover;padding:0;border-radius:3px}
-.team-logo-emoji{width:21px;height:21px;flex:0 0 21px;display:inline-grid;place-items:center;font-size:19px;line-height:1}
-.team-logo-fallback{width:21px;height:21px;flex:0 0 21px;display:inline-grid;place-items:center;font-size:16px;line-height:1}
-.team-name{min-width:0;overflow-wrap:anywhere;font-weight:800;color:#fff}
-.match-vs{font-size:8px;color:var(--muted);padding-left:27px;line-height:1}
+.match-teams{display:flex;flex-direction:row;align-items:center;gap:5px;min-width:0;white-space:nowrap}
+.match-team{display:inline-flex;align-items:center;min-width:0;line-height:1.25}
+.team-name{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:800;color:#fff}
+.match-vs{font-size:9px;font-weight:900;color:var(--muted);padding:0;line-height:1;flex:0 0 auto}
 .odd-value{font-weight:800;color:#f0f7f2;font-variant-numeric:tabular-nums}
 .prediction-value{color:#d5e8da;font-weight:700}
 .outcome-cell{text-align:center}
@@ -162,8 +158,8 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 .league-tabs{gap:5px}
 .league-tab{padding:6px 2px;font-size:8px}
 .streak-dashboard{padding:13px}.streak-grid{grid-template-columns:1fr}.streak-card{padding:13px}
-.match-team{gap:4px}.team-logo{width:18px;height:18px;flex-basis:18px}
-.match-vs{padding-left:23px}
+.match-teams{gap:4px}
+.match-vs{font-size:8px}
 }
 </style>
 </head>
@@ -409,154 +405,12 @@ let currentUser=null,currentTier="free",currentMemberships=[],currentIsAdmin=fal
 let allPredictions=[],selectedDate="today",selectedLeague="all",selectedMembership="vip";
 let announcementQueue=[],announcementShowing=false;
 
-/* TEAM LOGOS AND NATIONAL FLAGS */
-const teamLogoCache=new Map();
-
-function normalizeTeamName(name){
- return String(name||"").normalize("NFD")
-  .replace(/[\u0300-\u036f]/g,"")
-  .toLowerCase().replace(/[^a-z0-9]/g,"");
-}
-
-const countryFlags={
- "nigeria":"🇳🇬","super eagles":"🇳🇬","england":"🇬🇧","brazil":"🇧🇷","france":"🇫🇷",
- "argentina":"🇦🇷","spain":"🇪🇸","germany":"🇩🇪","italy":"🇮🇹",
- "portugal":"🇵🇹","netherlands":"🇳🇱","holland":"🇳🇱","belgium":"🇧🇪",
- "scotland":"🇬🇧","wales":"🇬🇧","northern ireland":"🇬🇧",
- "usa":"🇺🇸","united states":"🇺🇸","united states of america":"🇺🇸",
- "mexico":"🇲🇽","canada":"🇨🇦","japan":"🇯🇵","south korea":"🇰🇷",
- "korea republic":"🇰🇷","australia":"🇦🇺","ghana":"🇬🇭","senegal":"🇸🇳",
- "morocco":"🇲🇦","egypt":"🇪🇬","ivory coast":"🇨🇮","cote d ivoire":"🇨🇮",
- "cameroon":"🇨🇲","south africa":"🇿🇦","uruguay":"🇺🇾","colombia":"🇨🇴",
- "chile":"🇨🇱","denmark":"🇩🇰","sweden":"🇸🇪","norway":"🇳🇴",
- "switzerland":"🇨🇭","turkey":"🇹🇷","turkiye":"🇹🇷","croatia":"🇭🇷",
- "serbia":"🇷🇸","poland":"🇵🇱","ukraine":"🇺🇦","greece":"🇬🇷",
- "austria":"🇦🇹","czech republic":"🇨🇿","czechia":"🇨🇿","iran":"🇮🇷",
- "saudi arabia":"🇸🇦","qatar":"🇶🇦","new zealand":"🇳🇿","jamaica":"🇯🇲",
- "congo dr":"🇨🇩","dr congo":"🇨🇩","democratic republic of the congo":"🇨🇩",
- "korea dpr":"🇰🇵","north korea":"🇰🇵","russia":"🇷🇺","panama":"🇵🇦","costa rica":"🇨🇷"
-};
-
-const normalizedCountryFlags={};
-Object.keys(countryFlags).forEach(name=>{
- normalizedCountryFlags[normalizeTeamName(name)]=countryFlags[name];
-});
-
-const teamAliases={
- "al nassr club":["Al-Nassr FC","Al Nassr FC"],
- "al nassr":["Al-Nassr FC","Al Nassr FC"],
- "bayern munich":["FC Bayern München","Bayern Munich"],
- "cologne":["1. FC Köln","FC Cologne"],
- "bodo glimt":["Bodø/Glimt","FK Bodø/Glimt"],
- "manchester united":["Manchester United FC"],
- "manchester city":["Manchester City FC"],
- "chelsea":["Chelsea FC"],"arsenal":["Arsenal FC"],
- "liverpool":["Liverpool FC"],"tottenham":["Tottenham Hotspur FC"],
- "real madrid":["Real Madrid CF"],"barcelona":["FC Barcelona"],
- "atletico madrid":["Atlético de Madrid"],
- "paris saint germain":["Paris Saint-Germain FC"],
- "psg":["Paris Saint-Germain FC"],
- "inter":["Inter Milan","FC Internazionale Milano"],
- "ac milan":["Milan"],"juventus":["Juventus FC"],
- "borussia dortmund":["Borussia Dortmund"],
- "rb leipzig":["RasenBallsport Leipzig"]
-};
-
-const normalizedTeamAliases={};
-Object.keys(teamAliases).forEach(key=>{
- normalizedTeamAliases[normalizeTeamName(key)]=teamAliases[key];
-});
-
-function isFootballLeague(league){
- const value=String(league||"").toLowerCase();
- return !value.includes("tennis")&&!value.includes("basketball");
-}
-
-function getCountryFlag(teamName){
- let cleaned=String(teamName||"").trim().toLowerCase();
- cleaned=cleaned.replace(/\b(women|woman|national football team|football team|national team|team)\b/g," ").replace(/\s+/g," ").trim();
- const key=normalizeTeamName(cleaned);
- return normalizedCountryFlags[key]||"";
-}
-
-async function searchClubBadge(teamName){
- const key=normalizeTeamName(teamName);
- const aliases=normalizedTeamAliases[key]||[];
- const searchNames=[...new Set([teamName,...aliases])];
-
- for(const searchName of searchNames){
-  try{
-   const url="https://www.thesportsdb.com/api/v1/json/123/searchteams.php?t="+encodeURIComponent(searchName);
-   const response=await fetch(url);
-   if(!response.ok)continue;
-   const data=await response.json();
-   const teams=Array.isArray(data.teams)?data.teams:[];
-   const soccerTeams=teams.filter(team=>
-    String(team.strSport||"").toLowerCase()==="soccer"&&team.strTeamBadge
-   );
-   let match=soccerTeams.find(team=>normalizeTeamName(team.strTeam)===key);
-   if(!match){
-    for(const alias of aliases){
-     const aliasKey=normalizeTeamName(alias);
-     match=soccerTeams.find(team=>normalizeTeamName(team.strTeam)===aliasKey);
-     if(match)break;
-    }
-   }
-   if(match)return match.strTeamBadge;
-  }catch(error){
-   console.warn("Club badge lookup failed:",searchName,error);
-  }
- }
- return "";
-}
-
-async function getTeamLogo(teamName,league){
- if(!isFootballLeague(league))return "";
- const name=String(teamName||"").trim();
- if(!name||getCountryFlag(name))return "";
- const key=normalizeTeamName(name);
- if(teamLogoCache.has(key))return teamLogoCache.get(key);
- const lookup=searchClubBadge(name);
- teamLogoCache.set(key,lookup);
- const result=await lookup;
-
- teamLogoCache.set(key,result);
- return result;
-}
-
-function createTeamDisplay(teamName,league){
- const team=document.createElement("div");
+function createTeamDisplay(teamName){
+ const team=document.createElement("span");
  team.className="match-team";
  const name=document.createElement("span");
  name.className="team-name";
  name.textContent=teamName||"Unknown";
-
- if(isFootballLeague(league)){
-  const flag=getCountryFlag(teamName);
-  if(flag){
-   const flagElement=document.createElement("span");
-   flagElement.className="team-logo-emoji";
-   flagElement.textContent=flag;
-   flagElement.setAttribute("aria-label","National team flag");
-   team.appendChild(flagElement);
-  }else{
-   const logo=document.createElement("img");
-   logo.className="team-logo";
-   logo.alt="";
-   logo.loading="lazy";
-   logo.referrerPolicy="no-referrer";
-   const fallback=document.createElement("span");
-   fallback.className="team-logo-fallback";
-   fallback.textContent="⚽";
-   team.appendChild(fallback);
-   team.appendChild(logo);
-   logo.onload=()=>{fallback.style.display="none";logo.style.display="block"};
-   logo.onerror=()=>{logo.style.display="none";fallback.style.display="inline-grid"};
-   getTeamLogo(teamName,league).then(url=>{
-    if(url&&logo.isConnected)logo.src=url;
-   });
-  }
- }
  team.appendChild(name);
  return team;
 }
@@ -813,7 +667,7 @@ function updateWinningStreakDashboard(){
  });
 }
 
-/* PREDICTION TABLE WITH AUTOMATIC TEAM LOGOS */
+/* PREDICTION TABLE: TEAM NAMES ON ONE LINE */
 function makePredictionTable(items){
  const wrap=document.createElement("div");wrap.className="prediction-table-wrap";
  const table=document.createElement("table");table.className="prediction-table";
@@ -828,13 +682,12 @@ function makePredictionTable(items){
   match.className="club-name";
   const teams=document.createElement("div");
   teams.className="match-teams";
-  const leagueName=p.league||p.sport||"";
-  teams.appendChild(createTeamDisplay(p.home_team||"Home",leagueName));
-  const versus=document.createElement("div");
+  teams.appendChild(createTeamDisplay(p.home_team||"Home"));
+  const versus=document.createElement("span");
   versus.className="match-vs";
-  versus.textContent="VS";
+  versus.textContent="vs";
   teams.appendChild(versus);
-  teams.appendChild(createTeamDisplay(p.away_team||"Away",leagueName));
+  teams.appendChild(createTeamDisplay(p.away_team||"Away"));
   match.appendChild(teams);
 
   odd.className="odd-value";odd.textContent=p.odds??"-";
