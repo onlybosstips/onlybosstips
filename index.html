@@ -415,43 +415,27 @@ function normalizeTeamName(name){
   .toLowerCase().replace(/[^a-z0-9]/g,"");
 }
 
-/* Country names and common abbreviations used for national-team flags. */
 const countryFlags={
- nigeria:"ng",super eagles:"ng",
- england:"gb-eng",three lions:"gb-eng",
- brazil:"br",france:"fr",argentina:"ar",spain:"es",
- germany:"de",italy:"it",portugal:"pt",
- netherlands:"nl",holland:"nl",belgium:"be",
+ nigeria:"ng",england:"gb-eng",brazil:"br",france:"fr",
+ argentina:"ar",spain:"es",germany:"de",italy:"it",
+ portugal:"pt",netherlands:"nl",holland:"nl",belgium:"be",
  scotland:"gb-sct",wales:"gb-wls",northernireland:"gb-nir",
  usa:"us",unitedstates:"us",unitedstatesofamerica:"us",
- mexico:"mx",canada:"ca",japan:"jp",
- southkorea:"kr",korearepublic:"kr",
- australia:"au",ghana:"gh",senegal:"sn",
+ mexico:"mx",canada:"ca",japan:"jp",southkorea:"kr",
+ korearepublic:"kr",australia:"au",ghana:"gh",senegal:"sn",
  morocco:"ma",egypt:"eg",ivorycoast:"ci",cotedivoire:"ci",
- cameroon:"cm",southafrica:"za",uruguay:"uy",
- colombia:"co",chile:"cl",denmark:"dk",sweden:"se",
- norway:"no",switzerland:"ch",turkey:"tr",turkiye:"tr",
- croatia:"hr",serbia:"rs",poland:"pl",ukraine:"ua",
- greece:"gr",austria:"at",czechrepublic:"cz",czechia:"cz",
- iran:"ir",saudiarabia:"sa",qatar:"qa",newzealand:"nz",
- jamaica:"jm",congodr:"cd",drcongo:"cd",
+ cameroon:"cm",southafrica:"za",uruguay:"uy",colombia:"co",
+ chile:"cl",denmark:"dk",sweden:"se",norway:"no",
+ switzerland:"ch",turkey:"tr",turkiye:"tr",croatia:"hr",
+ serbia:"rs",poland:"pl",ukraine:"ua",greece:"gr",
+ austria:"at",czechrepublic:"cz",czechia:"cz",iran:"ir",
+ saudiarabia:"sa",qatar:"qa",newzealand:"nz",jamaica:"jm",
+ congodr:"cd",drcongo:"cd",
  democraticrepublicofthecongo:"cd",koreadpr:"kp",
- russia:"ru",panama:"pa",costarica:"cr",
- mali:"ml",algeria:"dz",tunisia:"tn",burkinafaso:"bf",
- zambia:"zm",zimbabwe:"zw",nigeria:"ng",angola:"ao",
- cape verde:"cv",caboverde:"cv",guinea:"gn",
- equatorialguinea:"gq",gabon:"ga",togo:"tg",
- benin:"bj",kenya:"ke",uganda:"ug",tanzania:"tz",
- iraq:"iq",unitedarabemirates:"ae",uae:"ae",
- uzbekistan:"uz",china:"cn",india:"in",
- indonesia:"id",thailand:"th",vietnam:"vn",
- paraguay:"py",peru:"pe",ecuador:"ec",venezuela:"ve",
- bolivia:"bo",cuba:"cu",haiti:"ht",trinidadandtobago:"tt",
- honduras:"hn",el salvador:"sv",elsalvador:"sv",
- guatemala:"gt"
+ russia:"ru",panama:"pa",costarica:"cr"
 };
 
-/* Club-name alternatives help the badge search find common team-name variations. */
+/* Keys and aliases are normalized, so spaces and punctuation do not break lookup. */
 const teamAliases={
  "al nassr club":["Al-Nassr FC","Al Nassr FC"],
  "al nassr":["Al-Nassr FC","Al Nassr FC"],
@@ -459,68 +443,21 @@ const teamAliases={
  "cologne":["1. FC Köln","FC Cologne"],
  "bodo glimt":["Bodø/Glimt","FK Bodø/Glimt"],
  "manchester united":["Manchester United FC"],
- "man united":["Manchester United FC"],
  "manchester city":["Manchester City FC"],
- "man city":["Manchester City FC"],
  "chelsea":["Chelsea FC"],
  "arsenal":["Arsenal FC"],
  "liverpool":["Liverpool FC"],
  "tottenham":["Tottenham Hotspur FC"],
- "spurs":["Tottenham Hotspur FC"],
  "real madrid":["Real Madrid CF"],
  "barcelona":["FC Barcelona"],
  "atletico madrid":["Atlético de Madrid"],
  "paris saint germain":["Paris Saint-Germain FC"],
  "psg":["Paris Saint-Germain FC"],
  "inter":["Inter Milan","FC Internazionale Milano"],
- "inter milan":["FC Internazionale Milano","Inter Milan"],
  "ac milan":["Milan"],
  "juventus":["Juventus FC"],
  "borussia dortmund":["Borussia Dortmund"],
- "rb leipzig":["RasenBallsport Leipzig"],
- "manchester united fc":["Manchester United"],
- "manchester city fc":["Manchester City"],
- "newcastle":["Newcastle United FC"],
- "newcastle united":["Newcastle United FC"],
- "west ham":["West Ham United FC"],
- "west ham united":["West Ham United FC"],
- "aston villa":["Aston Villa FC"],
- "nottingham forest":["Nottingham Forest FC"],
- "wolves":["Wolverhampton Wanderers FC"],
- "wolverhampton":["Wolverhampton Wanderers FC"],
- "brighton":["Brighton and Hove Albion"],
- "brighton hove albion":["Brighton and Hove Albion"],
- "leicester":["Leicester City FC"],
- "everton":["Everton FC"],
- "fulham":["Fulham FC"],
- "crystal palace":["Crystal Palace FC"],
- "real sociedad":["Real Sociedad"],
- "athletic bilbao":["Athletic Club"],
- "sevilla":["Sevilla FC"],
- "valencia":["Valencia CF"],
- "villarreal":["Villarreal CF"],
- "napoli":["SSC Napoli"],
- "roma":["AS Roma"],
- "lazio":["SS Lazio"],
- "fiorentina":["ACF Fiorentina"],
- "atalanta":["Atalanta BC"],
- "bayer leverkusen":["Bayer 04 Leverkusen"],
- "borussia monchengladbach":["Borussia Mönchengladbach"],
- "eintracht frankfurt":["Eintracht Frankfurt"],
- "ajax":["AFC Ajax"],
- "psv":["PSV Eindhoven"],
- "feyenoord":["Feyenoord Rotterdam"],
- "benfica":["SL Benfica"],
- "porto":["FC Porto"],
- "sporting lisbon":["Sporting CP"],
- "celtic":["Celtic FC"],
- "rangers":["Rangers FC"],
- "galatasaray":["Galatasaray SK"],
- "fenerbahce":["Fenerbahçe SK"],
- "besiktas":["Beşiktaş JK"],
- "al hilal":["Al-Hilal Saudi FC"],
- "al ittihad":["Al-Ittihad Club"],
- "al ahli":["Al-Ahli Saudi FC"]
+ "rb leipzig":["RasenBallsport Leipzig"]
 };
 
 const normalizedTeamAliases={};
@@ -538,7 +475,6 @@ function getCountryFlag(teamName){
  return code?"https://flagcdn.com/w40/"+code+".png":"";
 }
 
-/* Search TheSportsDB and accept only a close, verified soccer-team name match. */
 async function searchClubBadge(teamName){
  const key=normalizeTeamName(teamName);
  const aliases=normalizedTeamAliases[key]||[];
@@ -549,36 +485,19 @@ async function searchClubBadge(teamName){
    const url="https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t="+encodeURIComponent(searchName);
    const response=await fetch(url);
    if(!response.ok)continue;
-
    const data=await response.json();
    const teams=Array.isArray(data.teams)?data.teams:[];
    const soccerTeams=teams.filter(team=>
     String(team.strSport||"").toLowerCase()==="soccer"&&team.strTeamBadge
    );
 
-   let match=soccerTeams.find(team=>
-    normalizeTeamName(team.strTeam)===key
-   );
+   let match=soccerTeams.find(team=>normalizeTeamName(team.strTeam)===key);
 
    if(!match){
     for(const alias of aliases){
      const aliasKey=normalizeTeamName(alias);
-     match=soccerTeams.find(team=>
-      normalizeTeamName(team.strTeam)===aliasKey
-     );
+     match=soccerTeams.find(team=>normalizeTeamName(team.strTeam)===aliasKey);
      if(match)break;
-    }
-   }
-
-   /* A cautious fallback handles names with common club suffixes. */
-   if(!match){
-    const simplifiedKey=key.replace(/(footballclub|soccerclub|club|fc|afc|cf|sc)$/,"");
-    if(simplifiedKey.length>=5){
-     match=soccerTeams.find(team=>{
-      const candidate=normalizeTeamName(team.strTeam)
-       .replace(/(footballclub|soccerclub|club|fc|afc|cf|sc)$/,"");
-      return candidate===simplifiedKey;
-     });
     }
    }
 
@@ -627,23 +546,19 @@ function createTeamDisplay(teamName,league){
   if(getCountryFlag(teamName))logo.classList.add("flag");
 
   logo.onload=()=>{logo.style.display="block"};
-  logo.onerror=()=>{
-   logo.style.display="none";
-   logo.removeAttribute("src");
-  };
+  logo.onerror=()=>{logo.style.display="none"};
 
   team.appendChild(logo);
 
   getTeamLogo(teamName,league).then(url=>{
    if(url&&logo.isConnected)logo.src=url;
-  }).catch(error=>{
-   console.warn("Team image could not be loaded:",teamName,error);
   });
  }
 
  team.appendChild(name);
  return team;
 }
+
 function parseMemberships(value){
  const raw=String(value||"free").toLowerCase().split(/[,+|]/).map(x=>x.trim()).filter(Boolean);
  return [...new Set(raw.filter(x=>x==="vip"||x==="rollover"))];
