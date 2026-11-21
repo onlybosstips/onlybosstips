@@ -106,8 +106,12 @@ label{font-size:13px;color:#cbd0da}
 .club-name{font-weight:800;color:white;line-height:1.35}
 .match-teams{display:flex;flex-direction:column;gap:7px;min-width:0}
 .match-team{display:flex;align-items:center;gap:6px;min-width:0;line-height:1.25}
+
+/* PROFESSIONAL CLUB BADGE AND FLAG DISPLAY */
 .team-logo{width:21px;height:21px;flex:0 0 21px;object-fit:contain;border-radius:50%;background:#fff;padding:2px}
 .team-logo.flag{object-fit:cover;padding:0;border-radius:3px}
+.team-logo-fallback{width:21px;height:21px;flex:0 0 21px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(145deg,#17472b,#08170e);border:1px solid #48a96b;box-shadow:0 0 7px #35e87920}
+.team-logo-fallback svg{width:14px;height:14px;display:block}
 .team-name{min-width:0;overflow-wrap:anywhere;font-weight:800;color:#fff}
 .match-vs{font-size:8px;color:var(--muted);padding-left:27px;line-height:1}
 .odd-value{font-weight:800;color:#f0f7f2;font-variant-numeric:tabular-nums}
@@ -132,6 +136,8 @@ footer{text-align:center;padding:25px;border-top:1px solid #1c422b;color:var(--m
 .admin-list-item strong{display:block;margin-bottom:8px}
 .admin-list-item select{padding:9px;background:#08170e;color:#fff;border:1px solid #31543c;border-radius:6px;margin-right:6px}
 .admin-list-item button{padding:9px 12px;margin:4px 3px 0 0}
+.admin-match-teams{margin:5px 0 10px}
+.admin-match-teams .team-name{font-size:13px}
 .streak-dashboard{background:linear-gradient(145deg,#102a1a,#0b1b11);border:1px solid #39734a;border-radius:13px;padding:18px;margin:30px 0 22px}
 .streak-heading{color:var(--green);font-size:19px;font-weight:900;letter-spacing:1px;margin:0 0 6px}
 .streak-intro{color:var(--muted);font-size:12px;line-height:1.6;margin:0 0 16px}
@@ -159,7 +165,8 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 .league-tabs{gap:5px}
 .league-tab{padding:6px 2px;font-size:8px}
 .streak-dashboard{padding:13px}.streak-grid{grid-template-columns:1fr}.streak-card{padding:13px}
-.match-team{gap:4px}.team-logo{width:18px;height:18px;flex-basis:18px}
+.match-team{gap:4px}.team-logo,.team-logo-fallback{width:18px;height:18px;flex-basis:18px}
+.team-logo-fallback svg{width:12px;height:12px}
 .match-vs{padding-left:23px}
 }
 </style>
@@ -242,7 +249,7 @@ header{padding:9px 12px}.logo{font-size:18px}.hero{padding:48px 13px}
 <div class="password-field">
 <input id="confirmPassword" type="password" placeholder="Confirm new password" autocomplete="new-password">
 <button class="password-toggle" type="button" onclick="togglePassword('confirmPassword',this)" aria-label="Show password" title="Show password">
-<svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7-3.6 7-10 7-10 7-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+<svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7c-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
 </button>
 </div>
 <button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button>
@@ -527,6 +534,41 @@ async function getTeamLogo(teamName,league){
  return result;
 }
 
+/* Draws a small professional football icon as the temporary fallback. */
+function createFootballFallback(){
+ const fallback=document.createElement("span");
+ fallback.className="team-logo-fallback";
+ fallback.setAttribute("aria-hidden","true");
+
+ const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
+ svg.setAttribute("viewBox","0 0 24 24");
+ svg.setAttribute("fill","none");
+
+ const outer=document.createElementNS("http://www.w3.org/2000/svg","circle");
+ outer.setAttribute("cx","12");
+ outer.setAttribute("cy","12");
+ outer.setAttribute("r","9.2");
+ outer.setAttribute("fill","#f3fff6");
+ outer.setAttribute("stroke","#35e879");
+ outer.setAttribute("stroke-width","1.2");
+
+ const center=document.createElementNS("http://www.w3.org/2000/svg","path");
+ center.setAttribute("d","M12 7.2 15 9.4 13.9 13h-3.8L9 9.4 12 7.2Z");
+ center.setAttribute("fill","#17472b");
+ center.setAttribute("stroke","#17472b");
+ center.setAttribute("stroke-linejoin","round");
+
+ const seams=document.createElementNS("http://www.w3.org/2000/svg","path");
+ seams.setAttribute("d","m12 7.2 0-3.3M15 9.4l3.4-1.1M13.9 13l2.1 3M10.1 13 8 16M9 9.4 5.6 8.3M8 16l-1.1 2.4M16 16l1.1 2.4");
+ seams.setAttribute("stroke","#17472b");
+ seams.setAttribute("stroke-width","1.1");
+ seams.setAttribute("stroke-linecap","round");
+
+ svg.append(outer,center,seams);
+ fallback.appendChild(svg);
+ return fallback;
+}
+
 function createTeamDisplay(teamName,league){
  const team=document.createElement("div");
  team.className="match-team";
@@ -536,6 +578,7 @@ function createTeamDisplay(teamName,league){
  name.textContent=teamName||"Unknown";
 
  if(isFootballLeague(league)){
+  const fallback=createFootballFallback();
   const logo=document.createElement("img");
   logo.className="team-logo";
   logo.alt="";
@@ -545,21 +588,29 @@ function createTeamDisplay(teamName,league){
 
   if(getCountryFlag(teamName))logo.classList.add("flag");
 
-  logo.onload=()=>{logo.style.display="block"};
-  logo.onerror=()=>{logo.style.display="none"};
+  logo.onload=()=>{
+   fallback.style.display="none";
+   logo.style.display="block";
+  };
+  logo.onerror=()=>{
+   logo.style.display="none";
+   fallback.style.display="grid";
+  };
 
-  team.appendChild(logo);
+  team.append(fallback,logo);
 
   getTeamLogo(teamName,league).then(url=>{
    if(url&&logo.isConnected)logo.src=url;
+  }).catch(error=>{
+   console.warn("Unable to display team badge:",teamName,error);
+   fallback.style.display="grid";
   });
  }
 
  team.appendChild(name);
  return team;
 }
-
-function parseMemberships(value){
+ function parseMemberships(value){
  const raw=String(value||"free").toLowerCase().split(/[,+|]/).map(x=>x.trim()).filter(Boolean);
  return [...new Set(raw.filter(x=>x==="vip"||x==="rollover"))];
 }
@@ -912,23 +963,43 @@ async function loadPredictions(){
  updateWinningStreakDashboard();
  if(currentIsAdmin)renderAdminPredictionList();
 }
+
+/* ADMIN DASHBOARD: TEAM BADGES AND FLAGS */
 function renderAdminPredictionList(){
  const box=document.getElementById("adminPredictionList");if(!box)return;box.replaceChildren();
  if(!allPredictions.length){box.textContent="No predictions have been added yet.";return}
  allPredictions.forEach(p=>{
   const item=document.createElement("div");item.className="admin-list-item";
+
   const title=document.createElement("strong");
-  title.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away")+" — "+String(p.visibility||"free").toUpperCase();
+  title.textContent=String(p.visibility||"free").toUpperCase()+" PREDICTION";
+
+  const teams=document.createElement("div");
+  teams.className="match-teams admin-match-teams";
+  const leagueName=p.league||p.sport||"";
+  teams.appendChild(createTeamDisplay(p.home_team||"Home",leagueName));
+
+  const versus=document.createElement("div");
+  versus.className="match-vs";
+  versus.textContent="VS";
+  teams.appendChild(versus);
+
+  teams.appendChild(createTeamDisplay(p.away_team||"Away",leagueName));
+
   const details=document.createElement("p");details.className="muted";
   details.textContent="Odd: "+(p.odds??"-")+" | Pick: "+(p.prediction||"-")+" | Kickoff: "+formatKickoff(p.kickoff);
+
   const select=document.createElement("select");select.setAttribute("aria-label","Set match outcome");
   ["pending","won","lost","void"].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v.toUpperCase();select.appendChild(o)});
   select.value=String(p.status||p.result||"pending").toLowerCase();
+
   const save=document.createElement("button");save.textContent="SAVE RESULT";
   save.onclick=()=>adminUpdateResult(p.id,select.value,save);
-  item.append(title,details,select,save);box.appendChild(item);
+
+  item.append(title,teams,details,select,save);box.appendChild(item);
  });
 }
+
 async function adminAddPrediction(){
  if(!currentIsAdmin){alert("Administrator access required.");return}
  const m=document.getElementById("adminMessage"),b=document.getElementById("adminAddButton");
