@@ -254,14 +254,75 @@ label{font-size:13px;color:#ccc}
 .odd-value{font-weight:800;color:#ff6478;font-variant-numeric:tabular-nums}
 .prediction-value{color:#eee;font-weight:700}
 .outcome-cell{text-align:center}
-.outcome-wrap{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:clamp(8px,2.2vw,11px);font-weight:900;white-space:nowrap}
-.outcome-circle{width:19px;height:19px;border-radius:50%;display:inline-grid;place-items:center;border:2px solid currentColor;font-size:12px;line-height:1;flex-shrink:0}
-.result-won{color:#20c878}.result-lost{color:#ff5268}.result-void{color:#aaa}.result-live{color:#ff4059}.result-awaiting{color:#aaa}
-.result-live .outcome-circle{animation:livePulse 1.8s ease-in-out infinite}
-.result-live .outcome-wrap>span:last-child{animation:liveTextGlow 1.8s ease-in-out infinite}
-@keyframes livePulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 #e5092522}50%{transform:scale(1.13);box-shadow:0 0 12px 4px #e5092544}}
-@keyframes liveTextGlow{0%,100%{text-shadow:0 0 2px #e5092522}50%{text-shadow:0 0 10px #ff4059}}
-@media(prefers-reduced-motion:reduce){.result-live .outcome-circle,.result-live .outcome-wrap>span:last-child{animation:none}}
+.outcome-wrap{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:5px;
+ font-size:clamp(8px,2.2vw,11px);
+ font-weight:900;
+ white-space:nowrap;
+ letter-spacing:.25px
+}
+.outcome-circle{
+ width:22px;
+ height:22px;
+ border-radius:50%;
+ display:inline-grid;
+ place-items:center;
+ border:1.8px solid currentColor;
+ font-size:13px;
+ line-height:1;
+ font-weight:900;
+ flex-shrink:0;
+ background:#ffffff08;
+ box-shadow:inset 0 0 7px #ffffff08;
+ transition:transform .2s,box-shadow .2s
+}
+.result-won{color:#35d98a}
+.result-won .outcome-circle{
+ color:#42e69a;
+ background:linear-gradient(145deg,#164a32,#0d2d20);
+ border-color:#35d98a;
+ box-shadow:0 0 10px #20c87835,inset 0 0 7px #35d98a22
+}
+.result-lost{color:#ff626f}
+.result-lost .outcome-circle{
+ color:#ff6875;
+ background:linear-gradient(145deg,#501b24,#301117);
+ border-color:#ff5268;
+ box-shadow:0 0 10px #ff405935,inset 0 0 7px #ff526822
+}
+.result-void{color:#ffc857}
+.result-void .outcome-circle{
+ color:#ffd36a;
+ background:linear-gradient(145deg,#4b391b,#30230f);
+ border-color:#e9b94e;
+ box-shadow:0 0 10px #e9b94e30,inset 0 0 7px #ffd36a20
+}
+.result-live{color:#ffdc62}
+.result-live .outcome-circle{
+ color:#302300;
+ background:#ffd34e;
+ border:2px solid #ffe58a;
+ font-size:10px;
+ box-shadow:0 0 9px #ffd34e88
+}
+.result-awaiting{color:#aaa}
+.result-awaiting .outcome-circle{color:#aaa}
+.result-live .outcome-circle{animation:livePulse 1.35s ease-in-out infinite}
+.result-live .outcome-wrap>span:last-child{animation:liveTextGlow 1.35s ease-in-out infinite}
+@keyframes livePulse{
+ 0%,100%{transform:scale(1);box-shadow:0 0 0 0 #ffd34e55,0 0 8px #ffd34e66}
+ 50%{transform:scale(1.18);box-shadow:0 0 0 6px #ffd34e12,0 0 17px #ffd34eaa}
+}
+@keyframes liveTextGlow{
+ 0%,100%{text-shadow:0 0 2px #ffd34e33}
+ 50%{text-shadow:0 0 10px #ffd34eaa}
+}
+@media(prefers-reduced-motion:reduce){
+ .result-live .outcome-circle,.result-live .outcome-wrap>span:last-child{animation:none}
+}
 .prediction-empty{color:#aaa;font-size:14px;padding:12px 0}
 .prediction-group{margin-bottom:22px}
 footer{text-align:center;padding:25px;border-top:1px solid #3b252d;color:#999;font-size:12px;background:#09090b}
@@ -322,7 +383,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #3b252d;color:#999;fo
  .container{padding:18px 10px 35px}.member-welcome{padding:18px}
  .member-welcome-top{gap:12px}.prediction-date{font-size:13px}
  .prediction-table th{padding:10px 3px}.prediction-table td{padding:10px 3px}
- .outcome-circle{width:17px;height:17px}.prediction-controls{padding:10px}
+ .outcome-circle{width:19px;height:19px;font-size:11px}.prediction-controls{padding:10px}
  .date-tab{padding:9px 3px;font-size:11px}.league-tabs{gap:5px}
  .league-tab{padding:6px 2px;font-size:8px}
  .streak-dashboard{padding:13px}.streak-grid{grid-template-columns:1fr}
@@ -393,7 +454,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #3b252d;color:#999;fo
    <div class="password-field">
     <input id="loginPassword" type="password" placeholder="Enter password" autocomplete="current-password">
     <button class="password-toggle" type="button" onclick="togglePassword('loginPassword',this)" aria-label="Show password" title="Show password">
-     <svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7-3.6 7-10 7-10 7-1.4 0-2.6-.3-3.7-.8"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
+     <svg viewBox="0 0 24 24" aria-hidden="true"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18M10.6 5.2A10.9 10.9 0 0 1 12 5c6.4 0 10 7 10 7s-3.6 7-10 7-10 7-10 7"/><path class="eye-slash" d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>
     </button>
    </div>
    <button id="loginButton" onclick="logIn()">LOG IN</button>
@@ -584,7 +645,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #3b252d;color:#999;fo
 <footer>ONLYBOSSTIPS © 2026. All rights reserved.</footer>
 
 <script>
-  const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
+ const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
 const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
@@ -1205,7 +1266,7 @@ function getResult(item){
 
  if(item.kickoff){
   const kick=new Date(item.kickoff),now=new Date();
-  if(!Number.isNaN(kick.getTime())&&kick<=now)return{text:"LIVE",symbol:"•",className:"result-live"};
+  if(!Number.isNaN(kick.getTime())&&kick<=now)return{text:"LIVE",symbol:"●",className:"result-live"};
  }
  return{text:"PENDING",symbol:"",className:"result-awaiting"};
 }
