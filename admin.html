@@ -4,64 +4,345 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#06140d">
-<title>ONLYBOSSTIPS Admin Dashboard</title>
+<meta name="theme-color" content="#050b08">
+<title>ONLYBOSSTIPS | Admin Control Centre</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+:root{
+ --bg:#050b08;
+ --surface:#0b1510;
+ --surface2:#101f16;
+ --surface3:#14271b;
+ --green:#22e879;
+ --green2:#0fbd60;
+ --green-soft:rgba(34,232,121,.12);
+ --border:rgba(57,210,119,.19);
+ --text:#f2fff6;
+ --muted:#9bb5a4;
+ --red:#ff5266;
+ --gold:#ffc45c;
+ --shadow:0 18px 45px rgba(0,0,0,.28);
+}
 *{box-sizing:border-box}
-body{margin:0;background:#06140d;color:#f5f7fb;font-family:Arial,sans-serif}
-header{background:#0d2116;padding:20px;border-bottom:2px solid #35e879}
-h1{margin:0;color:#35e879;font-size:25px}
-main{max-width:950px;margin:25px auto;padding:15px}
-.panel{background:#0d2116;padding:22px;border-radius:12px;margin-bottom:20px;border:1px solid #1d4930}
-h2{color:#35e879}
-h3{color:#d8f7e2}
-input,select,textarea,button{width:100%;padding:13px;margin:8px 0;border-radius:7px;border:1px solid #28543a;font-size:15px}
-input,select,textarea{background:#06140d;color:white}
-textarea{min-height:110px;resize:vertical;font-family:Arial,sans-serif}
-input:focus,select:focus,textarea:focus{outline:none;border-color:#35e879}
-button{background:#35e879;color:#06140d;font-weight:bold;border:0;cursor:pointer}
-button:hover{background:#22c55e}
-button:disabled{opacity:.6;cursor:not-allowed}
-button.secondary{background:#234b32;color:white}
-button.danger{background:#b52b3b;color:white}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ min-height:100vh;
+ background:
+ radial-gradient(ellipse at 10% 0%,rgba(20,150,75,.12),transparent 35%),
+ radial-gradient(ellipse at 100% 30%,rgba(18,100,55,.10),transparent 35%),
+ var(--bg);
+ color:var(--text);
+ font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+}
+header{
+ position:relative;
+ overflow:hidden;
+ padding:23px 20px;
+ background:linear-gradient(120deg,#07130c,#102b1a 60%,#07130c);
+ border-bottom:1px solid rgba(34,232,121,.35);
+ box-shadow:0 8px 30px rgba(0,0,0,.25);
+}
+header:after{
+ content:"";
+ position:absolute;
+ width:240px;height:240px;
+ right:-70px;top:-150px;
+ border:1px solid rgba(34,232,121,.18);
+ border-radius:50%;
+ box-shadow:0 0 0 25px rgba(34,232,121,.025),0 0 0 55px rgba(34,232,121,.02);
+ pointer-events:none;
+}
+.header-inner{
+ max-width:1100px;
+ margin:auto;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:15px;
+ position:relative;
+ z-index:1;
+}
+.brand{display:flex;align-items:center;gap:13px}
+.brand-mark{
+ width:47px;height:47px;
+ display:grid;place-items:center;
+ border-radius:14px;
+ background:linear-gradient(145deg,#32f18b,#087b3e);
+ color:#031008;
+ font-size:22px;
+ font-weight:1000;
+ box-shadow:0 0 25px rgba(34,232,121,.2);
+}
+.brand-name{
+ font-size:23px;
+ font-weight:1000;
+ letter-spacing:1.5px;
+ color:#f5fff8;
+}
+.brand-name span{color:var(--green)}
+.header-label{
+ display:block;
+ margin-top:4px;
+ color:#a5c8b1;
+ font-size:10px;
+ letter-spacing:2.5px;
+ font-weight:800;
+}
+.admin-pill{
+ border:1px solid rgba(34,232,121,.3);
+ background:rgba(34,232,121,.08);
+ color:var(--green);
+ border-radius:30px;
+ padding:9px 13px;
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:1px;
+ white-space:nowrap;
+}
+main{max-width:1050px;margin:28px auto;padding:0 18px 40px}
+.panel{
+ position:relative;
+ background:linear-gradient(145deg,rgba(15,31,21,.98),rgba(8,19,13,.98));
+ border:1px solid var(--border);
+ border-radius:18px;
+ padding:23px;
+ margin-bottom:20px;
+ box-shadow:var(--shadow);
+}
+.panel:before{
+ content:"";
+ position:absolute;
+ top:0;left:22px;right:22px;
+ height:1px;
+ background:linear-gradient(90deg,transparent,rgba(34,232,121,.4),transparent);
+}
+h1{margin:0}
+h2{
+ color:var(--green);
+ font-size:19px;
+ letter-spacing:.2px;
+ margin:0 0 13px;
+}
+h3{color:#d9fbe5;font-size:15px;margin:12px 0}
+p{line-height:1.6}
+small{color:var(--muted)}
+.field-label{
+ display:block;
+ margin-top:14px;
+ color:#b9d6c3;
+ font-size:12px;
+ font-weight:800;
+ letter-spacing:.4px;
+}
+.field-help{font-size:12px;color:var(--muted);line-height:1.6}
+input,select,textarea,button{
+ width:100%;
+ padding:13px 14px;
+ margin:8px 0;
+ border-radius:10px;
+ border:1px solid rgba(93,157,111,.25);
+ font-size:14px;
+ font-family:inherit;
+}
+input,select,textarea{
+ background:#07110b;
+ color:#f5fff8;
+ transition:border .2s,box-shadow .2s;
+}
+input::placeholder,textarea::placeholder{color:#718b79}
+input:focus,select:focus,textarea:focus{
+ outline:none;
+ border-color:var(--green);
+ box-shadow:0 0 0 3px rgba(34,232,121,.09);
+}
+select option{background:#0b1510;color:white}
+textarea{min-height:110px;resize:vertical}
+button{
+ background:linear-gradient(120deg,#2af18a,#12bd61);
+ color:#031008;
+ border:0;
+ font-weight:900;
+ letter-spacing:.5px;
+ cursor:pointer;
+ transition:transform .18s,filter .18s,box-shadow .18s;
+ box-shadow:0 5px 16px rgba(18,189,97,.12);
+}
+button:hover{filter:brightness(1.08);transform:translateY(-1px)}
+button:active{transform:scale(.99)}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+button.secondary{
+ background:#183b27;
+ color:#dffff0;
+ border:1px solid rgba(34,232,121,.25);
+ box-shadow:none;
+}
+button.danger{
+ background:linear-gradient(120deg,#d83e51,#a91e36);
+ color:white;
+ box-shadow:none;
+}
 .hidden{display:none!important}
-.notice{padding:12px;background:#173b27;border:1px solid #285c3c;border-radius:7px;margin:10px 0;line-height:1.5;white-space:pre-wrap}
-.item{background:#102c1c;border:1px solid #28543a;padding:15px;border-radius:8px;margin:12px 0}
-.item button{width:auto;margin-right:6px}
-small{color:#b9d2c1}
-.member-tier{color:#35e879;font-weight:bold}
-.membership-option{display:flex;align-items:center;gap:10px;margin:12px 0;padding:12px;background:#06140d;border:1px solid #28543a;border-radius:7px}
-.membership-option input{width:20px;height:20px;margin:0;accent-color:#35e879}
-.membership-option label{font-weight:bold;flex:1}
-.announcement-date{color:#a8b9ae;font-size:12px}
-.category-tag{display:inline-block;background:#173b27;color:#35e879;padding:5px 9px;border-radius:5px;font-size:12px;font-weight:bold;margin-top:8px}
-.empty-state{color:#b9d2c1;padding:12px}
-.field-label{display:block;margin-top:12px;color:#b9d2c1;font-size:14px;font-weight:bold}
-.field-help{font-size:12px;color:#a8b9ae;line-height:1.5}
-.form-section{border-top:1px solid #28543a;margin-top:18px;padding-top:12px}
-.market-preview{background:#173b27;padding:12px;border-radius:7px;color:#d8f7e2;margin:10px 0;line-height:1.5}
-.fixture-choice{display:block;width:100%;text-align:left;background:#173b27;color:#e9fff0;border:1px solid #35e879;padding:12px;margin:8px 0}
-.fixture-choice:hover{background:#225b38}
+.notice{
+ padding:14px 15px;
+ background:rgba(34,232,121,.07);
+ border:1px solid rgba(34,232,121,.19);
+ border-radius:11px;
+ margin:12px 0;
+ line-height:1.6;
+ white-space:pre-wrap;
+ color:#d7f7e2;
+ font-size:13px;
+}
+.item{
+ background:linear-gradient(145deg,#102319,#0a1710);
+ border:1px solid rgba(93,157,111,.2);
+ padding:17px;
+ border-radius:13px;
+ margin:13px 0;
+ overflow-wrap:anywhere;
+}
+.item strong{color:#eafff0}
+.item button{width:auto;min-width:145px;margin:7px 6px 0 0}
+.member-tier{color:var(--green);font-weight:900}
+.membership-option{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ margin:10px 0;
+ padding:13px;
+ background:#07120b;
+ border:1px solid var(--border);
+ border-radius:10px;
+}
+.membership-option input{
+ width:20px;height:20px;
+ margin:0;
+ accent-color:var(--green);
+}
+.membership-option label{font-weight:800;flex:1;font-size:13px}
+.announcement-date{color:var(--muted);font-size:12px}
+.category-tag{
+ display:inline-block;
+ background:rgba(34,232,121,.11);
+ border:1px solid rgba(34,232,121,.2);
+ color:var(--green);
+ padding:6px 10px;
+ border-radius:30px;
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:.7px;
+ margin-top:8px;
+}
+.empty-state{color:var(--muted);padding:12px}
+.form-section{
+ border-top:1px solid var(--border);
+ margin-top:20px;
+ padding-top:13px;
+}
+.market-preview{
+ background:rgba(34,232,121,.08);
+ border:1px solid rgba(34,232,121,.18);
+ padding:14px;
+ border-radius:10px;
+ color:#d8fbe4;
+ margin:12px 0;
+ line-height:1.6;
+ font-size:13px;
+}
+.fixture-choice{
+ display:block;
+ width:100%;
+ text-align:left;
+ background:#10291a;
+ color:#e9fff0;
+ border:1px solid rgba(34,232,121,.4);
+ padding:13px;
+ margin:9px 0;
+}
+.fixture-choice:hover{background:#19432a}
+#loginPanel{
+ max-width:480px;
+ margin:55px auto;
+ padding:30px;
+}
+.login-emblem{
+ width:65px;height:65px;
+ display:grid;place-items:center;
+ margin:0 auto 18px;
+ border-radius:20px;
+ background:linear-gradient(145deg,#32f18b,#087b3e);
+ color:#031008;
+ font-size:29px;
+ font-weight:1000;
+ box-shadow:0 0 30px rgba(34,232,121,.2);
+}
+.login-title{text-align:center}
+.login-subtitle{
+ color:var(--muted);
+ text-align:center;
+ font-size:13px;
+ margin:0 0 22px;
+}
+.section-kicker{
+ color:var(--green);
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:1.8px;
+ text-transform:uppercase;
+ margin-bottom:7px;
+}
+.dashboard-intro{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:15px;
+ flex-wrap:wrap;
+}
+.live-dot{
+ display:inline-block;
+ width:8px;height:8px;
+ border-radius:50%;
+ background:var(--green);
+ box-shadow:0 0 10px var(--green);
+ margin-right:7px;
+}
 .refresh-indicator{
  position:fixed;
- top:0;
- left:50%;
+ top:0;left:50%;
  transform:translateX(-50%);
  z-index:9999;
- background:#35e879;
- color:#06140d;
- padding:9px 18px;
- border-radius:0 0 10px 10px;
- font-size:13px;
- font-weight:bold;
+ background:var(--green);
+ color:#041009;
+ padding:10px 19px;
+ border-radius:0 0 12px 12px;
+ font-size:12px;
+ font-weight:900;
+ box-shadow:0 5px 20px rgba(0,0,0,.3);
  display:none;
 }
+#predictionsList,#membersList,#announcementsList{margin-top:12px}
+#dashboard .panel>h2{display:flex;align-items:center;gap:9px}
+#dashboard .panel>h2:before{
+ content:"";
+ width:4px;height:19px;
+ border-radius:5px;
+ background:var(--green);
+ display:inline-block;
+}
 @media(max-width:600px){
- main{padding:10px}
- .panel{padding:16px}
- .item button{width:100%;margin:5px 0}
+ header{padding:18px 15px}
+ .brand-mark{width:41px;height:41px;font-size:19px}
+ .brand-name{font-size:19px}
+ .header-label{font-size:8px;letter-spacing:1.8px}
+ .admin-pill{font-size:9px;padding:8px}
+ main{padding:0 11px 30px;margin:18px auto}
+ .panel{padding:17px;border-radius:15px}
+ #loginPanel{margin:28px auto;padding:23px}
+ .item{padding:14px}
+ .item button{width:100%;margin:6px 0}
+ .dashboard-intro{align-items:flex-start}
 }
 </style>
 </head>
@@ -73,183 +354,196 @@ Refreshing dashboard...
 </div>
 
 <header>
-<h1>ONLYBOSSTIPS</h1>
-<small>PRIVATE ADMIN DASHBOARD</small>
+ <div class="header-inner">
+  <div class="brand">
+   <div class="brand-mark">✦</div>
+   <div>
+    <div class="brand-name">ONLY<span>BOSS</span>TIPS</div>
+    <span class="header-label">ADMIN CONTROL CENTRE</span>
+   </div>
+  </div>
+  <div class="admin-pill">✦ PRIVATE ADMIN</div>
+ </div>
 </header>
 
 <main>
 
 <section class="panel" id="loginPanel">
-<h2>Administrator Login</h2>
-<p>Sign in with your authorised administrator account.</p>
-<input id="email" type="email" placeholder="Administrator email">
-<input id="password" type="password" placeholder="Password">
-<button onclick="adminLogin()">LOGIN</button>
-<div class="notice" id="loginMessage">Enter your administrator login details.</div>
+ <div class="login-emblem">✦</div>
+ <div class="login-title">
+  <div class="section-kicker">SECURE ACCESS</div>
+  <h2>Administrator Login</h2>
+ </div>
+ <p class="login-subtitle">Sign in with your authorised administrator account.</p>
+ <label class="field-label" for="email">ADMINISTRATOR EMAIL</label>
+ <input id="email" type="email" placeholder="Administrator email" autocomplete="username">
+ <label class="field-label" for="password">PASSWORD</label>
+ <input id="password" type="password" placeholder="Password" autocomplete="current-password">
+ <button onclick="adminLogin()">LOGIN TO DASHBOARD</button>
+ <div class="notice" id="loginMessage">Enter your administrator login details.</div>
 </section>
 
 <section id="dashboard" class="hidden">
 
 <div class="panel">
-<h2>Welcome, Administrator</h2>
-<p>You are logged in to the private dashboard.</p>
-<div class="notice">
-Automatic prediction cleanup is active.
-<br>
-Nigeria time: Africa/Lagos (WAT).
-<br>
-Predictions older than Yesterday are removed automatically.
-</div>
+ <div class="dashboard-intro">
+  <div>
+   <div class="section-kicker"><span class="live-dot"></span>CONTROL PANEL</div>
+   <h2>Welcome, Administrator</h2>
+   <p class="field-help">You are logged in to your private ONLYBOSSTIPS dashboard.</p>
+  </div>
+  <div class="admin-pill">SYSTEM ACTIVE</div>
+ </div>
+ <div class="notice">
+  Automatic prediction cleanup is active.
+  <br>
+  Nigeria time: Africa/Lagos (WAT).
+  <br>
+  Predictions older than Yesterday are removed automatically.
+ </div>
 </div>
 
 <!-- POST PREDICTIONS -->
 
 <div class="panel">
-<h2>Post New Prediction</h2>
-<p class="field-help">Choose the match, select a prediction category and market, then enter your selection and odds.</p>
+ <div class="section-kicker">PUBLISH CONTENT</div>
+ <h2>Post New Prediction</h2>
+ <p class="field-help">Choose the match, select a prediction category and market, then enter your selection and odds.</p>
 
-<div class="form-section">
-<h3>1. Match Information</h3>
+ <div class="form-section">
+  <h3>1. Match Information</h3>
+  <label class="field-label" for="league">League / Competition</label>
+  <input id="league" placeholder="e.g. Premier League">
+  <label class="field-label" for="home">Home Team</label>
+  <input id="home" placeholder="Home team name">
+  <label class="field-label" for="away">Away Team</label>
+  <input id="away" placeholder="Away team name">
+  <label class="field-label" for="kickoff">Kickoff Date and Time</label>
+  <input id="kickoff" type="datetime-local">
+ </div>
 
-<label class="field-label" for="league">League / Competition</label>
-<input id="league" placeholder="e.g. Premier League">
+ <div class="form-section">
+  <h3>2. Prediction Market</h3>
+  <label class="field-label" for="marketCategory">Prediction Category</label>
+  <select id="marketCategory">
+   <option>Match Result</option>
+   <option>Double Chance</option>
+   <option>Goals</option>
+   <option>Both Teams to Score</option>
+   <option>Half Time</option>
+   <option>Correct Score</option>
+   <option>Handicap</option>
+   <option>Corners</option>
+   <option>Fouls</option>
+   <option>Cards</option>
+   <option>Shots</option>
+   <option>Player Goals</option>
+   <option>Player Shots</option>
+   <option>Player Assists</option>
+   <option>Player Cards</option>
+   <option>Player Fouls</option>
+   <option>Substitutions</option>
+   <option>Goalkeeper</option>
+   <option>Offsides</option>
+   <option>Special Markets</option>
+   <option>Custom Market</option>
+  </select>
 
-<label class="field-label" for="home">Home Team</label>
-<input id="home" placeholder="Home team name">
+  <label class="field-label" for="marketType">Select Market</label>
+  <select id="marketType"></select>
 
-<label class="field-label" for="away">Away Team</label>
-<input id="away" placeholder="Away team name">
+  <div id="customMarketWrap" class="hidden">
+   <label class="field-label" for="customMarketName">Custom Market Name</label>
+   <input id="customMarketName" placeholder="Enter your custom market">
+  </div>
 
-<label class="field-label" for="kickoff">Kickoff Date and Time</label>
-<input id="kickoff" type="datetime-local">
-</div>
+  <label class="field-label" for="marketSelection">Prediction Selection</label>
+  <input id="marketSelection" placeholder="e.g. Over, Home, Yes, Player name">
 
-<div class="form-section">
-<h3>2. Prediction Market</h3>
+  <label class="field-label" for="marketLine">Market Line / Handicap (Optional)</label>
+  <input id="marketLine" placeholder="e.g. 2.5, +1.5, 8.5">
 
-<label class="field-label" for="marketCategory">Prediction Category</label>
-<select id="marketCategory">
-<option>Match Result</option>
-<option>Double Chance</option>
-<option>Goals</option>
-<option>Both Teams to Score</option>
-<option>Half Time</option>
-<option>Correct Score</option>
-<option>Handicap</option>
-<option>Corners</option>
-<option>Fouls</option>
-<option>Cards</option>
-<option>Shots</option>
-<option>Player Goals</option>
-<option>Player Shots</option>
-<option>Player Assists</option>
-<option>Player Cards</option>
-<option>Player Fouls</option>
-<option>Substitutions</option>
-<option>Goalkeeper</option>
-<option>Offsides</option>
-<option>Special Markets</option>
-<option>Custom Market</option>
-</select>
+  <label class="field-label" for="marketTeam">Team (Optional)</label>
+  <select id="marketTeam">
+   <option value="">Not applicable</option>
+   <option value="home">Home Team</option>
+   <option value="away">Away Team</option>
+  </select>
 
-<label class="field-label" for="marketType">Select Market</label>
-<select id="marketType"></select>
+  <label class="field-label" for="playerName">Player Name (Optional)</label>
+  <input id="playerName" placeholder="Enter player name where applicable">
 
-<div id="customMarketWrap" class="hidden">
-<label class="field-label" for="customMarketName">Custom Market Name</label>
-<input id="customMarketName" placeholder="Enter your custom market">
-</div>
+  <div class="market-preview" id="predictionPreview">
+   Your prediction preview will appear here.
+  </div>
+ </div>
 
-<label class="field-label" for="marketSelection">Prediction Selection</label>
-<input id="marketSelection" placeholder="e.g. Over, Home, Yes, Player name">
+ <div class="form-section">
+  <h3>3. Publishing Details</h3>
+  <label class="field-label" for="odds">Odds</label>
+  <input id="odds" type="text" placeholder="e.g. 1.85">
+  <label class="field-label" for="visibility">Prediction Access</label>
+  <select id="visibility">
+   <option value="free">FREE ODDS</option>
+   <option value="vip">VIP ODDS</option>
+   <option value="rollover">ROLLOVER ODDS</option>
+  </select>
+  <p class="field-help">
+   New predictions are published with PENDING status. After publishing, the dashboard searches SportAPI and links the fixture only when it can identify it safely.
+  </p>
+ </div>
 
-<label class="field-label" for="marketLine">Market Line / Handicap (Optional)</label>
-<input id="marketLine" placeholder="e.g. 2.5, +1.5, 8.5">
-
-<label class="field-label" for="marketTeam">Team (Optional)</label>
-<select id="marketTeam">
-<option value="">Not applicable</option>
-<option value="home">Home Team</option>
-<option value="away">Away Team</option>
-</select>
-
-<label class="field-label" for="playerName">Player Name (Optional)</label>
-<input id="playerName" placeholder="Enter player name where applicable">
-
-<div class="market-preview" id="predictionPreview">
-Your prediction preview will appear here.
-</div>
-</div>
-
-<div class="form-section">
-<h3>3. Publishing Details</h3>
-
-<label class="field-label" for="odds">Odds</label>
-<input id="odds" type="text" placeholder="e.g. 1.85">
-
-<label class="field-label" for="visibility">Prediction Access</label>
-<select id="visibility">
-<option value="free">FREE ODDS</option>
-<option value="vip">VIP ODDS</option>
-<option value="rollover">ROLLOVER ODDS</option>
-</select>
-
-<p class="field-help">
-New predictions are published with PENDING status. After publishing, the dashboard searches SportAPI and links the fixture only when it can identify it safely.
-</p>
-</div>
-
-<button id="publishButton" onclick="savePrediction()">PUBLISH PREDICTION</button>
-<div id="postMessage" class="notice">Complete the fields to publish a prediction.</div>
+ <button id="publishButton" onclick="savePrediction()">PUBLISH PREDICTION</button>
+ <div id="postMessage" class="notice">Complete the fields to publish a prediction.</div>
 </div>
 
 <!-- ANNOUNCEMENTS -->
 
 <div class="panel">
-<h2>Member Announcements</h2>
-<p class="notice">
-Publish messages for members on the website. Active announcements appear when members log in. They remain active until you remove them. Members can close the announcement themselves without removing it.
-</p>
-
-<textarea id="announcementMessage" placeholder="Write your announcement here..."></textarea>
-<button onclick="publishAnnouncement()">PUBLISH ANNOUNCEMENT</button>
-<div id="announcementMessageStatus" class="notice">Your announcement status will appear here.</div>
-
-<h3>Published Announcements</h3>
-<div id="announcementsList">Loading announcements...</div>
+ <div class="section-kicker">MEMBER COMMUNICATION</div>
+ <h2>Member Announcements</h2>
+ <p class="notice">
+  Publish messages for members on the website. Active announcements appear when members log in. They remain active until you remove them. Members can close the announcement themselves without removing it.
+ </p>
+ <textarea id="announcementMessage" placeholder="Write your announcement here..."></textarea>
+ <button onclick="publishAnnouncement()">PUBLISH ANNOUNCEMENT</button>
+ <div id="announcementMessageStatus" class="notice">Your announcement status will appear here.</div>
+ <h3>Published Announcements</h3>
+ <div id="announcementsList">Loading announcements...</div>
 </div>
 
 <!-- MANAGE PREDICTIONS -->
 
 <div class="panel">
-<h2>Manage Predictions and Results</h2>
-<div id="predictionsList">Loading predictions...</div>
+ <div class="section-kicker">MATCH CENTRE</div>
+ <h2>Manage Predictions and Results</h2>
+ <div id="predictionsList">Loading predictions...</div>
 </div>
 
 <!-- MANAGE MEMBERSHIPS -->
 
 <div class="panel">
-<h2>Manage Memberships</h2>
-
-<p class="notice">
-After confirming a member's payment, select the membership or memberships you want to activate and tap UPDATE MEMBERSHIP.
-<br><br>
-VIP: ₦5,500 monthly.
-<br>
-ROLLOVER: ₦4,000 weekly.
-<br><br>
-A member can have VIP and Rollover at the same time. FREE odds remain available to every member.
-</p>
-
-<div id="membersList">Loading members...</div>
+ <div class="section-kicker">MEMBER ACCESS CONTROL</div>
+ <h2>Manage Memberships</h2>
+ <p class="notice">
+  After confirming a member's payment, select the membership or memberships you want to activate and tap UPDATE MEMBERSHIP.
+  <br><br>
+  VIP: ₦5,500 monthly.
+  <br>
+  ROLLOVER: ₦4,000 weekly.
+  <br><br>
+  A member can have VIP and Rollover at the same time. FREE odds remain available to every member.
+ </p>
+ <div id="membersList">Loading members...</div>
 </div>
 
-<!-- LOGOUT AT THE BOTTOM -->
+<!-- LOGOUT -->
 
 <div class="panel" style="text-align:center">
-<h3>Administrator Account</h3>
-<p class="field-help">Log out securely when you have finished managing ONLYBOSSTIPS.</p>
-<button class="danger" onclick="logout()">LOG OUT</button>
+ <div class="section-kicker">SECURITY</div>
+ <h3>Administrator Account</h3>
+ <p class="field-help">Log out securely when you have finished managing ONLYBOSSTIPS.</p>
+ <button class="danger" onclick="logout()">LOG OUT</button>
 </div>
 
 </section>
@@ -522,7 +816,6 @@ function nigeriaToday(){
 function nigeriaYesterday(){
  const today=nigeriaToday();
  const [year,month,day]=today.split("-").map(Number);
-
  const date=new Date(Date.UTC(year,month-1,day-1));
 
  return date.getUTCFullYear()+"-"+
@@ -532,9 +825,7 @@ function nigeriaYesterday(){
 
 function kickoffDateOnly(value){
  if(!value)return null;
-
  const match=String(value).match(/^(\d{4}-\d{2}-\d{2})/);
-
  return match?match[1]:null;
 }
 
@@ -572,7 +863,6 @@ async function cleanupExpiredPredictions(){
  if(deleteError)throw deleteError;
 
  console.log(expired.length+" expired prediction(s) deleted.");
-
  return expired.length;
 }
 
@@ -709,10 +999,7 @@ async function loadAll(){
 
  try{
   const removed=await cleanupExpiredPredictions();
-
-  if(removed>0){
-   console.log(removed+" old prediction(s) automatically removed.");
-  }
+  if(removed>0)console.log(removed+" old prediction(s) automatically removed.");
  }catch(error){
   console.error("Automatic prediction cleanup failed:",error);
  }
@@ -763,6 +1050,9 @@ window.addEventListener("touchend",async event=>{
   },900);
  }
 },{passive:true});
+</script>
+</body>
+</html>
 
 /* SPORTAPI FIXTURE SEARCH AND LINKING */
 
@@ -780,20 +1070,14 @@ function getFixtureLabel(f){
 async function getAdminAccessToken(){
  const{data,error}=await db.auth.getSession();
  if(error)throw error;
-
  const token=data?.session?.access_token;
-
- if(!token){
-  throw new Error("Your admin session has expired. Please log out and log in again.");
- }
-
+ if(!token)throw new Error("Your admin session has expired. Please log out and log in again.");
  return token;
 }
 
 async function findFixturesForPrediction(prediction){
  const kickoff=String(prediction.kickoff||"");
  const date=kickoff.slice(0,10);
-
  if(!date)throw new Error("This prediction has no valid kickoff date.");
 
  const params=new URLSearchParams({
@@ -802,29 +1086,21 @@ async function findFixturesForPrediction(prediction){
   date
  });
 
- const response=await fetch(
-  BACKEND_URL+"/fixtures/search?"+params.toString()
- );
-
+ const response=await fetch(BACKEND_URL+"/fixtures/search?"+params.toString());
  let result;
 
- try{
-  result=await response.json();
- }catch{
-  throw new Error("Fixture search returned an unreadable response.");
- }
+ try{result=await response.json();}
+ catch{throw new Error("Fixture search returned an unreadable response.");}
 
  if(!response.ok||result.success===false){
   throw new Error(result.message||"Fixture search failed.");
  }
 
- const fixtures=Array.isArray(result.fixtures)
+ return Array.isArray(result.fixtures)
   ?result.fixtures
   :Array.isArray(result.data?.fixtures)
    ?result.data.fixtures
    :[];
-
- return fixtures;
 }
 
 async function linkFixture(predictionId,fixtureId){
@@ -843,73 +1119,51 @@ async function linkFixture(predictionId,fixtureId){
  });
 
  let result;
-
- try{
-  result=await response.json();
- }catch{
-  throw new Error("The backend returned an unreadable response while linking the match.");
- }
+ try{result=await response.json();}
+ catch{throw new Error("The backend returned an unreadable response while linking the match.");}
 
  if(!response.ok||result.success===false){
   throw new Error(result.message||"Could not link this fixture.");
  }
-
  return result;
 }
 
 async function searchAndLinkPrediction(prediction,showMessages=true){
  try{
-  if(showMessages){
-   message("postMessage","Prediction saved. Searching SportAPI for the correct fixture...");
-  }
+  if(showMessages)message("postMessage","Prediction saved. Searching SportAPI for the correct fixture...");
 
   const fixtures=await findFixturesForPrediction(prediction);
 
   if(!fixtures.length){
-   if(showMessages){
-    message("postMessage","Prediction published, but no matching SportAPI fixture was found. It remains unlinked. You can try FIND FIXTURE later from Manage Predictions.");
-   }
+   if(showMessages)message("postMessage","Prediction published, but no matching SportAPI fixture was found. It remains unlinked. You can try FIND FIXTURE later from Manage Predictions.");
    return{linked:false,count:0};
   }
 
   if(fixtures.length===1){
    const fixtureId=getFixtureId(fixtures[0]);
-
    if(fixtureId===null||fixtureId===undefined){
     throw new Error("A matching fixture was found, but its fixture ID was missing. The prediction remains unlinked.");
    }
 
    await linkFixture(prediction.id,fixtureId);
 
-   if(showMessages){
-    message("postMessage","Prediction published and successfully linked to SportAPI: "+getFixtureLabel(fixtures[0]));
-   }
-
+   if(showMessages)message("postMessage","Prediction published and successfully linked to SportAPI: "+getFixtureLabel(fixtures[0]));
    await loadPredictions();
-
    return{linked:true,count:1};
   }
 
-  if(showMessages){
-   message("postMessage","Prediction published. SportAPI found "+fixtures.length+" possible matches. Open Manage Predictions and tap FIND FIXTURE to choose the correct one. Nothing has been linked yet.");
-  }
-
+  if(showMessages)message("postMessage","Prediction published. SportAPI found "+fixtures.length+" possible matches. Open Manage Predictions and tap FIND FIXTURE to choose the correct one. Nothing has been linked yet.");
   await loadPredictions();
-
   return{linked:false,count:fixtures.length};
 
  }catch(error){
-  if(showMessages){
-   message("postMessage","Prediction was published, but automatic fixture linking did not complete: "+error.message+". It remains available in Manage Predictions so you can retry.");
-  }
-
+  if(showMessages)message("postMessage","Prediction was published, but automatic fixture linking did not complete: "+error.message+". It remains available in Manage Predictions so you can retry.");
   return{linked:false,error:error.message};
  }
 }
 
 async function manuallyFindFixture(prediction){
  const statusEl=document.getElementById("fixture-status-"+prediction.id);
-
  if(statusEl)statusEl.textContent="Searching SportAPI...";
 
  try{
@@ -929,7 +1183,6 @@ async function manuallyFindFixture(prediction){
 
   fixtures.forEach(f=>{
    const id=getFixtureId(f);
-
    const button=document.createElement("button");
    button.className="fixture-choice";
    button.textContent=getFixtureLabel(f);
@@ -941,27 +1194,19 @@ async function manuallyFindFixture(prediction){
 
     try{
      await linkFixture(prediction.id,id);
-
      if(statusEl)statusEl.textContent="Fixture linked successfully.";
-
      choices.replaceChildren();
-
      await loadPredictions();
-
     }catch(error){
      button.disabled=false;
      button.textContent=getFixtureLabel(f);
-
      if(statusEl)statusEl.textContent="Could not link: "+error.message;
     }
    };
-
    choices.appendChild(button);
   });
 
-  if(statusEl){
-   statusEl.textContent=fixtures.length+" possible fixture(s) found. Choose the correct match below.";
-  }
+  if(statusEl)statusEl.textContent=fixtures.length+" possible fixture(s) found. Choose the correct match below.";
 
  }catch(error){
   if(statusEl)statusEl.textContent="Fixture search failed: "+error.message;
@@ -976,7 +1221,6 @@ async function savePrediction(){
  const category=document.getElementById("marketCategory").value;
  const selectedMarket=document.getElementById("marketType").value;
  const customName=document.getElementById("customMarketName").value.trim();
-
  const marketType=category==="Custom Market"?customName:selectedMarket;
 
  const selection=document.getElementById("marketSelection").value.trim();
@@ -985,7 +1229,6 @@ async function savePrediction(){
  const player=document.getElementById("playerName").value.trim();
 
  const parts=[marketType];
-
  if(selection)parts.push(selection);
  if(line)parts.push(line);
  if(team)parts.push(team==="home"?"Home Team":"Away Team");
@@ -1032,24 +1275,18 @@ async function savePrediction(){
   [
    "league","home","away","odds","kickoff",
    "marketSelection","marketLine","playerName","customMarketName"
-  ].forEach(id=>{
-   document.getElementById(id).value="";
-  });
+  ].forEach(id=>document.getElementById(id).value="");
 
   document.getElementById("marketTeam").value="";
   document.getElementById("marketCategory").value="Match Result";
-
   updateMarketOptions();
 
   await loadPredictions();
-
   message("postMessage","Prediction published. Now checking SportAPI...");
-
   await searchAndLinkPrediction(saved,true);
 
  }catch(error){
   message("postMessage","Could not publish: "+error.message);
-
  }finally{
   button.disabled=false;
   button.textContent="PUBLISH PREDICTION";
@@ -1096,8 +1333,7 @@ async function loadPredictions(){
 
   if(p.market_category){
    const market=document.createElement("p");
-   market.textContent="Market: "+p.market_category+
-    (p.market_type?" / "+p.market_type:"");
+   market.textContent="Market: "+p.market_category+(p.market_type?" / "+p.market_type:"");
    item.appendChild(market);
   }
 
@@ -1148,11 +1384,7 @@ async function loadPredictions(){
    const option=document.createElement("option");
    option.value=s;
    option.textContent=s.toUpperCase();
-
-   if(String(p.status||"pending").toLowerCase()===s){
-    option.selected=true;
-   }
-
+   if(String(p.status||"pending").toLowerCase()===s)option.selected=true;
    status.appendChild(option);
   });
 
@@ -1224,10 +1456,7 @@ async function publishAnnouncement(){
 
  const{error}=await db
   .from("member_announcements")
-  .insert({
-   message:textValue,
-   active:true
-  });
+  .insert({message:textValue,active:true});
 
  if(error){
   message("announcementMessageStatus","Could not publish announcement: "+error.message);
@@ -1235,9 +1464,7 @@ async function publishAnnouncement(){
  }
 
  input.value="";
-
  message("announcementMessageStatus","Announcement published successfully. Members will see it when they log in.");
-
  await loadAnnouncements();
 }
 
@@ -1269,7 +1496,7 @@ async function loadAnnouncements(){
 
   const heading=document.createElement("strong");
   heading.textContent=a.active?"ACTIVE ANNOUNCEMENT":"INACTIVE ANNOUNCEMENT";
-  heading.style.color=a.active?"#35e879":"#ffad42";
+  heading.style.color=a.active?"#22e879":"#ffc45c";
   item.appendChild(heading);
 
   const content=document.createElement("p");
@@ -1278,13 +1505,11 @@ async function loadAnnouncements(){
 
   const date=document.createElement("p");
   date.className="announcement-date";
-
   const created=a.created_at?new Date(a.created_at):null;
 
   date.textContent=created&&!Number.isNaN(created.getTime())
    ?"Published: "+created.toLocaleString()
    :"Publication date unavailable";
-
   item.appendChild(date);
 
   if(a.active){
@@ -1412,7 +1637,6 @@ async function updateMember(userId,vipActive,rolloverActive){
  }
 
  const display=membershipText(tier);
-
  if(!confirm("Confirm changing this member's membership to "+display+"?"))return;
 
  const{error}=await db
@@ -1436,7 +1660,6 @@ async function checkExistingSession(){
  if(!initializeSupabase())return;
 
  const{data,error}=await db.auth.getSession();
-
  if(error||!data.session)return;
 
  currentUser=data.session.user;
@@ -1455,7 +1678,6 @@ async function checkExistingSession(){
 
  document.getElementById("loginPanel").classList.add("hidden");
  document.getElementById("dashboard").classList.remove("hidden");
-
  await loadAll();
 }
 
