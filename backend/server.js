@@ -1,4 +1,3 @@
-
 const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
 
@@ -46,16 +45,12 @@ const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY;
 let supabase = null;
 
 if (supabaseUrl && supabaseSecretKey) {
-  supabase = createClient(
-    supabaseUrl,
-    supabaseSecretKey,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false
-      }
+  supabase = createClient(supabaseUrl, supabaseSecretKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
     }
-  );
+  });
 }
 
 // =====================================
@@ -164,6 +159,188 @@ function kickoffDate(value) {
   return time.toISOString().slice(0, 10);
 }
 
+function shiftDate(dateString, days) {
+  const date = new Date(`${dateString}T12:00:00.000Z`);
+
+  if (!Number.isFinite(date.getTime())) {
+    return null;
+  }
+
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+// =====================================
+// 1UP / 2UP MARKET HELPERS
+// =====================================
+
+// These markets require the match goal timeline.
+// Final score alone cannot prove whether a team
+// led by one or two goals at any point.
+
+function isOneUpTwoUpMarket(prediction) {
+  const market = normalizedText(
+    `${prediction.market_type || ""} ${prediction.market_category || ""}`
+  );
+
+  return /\b(1up|2up)\b/.test(market);
+}
+
+function getOneUpTwoUpDetails(prediction) {
+  const marketType = normalizedText(prediction.market_type);
+  const selection = normalizedText(prediction.market_selection);
+  const predictionText = normalizedText(prediction.prediction);
+
+  const combined = `${marketType} ${selection} ${predictionText}`;
+
+  const requiredLead = /\b2up\b/.test(combined) ? 2 :
+    /\b1up\b/.test(combined) ? 1 : null;
+
+  if (!requiredLead) return null;
+
+  let side = null;
+
+  if (/\b(home|home team)\b/.test(marketType)) {
+    side = "home";
+  } else if (/\b(away|away team)\b/.test(marketType)) {
+    side = "away";
+  } else if (/\b(home|home team)\b/.test(selection)) {
+    side = "home";
+  } else if (/\b(away|away team)\b/.test(selection)) {
+    side = "away";
+  } else if (
+    prediction.home_team &&
+    selection &&
+    teamMatches(selection, prediction.home_team)
+  ) {
+    side = "home";
+  } else if (
+    prediction.away_team &&
+    selection &&
+    teamMatches(selection, prediction.away_team)
+  ) {
+    side = "away";
+  }
+
+  if (!side) return null;
+
+  return {
+    requiredLead,
+    side
+  };
+}
+
+// Converts SportAPI goal events into a verified result.
+// Returns "won", "lost", or null if the event timeline
+// cannot be safely verified against the final score.
+
+function settleOneUpTwoUpMarket(prediction, fixture, eventsResponse) {
+  const market = getOneUpTwoUpDetails(prediction);
+
+  if (!market) return null;
+
+  const finalHome = safeNumber(fixture.home_score);
+  const finalAway = safeNumber(fixture.away_score);
+
+  if (finalHome === null || finalAway === null) {
+    return null;
+  }
+
+  let events = [];
+
+  if (Array.isArray(eventsResponse)) {
+    events = eventsResponse;
+  } else if (eventsResponse && Array.isArray(eventsResponse.data)) {
+    events = eventsResponse.data;
+  } else if (
+    eventsResponse &&
+    eventsResponse.data &&
+    Array.isArray(eventsResponse.data.data)
+  ) {
+    events = eventsResponse.data.data;
+  } else {
+    return null;
+  }
+
+  const goals = [];
+
+  for (let index = 0; index < events.length; index++) {
+    const event = events[index];
+
+    if (!event) continue;
+
+    const eventType = normalizedText(event.event_type || event.type);
+
+    if (eventType !== "goal") continue;
+
+    const side = String(event.team_side || "")
+      .trim()
+      .toLowerCase();
+
+    if (side !== "home" && side !== "away") {
+      return null;
+    }
+
+    const minuteText = String(event.minute || "").trim();
+    const minuteMatch = minuteText.match(/^(\d+)(?:\s*\+\s*(\d+))?/);
+
+    if (!minuteMatch) {
+      return null;
+    }
+
+    const minute = Number(minuteMatch[1]);
+    const added = Number(minuteMatch[2] || 0);
+
+    if (!Number.isFinite(minute) || !Number.isFinite(added)) {
+      return null;
+    }
+
+    goals.push({
+      side,
+      order: minute * 1000 + added,
+      originalIndex: index
+    });
+  }
+
+  goals.sort((a, b) => {
+    if (a.order !== b.order) return a.order - b.order;
+    return a.originalIndex - b.originalIndex;
+  });
+
+  let homeGoals = 0;
+  let awayGoals = 0;
+  let achievedLead = false;
+
+  for (const goal of goals) {
+    if (goal.side === "home") {
+      homeGoals++;
+    } else {
+      awayGoals++;
+    }
+
+    const selectedTeamLead = market.side === "home"
+      ? homeGoals - awayGoals
+      : awayGoals - homeGoals;
+
+    if (selectedTeamLead >= market.requiredLead) {
+      achievedLead = true;
+    }
+  }
+
+  // Do not settle if the events do not reconcile with
+  // the final match score. This protects against missing
+  // events and incomplete SportAPI event data.
+
+  if (
+    homeGoals !== finalHome ||
+    awayGoals !== finalAway
+  ) {
+    return null;
+  }
+
+  return achievedLead ? "won" : "lost";
+}
+
 // =====================================
 // AUTOMATIC MARKET SETTLEMENT
 // =====================================
@@ -186,22 +363,12 @@ function settleScoreMarket(prediction, fixture) {
   const htHome = safeNumber(fixture.ht_home);
   const htAway = safeNumber(fixture.ht_away);
 
-  const selection = normalizedText(
-    prediction.market_selection
-  );
-
+  const selection = normalizedText(prediction.market_selection);
   const marketType = normalizedText(
     prediction.market_type || prediction.market_category
   );
-
-  const category = normalizedText(
-    prediction.market_category
-  );
-
-  const predictionText = normalizedText(
-    prediction.prediction
-  );
-
+  const category = normalizedText(prediction.market_category);
+  const predictionText = normalizedText(prediction.prediction);
   const combined = `${marketType} ${selection} ${predictionText}`;
 
   const line =
@@ -233,9 +400,20 @@ function settleScoreMarket(prediction, fixture) {
   }
 
   function selectedSide(homeResult, drawResult, awayResult) {
-    if (/\b(home|1)\b/.test(selection)) return homeResult;
-    if (/\b(draw|tie|x)\b/.test(selection)) return drawResult;
-    if (/\b(away|2)\b/.test(selection)) return awayResult;
+    const sideText = `${marketType} ${selection} ${predictionText}`;
+
+    if (/\b(home|home team)\b/.test(sideText) || /\b1\b/.test(selection)) {
+      return homeResult;
+    }
+
+    if (/\b(draw|tie)\b/.test(sideText) || /\bx\b/.test(selection)) {
+      return drawResult;
+    }
+
+    if (/\b(away|away team)\b/.test(sideText) || /\b2\b/.test(selection)) {
+      return awayResult;
+    }
+
     return null;
   }
 
@@ -249,6 +427,7 @@ function settleScoreMarket(prediction, fixture) {
   ) {
     if (/draw no bet/.test(marketType)) {
       if (draw) return "void";
+
       return selectedSide(
         homeWin ? "won" : "lost",
         null,
@@ -542,7 +721,6 @@ function settleScoreMarket(prediction, fixture) {
     ) ? "won" : "lost";
   }
 
-  // Unsupported or ambiguous market.
   return null;
 }
 
@@ -695,7 +873,6 @@ app.get("/health/database", async (req, res) => {
 app.get("/health/football", async (req, res) => {
   try {
     const date = new Date().toISOString().slice(0, 10);
-
     const data = await sportApiRequest(`/fixtures/date/${date}`);
 
     return res.json({
@@ -841,6 +1018,13 @@ app.post(
         });
       }
 
+      if (prediction.status !== "pending") {
+        return res.status(409).json({
+          success: false,
+          message: "Only pending predictions can be linked."
+        });
+      }
+
       if (prediction.api_fixture_id) {
         return res.status(409).json({
           success: false,
@@ -880,7 +1064,6 @@ app.post(
       }
 
       const predictionTime = new Date(prediction.kickoff).getTime();
-
       const fixtureTime = new Date(
         fixture.kickoff_utc || fixture.datetime
       ).getTime();
@@ -920,6 +1103,7 @@ app.post(
         })
         .eq("id", predictionId)
         .eq("status", "pending")
+        .is("api_fixture_id", null)
         .select()
         .single();
 
@@ -957,22 +1141,257 @@ app.post(
     }
   }
 );
-
-// =====================================
-// END OF PART 1
-// PART 2 CONTINUES BELOW
-// =====================================
-
 // =====================================
 // AUTOMATIC MATCH TRACKING & SETTLEMENT
 // =====================================
 
 let trackingBusy = false;
 
-// If a rescheduled fixture is missing from its original
-// date list, retry its individual fixture endpoint periodically.
 const missingFixtureChecks = new Map();
 const MISSING_FIXTURE_RECHECK_MS = 15 * 60 * 1000;
+
+// Automatically search for unlinked pending predictions
+// every 15 minutes. Normal linked-fixture tracking still
+// runs every 3 minutes.
+
+let lastAutoLinkScanAt = 0;
+const AUTO_LINK_INTERVAL_MS = 15 * 60 * 1000;
+const AUTO_LINK_MAX_PREDICTIONS = 100;
+const AUTO_LINK_MAX_DATE_GROUPS = 12;
+
+async function autoLinkUnlinkedPredictions() {
+  if (!supabase || !sportApiKey) return;
+
+  const now = Date.now();
+
+  if (now - lastAutoLinkScanAt < AUTO_LINK_INTERVAL_MS) {
+    return;
+  }
+
+  lastAutoLinkScanAt = now;
+
+  try {
+    const {
+      data: unlinked,
+      error
+    } = await supabase
+      .from("predictions")
+      .select("*")
+      .eq("status", "pending")
+      .is("api_fixture_id", null)
+      .limit(AUTO_LINK_MAX_PREDICTIONS);
+
+    if (error) throw error;
+
+    if (!unlinked || unlinked.length === 0) {
+      console.log("Automatic fixture matching: no unlinked pending predictions.");
+      return;
+    }
+
+    const nowTime = Date.now();
+    const earliestAllowed = nowTime - (36 * 60 * 60 * 1000);
+    const latestAllowed = nowTime + (7 * 24 * 60 * 60 * 1000);
+
+    const eligible = unlinked.filter(prediction => {
+      const kickoff = new Date(prediction.kickoff).getTime();
+
+      return (
+        Number.isFinite(kickoff) &&
+        kickoff >= earliestAllowed &&
+        kickoff <= latestAllowed &&
+        prediction.home_team &&
+        prediction.away_team
+      );
+    });
+
+    if (eligible.length === 0) {
+      console.log("Automatic fixture matching: no predictions within the search window.");
+      return;
+    }
+
+    const dateGroups = new Map();
+
+    for (const prediction of eligible) {
+      const date = kickoffDate(prediction.kickoff);
+
+      if (!date) continue;
+
+      if (!dateGroups.has(date)) {
+        dateGroups.set(date, []);
+      }
+
+      dateGroups.get(date).push(prediction);
+    }
+
+    const dateCache = new Map();
+
+    async function getFixturesForDate(date) {
+      if (!dateCache.has(date)) {
+        dateCache.set(
+          date,
+          sportApiRequest(
+            `/fixtures/date/${encodeURIComponent(date)}`
+          ).then(data => Array.isArray(data.data) ? data.data : [])
+        );
+      }
+
+      return dateCache.get(date);
+    }
+
+    let scannedGroups = 0;
+    let linkedCount = 0;
+
+    for (const [date, predictionsForDate] of dateGroups) {
+      scannedGroups++;
+
+      if (scannedGroups > AUTO_LINK_MAX_DATE_GROUPS) {
+        console.log(
+          "Automatic fixture matching: date scan limit reached. Remaining predictions will be checked during the next scan."
+        );
+        break;
+      }
+
+      const adjacentDates = [
+        shiftDate(date, -1),
+        date,
+        shiftDate(date, 1)
+      ].filter(Boolean);
+
+      let dateFixtures = [];
+
+      for (const searchDate of adjacentDates) {
+        try {
+          const fixtures = await getFixturesForDate(searchDate);
+          dateFixtures.push(...fixtures);
+        } catch (dateError) {
+          console.error(
+            `Automatic fixture search failed for ${searchDate}:`,
+            dateError.message
+          );
+        }
+      }
+
+      // Remove duplicate fixtures returned by overlapping date searches.
+      const uniqueFixtures = new Map();
+
+      for (const fixture of dateFixtures) {
+        if (fixture && fixture.id !== undefined && fixture.id !== null) {
+          uniqueFixtures.set(String(fixture.id), fixture);
+        }
+      }
+
+      const fixtures = Array.from(uniqueFixtures.values());
+
+      for (const prediction of predictionsForDate) {
+        const predictionTime = new Date(prediction.kickoff).getTime();
+
+        const candidates = fixtures.filter(fixture => {
+          if (
+            !teamMatches(prediction.home_team, fixture.home_team) ||
+            !teamMatches(prediction.away_team, fixture.away_team)
+          ) {
+            return false;
+          }
+
+          const fixtureKickoff = new Date(
+            fixture.kickoff_utc || fixture.datetime || fixture.date
+          ).getTime();
+
+          if (!Number.isFinite(fixtureKickoff)) {
+            return false;
+          }
+
+          const difference = Math.abs(
+            predictionTime - fixtureKickoff
+          );
+
+          return difference <= 18 * 60 * 60 * 1000;
+        });
+
+        // Only link when exactly one fixture is a safe match.
+        // If there are multiple candidates, leave it unlinked
+        // for the administrator to choose manually.
+
+        if (candidates.length !== 1) {
+          if (candidates.length > 1) {
+            console.log(
+              `Prediction ${prediction.id}: multiple possible fixtures found. Manual linking required.`
+            );
+          }
+
+          continue;
+        }
+
+        const fixture = candidates[0];
+
+        const {
+          data: linked,
+          error: linkError
+        } = await supabase
+          .from("predictions")
+          .update({
+            api_fixture_id: fixture.id,
+            fixture_status: fixture.status || null,
+            tracking_updated_at: new Date().toISOString()
+          })
+          .eq("id", prediction.id)
+          .eq("status", "pending")
+          .is("api_fixture_id", null)
+          .select("id, api_fixture_id");
+
+        if (linkError) {
+          console.error(
+            `Automatic fixture linking failed for prediction ${prediction.id}:`,
+            linkError.message
+          );
+          continue;
+        }
+
+        if (linked && linked.length > 0) {
+          linkedCount++;
+
+          console.log(
+            `Automatically linked prediction ${prediction.id} to SportAPI fixture ${fixture.id}.`
+          );
+        }
+      }
+    }
+
+    console.log(
+      `Automatic fixture matching completed. Linked ${linkedCount} prediction(s).`
+    );
+
+  } catch (error) {
+    console.error(
+      "Automatic unlinked-prediction scan failed:",
+      error.message
+    );
+  }
+}
+
+// =====================================
+// SPORTAPI FIXTURE EVENTS
+// =====================================
+
+async function getFixtureEvents(fixtureId) {
+  const data = await sportApiRequest(
+    `/fixtures/${encodeURIComponent(fixtureId)}/events`
+  );
+
+  if (Array.isArray(data.data)) {
+    return data.data;
+  }
+
+  if (data.data && Array.isArray(data.data.data)) {
+    return data.data.data;
+  }
+
+  return null;
+}
+
+// =====================================
+// AUTOMATIC TRACKING
+// =====================================
 
 async function trackPredictions() {
   if (!supabase || !sportApiKey || trackingBusy) return;
@@ -980,6 +1399,11 @@ async function trackPredictions() {
   trackingBusy = true;
 
   try {
+    // First, attempt to link pending predictions that
+    // were not linked when they were originally published.
+
+    await autoLinkUnlinkedPredictions();
+
     const {
       data: predictions,
       error
@@ -996,7 +1420,8 @@ async function trackPredictions() {
       return;
     }
 
-    // Group linked pending predictions by their original fixture date.
+    // Group linked pending predictions by original fixture date.
+
     const dateGroups = new Map();
 
     for (const prediction of predictions) {
@@ -1017,6 +1442,7 @@ async function trackPredictions() {
     }
 
     const detailCache = new Map();
+    const eventsCache = new Map();
 
     async function getFixtureDetails(fixtureId) {
       const key = String(fixtureId);
@@ -1031,6 +1457,26 @@ async function trackPredictions() {
       }
 
       return detailCache.get(key);
+    }
+
+    async function getCachedFixtureEvents(fixtureId) {
+      const key = String(fixtureId);
+
+      if (!eventsCache.has(key)) {
+        eventsCache.set(
+          key,
+          getFixtureEvents(fixtureId).catch(error => {
+            console.error(
+              `Goal events unavailable for fixture ${fixtureId}:`,
+              error.message
+            );
+
+            return null;
+          })
+        );
+      }
+
+      return eventsCache.get(key);
     }
 
     async function processPrediction(prediction, fixture) {
@@ -1052,18 +1498,16 @@ async function trackPredictions() {
       // -------------------------------------
       // POSTPONED OR OFFICIALLY CANCELLED
       // -------------------------------------
-      // User's confirmed rule:
-      // These predictions become VOID immediately.
-      //
-      // Suspended and abandoned matches are NOT
-      // automatically voided.
 
       if (voidStatus(status)) {
         const reason = status === "POSTPONED"
           ? "Match postponed by SportAPI"
           : "Match officially cancelled by SportAPI";
 
-        const { data: settled, error: settleError } = await supabase
+        const {
+          data: settled,
+          error: settleError
+        } = await supabase
           .from("predictions")
           .update({
             ...update,
@@ -1095,8 +1539,6 @@ async function trackPredictions() {
       // -------------------------------------
       // NON-FINAL MATCHES
       // -------------------------------------
-      // Scheduled, LIVE and Suspended matches
-      // remain pending.
 
       if (!finalStatus(status)) {
         const { error: updateError } = await supabase
@@ -1110,10 +1552,6 @@ async function trackPredictions() {
           console.error(
             `Fixture update failed for prediction ${prediction.id}:`,
             updateError.message
-          );
-        } else {
-          console.log(
-            `Prediction ${prediction.id}: fixture status updated to ${status || "UNKNOWN"}. Result remains pending.`
           );
         }
 
@@ -1150,7 +1588,8 @@ async function trackPredictions() {
       update.halftime_home_score = safeNumber(finalFixture.ht_home);
       update.halftime_away_score = safeNumber(finalFixture.ht_away);
 
-      // Do not settle a result if the final score is missing.
+      // Do not settle if the final score is missing.
+
       if (
         update.home_score === null ||
         update.away_score === null
@@ -1180,14 +1619,30 @@ async function trackPredictions() {
       // DETERMINE MARKET RESULT
       // -------------------------------------
 
-      const outcome = settleScoreMarket(
-        prediction,
-        finalFixture
-      );
+      let outcome = null;
+
+      if (isOneUpTwoUpMarket(prediction)) {
+        // 1UP / 2UP must be settled using the goal timeline.
+        // A final score by itself is not sufficient.
+
+        const events = await getCachedFixtureEvents(
+          prediction.api_fixture_id
+        );
+
+        outcome = settleOneUpTwoUpMarket(
+          prediction,
+          finalFixture,
+          events
+        );
+
+      } else {
+        outcome = settleScoreMarket(
+          prediction,
+          finalFixture
+        );
+      }
 
       if (!["won", "lost", "void"].includes(outcome)) {
-        // Unsupported markets, missing halftime data,
-        // and ambiguous selections remain pending.
         const { error: updateError } = await supabase
           .from("predictions")
           .update(update)
@@ -1203,7 +1658,7 @@ async function trackPredictions() {
         }
 
         console.log(
-          `Prediction ${prediction.id}: match finished, but market could not be safely verified. Keeping pending.`
+          `Prediction ${prediction.id}: match finished, but its market could not be safely verified. Keeping pending.`
         );
 
         return;
@@ -1212,18 +1667,27 @@ async function trackPredictions() {
       const scoreText =
         `${update.home_score}-${update.away_score}`;
 
-      const resultText = outcome === "void"
-        ? `Automatically settled VOID: market resulted in a push. Final score ${scoreText}.`
-        : `Automatically settled ${outcome.toUpperCase()}: final score ${scoreText}.`;
+      let resultText;
+
+      if (isOneUpTwoUpMarket(prediction)) {
+        resultText =
+          `Automatically settled ${outcome.toUpperCase()} using verified SportAPI goal events. Final score ${scoreText}.`;
+      } else if (outcome === "void") {
+        resultText =
+          `Automatically settled VOID: market resulted in a push. Final score ${scoreText}.`;
+      } else {
+        resultText =
+          `Automatically settled ${outcome.toUpperCase()}: final score ${scoreText}.`;
+      }
 
       // -------------------------------------
       // SAFE AUTOMATIC SETTLEMENT
       // -------------------------------------
-      // The status=pending condition prevents this
-      // automation from overwriting an admin result.
+      // The pending condition prevents automation from
+      // overwriting an administrator's manual result.
       //
-      // The fixture ID condition ensures that only
-      // the same linked fixture can be settled.
+      // The fixture ID condition ensures only the same
+      // linked fixture can be used for settlement.
 
       const {
         data: settled,
@@ -1291,10 +1755,6 @@ async function trackPredictions() {
         // -------------------------------------
         // RESCHEDULED FIXTURE FALLBACK
         // -------------------------------------
-        // If the fixture has moved to another date,
-        // try the same original fixture ID directly.
-        // This avoids accidentally linking a different
-        // match between the same teams.
 
         if (!fixture) {
           const fixtureKey = String(
@@ -1336,7 +1796,7 @@ async function trackPredictions() {
           continue;
         }
 
-        // Confirm the fixture still belongs to the
+        // Verify the fixture still belongs to the
         // teams originally linked to this prediction.
 
         if (
@@ -1394,7 +1854,8 @@ app.listen(PORT, () => {
   console.log("Automatic prediction settlement: ENABLED");
   console.log("Postponed matches: AUTOMATIC VOID");
   console.log("Cancelled matches: AUTOMATIC VOID");
-  console.log("Unlinked predictions: MANUAL SETTLEMENT");
+  console.log("Unlinked predictions: AUTOMATIC FIXTURE MATCHING ENABLED");
+  console.log("1UP / 2UP: GOAL-EVENT SETTLEMENT ENABLED");
   console.log("Unsupported markets: REMAIN PENDING");
 
   if (!sportApiKey) {
