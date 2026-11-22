@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +6,9 @@
 <meta name="theme-color" content="#050b08">
 <title>ONLYBOSSTIPS | Sports Predictions & News</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -41,20 +43,22 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .hidden{display:none!important}
 
 /* =====================================================
-   ONLYBOSSTIPS - CLEAN, NATURAL EMERALD BRANDING
+   ONLYBOSSTIPS - ORNATE EMERALD OLD ENGLISH BRANDING
+   Main logo: decorative blackletter lettering.
+   Footer: ordinary keyboard font, matching copyright text.
 ===================================================== */
 .brand-wordmark{
- font-family:Arial,sans-serif!important;
- font-weight:900!important;
+ font-family:'UnifrakturCook',serif!important;
+ font-weight:700!important;
  text-transform:lowercase!important;
- letter-spacing:1px!important;
+ letter-spacing:0!important;
  line-height:1.2;
  display:inline-block;
  color:#20c878!important;
  background:none!important;
  -webkit-text-fill-color:#20c878!important;
- filter:none!important;
- text-shadow:none!important;
+ filter:drop-shadow(0 2px 8px #20c87835)!important;
+ text-shadow:0 2px 12px #20c87825!important;
 }
 
 /* WELCOME BRAND */
@@ -67,10 +71,19 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
  font-size:clamp(35px,8vw,54px);
 }
 
-/* FOOTER BRAND */
+/* FOOTER BRAND - NORMAL KEYBOARD FONT */
 .footer-brand.brand-wordmark{
- font-size:25px;
- vertical-align:middle;
+ font-family:Arial,sans-serif!important;
+ font-size:12px!important;
+ font-weight:400!important;
+ letter-spacing:0!important;
+ line-height:inherit;
+ color:#a99da4!important;
+ -webkit-text-fill-color:#a99da4!important;
+ background:none!important;
+ filter:none!important;
+ text-shadow:none!important;
+ vertical-align:baseline;
 }
 
 /* PREMIUM WELCOME */
@@ -164,14 +177,16 @@ label{font-size:13px;color:#d1e0d5}
 .member-welcome{padding:22px;background:radial-gradient(ellipse at 100% 0%,#155c37 0%,transparent 55%),linear-gradient(135deg,#202e24,#101a13 65%,#0b120d);border:1px solid #267c50;border-radius:15px;margin-bottom:20px;box-shadow:0 8px 28px #0008;color:#fff}
 .member-welcome-top{display:flex;align-items:center;gap:15px;margin-bottom:20px}
 .member-brand{
- font-family:Arial,sans-serif;
- font-size:clamp(23px,6vw,31px);
- font-weight:900;
+ font-family:'UnifrakturCook',serif!important;
+ font-size:clamp(35px,8vw,54px);
+ font-weight:700;
  color:#20c878;
- letter-spacing:1px;
+ letter-spacing:0;
  margin:0;
  background:none;
  -webkit-text-fill-color:#20c878;
+ filter:drop-shadow(0 2px 8px #20c87835);
+ text-shadow:0 2px 12px #20c87825;
 }
 .member-tagline{font-size:9px;color:#e1e3ea;letter-spacing:1.5px;margin-top:5px}
 .member-profile-row{display:flex;align-items:center;gap:12px;margin:14px 0}
@@ -506,7 +521,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #294b38;color:#a99da4
 <footer><span class="footer-brand brand-wordmark">onlybosstips</span> © 2026. All rights reserved.</footer>
 
 <script>
- const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
+  const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
 const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
