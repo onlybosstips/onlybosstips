@@ -1,3 +1,4 @@
+
 const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
 
@@ -486,21 +487,51 @@ function settleScoreMarket(prediction, fixture) {
   ) {
     const bothScored = home > 0 && away > 0;
 
-    if (/btts and over 2 5|both teams to score and over 2 5/.test(combined)) {
-      return bothScored && totalGoals > 2.5 ? "won" : "lost";
+    // Check all relevant prediction fields because
+    // the selection may be stored as GG or NG in
+    // market_selection, prediction, market_type,
+    // or market_category.
+
+    const bttsText = normalizedText(
+      `${prediction.market_selection || ""} ${
+        prediction.prediction || ""
+      } ${prediction.market_type || ""} ${
+        prediction.market_category || ""
+      }`
+    );
+
+    // GG = Both Teams to Score YES.
+    // NG = Both Teams to Score NO.
+
+    const isYes = /\b(yes|gg)\b/.test(bttsText);
+    const isNo = /\b(no|ng)\b/.test(bttsText);
+
+    if (
+      /btts and over 2 5|both teams to score and over 2 5/.test(combined)
+    ) {
+      return bothScored && totalGoals > 2.5
+        ? "won"
+        : "lost";
     }
 
-    if (/btts and under 2 5|both teams to score and under 2 5/.test(combined)) {
-      return bothScored && totalGoals < 2.5 ? "won" : "lost";
+    if (
+      /btts and under 2 5|both teams to score and under 2 5/.test(combined)
+    ) {
+      return bothScored && totalGoals < 2.5
+        ? "won"
+        : "lost";
     }
 
-    if (/no/.test(selection)) {
+    if (isYes && !isNo) {
+      return bothScored ? "won" : "lost";
+    }
+
+    if (isNo && !isYes) {
       return !bothScored ? "won" : "lost";
     }
 
-    if (/yes/.test(selection)) {
-      return bothScored ? "won" : "lost";
-    }
+    // Unknown or conflicting selections remain pending.
+    return null;
   }
 
   // -------------------------------------
@@ -1141,6 +1172,7 @@ app.post(
     }
   }
 );
+
 // =====================================
 // AUTOMATIC MATCH TRACKING & SETTLEMENT
 // =====================================
@@ -1856,6 +1888,7 @@ app.listen(PORT, () => {
   console.log("Cancelled matches: AUTOMATIC VOID");
   console.log("Unlinked predictions: AUTOMATIC FIXTURE MATCHING ENABLED");
   console.log("1UP / 2UP: GOAL-EVENT SETTLEMENT ENABLED");
+  console.log("BTTS: YES / NO / GG / NG SETTLEMENT ENABLED");
   console.log("Unsupported markets: REMAIN PENDING");
 
   if (!sportApiKey) {
