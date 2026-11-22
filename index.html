@@ -8,11 +8,6 @@
 <title>ONLYBOSSTIPS | Sports Predictions & News</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- PREMIUM ONLYBOSSTIPS BLACKLETTER BRAND FONT -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-
 <style>
 :root{
  --green:#20c878;--green2:#0b8f58;--mint:#a6f5cb;
@@ -46,32 +41,20 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .hidden{display:none!important}
 
 /* =====================================================
-   ONLYBOSSTIPS PREMIUM EMERALD BLACKLETTER BRANDING
-   Lowercase ornate lettering with emerald green finish
+   ONLYBOSSTIPS - CLEAN, NATURAL EMERALD BRANDING
 ===================================================== */
 .brand-wordmark{
- font-family:'UnifrakturMaguntia',serif!important;
- font-weight:400!important;
+ font-family:Arial,sans-serif!important;
+ font-weight:900!important;
  text-transform:lowercase!important;
- letter-spacing:0!important;
+ letter-spacing:1px!important;
  line-height:1.2;
  display:inline-block;
- color:#20c878;
- background:linear-gradient(
-  180deg,
-  #d4ffe6 0%,
-  #a6f5cb 17%,
-  #20c878 52%,
-  #0b8f58 82%,
-  #075b39 100%
- );
- background-clip:text;
- -webkit-background-clip:text;
- -webkit-text-fill-color:transparent;
- filter:
-  drop-shadow(0 2px 2px #000b)
-  drop-shadow(0 0 8px #20c87866)
-  drop-shadow(0 0 18px #20c87830);
+ color:#20c878!important;
+ background:none!important;
+ -webkit-text-fill-color:#20c878!important;
+ filter:none!important;
+ text-shadow:none!important;
 }
 
 /* WELCOME BRAND */
@@ -180,7 +163,16 @@ label{font-size:13px;color:#d1e0d5}
 .rollover-button{background:linear-gradient(135deg,#26392c,#122017);color:#fff;border:1px solid #5b8d6c}
 .member-welcome{padding:22px;background:radial-gradient(ellipse at 100% 0%,#155c37 0%,transparent 55%),linear-gradient(135deg,#202e24,#101a13 65%,#0b120d);border:1px solid #267c50;border-radius:15px;margin-bottom:20px;box-shadow:0 8px 28px #0008;color:#fff}
 .member-welcome-top{display:flex;align-items:center;gap:15px;margin-bottom:20px}
-.member-brand{font-size:clamp(23px,6vw,31px);font-weight:1000;background:linear-gradient(180deg,#fff 5%,#dce8df 45%,#67e6a5 100%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1.5px;margin:0}
+.member-brand{
+ font-family:Arial,sans-serif;
+ font-size:clamp(23px,6vw,31px);
+ font-weight:900;
+ color:#20c878;
+ letter-spacing:1px;
+ margin:0;
+ background:none;
+ -webkit-text-fill-color:#20c878;
+}
 .member-tagline{font-size:9px;color:#e1e3ea;letter-spacing:1.5px;margin-top:5px}
 .member-profile-row{display:flex;align-items:center;gap:12px;margin:14px 0}
 .member-avatar{width:43px;height:43px;min-width:43px;border-radius:50%;background:linear-gradient(135deg,#20c878,#087746);display:grid;place-items:center;position:relative}
@@ -816,6 +808,7 @@ async function saveNewPassword(){
  }catch(e){m.textContent="Password update failed. Please request a new reset link and try again.";console.error(e)}
  finally{b.disabled=false}
 }
+
 async function loadUser(user){
  currentUser=user;currentTier="free";currentMemberships=[];currentIsAdmin=false;
  const {data:profile,error}=await db.from("member_profiles").select("membership_tier").eq("user_id",user.id).maybeSingle();
