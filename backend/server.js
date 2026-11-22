@@ -102,11 +102,83 @@ async function sportApiRequest(endpoint) {
 // =====================================
 
 function normalizeTeam(name) {
-  return String(name || "")
+  const value = String(name || "")
     .toLowerCase()
-    .replace(/\b(fc|cf|afc|sc|club|women|w|ladies)\b/g, "")
-    .replace(/[^a-z0-9]/g, "")
-    .trim();
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]/g, "");
+
+  const aliases = {
+    // Manchester United
+    manutd: "manchesterunited",
+    manutdfootball: "manchesterunited",
+    manunited: "manchesterunited",
+    manchesterutd: "manchesterunited",
+    manchesterunitedfc: "manchesterunited",
+
+    // Manchester City
+    mancity: "manchestercity",
+    manchestercityfc: "manchestercity",
+
+    // Liverpool
+    liverpoolfc: "liverpool",
+    lfc: "liverpool",
+
+    // Arsenal
+    arsenalfc: "arsenal",
+
+    // Chelsea
+    chelseafc: "chelsea",
+
+    // Tottenham
+    spurs: "tottenhamhotspur",
+    tottenhamhotspurfc: "tottenhamhotspur",
+
+    // Newcastle
+    newcastleunitedfc: "newcastleunited",
+    nufc: "newcastleunited",
+
+    // Paris Saint-Germain
+    psg: "parissaintgermain",
+    parissaintgermainfc: "parissaintgermain",
+
+    // Atletico Madrid
+    atleticomadrid: "atleticodemadrid",
+    atleticodemadridfc: "atleticodemadrid",
+
+    // Inter Milan
+    inter: "internazionale",
+    intermilan: "internazionale",
+    fcinternazionale: "internazionale",
+
+    // AC Milan
+    acmilan: "milan",
+
+    // Juventus
+    juventusfc: "juventus",
+
+    // Bayern Munich
+    bayernmunich: "bayernmunchen",
+    fcbayernmunchen: "bayernmunchen",
+
+    // Barcelona
+    fcbarcelona: "barcelona",
+
+    // Real Madrid
+    realmadridcf: "realmadrid",
+
+    // Borussia Dortmund
+    dortmund: "borussiadortmund",
+    bvb: "borussiadortmund"
+  };
+
+  if (aliases[value]) {
+    return aliases[value];
+  }
+
+  return value.replace(
+    /(footballclub|soccerclub|club|women|ladies|fc|cf|afc|sc)$/g,
+    ""
+  );
 }
 
 function teamMatches(first, second) {
@@ -115,7 +187,9 @@ function teamMatches(first, second) {
 
   if (!a || !b) return false;
 
-  return a === b || a.includes(b) || b.includes(a);
+  // Exact canonical matching is safer than substring matching.
+  // It helps prevent one team being mistaken for another.
+  return a === b;
 }
 
 function safeNumber(value) {
@@ -1200,8 +1274,6 @@ async function autoLinkUnlinkedPredictions() {
     return;
   }
 
-  lastAutoLinkScanAt = now;
-
   try {
     const {
       data: unlinked,
@@ -1214,6 +1286,10 @@ async function autoLinkUnlinkedPredictions() {
       .limit(AUTO_LINK_MAX_PREDICTIONS);
 
     if (error) throw error;
+
+    // Only start the 15-minute waiting period after
+    // the database query succeeds.
+    lastAutoLinkScanAt = Date.now();
 
     if (!unlinked || unlinked.length === 0) {
       console.log("Automatic fixture matching: no unlinked pending predictions.");
