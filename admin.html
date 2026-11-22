@@ -12,17 +12,16 @@
 :root{
  --bg:#050b08;
  --surface:#0b1510;
- --surface2:#101f16;
+ --surface2:#101e16;
  --surface3:#14271b;
  --green:#22e879;
- --green2:#0fbd60;
- --green-soft:rgba(34,232,121,.12);
- --border:rgba(57,210,119,.19);
+ --green2:#16bd60;
  --text:#f2fff6;
- --muted:#9bb5a4;
- --red:#ff5266;
- --gold:#ffc45c;
- --shadow:0 18px 45px rgba(0,0,0,.28);
+ --muted:#9bb6a4;
+ --border:rgba(55,231,126,.19);
+ --red:#ff5265;
+ --gold:#f5c65d;
+ --shadow:0 15px 45px rgba(0,0,0,.28);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -30,85 +29,75 @@ body{
  margin:0;
  min-height:100vh;
  background:
- radial-gradient(ellipse at 10% 0%,rgba(20,150,75,.12),transparent 35%),
- radial-gradient(ellipse at 100% 30%,rgba(18,100,55,.10),transparent 35%),
+ radial-gradient(ellipse at 15% 0%,rgba(34,232,121,.09),transparent 38%),
+ radial-gradient(ellipse at 90% 35%,rgba(34,232,121,.045),transparent 35%),
  var(--bg);
  color:var(--text);
- font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+ font-family:Arial,Helvetica,sans-serif;
 }
 header{
  position:relative;
  overflow:hidden;
- padding:23px 20px;
- background:linear-gradient(120deg,#07130c,#102b1a 60%,#07130c);
- border-bottom:1px solid rgba(34,232,121,.35);
+ padding:25px 20px 23px;
+ background:linear-gradient(120deg,#0b1c12,#102b1a 55%,#08150d);
+ border-bottom:1px solid var(--green);
  box-shadow:0 8px 30px rgba(0,0,0,.25);
 }
 header:after{
  content:"";
  position:absolute;
- width:240px;height:240px;
- right:-70px;top:-150px;
- border:1px solid rgba(34,232,121,.18);
+ width:230px;height:230px;
+ right:-70px;top:-130px;
+ border:1px solid rgba(34,232,121,.16);
  border-radius:50%;
  box-shadow:0 0 0 25px rgba(34,232,121,.025),0 0 0 55px rgba(34,232,121,.02);
  pointer-events:none;
 }
-.header-inner{
+.brand{
  max-width:1100px;
  margin:auto;
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:15px;
  position:relative;
  z-index:1;
 }
-.brand{display:flex;align-items:center;gap:13px}
 .brand-mark{
- width:47px;height:47px;
- display:grid;place-items:center;
- border-radius:14px;
- background:linear-gradient(145deg,#32f18b,#087b3e);
- color:#031008;
- font-size:22px;
- font-weight:1000;
- box-shadow:0 0 25px rgba(34,232,121,.2);
-}
-.brand-name{
- font-size:23px;
- font-weight:1000;
- letter-spacing:1.5px;
- color:#f5fff8;
-}
-.brand-name span{color:var(--green)}
-.header-label{
- display:block;
- margin-top:4px;
- color:#a5c8b1;
- font-size:10px;
- letter-spacing:2.5px;
- font-weight:800;
-}
-.admin-pill{
- border:1px solid rgba(34,232,121,.3);
- background:rgba(34,232,121,.08);
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ width:38px;height:38px;
+ border:1px solid rgba(34,232,121,.5);
+ border-radius:12px;
  color:var(--green);
- border-radius:30px;
- padding:9px 13px;
- font-size:10px;
- font-weight:900;
- letter-spacing:1px;
- white-space:nowrap;
+ font-size:22px;
+ margin-right:10px;
+ vertical-align:middle;
+ background:rgba(34,232,121,.07);
 }
-main{max-width:1050px;margin:28px auto;padding:0 18px 40px}
+h1{
+ display:inline-block;
+ margin:0;
+ color:#fff;
+ font-size:27px;
+ letter-spacing:2px;
+ font-weight:900;
+ vertical-align:middle;
+}
+h1 span{color:var(--green)}
+.header-subtitle{
+ display:block;
+ margin:10px 0 0 49px;
+ color:#a9cbb5;
+ font-size:11px;
+ font-weight:bold;
+ letter-spacing:3px;
+}
+main{max-width:1050px;margin:28px auto;padding:0 16px 45px}
 .panel{
  position:relative;
- background:linear-gradient(145deg,rgba(15,31,21,.98),rgba(8,19,13,.98));
- border:1px solid var(--border);
- border-radius:18px;
+ background:linear-gradient(145deg,rgba(15,30,21,.98),rgba(8,19,13,.98));
  padding:23px;
+ border-radius:16px;
  margin-bottom:20px;
+ border:1px solid var(--border);
  box-shadow:var(--shadow);
 }
 .panel:before{
@@ -116,233 +105,150 @@ main{max-width:1050px;margin:28px auto;padding:0 18px 40px}
  position:absolute;
  top:0;left:22px;right:22px;
  height:1px;
- background:linear-gradient(90deg,transparent,rgba(34,232,121,.4),transparent);
+ background:linear-gradient(90deg,transparent,rgba(34,232,121,.35),transparent);
 }
-h1{margin:0}
 h2{
  color:var(--green);
- font-size:19px;
+ font-size:20px;
+ margin:0 0 14px;
  letter-spacing:.2px;
- margin:0 0 13px;
 }
-h3{color:#d9fbe5;font-size:15px;margin:12px 0}
+h3{color:#d8f7e2;font-size:16px}
 p{line-height:1.6}
-small{color:var(--muted)}
-.field-label{
- display:block;
- margin-top:14px;
- color:#b9d6c3;
- font-size:12px;
- font-weight:800;
- letter-spacing:.4px;
-}
-.field-help{font-size:12px;color:var(--muted);line-height:1.6}
 input,select,textarea,button{
  width:100%;
- padding:13px 14px;
+ padding:14px;
  margin:8px 0;
- border-radius:10px;
- border:1px solid rgba(93,157,111,.25);
- font-size:14px;
+ border-radius:9px;
+ border:1px solid #244a32;
+ font-size:15px;
  font-family:inherit;
 }
 input,select,textarea{
  background:#07110b;
  color:#f5fff8;
- transition:border .2s,box-shadow .2s;
 }
 input::placeholder,textarea::placeholder{color:#718b79}
+textarea{min-height:110px;resize:vertical}
 input:focus,select:focus,textarea:focus{
  outline:none;
  border-color:var(--green);
  box-shadow:0 0 0 3px rgba(34,232,121,.09);
 }
-select option{background:#0b1510;color:white}
-textarea{min-height:110px;resize:vertical}
 button{
- background:linear-gradient(120deg,#2af18a,#12bd61);
- color:#031008;
- border:0;
+ background:linear-gradient(135deg,#29ef83,#13bd60);
+ color:#041009;
  font-weight:900;
- letter-spacing:.5px;
+ border:0;
  cursor:pointer;
- transition:transform .18s,filter .18s,box-shadow .18s;
- box-shadow:0 5px 16px rgba(18,189,97,.12);
+ letter-spacing:.35px;
+ transition:transform .15s,filter .15s,box-shadow .15s;
+ box-shadow:0 5px 16px rgba(20,200,99,.12);
 }
 button:hover{filter:brightness(1.08);transform:translateY(-1px)}
 button:active{transform:scale(.99)}
 button:disabled{opacity:.55;cursor:not-allowed;transform:none}
 button.secondary{
- background:#183b27;
- color:#dffff0;
- border:1px solid rgba(34,232,121,.25);
- box-shadow:none;
+ background:#183b27;color:#dffff0;
+ border:1px solid #34734a;box-shadow:none;
 }
 button.danger{
- background:linear-gradient(120deg,#d83e51,#a91e36);
- color:white;
- box-shadow:none;
+ background:linear-gradient(135deg,#d94355,#a91f36);
+ color:white;box-shadow:none;
 }
 .hidden{display:none!important}
 .notice{
- padding:14px 15px;
- background:rgba(34,232,121,.07);
- border:1px solid rgba(34,232,121,.19);
- border-radius:11px;
+ padding:14px;
+ background:rgba(24,68,42,.38);
+ border:1px solid rgba(53,232,121,.2);
+ border-radius:10px;
  margin:12px 0;
  line-height:1.6;
  white-space:pre-wrap;
- color:#d7f7e2;
- font-size:13px;
+ color:#d9f6e2;
 }
 .item{
- background:linear-gradient(145deg,#102319,#0a1710);
- border:1px solid rgba(93,157,111,.2);
+ background:linear-gradient(145deg,#10271a,#0a1810);
+ border:1px solid #244b32;
  padding:17px;
- border-radius:13px;
+ border-radius:12px;
  margin:13px 0;
  overflow-wrap:anywhere;
 }
-.item strong{color:#eafff0}
-.item button{width:auto;min-width:145px;margin:7px 6px 0 0}
-.member-tier{color:var(--green);font-weight:900}
+.item button{width:auto;min-width:145px;margin:7px 7px 0 0}
+small{color:var(--muted)}
+.member-tier{color:var(--green);font-weight:bold}
 .membership-option{
- display:flex;
- align-items:center;
- gap:12px;
- margin:10px 0;
- padding:13px;
- background:#07120b;
- border:1px solid var(--border);
- border-radius:10px;
+ display:flex;align-items:center;gap:12px;
+ margin:12px 0;padding:13px;
+ background:#07120b;border:1px solid #244b32;border-radius:9px;
 }
 .membership-option input{
- width:20px;height:20px;
- margin:0;
- accent-color:var(--green);
+ width:20px;height:20px;margin:0;accent-color:var(--green);
 }
-.membership-option label{font-weight:800;flex:1;font-size:13px}
-.announcement-date{color:var(--muted);font-size:12px}
+.membership-option label{font-weight:bold;flex:1;color:#dfffea}
+.announcement-date{color:#9bb6a4;font-size:12px}
 .category-tag{
  display:inline-block;
- background:rgba(34,232,121,.11);
- border:1px solid rgba(34,232,121,.2);
+ background:rgba(34,232,121,.12);
  color:var(--green);
- padding:6px 10px;
- border-radius:30px;
- font-size:10px;
- font-weight:900;
- letter-spacing:.7px;
- margin-top:8px;
+ border:1px solid rgba(34,232,121,.2);
+ padding:6px 10px;border-radius:6px;
+ font-size:11px;font-weight:900;margin-top:8px;
+ letter-spacing:.5px;
 }
 .empty-state{color:var(--muted);padding:12px}
-.form-section{
- border-top:1px solid var(--border);
- margin-top:20px;
- padding-top:13px;
+.field-label{
+ display:block;margin-top:14px;color:#b8d6c2;
+ font-size:13px;font-weight:bold;
 }
+.field-help{font-size:12px;color:#9bb6a4;line-height:1.6}
+.form-section{border-top:1px solid var(--border);margin-top:20px;padding-top:13px}
 .market-preview{
- background:rgba(34,232,121,.08);
- border:1px solid rgba(34,232,121,.18);
- padding:14px;
- border-radius:10px;
- color:#d8fbe4;
- margin:12px 0;
- line-height:1.6;
- font-size:13px;
+ background:#102c1c;padding:14px;border-radius:9px;
+ border:1px solid rgba(34,232,121,.2);
+ color:#d8f7e2;margin:12px 0;line-height:1.6;
 }
 .fixture-choice{
- display:block;
- width:100%;
- text-align:left;
- background:#10291a;
- color:#e9fff0;
- border:1px solid rgba(34,232,121,.4);
- padding:13px;
- margin:9px 0;
+ display:block;width:100%;text-align:left;
+ background:#173b27;color:#e9fff0;
+ border:1px solid #35e879;padding:13px;margin:8px 0;
 }
-.fixture-choice:hover{background:#19432a}
-#loginPanel{
- max-width:480px;
- margin:55px auto;
- padding:30px;
+.fixture-choice:hover{background:#225b38}
+.refresh-indicator{
+ position:fixed;top:0;left:50%;transform:translateX(-50%);
+ z-index:9999;background:var(--green);color:#06140d;
+ padding:10px 20px;border-radius:0 0 12px 12px;
+ font-size:12px;font-weight:900;display:none;
+ box-shadow:0 5px 20px rgba(0,0,0,.3);
 }
-.login-emblem{
- width:65px;height:65px;
- display:grid;place-items:center;
- margin:0 auto 18px;
- border-radius:20px;
- background:linear-gradient(145deg,#32f18b,#087b3e);
- color:#031008;
- font-size:29px;
- font-weight:1000;
- box-shadow:0 0 30px rgba(34,232,121,.2);
+.login-panel{
+ max-width:520px;margin:35px auto;
 }
-.login-title{text-align:center}
-.login-subtitle{
- color:var(--muted);
- text-align:center;
- font-size:13px;
- margin:0 0 22px;
-}
-.section-kicker{
- color:var(--green);
- font-size:10px;
- font-weight:900;
- letter-spacing:1.8px;
- text-transform:uppercase;
- margin-bottom:7px;
+.login-icon{
+ width:58px;height:58px;display:flex;align-items:center;
+ justify-content:center;border-radius:17px;
+ background:rgba(34,232,121,.1);
+ border:1px solid rgba(34,232,121,.35);
+ color:var(--green);font-size:27px;margin-bottom:17px;
 }
 .dashboard-intro{
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:15px;
- flex-wrap:wrap;
+ display:flex;align-items:center;justify-content:space-between;
+ gap:15px;flex-wrap:wrap;
 }
-.live-dot{
- display:inline-block;
- width:8px;height:8px;
- border-radius:50%;
- background:var(--green);
- box-shadow:0 0 10px var(--green);
- margin-right:7px;
-}
-.refresh-indicator{
- position:fixed;
- top:0;left:50%;
- transform:translateX(-50%);
- z-index:9999;
- background:var(--green);
- color:#041009;
- padding:10px 19px;
- border-radius:0 0 12px 12px;
- font-size:12px;
- font-weight:900;
- box-shadow:0 5px 20px rgba(0,0,0,.3);
- display:none;
-}
-#predictionsList,#membersList,#announcementsList{margin-top:12px}
-#dashboard .panel>h2{display:flex;align-items:center;gap:9px}
-#dashboard .panel>h2:before{
- content:"";
- width:4px;height:19px;
- border-radius:5px;
- background:var(--green);
- display:inline-block;
+.status-dot{
+ display:inline-block;width:8px;height:8px;
+ background:var(--green);border-radius:50%;
+ box-shadow:0 0 10px var(--green);margin-right:7px;
 }
 @media(max-width:600px){
- header{padding:18px 15px}
- .brand-mark{width:41px;height:41px;font-size:19px}
- .brand-name{font-size:19px}
- .header-label{font-size:8px;letter-spacing:1.8px}
- .admin-pill{font-size:9px;padding:8px}
- main{padding:0 11px 30px;margin:18px auto}
- .panel{padding:17px;border-radius:15px}
- #loginPanel{margin:28px auto;padding:23px}
+ header{padding:21px 16px}
+ h1{font-size:23px}
+ .header-subtitle{font-size:9px;letter-spacing:2px}
+ main{padding:0 11px 35px;margin:18px auto}
+ .panel{padding:17px;border-radius:13px}
  .item{padding:14px}
  .item button{width:100%;margin:6px 0}
- .dashboard-intro{align-items:flex-start}
 }
 </style>
 </head>
@@ -354,32 +260,22 @@ Refreshing dashboard...
 </div>
 
 <header>
- <div class="header-inner">
-  <div class="brand">
-   <div class="brand-mark">✦</div>
-   <div>
-    <div class="brand-name">ONLY<span>BOSS</span>TIPS</div>
-    <span class="header-label">ADMIN CONTROL CENTRE</span>
-   </div>
-  </div>
-  <div class="admin-pill">✦ PRIVATE ADMIN</div>
+ <div class="brand">
+  <span class="brand-mark">✦</span>
+  <h1>ONLY<span>BOSSTIPS</span></h1>
+  <span class="header-subtitle">PRIVATE ADMIN CONTROL CENTRE</span>
  </div>
 </header>
 
 <main>
 
-<section class="panel" id="loginPanel">
- <div class="login-emblem">✦</div>
- <div class="login-title">
-  <div class="section-kicker">SECURE ACCESS</div>
-  <h2>Administrator Login</h2>
- </div>
- <p class="login-subtitle">Sign in with your authorised administrator account.</p>
- <label class="field-label" for="email">ADMINISTRATOR EMAIL</label>
+<section class="panel login-panel" id="loginPanel">
+ <div class="login-icon">✦</div>
+ <h2>Administrator Login</h2>
+ <p class="field-help">Sign in with your authorised ONLYBOSSTIPS administrator account.</p>
  <input id="email" type="email" placeholder="Administrator email" autocomplete="username">
- <label class="field-label" for="password">PASSWORD</label>
  <input id="password" type="password" placeholder="Password" autocomplete="current-password">
- <button onclick="adminLogin()">LOGIN TO DASHBOARD</button>
+ <button onclick="adminLogin()">SECURE ADMIN LOGIN</button>
  <div class="notice" id="loginMessage">Enter your administrator login details.</div>
 </section>
 
@@ -388,162 +284,141 @@ Refreshing dashboard...
 <div class="panel">
  <div class="dashboard-intro">
   <div>
-   <div class="section-kicker"><span class="live-dot"></span>CONTROL PANEL</div>
    <h2>Welcome, Administrator</h2>
-   <p class="field-help">You are logged in to your private ONLYBOSSTIPS dashboard.</p>
+   <p class="field-help"><span class="status-dot"></span>Your private dashboard is active.</p>
   </div>
-  <div class="admin-pill">SYSTEM ACTIVE</div>
+  <span class="category-tag">ADMIN ACCESS</span>
  </div>
  <div class="notice">
-  Automatic prediction cleanup is active.
-  <br>
-  Nigeria time: Africa/Lagos (WAT).
-  <br>
-  Predictions older than Yesterday are removed automatically.
+  Automatic prediction cleanup runs when this dashboard loads or refreshes.
+  <br>Time zone: Africa/Lagos (WAT).
+  <br>Yesterday, Today and Tomorrow predictions are kept. Older predictions are removed.
  </div>
 </div>
 
 <!-- POST PREDICTIONS -->
 
 <div class="panel">
- <div class="section-kicker">PUBLISH CONTENT</div>
- <h2>Post New Prediction</h2>
- <p class="field-help">Choose the match, select a prediction category and market, then enter your selection and odds.</p>
+<h2>Post New Prediction</h2>
+<p class="field-help">Choose the match, select a prediction category and market, then enter your selection and odds.</p>
 
- <div class="form-section">
-  <h3>1. Match Information</h3>
-  <label class="field-label" for="league">League / Competition</label>
-  <input id="league" placeholder="e.g. Premier League">
-  <label class="field-label" for="home">Home Team</label>
-  <input id="home" placeholder="Home team name">
-  <label class="field-label" for="away">Away Team</label>
-  <input id="away" placeholder="Away team name">
-  <label class="field-label" for="kickoff">Kickoff Date and Time</label>
-  <input id="kickoff" type="datetime-local">
- </div>
+<div class="form-section">
+<h3>1. Match Information</h3>
+<label class="field-label" for="league">League / Competition</label>
+<input id="league" placeholder="e.g. Premier League">
+<label class="field-label" for="home">Home Team</label>
+<input id="home" placeholder="Home team name">
+<label class="field-label" for="away">Away Team</label>
+<input id="away" placeholder="Away team name">
+<label class="field-label" for="kickoff">Kickoff Date and Time</label>
+<input id="kickoff" type="datetime-local">
+</div>
 
- <div class="form-section">
-  <h3>2. Prediction Market</h3>
-  <label class="field-label" for="marketCategory">Prediction Category</label>
-  <select id="marketCategory">
-   <option>Match Result</option>
-   <option>Double Chance</option>
-   <option>Goals</option>
-   <option>Both Teams to Score</option>
-   <option>Half Time</option>
-   <option>Correct Score</option>
-   <option>Handicap</option>
-   <option>Corners</option>
-   <option>Fouls</option>
-   <option>Cards</option>
-   <option>Shots</option>
-   <option>Player Goals</option>
-   <option>Player Shots</option>
-   <option>Player Assists</option>
-   <option>Player Cards</option>
-   <option>Player Fouls</option>
-   <option>Substitutions</option>
-   <option>Goalkeeper</option>
-   <option>Offsides</option>
-   <option>Special Markets</option>
-   <option>Custom Market</option>
-  </select>
+<div class="form-section">
+<h3>2. Prediction Market</h3>
+<label class="field-label" for="marketCategory">Prediction Category</label>
+<select id="marketCategory">
+<option>Match Result</option>
+<option>Double Chance</option>
+<option>Goals</option>
+<option>Both Teams to Score</option>
+<option>Half Time</option>
+<option>Correct Score</option>
+<option>Handicap</option>
+<option>Corners</option>
+<option>Fouls</option>
+<option>Cards</option>
+<option>Shots</option>
+<option>Player Goals</option>
+<option>Player Shots</option>
+<option>Player Assists</option>
+<option>Player Cards</option>
+<option>Player Fouls</option>
+<option>Substitutions</option>
+<option>Goalkeeper</option>
+<option>Offsides</option>
+<option>Special Markets</option>
+<option>Custom Market</option>
+</select>
 
-  <label class="field-label" for="marketType">Select Market</label>
-  <select id="marketType"></select>
+<label class="field-label" for="marketType">Select Market</label>
+<select id="marketType"></select>
 
-  <div id="customMarketWrap" class="hidden">
-   <label class="field-label" for="customMarketName">Custom Market Name</label>
-   <input id="customMarketName" placeholder="Enter your custom market">
-  </div>
+<div id="customMarketWrap" class="hidden">
+ <label class="field-label" for="customMarketName">Custom Market Name</label>
+ <input id="customMarketName" placeholder="Enter your custom market">
+</div>
 
-  <label class="field-label" for="marketSelection">Prediction Selection</label>
-  <input id="marketSelection" placeholder="e.g. Over, Home, Yes, Player name">
+<label class="field-label" for="marketSelection">Prediction Selection</label>
+<input id="marketSelection" placeholder="e.g. Over, Home, Yes, Player name">
+<label class="field-label" for="marketLine">Market Line / Handicap (Optional)</label>
+<input id="marketLine" placeholder="e.g. 2.5, +1.5, 8.5">
+<label class="field-label" for="marketTeam">Team (Optional)</label>
+<select id="marketTeam">
+ <option value="">Not applicable</option>
+ <option value="home">Home Team</option>
+ <option value="away">Away Team</option>
+</select>
+<label class="field-label" for="playerName">Player Name (Optional)</label>
+<input id="playerName" placeholder="Enter player name where applicable">
+<div class="market-preview" id="predictionPreview">Your prediction preview will appear here.</div>
+</div>
 
-  <label class="field-label" for="marketLine">Market Line / Handicap (Optional)</label>
-  <input id="marketLine" placeholder="e.g. 2.5, +1.5, 8.5">
+<div class="form-section">
+<h3>3. Publishing Details</h3>
+<label class="field-label" for="odds">Odds</label>
+<input id="odds" type="text" inputmode="decimal" placeholder="e.g. 1.85">
+<label class="field-label" for="visibility">Prediction Access</label>
+<select id="visibility">
+ <option value="free">FREE ODDS</option>
+ <option value="vip">VIP ODDS</option>
+ <option value="rollover">ROLLOVER ODDS</option>
+</select>
+<p class="field-help">New predictions are published with PENDING status. The dashboard searches SportAPI and links the fixture only when it can identify it safely.</p>
+</div>
 
-  <label class="field-label" for="marketTeam">Team (Optional)</label>
-  <select id="marketTeam">
-   <option value="">Not applicable</option>
-   <option value="home">Home Team</option>
-   <option value="away">Away Team</option>
-  </select>
-
-  <label class="field-label" for="playerName">Player Name (Optional)</label>
-  <input id="playerName" placeholder="Enter player name where applicable">
-
-  <div class="market-preview" id="predictionPreview">
-   Your prediction preview will appear here.
-  </div>
- </div>
-
- <div class="form-section">
-  <h3>3. Publishing Details</h3>
-  <label class="field-label" for="odds">Odds</label>
-  <input id="odds" type="text" placeholder="e.g. 1.85">
-  <label class="field-label" for="visibility">Prediction Access</label>
-  <select id="visibility">
-   <option value="free">FREE ODDS</option>
-   <option value="vip">VIP ODDS</option>
-   <option value="rollover">ROLLOVER ODDS</option>
-  </select>
-  <p class="field-help">
-   New predictions are published with PENDING status. After publishing, the dashboard searches SportAPI and links the fixture only when it can identify it safely.
-  </p>
- </div>
-
- <button id="publishButton" onclick="savePrediction()">PUBLISH PREDICTION</button>
- <div id="postMessage" class="notice">Complete the fields to publish a prediction.</div>
+<button id="publishButton" onclick="savePrediction()">PUBLISH PREDICTION</button>
+<div id="postMessage" class="notice">Complete the fields to publish a prediction.</div>
 </div>
 
 <!-- ANNOUNCEMENTS -->
 
 <div class="panel">
- <div class="section-kicker">MEMBER COMMUNICATION</div>
- <h2>Member Announcements</h2>
- <p class="notice">
-  Publish messages for members on the website. Active announcements appear when members log in. They remain active until you remove them. Members can close the announcement themselves without removing it.
- </p>
- <textarea id="announcementMessage" placeholder="Write your announcement here..."></textarea>
- <button onclick="publishAnnouncement()">PUBLISH ANNOUNCEMENT</button>
- <div id="announcementMessageStatus" class="notice">Your announcement status will appear here.</div>
- <h3>Published Announcements</h3>
- <div id="announcementsList">Loading announcements...</div>
+<h2>Member Announcements</h2>
+<p class="notice">Publish messages for members on the website. Active announcements appear when members log in. They remain active until you remove them. Members can close the announcement themselves without removing it.</p>
+<textarea id="announcementMessage" placeholder="Write your announcement here..."></textarea>
+<button onclick="publishAnnouncement()">PUBLISH ANNOUNCEMENT</button>
+<div id="announcementMessageStatus" class="notice">Your announcement status will appear here.</div>
+<h3>Published Announcements</h3>
+<div id="announcementsList">Loading announcements...</div>
 </div>
 
 <!-- MANAGE PREDICTIONS -->
 
 <div class="panel">
- <div class="section-kicker">MATCH CENTRE</div>
- <h2>Manage Predictions and Results</h2>
- <div id="predictionsList">Loading predictions...</div>
+<h2>Manage Predictions and Results</h2>
+<div id="predictionsList">Loading predictions...</div>
 </div>
 
 <!-- MANAGE MEMBERSHIPS -->
 
 <div class="panel">
- <div class="section-kicker">MEMBER ACCESS CONTROL</div>
- <h2>Manage Memberships</h2>
- <p class="notice">
-  After confirming a member's payment, select the membership or memberships you want to activate and tap UPDATE MEMBERSHIP.
-  <br><br>
-  VIP: ₦5,500 monthly.
-  <br>
-  ROLLOVER: ₦4,000 weekly.
-  <br><br>
-  A member can have VIP and Rollover at the same time. FREE odds remain available to every member.
- </p>
- <div id="membersList">Loading members...</div>
+<h2>Manage Memberships</h2>
+<p class="notice">
+After confirming a member's payment, select the membership or memberships you want to activate and tap UPDATE MEMBERSHIP.
+<br><br>VIP: ₦5,500 monthly.
+<br>ROLLOVER: ₦4,000 weekly.
+<br><br>A member can have VIP and Rollover at the same time. FREE odds remain available to every member.
+</p>
+<div id="membersList">Loading members...</div>
 </div>
 
 <!-- LOGOUT -->
 
 <div class="panel" style="text-align:center">
- <div class="section-kicker">SECURITY</div>
- <h3>Administrator Account</h3>
- <p class="field-help">Log out securely when you have finished managing ONLYBOSSTIPS.</p>
- <button class="danger" onclick="logout()">LOG OUT</button>
+<h3>Administrator Account</h3>
+<p class="field-help">Log out securely when you have finished managing ONLYBOSSTIPS.</p>
+<button class="danger" onclick="logout()">LOG OUT</button>
 </div>
 
 </section>
@@ -562,222 +437,111 @@ let refreshing=false;
 
 const marketOptions={
 "Match Result":[
-"Full Time Result - Home Win",
-"Full Time Result - Draw",
-"Full Time Result - Away Win",
-"Draw No Bet - Home",
-"Draw No Bet - Away",
-"Winning Margin - Home",
-"Winning Margin - Away",
-"Home Win to Nil",
-"Away Win to Nil"
+"Full Time Result - Home Win","Full Time Result - Draw","Full Time Result - Away Win",
+"Draw No Bet - Home","Draw No Bet - Away","Winning Margin - Home","Winning Margin - Away",
+"Home Win to Nil","Away Win to Nil"
 ],
 "Double Chance":[
-"Home or Draw (1X)",
-"Draw or Away (X2)",
-"Home or Away (12)"
+"Home or Draw (1X)","Draw or Away (X2)","Home or Away (12)"
 ],
 "Goals":[
-"Total Goals Over/Under",
-"Home Team Goals Over/Under",
-"Away Team Goals Over/Under",
-"First Team to Score",
-"Last Team to Score",
-"Exact Total Goals",
-"Goal in Both Halves",
-"Goal in First Half",
-"Goal in Second Half",
-"Home Team to Score",
-"Away Team to Score",
-"Home Clean Sheet",
-"Away Clean Sheet",
-"Home Win by 2 or More",
-"Away Win by 2 or More"
+"Total Goals Over/Under","Home Team Goals Over/Under","Away Team Goals Over/Under",
+"First Team to Score","Last Team to Score","Exact Total Goals","Goal in Both Halves",
+"Goal in First Half","Goal in Second Half","Home Team to Score","Away Team to Score",
+"Home Clean Sheet","Away Clean Sheet","Home Win by 2 or More","Away Win by 2 or More"
 ],
 "Both Teams to Score":[
-"Both Teams to Score - Yes",
-"Both Teams to Score - No",
-"BTTS and Over 2.5 Goals",
-"BTTS and Under 2.5 Goals",
-"Home to Score in Both Halves",
-"Away to Score in Both Halves"
+"Both Teams to Score - Yes","Both Teams to Score - No","BTTS and Over 2.5 Goals",
+"BTTS and Under 2.5 Goals","Home to Score in Both Halves","Away to Score in Both Halves"
 ],
 "Half Time":[
-"Half Time Result - Home",
-"Half Time Result - Draw",
-"Half Time Result - Away",
-"Half Time Goals Over/Under",
-"Second Half Result",
-"Second Half Goals Over/Under",
-"Half Time / Full Time",
-"Half Time Double Chance",
-"Home Half Time Goals",
-"Away Half Time Goals",
-"Goal Before Half Time",
-"No Goal in First Half"
+"Half Time Result - Home","Half Time Result - Draw","Half Time Result - Away",
+"Half Time Goals Over/Under","Second Half Result","Second Half Goals Over/Under",
+"Half Time / Full Time","Half Time Double Chance","Home Half Time Goals",
+"Away Half Time Goals","Goal Before Half Time","No Goal in First Half"
 ],
 "Correct Score":[
-"Correct Score - Full Time",
-"Correct Score - Half Time",
-"Correct Score - First Half",
-"Correct Score - Second Half",
-"Correct Score - Home Win",
-"Correct Score - Draw",
+"Correct Score - Full Time","Correct Score - Half Time","Correct Score - First Half",
+"Correct Score - Second Half","Correct Score - Home Win","Correct Score - Draw",
 "Correct Score - Away Win"
 ],
 "Handicap":[
-"Asian Handicap - Home",
-"Asian Handicap - Away",
-"European Handicap - Home",
-"European Handicap - Draw",
-"European Handicap - Away",
-"Home Handicap Result",
-"Away Handicap Result",
-"Home -0.5 Handicap",
-"Home -1.0 Handicap",
-"Home -1.5 Handicap",
-"Home -2.0 Handicap",
-"Away +0.5 Handicap",
-"Away +1.0 Handicap",
-"Away +1.5 Handicap",
-"Away +2.0 Handicap"
+"Asian Handicap - Home","Asian Handicap - Away","European Handicap - Home",
+"European Handicap - Draw","European Handicap - Away","Home Handicap Result",
+"Away Handicap Result","Home -0.5 Handicap","Home -1.0 Handicap","Home -1.5 Handicap",
+"Home -2.0 Handicap","Away +0.5 Handicap","Away +1.0 Handicap",
+"Away +1.5 Handicap","Away +2.0 Handicap"
 ],
 "Corners":[
-"Total Corners Over/Under",
-"Home Team Corners Over/Under",
-"Away Team Corners Over/Under",
-"First Corner",
-"Last Corner",
-"Most Corners",
-"Corner Handicap",
-"First Half Corners Over/Under",
-"Second Half Corners Over/Under",
-"Race to 3 Corners",
-"Race to 5 Corners",
-"Race to 7 Corners",
-"Race to 9 Corners",
-"Exact Total Corners",
-"Home Team Most Corners",
-"Away Team Most Corners"
+"Total Corners Over/Under","Home Team Corners Over/Under","Away Team Corners Over/Under",
+"First Corner","Last Corner","Most Corners","Corner Handicap",
+"First Half Corners Over/Under","Second Half Corners Over/Under",
+"Race to 3 Corners","Race to 5 Corners","Race to 7 Corners","Race to 9 Corners",
+"Exact Total Corners","Home Team Most Corners","Away Team Most Corners"
 ],
 "Fouls":[
-"Total Match Fouls Over/Under",
-"Home Team Fouls Over/Under",
-"Away Team Fouls Over/Under",
-"Most Fouls",
-"First Team to Commit 5 Fouls",
-"First Team to Commit 10 Fouls",
-"First Half Fouls Over/Under",
-"Second Half Fouls Over/Under",
-"Player to Commit a Foul",
-"Player Total Fouls Over/Under"
+"Total Match Fouls Over/Under","Home Team Fouls Over/Under","Away Team Fouls Over/Under",
+"Most Fouls","First Team to Commit 5 Fouls","First Team to Commit 10 Fouls",
+"First Half Fouls Over/Under","Second Half Fouls Over/Under",
+"Player to Commit a Foul","Player Total Fouls Over/Under"
 ],
 "Cards":[
-"Total Cards Over/Under",
-"Total Yellow Cards Over/Under",
-"Total Red Cards Over/Under",
-"Home Team Cards Over/Under",
-"Away Team Cards Over/Under",
-"First Team to Receive a Card",
-"First Card",
-"Last Card",
-"Player to Receive a Card",
-"Player to Receive a Red Card",
-"Player to Receive a Yellow Card",
-"Red Card in Match - Yes/No",
-"Half Time Cards Over/Under"
+"Total Cards Over/Under","Total Yellow Cards Over/Under","Total Red Cards Over/Under",
+"Home Team Cards Over/Under","Away Team Cards Over/Under",
+"First Team to Receive a Card","First Card","Last Card","Player to Receive a Card",
+"Player to Receive a Red Card","Player to Receive a Yellow Card",
+"Red Card in Match - Yes/No","Half Time Cards Over/Under"
 ],
 "Shots":[
-"Total Shots Over/Under",
-"Home Team Shots Over/Under",
-"Away Team Shots Over/Under",
-"Total Shots on Target Over/Under",
-"Home Shots on Target Over/Under",
-"Away Shots on Target Over/Under",
-"Most Shots",
-"Most Shots on Target",
-"Player Total Shots Over/Under",
-"Player Shots on Target Over/Under"
+"Total Shots Over/Under","Home Team Shots Over/Under","Away Team Shots Over/Under",
+"Total Shots on Target Over/Under","Home Shots on Target Over/Under",
+"Away Shots on Target Over/Under","Most Shots","Most Shots on Target",
+"Player Total Shots Over/Under","Player Shots on Target Over/Under"
 ],
 "Player Goals":[
-"Anytime Goalscorer",
-"First Goalscorer",
-"Last Goalscorer",
-"Player to Score 2 or More Goals",
-"Player to Score a Hat-Trick",
-"Player to Score with Header",
-"Player to Score from Outside Box",
-"Player to Score a Penalty",
-"Player to Score First Half",
-"Player to Score Second Half"
+"Anytime Goalscorer","First Goalscorer","Last Goalscorer",
+"Player to Score 2 or More Goals","Player to Score a Hat-Trick",
+"Player to Score with Header","Player to Score from Outside Box",
+"Player to Score a Penalty","Player to Score First Half","Player to Score Second Half"
 ],
 "Player Shots":[
-"Player Total Shots Over/Under",
-"Player Shots on Target Over/Under",
-"Player to Have 1+ Shot on Target",
-"Player to Have 2+ Shots on Target",
-"Player to Have 3+ Shots",
-"Player to Miss a Big Chance"
+"Player Total Shots Over/Under","Player Shots on Target Over/Under",
+"Player to Have 1+ Shot on Target","Player to Have 2+ Shots on Target",
+"Player to Have 3+ Shots","Player to Miss a Big Chance"
 ],
 "Player Assists":[
-"Anytime Assist",
-"First Assist",
-"Player to Record 2+ Assists",
+"Anytime Assist","First Assist","Player to Record 2+ Assists",
 "Player to Create a Big Chance"
 ],
 "Player Cards":[
-"Player to Receive a Card",
-"Player to Receive a Yellow Card",
-"Player to Receive a Red Card"
+"Player to Receive a Card","Player to Receive a Yellow Card","Player to Receive a Red Card"
 ],
 "Player Fouls":[
-"Player to Commit a Foul",
-"Player Fouls Over/Under",
-"Player to Commit 2+ Fouls",
-"Player to Be Fouled",
-"Player to Be Fouled 2+ Times"
+"Player to Commit a Foul","Player Fouls Over/Under",
+"Player to Commit 2+ Fouls","Player to Be Fouled","Player to Be Fouled 2+ Times"
 ],
 "Substitutions":[
-"First Substitution - Home",
-"First Substitution - Away",
-"Team to Make First Substitution",
-"Player to Be Substituted",
-"Player to Come on as Substitute",
-"Player to Be Substituted Before 60 Minutes",
-"Total Substitutions Over/Under",
-"Home Team Substitutions Over/Under",
+"First Substitution - Home","First Substitution - Away",
+"Team to Make First Substitution","Player to Be Substituted",
+"Player to Come on as Substitute","Player to Be Substituted Before 60 Minutes",
+"Total Substitutions Over/Under","Home Team Substitutions Over/Under",
 "Away Team Substitutions Over/Under"
 ],
 "Goalkeeper":[
-"Goalkeeper Total Saves Over/Under",
-"Home Goalkeeper Saves",
-"Away Goalkeeper Saves",
-"Goalkeeper to Keep a Clean Sheet",
-"Goalkeeper to Concede"
+"Goalkeeper Total Saves Over/Under","Home Goalkeeper Saves",
+"Away Goalkeeper Saves","Goalkeeper to Keep a Clean Sheet","Goalkeeper to Concede"
 ],
 "Offsides":[
-"Total Offsides Over/Under",
-"Home Team Offsides Over/Under",
-"Away Team Offsides Over/Under",
-"Most Offsides"
+"Total Offsides Over/Under","Home Team Offsides Over/Under",
+"Away Team Offsides Over/Under","Most Offsides"
 ],
 "Special Markets":[
-"Penalty Awarded - Yes/No",
-"Penalty Scored - Yes/No",
-"Own Goal - Yes/No",
-"VAR Intervention - Yes/No",
-"Goal in First 15 Minutes",
-"Goal in Last 15 Minutes",
-"Win by 1 Goal",
-"Win by 2 Goals",
-"Win by 3+ Goals",
-"Home Team to Win Either Half",
-"Away Team to Win Either Half",
-"Match to Have No Goals"
+"Penalty Awarded - Yes/No","Penalty Scored - Yes/No","Own Goal - Yes/No",
+"VAR Intervention - Yes/No","Goal in First 15 Minutes","Goal in Last 15 Minutes",
+"Win by 1 Goal","Win by 2 Goals","Win by 3+ Goals",
+"Home Team to Win Either Half","Away Team to Win Either Half","Match to Have No Goals"
 ],
-"Custom Market":[
-"Custom market"
-]
+"Custom Market":["Custom market"]
 };
 
 /* GENERAL HELPERS */
@@ -792,9 +556,7 @@ function initializeSupabase(){
   message("loginMessage","Supabase library did not load. Refresh this page.");
   return false;
  }
- if(!db){
-  db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
- }
+ if(!db)db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
  return true;
 }
 
@@ -802,14 +564,9 @@ function initializeSupabase(){
 
 function nigeriaToday(){
  const parts=new Intl.DateTimeFormat("en-CA",{
-  timeZone:"Africa/Lagos",
-  year:"numeric",
-  month:"2-digit",
-  day:"2-digit"
+  timeZone:"Africa/Lagos",year:"numeric",month:"2-digit",day:"2-digit"
  }).formatToParts(new Date());
-
  const get=type=>parts.find(p=>p.type===type)?.value;
-
  return get("year")+"-"+get("month")+"-"+get("day");
 }
 
@@ -817,7 +574,6 @@ function nigeriaYesterday(){
  const today=nigeriaToday();
  const [year,month,day]=today.split("-").map(Number);
  const date=new Date(Date.UTC(year,month-1,day-1));
-
  return date.getUTCFullYear()+"-"+
   String(date.getUTCMonth()+1).padStart(2,"0")+"-"+
   String(date.getUTCDate()).padStart(2,"0");
@@ -829,39 +585,20 @@ function kickoffDateOnly(value){
  return match?match[1]:null;
 }
 
-/*
-RULE:
-Yesterday remains.
-Today remains.
-Tomorrow remains.
-Anything before Yesterday is deleted.
-*/
+/* KEEP YESTERDAY, TODAY AND TOMORROW */
 
 async function cleanupExpiredPredictions(){
- const{data,error}=await db
-  .from("predictions")
-  .select("id,kickoff");
-
+ const{data,error}=await db.from("predictions").select("id,kickoff");
  if(error)throw error;
-
  const yesterday=nigeriaYesterday();
-
  const expired=(data||[])
   .filter(p=>{
    const matchDate=kickoffDateOnly(p.kickoff);
    return matchDate&&matchDate<yesterday;
-  })
-  .map(p=>p.id);
-
+  }).map(p=>p.id);
  if(!expired.length)return 0;
-
- const{error:deleteError}=await db
-  .from("predictions")
-  .delete()
-  .in("id",expired);
-
+ const{error:deleteError}=await db.from("predictions").delete().in("id",expired);
  if(deleteError)throw deleteError;
-
  console.log(expired.length+" expired prediction(s) deleted.");
  return expired.length;
 }
@@ -872,16 +609,11 @@ function updateMarketOptions(){
  const category=document.getElementById("marketCategory").value;
  const select=document.getElementById("marketType");
  const customWrap=document.getElementById("customMarketWrap");
-
  select.replaceChildren();
-
  (marketOptions[category]||[]).forEach(name=>{
   const option=document.createElement("option");
-  option.value=name;
-  option.textContent=name;
-  select.appendChild(option);
+  option.value=name;option.textContent=name;select.appendChild(option);
  });
-
  customWrap.classList.toggle("hidden",category!=="Custom Market");
  updatePredictionPreview();
 }
@@ -894,37 +626,26 @@ function updatePredictionPreview(){
  const line=document.getElementById("marketLine").value.trim();
  const team=document.getElementById("marketTeam").value;
  const player=document.getElementById("playerName").value.trim();
-
- const parts=[
-  category==="Custom Market"?(customName||"Custom Market"):market
- ];
-
+ const parts=[category==="Custom Market"?(customName||"Custom Market"):market];
  if(selection)parts.push(selection);
  if(line)parts.push(line);
  if(team)parts.push(team==="home"?"Home Team":"Away Team");
  if(player)parts.push(player);
-
- document.getElementById("predictionPreview").textContent=
-  "Prediction preview: "+parts.join(" - ");
+ document.getElementById("predictionPreview").textContent="Prediction preview: "+parts.join(" - ");
 }
 
 document.getElementById("marketCategory").addEventListener("change",updateMarketOptions);
-
 ["marketType","customMarketName","marketSelection","marketLine","marketTeam","playerName"].forEach(id=>{
  document.getElementById(id).addEventListener("input",updatePredictionPreview);
  document.getElementById(id).addEventListener("change",updatePredictionPreview);
 });
-
 updateMarketOptions();
 
 /* MEMBERSHIP HELPERS */
 
 function parseMemberships(value){
  const parts=String(value||"free").toLowerCase().split(",").map(x=>x.trim());
- return{
-  vip:parts.includes("vip"),
-  rollover:parts.includes("rollover")
- };
+ return{vip:parts.includes("vip"),rollover:parts.includes("rollover")};
 }
 
 function membershipText(value){
@@ -939,43 +660,27 @@ function membershipText(value){
 
 async function adminLogin(){
  if(!initializeSupabase())return;
-
  const email=document.getElementById("email").value.trim();
  const password=document.getElementById("password").value;
-
  if(!email||!password){
-  message("loginMessage","Please enter your email and password.");
-  return;
+  message("loginMessage","Please enter your email and password.");return;
  }
-
  message("loginMessage","Logging in...");
-
  try{
   const{data,error}=await db.auth.signInWithPassword({email,password});
   if(error)throw error;
-
   currentUser=data.user;
-
-  const{data:admin,error:adminError}=await db
-   .from("admins")
-   .select("user_id")
-   .eq("user_id",currentUser.id)
-   .maybeSingle();
-
+  const{data:admin,error:adminError}=await db.from("admins")
+   .select("user_id").eq("user_id",currentUser.id).maybeSingle();
   if(adminError)throw adminError;
-
   if(!admin){
-   await db.auth.signOut();
-   currentUser=null;
+   await db.auth.signOut();currentUser=null;
    message("loginMessage","Access denied. This account is not an authorised administrator.");
    return;
   }
-
   document.getElementById("loginPanel").classList.add("hidden");
   document.getElementById("dashboard").classList.remove("hidden");
-
   await loadAll();
-
  }catch(error){
   message("loginMessage","Login error: "+error.message);
  }
@@ -983,12 +688,10 @@ async function adminLogin(){
 
 async function logout(){
  if(db)await db.auth.signOut();
-
  currentUser=null;
  document.getElementById("dashboard").classList.add("hidden");
  document.getElementById("loginPanel").classList.remove("hidden");
  document.getElementById("password").value="";
-
  message("loginMessage","You have logged out.");
 }
 
@@ -996,46 +699,32 @@ async function logout(){
 
 async function loadAll(){
  if(!db||!currentUser)return;
-
  try{
   const removed=await cleanupExpiredPredictions();
   if(removed>0)console.log(removed+" old prediction(s) automatically removed.");
  }catch(error){
   console.error("Automatic prediction cleanup failed:",error);
  }
-
- await Promise.all([
-  loadPredictions(),
-  loadMembers(),
-  loadAnnouncements()
- ]);
+ await Promise.all([loadPredictions(),loadMembers(),loadAnnouncements()]);
 }
 
 /* SWIPE-DOWN REFRESH */
 
 let touchStartY=0;
-
 window.addEventListener("touchstart",event=>{
- if(window.scrollY<=0&&event.touches.length===1){
-  touchStartY=event.touches[0].clientY;
- }else{
-  touchStartY=0;
- }
+ if(window.scrollY<=0&&event.touches.length===1)touchStartY=event.touches[0].clientY;
+ else touchStartY=0;
 },{passive:true});
 
 window.addEventListener("touchend",async event=>{
  if(!currentUser||refreshing||touchStartY===0)return;
-
  const distance=event.changedTouches[0].clientY-touchStartY;
  touchStartY=0;
-
  if(window.scrollY<=0&&distance>100){
   refreshing=true;
-
   const indicator=document.getElementById("refreshIndicator");
   indicator.style.display="block";
   indicator.textContent="Refreshing dashboard...";
-
   try{
    await loadAll();
    indicator.textContent="Dashboard updated";
@@ -1043,16 +732,11 @@ window.addEventListener("touchend",async event=>{
    indicator.textContent="Refresh failed";
    console.error(error);
   }
-
   setTimeout(()=>{
-   indicator.style.display="none";
-   refreshing=false;
+   indicator.style.display="none";refreshing=false;
   },900);
  }
 },{passive:true});
-</script>
-</body>
-</html>
 
 /* SPORTAPI FIXTURE SEARCH AND LINKING */
 
@@ -1079,83 +763,54 @@ async function findFixturesForPrediction(prediction){
  const kickoff=String(prediction.kickoff||"");
  const date=kickoff.slice(0,10);
  if(!date)throw new Error("This prediction has no valid kickoff date.");
-
  const params=new URLSearchParams({
-  home:prediction.home_team,
-  away:prediction.away_team,
-  date
+  home:prediction.home_team,away:prediction.away_team,date
  });
-
  const response=await fetch(BACKEND_URL+"/fixtures/search?"+params.toString());
  let result;
-
  try{result=await response.json();}
  catch{throw new Error("Fixture search returned an unreadable response.");}
-
- if(!response.ok||result.success===false){
-  throw new Error(result.message||"Fixture search failed.");
- }
-
- return Array.isArray(result.fixtures)
-  ?result.fixtures
-  :Array.isArray(result.data?.fixtures)
-   ?result.data.fixtures
-   :[];
+ if(!response.ok||result.success===false)throw new Error(result.message||"Fixture search failed.");
+ return Array.isArray(result.fixtures)?result.fixtures:
+  Array.isArray(result.data?.fixtures)?result.data.fixtures:[];
 }
 
 async function linkFixture(predictionId,fixtureId){
  const token=await getAdminAccessToken();
-
  const response=await fetch(BACKEND_URL+"/predictions/link-fixture",{
   method:"POST",
   headers:{
    "Content-Type":"application/json",
    "Authorization":"Bearer "+token
   },
-  body:JSON.stringify({
-   prediction_id:predictionId,
-   fixture_id:fixtureId
-  })
+  body:JSON.stringify({prediction_id:predictionId,fixture_id:fixtureId})
  });
-
  let result;
  try{result=await response.json();}
  catch{throw new Error("The backend returned an unreadable response while linking the match.");}
-
- if(!response.ok||result.success===false){
-  throw new Error(result.message||"Could not link this fixture.");
- }
+ if(!response.ok||result.success===false)throw new Error(result.message||"Could not link this fixture.");
  return result;
 }
 
 async function searchAndLinkPrediction(prediction,showMessages=true){
  try{
   if(showMessages)message("postMessage","Prediction saved. Searching SportAPI for the correct fixture...");
-
   const fixtures=await findFixturesForPrediction(prediction);
-
   if(!fixtures.length){
    if(showMessages)message("postMessage","Prediction published, but no matching SportAPI fixture was found. It remains unlinked. You can try FIND FIXTURE later from Manage Predictions.");
    return{linked:false,count:0};
   }
-
   if(fixtures.length===1){
    const fixtureId=getFixtureId(fixtures[0]);
-   if(fixtureId===null||fixtureId===undefined){
-    throw new Error("A matching fixture was found, but its fixture ID was missing. The prediction remains unlinked.");
-   }
-
+   if(fixtureId===null||fixtureId===undefined)throw new Error("A matching fixture was found, but its fixture ID was missing. The prediction remains unlinked.");
    await linkFixture(prediction.id,fixtureId);
-
    if(showMessages)message("postMessage","Prediction published and successfully linked to SportAPI: "+getFixtureLabel(fixtures[0]));
    await loadPredictions();
    return{linked:true,count:1};
   }
-
   if(showMessages)message("postMessage","Prediction published. SportAPI found "+fixtures.length+" possible matches. Open Manage Predictions and tap FIND FIXTURE to choose the correct one. Nothing has been linked yet.");
   await loadPredictions();
   return{linked:false,count:fixtures.length};
-
  }catch(error){
   if(showMessages)message("postMessage","Prediction was published, but automatic fixture linking did not complete: "+error.message+". It remains available in Manage Predictions so you can retry.");
   return{linked:false,error:error.message};
@@ -1165,33 +820,26 @@ async function searchAndLinkPrediction(prediction,showMessages=true){
 async function manuallyFindFixture(prediction){
  const statusEl=document.getElementById("fixture-status-"+prediction.id);
  if(statusEl)statusEl.textContent="Searching SportAPI...";
-
  try{
   const fixtures=await findFixturesForPrediction(prediction);
-
   if(!fixtures.length){
    if(statusEl)statusEl.textContent="No matching fixture found. Check the team names and kickoff date.";
    return;
   }
-
   const choices=document.getElementById("fixture-choices-"+prediction.id);
   choices.replaceChildren();
-
   const heading=document.createElement("p");
   heading.textContent="Select the correct fixture. Do not choose unless the teams and date match.";
   choices.appendChild(heading);
-
   fixtures.forEach(f=>{
    const id=getFixtureId(f);
    const button=document.createElement("button");
    button.className="fixture-choice";
    button.textContent=getFixtureLabel(f);
    button.disabled=id===null||id===undefined;
-
    button.onclick=async()=>{
     button.disabled=true;
     button.textContent="LINKING...";
-
     try{
      await linkFixture(prediction.id,id);
      if(statusEl)statusEl.textContent="Fixture linked successfully.";
@@ -1205,9 +853,7 @@ async function manuallyFindFixture(prediction){
    };
    choices.appendChild(button);
   });
-
   if(statusEl)statusEl.textContent=fixtures.length+" possible fixture(s) found. Choose the correct match below.";
-
  }catch(error){
   if(statusEl)statusEl.textContent="Fixture search failed: "+error.message;
  }
@@ -1217,23 +863,19 @@ async function manuallyFindFixture(prediction){
 
 async function savePrediction(){
  if(!db||!currentUser)return;
-
  const category=document.getElementById("marketCategory").value;
  const selectedMarket=document.getElementById("marketType").value;
  const customName=document.getElementById("customMarketName").value.trim();
  const marketType=category==="Custom Market"?customName:selectedMarket;
-
  const selection=document.getElementById("marketSelection").value.trim();
  const line=document.getElementById("marketLine").value.trim();
  const team=document.getElementById("marketTeam").value;
  const player=document.getElementById("playerName").value.trim();
-
  const parts=[marketType];
  if(selection)parts.push(selection);
  if(line)parts.push(line);
  if(team)parts.push(team==="home"?"Home Team":"Away Team");
  if(player)parts.push(player);
-
  const predictionText=parts.join(" - ");
 
  const data={
@@ -1264,27 +906,18 @@ async function savePrediction(){
  button.textContent="PUBLISHING...";
 
  try{
-  const{data:saved,error}=await db
-   .from("predictions")
-   .insert(data)
-   .select("*")
-   .single();
-
+  const{data:saved,error}=await db.from("predictions").insert(data).select("*").single();
   if(error)throw error;
 
-  [
-   "league","home","away","odds","kickoff",
-   "marketSelection","marketLine","playerName","customMarketName"
-  ].forEach(id=>document.getElementById(id).value="");
-
+  ["league","home","away","odds","kickoff","marketSelection","marketLine","playerName","customMarketName"].forEach(id=>{
+   document.getElementById(id).value="";
+  });
   document.getElementById("marketTeam").value="";
   document.getElementById("marketCategory").value="Match Result";
   updateMarketOptions();
-
   await loadPredictions();
   message("postMessage","Prediction published. Now checking SportAPI...");
   await searchAndLinkPrediction(saved,true);
-
  }catch(error){
   message("postMessage","Could not publish: "+error.message);
  }finally{
@@ -1297,22 +930,15 @@ async function savePrediction(){
 
 async function loadPredictions(){
  const box=document.getElementById("predictionsList");
-
- const{data,error}=await db
-  .from("predictions")
-  .select("*")
-  .order("created_at",{ascending:false});
-
+ const{data,error}=await db.from("predictions").select("*").order("created_at",{ascending:false});
  if(error){
   box.textContent="Could not load predictions: "+error.message;
   return;
  }
-
  if(!data||!data.length){
   box.textContent="No predictions have been posted yet.";
   return;
  }
-
  box.replaceChildren();
 
  data.forEach(p=>{
@@ -1340,15 +966,12 @@ async function loadPredictions(){
   if(p.fixture_status){
    const fixture=document.createElement("p");
    fixture.textContent="Fixture status: "+p.fixture_status+
-    (p.home_score!==null&&p.home_score!==undefined
-     ?" | Score: "+p.home_score+" - "+p.away_score:"");
+    (p.home_score!==null&&p.home_score!==undefined?" | Score: "+p.home_score+" - "+p.away_score:"");
    item.appendChild(fixture);
   }
 
   const linkInfo=document.createElement("p");
-  linkInfo.textContent=p.api_fixture_id
-   ?"SportAPI fixture ID: "+p.api_fixture_id
-   :"SportAPI fixture: Not linked";
+  linkInfo.textContent=p.api_fixture_id?"SportAPI fixture ID: "+p.api_fixture_id:"SportAPI fixture: Not linked";
   item.appendChild(linkInfo);
 
   const category=document.createElement("span");
@@ -1379,7 +1002,6 @@ async function loadPredictions(){
   item.appendChild(resultInput);
 
   const status=document.createElement("select");
-
   ["pending","won","lost","void"].forEach(s=>{
    const option=document.createElement("option");
    option.value=s;
@@ -1387,7 +1009,6 @@ async function loadPredictions(){
    if(String(p.status||"pending").toLowerCase()===s)option.selected=true;
    status.appendChild(option);
   });
-
   item.appendChild(status);
 
   const updateButton=document.createElement("button");
@@ -1408,16 +1029,11 @@ async function loadPredictions(){
 /* UPDATE PREDICTION RESULT */
 
 async function updatePrediction(id,result,status){
- const{error}=await db
-  .from("predictions")
-  .update({result:result,status:status})
-  .eq("id",id);
-
+ const{error}=await db.from("predictions").update({result:result,status:status}).eq("id",id);
  if(error){
   alert("Could not update: "+error.message);
   return;
  }
-
  alert("Prediction updated successfully.");
  await loadPredictions();
 }
@@ -1426,17 +1042,11 @@ async function updatePrediction(id,result,status){
 
 async function deletePrediction(id){
  if(!confirm("Are you sure you want to delete this prediction?"))return;
-
- const{error}=await db
-  .from("predictions")
-  .delete()
-  .eq("id",id);
-
+ const{error}=await db.from("predictions").delete().eq("id",id);
  if(error){
   alert("Could not delete: "+error.message);
   return;
  }
-
  alert("Prediction deleted.");
  await loadPredictions();
 }
@@ -1445,24 +1055,17 @@ async function deletePrediction(id){
 
 async function publishAnnouncement(){
  if(!db||!currentUser)return;
-
  const input=document.getElementById("announcementMessage");
  const textValue=input.value.trim();
-
  if(!textValue){
   message("announcementMessageStatus","Please write an announcement first.");
   return;
  }
-
- const{error}=await db
-  .from("member_announcements")
-  .insert({message:textValue,active:true});
-
+ const{error}=await db.from("member_announcements").insert({message:textValue,active:true});
  if(error){
   message("announcementMessageStatus","Could not publish announcement: "+error.message);
   return;
  }
-
  input.value="";
  message("announcementMessageStatus","Announcement published successfully. Members will see it when they log in.");
  await loadAnnouncements();
@@ -1472,22 +1075,15 @@ async function publishAnnouncement(){
 
 async function loadAnnouncements(){
  const box=document.getElementById("announcementsList");
-
- const{data,error}=await db
-  .from("member_announcements")
-  .select("*")
-  .order("created_at",{ascending:false});
-
+ const{data,error}=await db.from("member_announcements").select("*").order("created_at",{ascending:false});
  if(error){
   box.textContent="Could not load announcements: "+error.message;
   return;
  }
-
  if(!data||!data.length){
   box.textContent="No announcements have been published.";
   return;
  }
-
  box.replaceChildren();
 
  data.forEach(a=>{
@@ -1496,7 +1092,7 @@ async function loadAnnouncements(){
 
   const heading=document.createElement("strong");
   heading.textContent=a.active?"ACTIVE ANNOUNCEMENT":"INACTIVE ANNOUNCEMENT";
-  heading.style.color=a.active?"#22e879":"#ffc45c";
+  heading.style.color=a.active?"#35e879":"#ffad42";
   item.appendChild(heading);
 
   const content=document.createElement("p");
@@ -1506,10 +1102,7 @@ async function loadAnnouncements(){
   const date=document.createElement("p");
   date.className="announcement-date";
   const created=a.created_at?new Date(a.created_at):null;
-
-  date.textContent=created&&!Number.isNaN(created.getTime())
-   ?"Published: "+created.toLocaleString()
-   :"Publication date unavailable";
+  date.textContent=created&&!Number.isNaN(created.getTime())?"Published: "+created.toLocaleString():"Publication date unavailable";
   item.appendChild(date);
 
   if(a.active){
@@ -1519,7 +1112,6 @@ async function loadAnnouncements(){
    removeButton.onclick=()=>removeAnnouncement(a.id);
    item.appendChild(removeButton);
   }
-
   box.appendChild(item);
  });
 }
@@ -1528,17 +1120,11 @@ async function loadAnnouncements(){
 
 async function removeAnnouncement(id){
  if(!confirm("Remove this announcement? Members will no longer see it on future logins."))return;
-
- const{error}=await db
-  .from("member_announcements")
-  .delete()
-  .eq("id",id);
-
+ const{error}=await db.from("member_announcements").delete().eq("id",id);
  if(error){
   alert("Could not remove announcement: "+error.message);
   return;
  }
-
  alert("Announcement removed successfully.");
  await loadAnnouncements();
 }
@@ -1547,22 +1133,16 @@ async function removeAnnouncement(id){
 
 async function loadMembers(){
  const box=document.getElementById("membersList");
-
- const{data,error}=await db
-  .from("member_profiles")
-  .select("user_id,membership_tier,created_at")
-  .order("created_at",{ascending:false});
-
+ const{data,error}=await db.from("member_profiles")
+  .select("user_id,membership_tier,created_at").order("created_at",{ascending:false});
  if(error){
   box.textContent="Could not load members: "+error.message;
   return;
  }
-
  if(!data||!data.length){
   box.textContent="No members found.";
   return;
  }
-
  box.replaceChildren();
 
  data.forEach(member=>{
@@ -1574,7 +1154,6 @@ async function loadMembers(){
   item.appendChild(memberId);
 
   const memberships=parseMemberships(member.membership_tier);
-
   const tier=document.createElement("p");
   tier.className="member-tier";
   tier.textContent="Current Membership: "+membershipText(member.membership_tier);
@@ -1582,42 +1161,31 @@ async function loadMembers(){
 
   const vipRow=document.createElement("div");
   vipRow.className="membership-option";
-
   const vipCheckbox=document.createElement("input");
   vipCheckbox.type="checkbox";
   vipCheckbox.checked=memberships.vip;
   vipCheckbox.id="vip-"+member.user_id;
-
   const vipLabel=document.createElement("label");
   vipLabel.htmlFor=vipCheckbox.id;
   vipLabel.textContent="VIP MEMBERSHIP";
-
   vipRow.append(vipCheckbox,vipLabel);
   item.appendChild(vipRow);
 
   const rolloverRow=document.createElement("div");
   rolloverRow.className="membership-option";
-
   const rolloverCheckbox=document.createElement("input");
   rolloverCheckbox.type="checkbox";
   rolloverCheckbox.checked=memberships.rollover;
   rolloverCheckbox.id="rollover-"+member.user_id;
-
   const rolloverLabel=document.createElement("label");
   rolloverLabel.htmlFor=rolloverCheckbox.id;
   rolloverLabel.textContent="ROLLOVER MEMBERSHIP";
-
   rolloverRow.append(rolloverCheckbox,rolloverLabel);
   item.appendChild(rolloverRow);
 
   const updateButton=document.createElement("button");
   updateButton.textContent="UPDATE MEMBERSHIP";
-  updateButton.onclick=()=>updateMember(
-   member.user_id,
-   vipCheckbox.checked,
-   rolloverCheckbox.checked
-  );
-
+  updateButton.onclick=()=>updateMember(member.user_id,vipCheckbox.checked,rolloverCheckbox.checked);
   item.appendChild(updateButton);
   box.appendChild(item);
  });
@@ -1627,29 +1195,21 @@ async function loadMembers(){
 
 async function updateMember(userId,vipActive,rolloverActive){
  let tier="free";
-
- if(vipActive&&rolloverActive){
-  tier="vip,rollover";
- }else if(vipActive){
-  tier="vip";
- }else if(rolloverActive){
-  tier="rollover";
- }
+ if(vipActive&&rolloverActive)tier="vip,rollover";
+ else if(vipActive)tier="vip";
+ else if(rolloverActive)tier="rollover";
 
  const display=membershipText(tier);
  if(!confirm("Confirm changing this member's membership to "+display+"?"))return;
 
- const{error}=await db
-  .from("member_profiles")
-  .update({membership_tier:tier})
-  .eq("user_id",userId);
+ const{error}=await db.from("member_profiles")
+  .update({membership_tier:tier}).eq("user_id",userId);
 
  if(error){
   alert("Could not update membership: "+error.message+
    "\n\nIf you selected both memberships, your database may need a small update to allow the combined value.");
   return;
  }
-
  alert("Membership successfully updated to "+display+".");
  await loadMembers();
 }
@@ -1658,17 +1218,12 @@ async function updateMember(userId,vipActive,rolloverActive){
 
 async function checkExistingSession(){
  if(!initializeSupabase())return;
-
  const{data,error}=await db.auth.getSession();
  if(error||!data.session)return;
-
  currentUser=data.session.user;
 
- const{data:admin,error:adminError}=await db
-  .from("admins")
-  .select("user_id")
-  .eq("user_id",currentUser.id)
-  .maybeSingle();
+ const{data:admin,error:adminError}=await db.from("admins")
+  .select("user_id").eq("user_id",currentUser.id).maybeSingle();
 
  if(adminError||!admin){
   await db.auth.signOut();
@@ -1686,3 +1241,4 @@ checkExistingSession();
 
 </body>
 </html>
+
