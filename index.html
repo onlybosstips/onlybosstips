@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,12 @@
 <meta name="theme-color" content="#050b08">
 <title>ONLYBOSSTIPS | Sports Predictions & News</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- PREMIUM ONLYBOSSTIPS BLACKLETTER BRAND FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+
 <style>
 :root{
  --green:#20c878;--green2:#0b8f58;--mint:#a6f5cb;
@@ -37,6 +44,51 @@ button:hover{background:linear-gradient(135deg,#53e6a0,#0b9a5e);transform:transl
 button.secondary{background:linear-gradient(135deg,#202b24,#101812);color:#fff;border:1px solid #789786;box-shadow:none}
 button:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .hidden{display:none!important}
+
+/* =====================================================
+   ONLYBOSSTIPS PREMIUM EMERALD BLACKLETTER BRANDING
+   Lowercase ornate lettering with emerald green finish
+===================================================== */
+.brand-wordmark{
+ font-family:'UnifrakturMaguntia',serif!important;
+ font-weight:400!important;
+ text-transform:lowercase!important;
+ letter-spacing:0!important;
+ line-height:1.2;
+ display:inline-block;
+ color:#20c878;
+ background:linear-gradient(
+  180deg,
+  #d4ffe6 0%,
+  #a6f5cb 17%,
+  #20c878 52%,
+  #0b8f58 82%,
+  #075b39 100%
+ );
+ background-clip:text;
+ -webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;
+ filter:
+  drop-shadow(0 2px 2px #000b)
+  drop-shadow(0 0 8px #20c87866)
+  drop-shadow(0 0 18px #20c87830);
+}
+
+/* WELCOME BRAND */
+.hero .brand-wordmark{
+ font-size:clamp(48px,11vw,108px);
+}
+
+/* MEMBER DASHBOARD BRAND */
+.member-brand.brand-wordmark{
+ font-size:clamp(35px,8vw,54px);
+}
+
+/* FOOTER BRAND */
+.footer-brand.brand-wordmark{
+ font-size:25px;
+ vertical-align:middle;
+}
 
 /* PREMIUM WELCOME */
 #welcome{width:100%;margin:0;padding:0}
@@ -251,6 +303,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #294b38;color:#a99da4
  #welcome .hero{min-height:calc(100svh - 54px);padding:45px 15px 30px}
  #welcome .hero:after{inset:9px}
  .hero h1{font-size:clamp(36px,10vw,55px);letter-spacing:1px}
+ .hero .brand-wordmark{font-size:clamp(43px,11vw,65px)}
  .hero-tagline{font-size:10px!important;letter-spacing:1.5px}
  .hero-description{font-size:12px;max-width:310px}
  .hero-athletes{gap:6px;margin-top:23px}
@@ -263,6 +316,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #294b38;color:#a99da4
  #authSection .card.form{margin:18px auto}
  .container{padding:18px 10px 35px}
  .member-welcome{padding:18px}
+ .member-brand.brand-wordmark{font-size:clamp(34px,9vw,48px)}
  .prediction-date{font-size:13px}
  .prediction-table th,.prediction-table td{padding:10px 3px}
  .outcome-circle{width:19px;height:19px;font-size:11px}
@@ -292,7 +346,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #294b38;color:#a99da4
 <section id="welcome">
  <div class="hero">
   <p class="hero-kicker">THE HOME OF SMART SPORTS PICKS</p>
-  <h1><span class="gold">ONLYBOSSTIPS</span></h1>
+  <h1><span class="brand-wordmark">onlybosstips</span></h1>
   <p class="hero-tagline">✦ WHERE SMART PREDICTIONS BEGIN ✦</p>
   <p class="hero-description">YOUR HOME FOR FOOTBALL, BASKETBALL AND TENNIS PREDICTIONS, RESULTS AND EXCLUSIVE ODDS.</p>
   <div class="hero-athletes">
@@ -379,7 +433,7 @@ footer{text-align:center;padding:25px;border-top:1px solid #294b38;color:#a99da4
  </div>
 
  <div class="member-welcome">
-  <div class="member-welcome-top"><div><h2 class="member-brand">ONLYBOSSTIPS</h2><div class="member-tagline">✦ WHERE SMART PREDICTIONS BEGIN ✦</div></div></div>
+  <div class="member-welcome-top"><div><h2 class="member-brand brand-wordmark">onlybosstips</h2><div class="member-tagline">✦ WHERE SMART PREDICTIONS BEGIN ✦</div></div></div>
   <div class="member-profile-row">
    <div class="member-avatar"><svg viewBox="0 0 24 24"><path d="M12 12a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Zm0 2c-4.1 0-7.4 2.1-7.4 4.8V21h14.8v-2.2c0-2.7-3.3-4.8-7.4-4.8Z"/></svg></div>
    <div><p id="memberEmail" class="member-email"></p><div class="member-email-label">MEMBER ACCOUNT</div></div>
@@ -456,7 +510,8 @@ footer{text-align:center;padding:25px;border-top:1px solid #294b38;color:#a99da4
 <div id="announcementOverlay" class="announcement-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="announcementTitle">
  <div class="announcement-box"><button class="announcement-close" onclick="closeAnnouncement()" aria-label="Close announcement">×</button><h2 id="announcementTitle">IMPORTANT ANNOUNCEMENT</h2><p id="announcementMessage"></p></div>
 </div>
-<footer>ONLYBOSSTIPS © 2026. All rights reserved.</footer>
+
+<footer><span class="footer-brand brand-wordmark">onlybosstips</span> © 2026. All rights reserved.</footer>
 
 <script>
  const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
