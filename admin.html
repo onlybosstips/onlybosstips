@@ -1053,3 +1053,636 @@ window.addEventListener("touchend",async event=>{
 </script>
 </body>
 </html>
+
+/* SPORTAPI FIXTURE SEARCH AND LINKING */
+
+function getFixtureId(f){
+ return f?.fixture_id??f?.id??f?.fixture?.id??null;
+}
+
+function getFixtureLabel(f){
+ const home=f.home_team||f.homeTeam?.name||f.home?.name||"Home team";
+ const away=f.away_team||f.awayTeam?.name||f.away?.name||"Away team";
+ const date=f.date||f.kickoff||f.kickoff_utc||"Date unavailable";
+ return home+" vs "+away+" — "+date;
+}
+
+async function getAdminAccessToken(){
+ const{data,error}=await db.auth.getSession();
+ if(error)throw error;
+ const token=data?.session?.access_token;
+ if(!token)throw new Error("Your admin session has expired. Please log out and log in again.");
+ return token;
+}
+
+async function findFixturesForPrediction(prediction){
+ const kickoff=String(prediction.kickoff||"");
+ const date=kickoff.slice(0,10);
+ if(!date)throw new Error("This prediction has no valid kickoff date.");
+
+ const params=new URLSearchParams({
+  home:prediction.home_team,
+  away:prediction.away_team,
+  date
+ });
+
+ const response=await fetch(BACKEND_URL+"/fixtures/search?"+params.toString());
+ let result;
+
+ try{result=await response.json();}
+ catch{throw new Error("Fixture search returned an unreadable response.");}
+
+ if(!response.ok||result.success===false){
+  throw new Error(result.message||"Fixture search failed.");
+ }
+
+ return Array.isArray(result.fixtures)
+  ?result.fixtures
+  :Array.isArray(result.data?.fixtures)
+   ?result.data.fixtures
+   :[];
+}
+
+async function linkFixture(predictionId,fixtureId){
+ const token=await getAdminAccessToken();
+
+ const response=await fetch(BACKEND_URL+"/predictions/link-fixture",{
+  method:"POST",
+  headers:{
+   "Content-Type":"application/json",
+   "Authorization":"Bearer "+token
+  },
+  body:JSON.stringify({
+   prediction_id:predictionId,
+   fixture_id:fixtureId
+  })
+ });
+
+ let result;
+ try{result=await response.json();}
+ catch{throw new Error("The backend returned an unreadable response while linking the match.");}
+
+ if(!response.ok||result.success===false){
+  throw new Error(result.message||"Could not link this fixture.");
+ }
+ return result;
+}
+
+async function searchAndLinkPrediction(prediction,showMessages=true){
+ try{
+  if(showMessages)message("postMessage","Prediction saved. Searching SportAPI for the correct fixture...");
+
+  const fixtures=await findFixturesForPrediction(prediction);
+
+  if(!fixtures.length){
+   if(showMessages)message("postMessage","Prediction published, but no matching SportAPI fixture was found. It remains unlinked. You can try FIND FIXTURE later from Manage Predictions.");
+   return{linked:false,count:0};
+  }
+
+  if(fixtures.length===1){
+   const fixtureId=getFixtureId(fixtures[0]);
+   if(fixtureId===null||fixtureId===undefined){
+    throw new Error("A matching fixture was found, but its fixture ID was missing. The prediction remains unlinked.");
+   }
+
+   await linkFixture(prediction.id,fixtureId);
+
+   if(showMessages)message("postMessage","Prediction published and successfully linked to SportAPI: "+getFixtureLabel(fixtures[0]));
+   await loadPredictions();
+   return{linked:true,count:1};
+  }
+
+  if(showMessages)message("postMessage","Prediction published. SportAPI found "+fixtures.length+" possible matches. Open Manage Predictions and tap FIND FIXTURE to choose the correct one. Nothing has been linked yet.");
+  await loadPredictions();
+  return{linked:false,count:fixtures.length};
+
+ }catch(error){
+  if(showMessages)message("postMessage","Prediction was published, but automatic fixture linking did not complete: "+error.message+". It remains available in Manage Predictions so you can retry.");
+  return{linked:false,error:error.message};
+ }
+}
+
+async function manuallyFindFixture(prediction){
+ const statusEl=document.getElementById("fixture-status-"+prediction.id);
+ if(statusEl)statusEl.textContent="Searching SportAPI...";
+
+ try{
+  const fixtures=await findFixturesForPrediction(prediction);
+
+  if(!fixtures.length){
+   if(statusEl)statusEl.textContent="No matching fixture found. Check the team names and kickoff date.";
+   return;
+  }
+
+  const choices=document.getElementById("fixture-choices-"+prediction.id);
+  choices.replaceChildren();
+
+  const heading=document.createElement("p");
+  heading.textContent="Select the correct fixture. Do not choose unless the teams and date match.";
+  choices.appendChild(heading);
+
+  fixtures.forEach(f=>{
+   const id=getFixtureId(f);
+   const button=document.createElement("button");
+   button.className="fixture-choice";
+   button.textContent=getFixtureLabel(f);
+   button.disabled=id===null||id===undefined;
+
+   button.onclick=async()=>{
+    button.disabled=true;
+    button.textContent="LINKING...";
+
+    try{
+     await linkFixture(prediction.id,id);
+     if(statusEl)statusEl.textContent="Fixture linked successfully.";
+     choices.replaceChildren();
+     await loadPredictions();
+    }catch(error){
+     button.disabled=false;
+     button.textContent=getFixtureLabel(f);
+     if(statusEl)statusEl.textContent="Could not link: "+error.message;
+    }
+   };
+   choices.appendChild(button);
+  });
+
+  if(statusEl)statusEl.textContent=fixtures.length+" possible fixture(s) found. Choose the correct match below.";
+
+ }catch(error){
+  if(statusEl)statusEl.textContent="Fixture search failed: "+error.message;
+ }
+}
+
+/* PUBLISH PREDICTION */
+
+async function savePrediction(){
+ if(!db||!currentUser)return;
+
+ const category=document.getElementById("marketCategory").value;
+ const selectedMarket=document.getElementById("marketType").value;
+ const customName=document.getElementById("customMarketName").value.trim();
+ const marketType=category==="Custom Market"?customName:selectedMarket;
+
+ const selection=document.getElementById("marketSelection").value.trim();
+ const line=document.getElementById("marketLine").value.trim();
+ const team=document.getElementById("marketTeam").value;
+ const player=document.getElementById("playerName").value.trim();
+
+ const parts=[marketType];
+ if(selection)parts.push(selection);
+ if(line)parts.push(line);
+ if(team)parts.push(team==="home"?"Home Team":"Away Team");
+ if(player)parts.push(player);
+
+ const predictionText=parts.join(" - ");
+
+ const data={
+  league:document.getElementById("league").value.trim(),
+  home_team:document.getElementById("home").value.trim(),
+  away_team:document.getElementById("away").value.trim(),
+  prediction:predictionText,
+  odds:document.getElementById("odds").value.trim(),
+  kickoff:document.getElementById("kickoff").value,
+  visibility:document.getElementById("visibility").value,
+  status:"pending",
+  market_category:category,
+  market_type:marketType,
+  market_selection:selection||null,
+  market_line:line||null,
+  market_team:team||null,
+  player_name:player||null
+ };
+
+ if(!data.league||!data.home_team||!data.away_team||
+    !data.odds||!data.kickoff||!marketType||!selection){
+  message("postMessage","Please complete the match details, market, selection, odds and kickoff time.");
+  return;
+ }
+
+ const button=document.getElementById("publishButton");
+ button.disabled=true;
+ button.textContent="PUBLISHING...";
+
+ try{
+  const{data:saved,error}=await db
+   .from("predictions")
+   .insert(data)
+   .select("*")
+   .single();
+
+  if(error)throw error;
+
+  [
+   "league","home","away","odds","kickoff",
+   "marketSelection","marketLine","playerName","customMarketName"
+  ].forEach(id=>document.getElementById(id).value="");
+
+  document.getElementById("marketTeam").value="";
+  document.getElementById("marketCategory").value="Match Result";
+  updateMarketOptions();
+
+  await loadPredictions();
+  message("postMessage","Prediction published. Now checking SportAPI...");
+  await searchAndLinkPrediction(saved,true);
+
+ }catch(error){
+  message("postMessage","Could not publish: "+error.message);
+ }finally{
+  button.disabled=false;
+  button.textContent="PUBLISH PREDICTION";
+ }
+}
+
+/* LOAD PREDICTIONS */
+
+async function loadPredictions(){
+ const box=document.getElementById("predictionsList");
+
+ const{data,error}=await db
+  .from("predictions")
+  .select("*")
+  .order("created_at",{ascending:false});
+
+ if(error){
+  box.textContent="Could not load predictions: "+error.message;
+  return;
+ }
+
+ if(!data||!data.length){
+  box.textContent="No predictions have been posted yet.";
+  return;
+ }
+
+ box.replaceChildren();
+
+ data.forEach(p=>{
+  const item=document.createElement("div");
+  item.className="item";
+
+  const heading=document.createElement("strong");
+  heading.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away");
+  item.appendChild(heading);
+
+  const details=document.createElement("p");
+  details.textContent=(p.league||"")+" | "+(p.prediction||"")+" | Odds: "+(p.odds||"");
+  item.appendChild(details);
+
+  const date=document.createElement("p");
+  date.textContent="Kickoff: "+(p.kickoff||"Not available");
+  item.appendChild(date);
+
+  if(p.market_category){
+   const market=document.createElement("p");
+   market.textContent="Market: "+p.market_category+(p.market_type?" / "+p.market_type:"");
+   item.appendChild(market);
+  }
+
+  if(p.fixture_status){
+   const fixture=document.createElement("p");
+   fixture.textContent="Fixture status: "+p.fixture_status+
+    (p.home_score!==null&&p.home_score!==undefined
+     ?" | Score: "+p.home_score+" - "+p.away_score:"");
+   item.appendChild(fixture);
+  }
+
+  const linkInfo=document.createElement("p");
+  linkInfo.textContent=p.api_fixture_id
+   ?"SportAPI fixture ID: "+p.api_fixture_id
+   :"SportAPI fixture: Not linked";
+  item.appendChild(linkInfo);
+
+  const category=document.createElement("span");
+  category.className="category-tag";
+  category.textContent=(p.visibility||"free").toUpperCase()+" ODDS";
+  item.appendChild(category);
+
+  if(!p.api_fixture_id){
+   const findButton=document.createElement("button");
+   findButton.className="secondary";
+   findButton.textContent="FIND / LINK FIXTURE";
+   findButton.onclick=()=>manuallyFindFixture(p);
+   item.appendChild(findButton);
+
+   const status=document.createElement("p");
+   status.id="fixture-status-"+p.id;
+   status.className="field-help";
+   item.appendChild(status);
+
+   const choices=document.createElement("div");
+   choices.id="fixture-choices-"+p.id;
+   item.appendChild(choices);
+  }
+
+  const resultInput=document.createElement("input");
+  resultInput.placeholder="Enter result";
+  resultInput.value=p.result||"";
+  item.appendChild(resultInput);
+
+  const status=document.createElement("select");
+
+  ["pending","won","lost","void"].forEach(s=>{
+   const option=document.createElement("option");
+   option.value=s;
+   option.textContent=s.toUpperCase();
+   if(String(p.status||"pending").toLowerCase()===s)option.selected=true;
+   status.appendChild(option);
+  });
+
+  item.appendChild(status);
+
+  const updateButton=document.createElement("button");
+  updateButton.textContent="UPDATE RESULT";
+  updateButton.onclick=()=>updatePrediction(p.id,resultInput.value,status.value);
+  item.appendChild(updateButton);
+
+  const deleteButton=document.createElement("button");
+  deleteButton.textContent="DELETE";
+  deleteButton.className="danger";
+  deleteButton.onclick=()=>deletePrediction(p.id);
+  item.appendChild(deleteButton);
+
+  box.appendChild(item);
+ });
+}
+
+/* UPDATE PREDICTION RESULT */
+
+async function updatePrediction(id,result,status){
+ const{error}=await db
+  .from("predictions")
+  .update({result:result,status:status})
+  .eq("id",id);
+
+ if(error){
+  alert("Could not update: "+error.message);
+  return;
+ }
+
+ alert("Prediction updated successfully.");
+ await loadPredictions();
+}
+
+/* MANUAL DELETE PREDICTION */
+
+async function deletePrediction(id){
+ if(!confirm("Are you sure you want to delete this prediction?"))return;
+
+ const{error}=await db
+  .from("predictions")
+  .delete()
+  .eq("id",id);
+
+ if(error){
+  alert("Could not delete: "+error.message);
+  return;
+ }
+
+ alert("Prediction deleted.");
+ await loadPredictions();
+}
+
+/* PUBLISH ANNOUNCEMENT */
+
+async function publishAnnouncement(){
+ if(!db||!currentUser)return;
+
+ const input=document.getElementById("announcementMessage");
+ const textValue=input.value.trim();
+
+ if(!textValue){
+  message("announcementMessageStatus","Please write an announcement first.");
+  return;
+ }
+
+ const{error}=await db
+  .from("member_announcements")
+  .insert({message:textValue,active:true});
+
+ if(error){
+  message("announcementMessageStatus","Could not publish announcement: "+error.message);
+  return;
+ }
+
+ input.value="";
+ message("announcementMessageStatus","Announcement published successfully. Members will see it when they log in.");
+ await loadAnnouncements();
+}
+
+/* LOAD ANNOUNCEMENTS */
+
+async function loadAnnouncements(){
+ const box=document.getElementById("announcementsList");
+
+ const{data,error}=await db
+  .from("member_announcements")
+  .select("*")
+  .order("created_at",{ascending:false});
+
+ if(error){
+  box.textContent="Could not load announcements: "+error.message;
+  return;
+ }
+
+ if(!data||!data.length){
+  box.textContent="No announcements have been published.";
+  return;
+ }
+
+ box.replaceChildren();
+
+ data.forEach(a=>{
+  const item=document.createElement("div");
+  item.className="item";
+
+  const heading=document.createElement("strong");
+  heading.textContent=a.active?"ACTIVE ANNOUNCEMENT":"INACTIVE ANNOUNCEMENT";
+  heading.style.color=a.active?"#22e879":"#ffc45c";
+  item.appendChild(heading);
+
+  const content=document.createElement("p");
+  content.textContent=a.message;
+  item.appendChild(content);
+
+  const date=document.createElement("p");
+  date.className="announcement-date";
+  const created=a.created_at?new Date(a.created_at):null;
+
+  date.textContent=created&&!Number.isNaN(created.getTime())
+   ?"Published: "+created.toLocaleString()
+   :"Publication date unavailable";
+  item.appendChild(date);
+
+  if(a.active){
+   const removeButton=document.createElement("button");
+   removeButton.textContent="REMOVE ANNOUNCEMENT";
+   removeButton.className="danger";
+   removeButton.onclick=()=>removeAnnouncement(a.id);
+   item.appendChild(removeButton);
+  }
+
+  box.appendChild(item);
+ });
+}
+
+/* REMOVE ANNOUNCEMENT */
+
+async function removeAnnouncement(id){
+ if(!confirm("Remove this announcement? Members will no longer see it on future logins."))return;
+
+ const{error}=await db
+  .from("member_announcements")
+  .delete()
+  .eq("id",id);
+
+ if(error){
+  alert("Could not remove announcement: "+error.message);
+  return;
+ }
+
+ alert("Announcement removed successfully.");
+ await loadAnnouncements();
+}
+
+/* LOAD MEMBERS */
+
+async function loadMembers(){
+ const box=document.getElementById("membersList");
+
+ const{data,error}=await db
+  .from("member_profiles")
+  .select("user_id,membership_tier,created_at")
+  .order("created_at",{ascending:false});
+
+ if(error){
+  box.textContent="Could not load members: "+error.message;
+  return;
+ }
+
+ if(!data||!data.length){
+  box.textContent="No members found.";
+  return;
+ }
+
+ box.replaceChildren();
+
+ data.forEach(member=>{
+  const item=document.createElement("div");
+  item.className="item";
+
+  const memberId=document.createElement("p");
+  memberId.textContent="Member ID: "+member.user_id;
+  item.appendChild(memberId);
+
+  const memberships=parseMemberships(member.membership_tier);
+
+  const tier=document.createElement("p");
+  tier.className="member-tier";
+  tier.textContent="Current Membership: "+membershipText(member.membership_tier);
+  item.appendChild(tier);
+
+  const vipRow=document.createElement("div");
+  vipRow.className="membership-option";
+
+  const vipCheckbox=document.createElement("input");
+  vipCheckbox.type="checkbox";
+  vipCheckbox.checked=memberships.vip;
+  vipCheckbox.id="vip-"+member.user_id;
+
+  const vipLabel=document.createElement("label");
+  vipLabel.htmlFor=vipCheckbox.id;
+  vipLabel.textContent="VIP MEMBERSHIP";
+
+  vipRow.append(vipCheckbox,vipLabel);
+  item.appendChild(vipRow);
+
+  const rolloverRow=document.createElement("div");
+  rolloverRow.className="membership-option";
+
+  const rolloverCheckbox=document.createElement("input");
+  rolloverCheckbox.type="checkbox";
+  rolloverCheckbox.checked=memberships.rollover;
+  rolloverCheckbox.id="rollover-"+member.user_id;
+
+  const rolloverLabel=document.createElement("label");
+  rolloverLabel.htmlFor=rolloverCheckbox.id;
+  rolloverLabel.textContent="ROLLOVER MEMBERSHIP";
+
+  rolloverRow.append(rolloverCheckbox,rolloverLabel);
+  item.appendChild(rolloverRow);
+
+  const updateButton=document.createElement("button");
+  updateButton.textContent="UPDATE MEMBERSHIP";
+  updateButton.onclick=()=>updateMember(
+   member.user_id,
+   vipCheckbox.checked,
+   rolloverCheckbox.checked
+  );
+
+  item.appendChild(updateButton);
+  box.appendChild(item);
+ });
+}
+
+/* UPDATE MEMBERSHIP */
+
+async function updateMember(userId,vipActive,rolloverActive){
+ let tier="free";
+
+ if(vipActive&&rolloverActive){
+  tier="vip,rollover";
+ }else if(vipActive){
+  tier="vip";
+ }else if(rolloverActive){
+  tier="rollover";
+ }
+
+ const display=membershipText(tier);
+ if(!confirm("Confirm changing this member's membership to "+display+"?"))return;
+
+ const{error}=await db
+  .from("member_profiles")
+  .update({membership_tier:tier})
+  .eq("user_id",userId);
+
+ if(error){
+  alert("Could not update membership: "+error.message+
+   "\n\nIf you selected both memberships, your database may need a small update to allow the combined value.");
+  return;
+ }
+
+ alert("Membership successfully updated to "+display+".");
+ await loadMembers();
+}
+
+/* RESTORE EXISTING ADMIN SESSION */
+
+async function checkExistingSession(){
+ if(!initializeSupabase())return;
+
+ const{data,error}=await db.auth.getSession();
+ if(error||!data.session)return;
+
+ currentUser=data.session.user;
+
+ const{data:admin,error:adminError}=await db
+  .from("admins")
+  .select("user_id")
+  .eq("user_id",currentUser.id)
+  .maybeSingle();
+
+ if(adminError||!admin){
+  await db.auth.signOut();
+  currentUser=null;
+  return;
+ }
+
+ document.getElementById("loginPanel").classList.add("hidden");
+ document.getElementById("dashboard").classList.remove("hidden");
+ await loadAll();
+}
+
+checkExistingSession();
+</script>
+
+</body>
+</html>
