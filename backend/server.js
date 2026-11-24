@@ -1,1210 +1,2261 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050b08">
-<title>ONLYBOSSTIPS | Sports Predictions & News</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-:root{
- --green:#20c878;--green2:#0b8f58;--mint:#a6f5cb;
- --bg:#050b08;--panel:#101a14;--panel2:#17251c;
- --muted:#aabbb0;--white:#fff;--line:#294b38;
- --gold:#d9f99d;--danger:#ff7185;--silver:#dce8df;
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
- margin:0;color:var(--white);font-family:Arial,sans-serif;min-height:100vh;
- background:radial-gradient(ellipse at 50% -20%,#1b3828 0%,#0c1710 40%,#050b08 80%);
- background-attachment:fixed
-}
-header,section,footer{position:relative;z-index:1}
-header{
- padding:13px 6%;display:flex;justify-content:flex-end;align-items:center;
- border-bottom:1px solid #ffffff12;background:#07100bea;
- backdrop-filter:blur(14px);gap:14px;position:sticky;top:0;z-index:100;
- box-shadow:0 5px 25px #0009
-}
-button{
- border:1px solid var(--green);padding:13px 18px;border-radius:8px;
- background:linear-gradient(135deg,var(--green),#087746);color:#041109;
- font-weight:900;cursor:pointer;box-shadow:0 4px 18px #20c87835;
- transition:.2s
-}
-button:hover{background:linear-gradient(135deg,#53e6a0,#0b9a5e);transform:translateY(-1px);box-shadow:0 6px 22px #20c87855}
-button.secondary{background:linear-gradient(135deg,#202b24,#101812);color:#fff;border:1px solid #789786;box-shadow:none}
-button:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.hidden{display:none!important}
+const express = require("express");
+const { createClient } = require("@supabase/supabase-js");
 
-/* =====================================================
-   ONLYBOSSTIPS - PREMIUM WHITE AND EMERALD BRANDING
-===================================================== */
-.brand-wordmark{
- font-family:Arial,sans-serif!important;
- font-weight:1000!important;
- text-transform:uppercase!important;
- letter-spacing:clamp(1px,.35vw,3px)!important;
- line-height:1.1;
- display:inline-block;
- color:#f4f8f5!important;
- background:none!important;
- -webkit-text-fill-color:initial!important;
- filter:drop-shadow(0 3px 8px #20c87825);
- text-shadow:0 2px 12px #0008;
-}
-.brand-only{
- color:#f4f8f5!important;
- -webkit-text-fill-color:#f4f8f5!important;
-}
-.brand-boss{
- color:#20c878!important;
- -webkit-text-fill-color:#20c878!important;
- text-shadow:0 0 14px #20c87830;
-}
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-/* HOMEPAGE BRAND */
-.hero .brand-wordmark{
- font-size:clamp(48px,11vw,108px);
-}
+// =====================================
+// CORS
+// =====================================
 
-/* MEMBER DASHBOARD BRAND */
-.member-brand.brand-wordmark{
- font-size:clamp(35px,8vw,54px);
-}
+app.use((req, res, next) => {
+  const allowedOrigins = ["https://onlybosstips.onrender.com"];
+  const origin = req.headers.origin;
 
-/* FOOTER BRAND */
-.footer-brand.brand-wordmark{
- font-family:Arial,sans-serif!important;
- font-size:12px!important;
- font-weight:700!important;
- letter-spacing:.5px!important;
- line-height:inherit;
- filter:none!important;
- text-shadow:none!important;
- vertical-align:baseline;
-}
-
-/* PREMIUM WELCOME */
-#welcome{width:100%;margin:0;padding:0}
-#welcome .hero{
- width:100%;min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);
- padding:clamp(45px,8vh,85px) 22px 40px;display:flex;flex-direction:column;
- align-items:center;justify-content:center;text-align:center;position:relative;
- isolation:isolate;overflow:hidden;border-bottom:1px solid #20c87855;
- background:
-  linear-gradient(90deg,#030805ed 0%,#06100bd9 45%,#06100bc9 100%),
-  linear-gradient(0deg,#050b08 0%,transparent 45%,#050b0877 100%),
-  url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2000&q=90") center/cover no-repeat
-}
-#welcome .hero:before{
- content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
- background:radial-gradient(ellipse at 50% 40%,#20c8782b,transparent 55%),
- linear-gradient(120deg,#20c87816,transparent 45%,#20c87812)
-}
-#welcome .hero:after{content:"";position:absolute;inset:15px;border:1px solid #ffffff26;pointer-events:none;z-index:-1}
-.hero>*{position:relative;z-index:1}
-.hero-kicker{color:var(--mint);font-size:10px;font-weight:900;letter-spacing:4px;margin:0 0 17px}
-.hero h1{
- font-size:clamp(43px,10vw,100px);font-weight:1000;letter-spacing:clamp(1px,.7vw,7px);
- margin:0 0 15px;line-height:1;text-transform:uppercase;
- text-shadow:0 5px 28px #000,0 0 35px #20c87840
-}
-.hero .gold{
- display:inline-block;color:#fff;background:linear-gradient(180deg,#fff 5%,#dce8df 45%,#67e6a5 100%);
- background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;
- filter:drop-shadow(0 5px 18px #000b)
-}
-.hero-tagline{font-size:clamp(11px,1.7vw,15px)!important;font-weight:900;letter-spacing:clamp(1.5px,.45vw,4px);color:#e4f2e9!important;margin:0 0 17px!important}
-.hero-description{max-width:620px;margin:0 auto;font-size:clamp(12px,1.7vw,15px);line-height:1.8;letter-spacing:.8px;color:#dce8df!important}
-.hero-athletes{
- display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;
- width:min(760px,100%);margin:30px auto 0
-}
-.athlete-card{height:clamp(100px,18vw,170px);position:relative;overflow:hidden;border:1px solid #72dba4;border-radius:10px;background:#102016;box-shadow:0 8px 25px #0009}
-.athlete-card img{width:100%;height:100%;object-fit:cover;display:block;opacity:.78;transition:transform .4s}
-.athlete-card:hover img{transform:scale(1.07)}
-.athlete-card:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#030805e8,transparent 75%)}
-.athlete-card span{position:absolute;z-index:2;bottom:11px;left:8px;right:8px;font-size:clamp(9px,1.7vw,12px);font-weight:900;letter-spacing:1.5px;text-align:center;color:#fff}
-.actions{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;margin-top:27px}
-.actions button{min-width:190px;min-height:51px;padding:15px 23px;border-radius:9px;font-size:12px;letter-spacing:1px}
-.hero-bottom-note{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:30px;color:#cde7d6;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
-.hero-bottom-note:before,.hero-bottom-note:after{content:"";width:28px;height:1px;background:linear-gradient(90deg,transparent,var(--green))}
-.hero-bottom-note:after{transform:rotate(180deg)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.hero h1,.hero-tagline,.hero-description,.hero-athletes,.actions,.hero-bottom-note{animation:fadeUp .8s ease both}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
-
-/* AUTH */
-body.auth-mode{background:#050b08}
-body.auth-mode:before{content:"";position:fixed;inset:0;z-index:0;background:linear-gradient(90deg,#030805ed,#06100bd9,#030805ed),url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2000&q=90") center/cover;pointer-events:none}
-#authSection{min-height:calc(100vh - 70px);display:flex;align-items:center;justify-content:center;position:relative;z-index:2}
-#authSection .card.form{background:linear-gradient(145deg,#18251cf5,#09110cf5);border:1px solid #267c50;box-shadow:0 15px 55px #000b,0 0 35px #20c87820;backdrop-filter:blur(16px);border-radius:16px}
-#authSection h2{color:var(--mint);letter-spacing:1.5px}
-#authSection input{background:#080f0a;border:1px solid #365943}
-#authSection input:focus{outline:2px solid #20c87844;border-color:var(--green)}
-#authSection .muted{color:#b7c8bc}
-#authSection .link{color:var(--mint)}
-
-/* SHARED CONTENT */
-.container{max-width:1100px;margin:auto;padding:25px 18px 60px}
-.card{background:linear-gradient(145deg,#17231b,#0b120d);border:1px solid #294b38;border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 8px 25px #0006}
-.section-title{font-size:21px;font-weight:900;letter-spacing:1.5px;margin:30px 0 15px;padding:0 0 10px;border-bottom:1px solid #294b38;color:#fff}
-.section-title:before{content:"";display:inline-block;width:5px;height:19px;background:linear-gradient(180deg,#a6f5cb,#087746);border-radius:5px;margin-right:10px;vertical-align:-3px;box-shadow:0 0 12px #20c87855}
-.odds-intro{color:var(--muted);font-size:12px;font-weight:600;letter-spacing:.4px;margin:-7px 0 14px}
-.form{max-width:430px;margin:35px auto}
-input,select{width:100%;padding:14px;margin:8px 0 16px;background:#080f0a;color:#fff;border:1px solid #365943;border-radius:7px;font-size:16px}
-input:focus,select:focus{outline:2px solid #20c87844;border-color:var(--green)}
-label{font-size:13px;color:#d1e0d5}
-.muted{color:var(--muted);font-size:14px;line-height:1.7}
-.link{color:var(--mint);text-decoration:underline;cursor:pointer}
-.badge{display:inline-block;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:bold;background:#343f37;color:#fff}
-.badge.vip{background:linear-gradient(135deg,#20c878,#087746);color:#041109}
-.badge.rollover{background:#14251a;color:var(--mint);border:1px solid #267c50}
-.message{margin:12px 0;color:var(--mint);font-size:14px;overflow-wrap:anywhere}
-.payment-price{font-size:34px;font-weight:bold;color:var(--mint);margin:15px 0}
-.payment-price small{font-size:19px;color:#ddd}
-.bank-details{background:#080f0a;border:1px solid #365943;border-radius:9px;padding:15px;margin:15px 0;line-height:2;overflow-wrap:anywhere}
-.bank-details p{margin:5px 0}
-.payment-button,.vip-upgrade-button,.close-payment{width:100%;margin-top:10px}
-.vip-upgrade-button{padding:16px;font-size:15px;border-radius:9px;margin:5px 0 20px}
-.membership-choice{background:linear-gradient(145deg,#1b2b20,#0b130d);border:1px solid #365943;border-radius:10px;padding:15px;margin:12px 0}
-.membership-choice h3{margin:0 0 8px;color:var(--mint);font-size:16px}
-.membership-choice p{margin:5px 0;color:#c4d3c8;font-size:13px;line-height:1.6}
-.membership-choice button{width:100%;margin-top:10px}
-.rollover-button{background:linear-gradient(135deg,#26392c,#122017);color:#fff;border:1px solid #5b8d6c}
-.member-welcome{padding:22px;background:radial-gradient(ellipse at 100% 0%,#155c37 0%,transparent 55%),linear-gradient(135deg,#202e24,#101a13 65%,#0b120d);border:1px solid #267c50;border-radius:15px;margin-bottom:20px;box-shadow:0 8px 28px #0008;color:#fff}
-.member-welcome-top{display:flex;align-items:center;gap:15px;margin-bottom:20px}
-.member-brand{
- font-family:Arial,sans-serif!important;
- font-size:clamp(35px,8vw,54px);
- font-weight:1000;
- color:#fff;
- letter-spacing:clamp(1px,.35vw,3px);
- margin:0;
-}
-.member-tagline{font-size:9px;color:#e1e3ea;letter-spacing:1.5px;margin-top:5px}
-.member-profile-row{display:flex;align-items:center;gap:12px;margin:14px 0}
-.member-avatar{width:43px;height:43px;min-width:43px;border-radius:50%;background:linear-gradient(135deg,#20c878,#087746);display:grid;place-items:center;position:relative}
-.member-avatar:after{content:"";position:absolute;width:11px;height:11px;right:-1px;bottom:0;background:#20c878;border:2px solid #171717;border-radius:50%}
-.member-avatar svg{width:25px;height:25px;fill:#fff}
-.member-email{color:#fff;font-size:13px;font-weight:bold;overflow-wrap:anywhere;margin:0}
-.member-email-label{font-size:10px;color:#bbb;margin-top:4px}
-.explore-card,.member-responsible{background:linear-gradient(145deg,#17231b,#0b120d);border:1px solid #294b38;border-radius:12px;padding:21px;margin-top:30px}
-.explore-title{color:var(--mint);font-size:19px;font-weight:900;letter-spacing:2px;margin:0 0 18px}
-.explore-links{display:flex;flex-direction:column;gap:16px}
-.explore-link{display:flex;align-items:center;gap:12px;color:#ddd;font-size:14px;text-decoration:none;cursor:pointer}
-.responsible{margin-top:25px;padding-top:20px;border-top:1px solid #294b38}
-.responsible-heading{display:flex;align-items:center;gap:9px;color:var(--mint);font-size:13px;font-weight:900;letter-spacing:1px;margin-bottom:9px}
-.responsible p{color:var(--muted);font-size:12px;line-height:1.8;margin:0}
-.member-responsible .responsible{margin:0;padding:0;border:0}
-.logout-bottom{margin-top:18px;padding:16px;width:100%;border:1px solid #365943;background:linear-gradient(135deg,#26392c,#122017);color:#fff;border-radius:9px}
-
-/* PASSWORD VISIBILITY */
-.password-field{position:relative;width:100%;margin:8px 0 16px}
-.password-field input{width:100%;margin:0;padding:14px 52px 14px 14px}
-.password-toggle{position:absolute;right:5px;top:50%;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;padding:0;background:transparent;color:#b9c9bd;border:0;border-radius:7px;box-shadow:none}
-.password-toggle:hover{background:#203729;color:#fff;box-shadow:none}
-.password-toggle svg{width:21px;height:21px;display:block;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.password-toggle .eye-slash{display:none}
-.password-toggle.is-visible .eye-open{display:none}
-.password-toggle.is-visible .eye-slash{display:block}
-
-/* PREDICTIONS */
-.selected-calendar-date{display:flex;align-items:center;gap:10px;margin:0 0 15px;padding:12px 14px;background:#17251c;border:1px solid #365943;border-radius:9px;color:#fff;font-size:14px;font-weight:700}
-.calendar-icon{width:22px;height:22px;flex:0 0 22px;color:var(--mint);stroke:currentColor;fill:none;stroke-width:1.7}
-.prediction-controls{background:linear-gradient(145deg,#17231b,#0b120d);border:1px solid #294b38;border-radius:10px;padding:12px;margin:12px 0 20px}
-.date-tabs{display:flex;gap:8px;width:100%;padding:2px 0 12px}
-.date-tab{flex:1;min-width:0;border:1px solid #365943;background:#202b23;color:#ddd;padding:9px 5px;border-radius:7px;font-size:12px;box-shadow:none}
-.league-tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;width:100%;padding:2px 0}
-.league-tab{width:100%;min-width:0;min-height:34px;border:1px solid #365943;background:#202b23;color:#ddd;padding:6px 2px;border-radius:20px;font-size:clamp(8px,2vw,10px);line-height:1.15;box-shadow:none}
-.date-tab.active,.league-tab.active{background:linear-gradient(135deg,#20c878,#087746);color:#041109;border-color:#a6f5cb;box-shadow:0 3px 12px #20c87835}
-.prediction-date{color:#fff;font-size:15px;font-weight:900;margin:22px 0 12px;padding:11px 13px;border-left:4px solid var(--green);border-radius:5px;background:linear-gradient(90deg,#24382a,#17251c)}
-.prediction-table-wrap{width:100%;overflow:hidden;border:1px solid #294b38;border-radius:9px;margin-bottom:20px}
-.prediction-table{width:100%;table-layout:fixed;border-collapse:collapse;text-align:left;background:#101a14}
-.prediction-table th{background:linear-gradient(90deg,#263b2c,#17251c);color:var(--mint);font-size:clamp(8px,2.2vw,11px);font-weight:900;padding:11px 5px;border-bottom:1px solid #267c50}
-.prediction-table th:nth-child(1){width:40%}.prediction-table th:nth-child(2){width:10%}.prediction-table th:nth-child(3){width:20%}.prediction-table th:nth-child(4){width:13%}.prediction-table th:nth-child(5){width:17%}
-.prediction-table td{padding:11px 5px;font-size:clamp(9px,2.5vw,12px);border-bottom:1px solid #263b2e;vertical-align:middle;overflow-wrap:anywhere;color:#ddd}
-.prediction-table tbody tr:last-child td{border-bottom:none}
-.prediction-table tbody tr:hover{background:#1b3022}
-.club-name{font-weight:800;color:#fff;line-height:1.35}
-.match-teams{display:flex;align-items:center;gap:5px;min-width:0;white-space:nowrap}
-.match-team{display:inline-flex;align-items:center;min-width:0;line-height:1.25}
-.team-name{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:800;color:#fff}
-.match-vs{font-size:9px;font-weight:900;color:var(--mint);flex:0 0 auto}
-.odd-value{font-weight:800;color:var(--mint);font-variant-numeric:tabular-nums}
-.prediction-value{color:#eee;font-weight:700}
-.outcome-cell{text-align:center}
-.outcome-wrap{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:clamp(8px,2.2vw,11px);font-weight:900;white-space:nowrap}
-.outcome-circle{width:22px;height:22px;border-radius:50%;display:inline-grid;place-items:center;border:1.8px solid currentColor;font-size:13px;flex-shrink:0}
-.result-won{color:#35d98a}.result-won .outcome-circle{background:#164a32;border-color:#35d98a}
-.result-lost{color:#ff7585}.result-lost .outcome-circle{background:#501b2b;border-color:#ff7585}
-.result-void{color:#ffc857}.result-void .outcome-circle{background:#4b391b;border-color:#e9b94e}
-.result-live{color:#ffdc62}.result-live .outcome-circle{color:#302300;background:#ffd34e;border-color:#ffe58a;animation:livePulse 1.35s infinite}
-.result-awaiting{color:#aaa}
-@keyframes livePulse{50%{transform:scale(1.15);box-shadow:0 0 0 6px #ffd34e18,0 0 17px #ffd34eaa}}
-.prediction-empty{color:var(--muted);font-size:14px;padding:12px 0}
-.prediction-group{margin-bottom:22px}
-footer{text-align:center;padding:25px;border-top:1px solid #294b38;color:#a99da4;font-size:12px;background:#050b08}
-
-/* ADMIN */
-.admin-panel{border:1px solid #267c50;background:linear-gradient(145deg,#17251c,#0b120d);border-radius:12px;padding:18px;margin:24px 0}
-.admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.admin-grid .full{grid-column:1/-1}
-.admin-grid input,.admin-grid select{width:100%;padding:12px;background:#080f0a;color:#fff;border:1px solid #365943;border-radius:7px;font-size:15px;margin:6px 0 12px}
-.admin-list-item{border:1px solid #294b38;border-radius:9px;padding:12px;margin:10px 0;background:#17251c}
-.admin-list-item strong{display:block;margin-bottom:8px;color:#fff}
-.admin-list-item select{padding:9px;background:#080f0a;color:#fff;border:1px solid #365943;border-radius:6px;margin-right:6px}
-.admin-list-item button{padding:9px 12px;margin:4px 3px 0 0}
-.admin-delete-button{background:linear-gradient(135deg,#8c142c,#4b0d1d);border:1px solid #ff7189;color:#fff}
-.streak-dashboard{background:linear-gradient(145deg,#17231b,#0b120d);border:1px solid #365943;border-radius:13px;padding:18px;margin:30px 0 22px}
-.streak-heading{color:var(--mint);font-size:19px;font-weight:900;margin:0 0 6px}
-.streak-intro,.streak-note{color:var(--muted);font-size:12px;line-height:1.6}
-.streak-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.streak-card{background:#1b2a20;border:1px solid #294b38;border-radius:10px;padding:14px;min-width:0}
-.streak-card h3{color:var(--mint);font-size:14px;margin:0 0 13px}
-.streak-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 8px}
-.streak-stat small{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}
-.streak-stat strong{font-size:20px;color:#fff}
-.streak-stat strong.green{color:var(--green)}
-
-/* ANNOUNCEMENTS */
-.announcement-overlay{position:fixed;inset:0;z-index:99999;background:#000d;display:flex;align-items:center;justify-content:center;padding:15px}
-.announcement-box{width:100%;max-width:400px;max-height:75vh;overflow-y:auto;background:linear-gradient(145deg,#203126,#0b120d);border:2px solid var(--green);border-radius:15px;padding:25px;box-shadow:0 15px 60px #0009;position:relative;text-align:center}
-.announcement-box h2{color:var(--mint);margin:0 25px 15px;font-size:20px}
-.announcement-box p{color:#ddd;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
-.announcement-close{position:absolute;right:10px;top:10px;background:#087746;color:#fff;padding:7px 11px;border-radius:50%;font-size:20px}
-
-/* SPORTS NEWS */
-.sports-news-section{max-width:1100px;margin:22px auto 25px;padding:0 18px}
-.sports-news-heading{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px}
-.sports-news-heading h2{font-size:17px;font-weight:900;letter-spacing:1px;margin:0;color:#fff}
-.sports-news-heading h2 span{color:var(--mint)}
-.news-live{display:flex;align-items:center;gap:6px;color:var(--mint);font-size:10px;font-weight:900}
-.news-live:before{content:"";width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 9px var(--green)}
-.news-carousel{position:relative;overflow:hidden;border-radius:13px;background:#111;border:1px solid #365943;box-shadow:0 10px 30px #0008}
-.news-track{display:flex;transition:transform .65s cubic-bezier(.22,.7,.25,1)}
-.news-card{position:relative;flex:0 0 100%;min-width:0;height:clamp(240px,43vw,390px);overflow:hidden;background:#242424}
-.news-card-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.news-card:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#080e0af2,#080e0a88 48%,#080e0e22),linear-gradient(0deg,#080e0ee8,transparent 55%);pointer-events:none}
-.news-card-content{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:clamp(18px,4vw,32px);max-width:760px}
-.news-card-category{display:inline-block;background:linear-gradient(135deg,var(--green),#087746);color:#041109;font-size:10px;font-weight:900;padding:7px 10px;border-radius:4px;margin-bottom:12px}
-.news-card-title{font-size:clamp(20px,4vw,32px);line-height:1.2;font-weight:900;color:#fff;margin:0 0 12px}
-.news-card-meta{display:flex;align-items:center;gap:10px;color:#ddd;font-size:11px;font-weight:700}
-.news-card-meta .news-source{color:var(--mint)}
-.news-card-link{position:absolute;inset:0;z-index:3;text-decoration:none}
-.news-carousel-controls{position:absolute;right:14px;top:14px;z-index:5;display:flex;gap:7px}
-.news-arrow{width:36px;height:36px;padding:0;border-radius:50%;background:#111d;border:1px solid #ffffff55;color:#fff;font-size:22px;display:grid;place-items:center;box-shadow:none}
-.news-dots{display:flex;justify-content:center;align-items:center;gap:7px;padding:12px;background:#142017}
-.news-dot{width:7px;height:7px;padding:0;border-radius:20px;background:#617568;transition:all .25s;border:0;box-shadow:none}
-.news-dot.active{width:23px;background:var(--green)}
-.news-loading,.news-error{padding:30px 18px;text-align:center;color:var(--muted);font-size:13px}
-
-@media(max-width:600px){
- header{padding:10px 12px}
- #welcome .hero{min-height:calc(100svh - 54px);padding:45px 15px 30px}
- #welcome .hero:after{inset:9px}
- .hero h1{font-size:clamp(36px,10vw,55px);letter-spacing:1px}
- .hero .brand-wordmark{font-size:clamp(43px,11vw,65px)}
- .hero-tagline{font-size:10px!important;letter-spacing:1.5px}
- .hero-description{font-size:12px;max-width:310px}
- .hero-athletes{gap:6px;margin-top:23px}
- .athlete-card{height:105px;border-radius:7px}
- .athlete-card span{font-size:8px;letter-spacing:.7px;bottom:7px}
- .actions{width:100%;max-width:330px;flex-direction:column;gap:10px;margin-top:23px}
- .actions button{width:100%;min-height:49px}
- .hero-bottom-note{margin-top:25px;font-size:8px;letter-spacing:1px}
- #authSection{padding:18px 10px}
- #authSection .card.form{margin:18px auto}
- .container{padding:18px 10px 35px}
- .member-welcome{padding:18px}
- .member-brand.brand-wordmark{font-size:clamp(34px,9vw,48px)}
- .prediction-date{font-size:13px}
- .prediction-table th,.prediction-table td{padding:10px 3px}
- .outcome-circle{width:19px;height:19px;font-size:11px}
- .prediction-controls{padding:10px}
- .date-tab{padding:9px 3px;font-size:11px}
- .league-tabs{gap:5px}
- .league-tab{padding:6px 2px;font-size:8px}
- .streak-dashboard{padding:13px}
- .streak-grid{grid-template-columns:1fr}
- .streak-card{padding:13px}
- .match-teams{gap:4px}
- .match-vs{font-size:8px}
- .admin-grid{grid-template-columns:1fr}
- .admin-grid .full{grid-column:auto}
- .sports-news-section{padding:0 10px;margin-top:18px}
- .news-card{height:280px}
- .news-card:after{background:linear-gradient(0deg,#080e0af2,#080e0a88 55%,#080e0e22)}
- .news-card-content{padding:18px}
- .news-card-title{font-size:22px}
- .news-carousel-controls{right:10px;top:10px}
-}
-</style>
-</head>
-<body>
-<header><button id="headerButton" onclick="showAuth('signup')">JOIN NOW</button></header>
-
-<section id="welcome">
- <div class="hero">
-  <p class="hero-kicker">THE HOME OF SMART SPORTS PICKS</p>
-  <h1><span class="brand-wordmark"><span class="brand-only">ONLY</span><span class="brand-boss">BOSSTIPS</span></span></h1>
-  <p class="hero-tagline">✦ WHERE SMART PREDICTIONS BEGIN ✦</p>
-  <p class="hero-description">YOUR HOME FOR FOOTBALL, BASKETBALL AND TENNIS PREDICTIONS, RESULTS AND EXCLUSIVE ODDS.</p>
-  <div class="hero-athletes">
-   <div class="athlete-card"><img src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700&q=85" alt="Football stadium and match action"><span>FOOTBALL</span></div>
-   <div class="athlete-card"><img src="https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?auto=format&fit=crop&w=700&q=85" alt="Tennis court and match action"><span>TENNIS</span></div>
-   <div class="athlete-card"><img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=700&q=85" alt="Basketball court and match action"><span>BASKETBALL</span></div>
-  </div>
-  <div class="actions">
-   <button onclick="showAuth('signup')">CREATE FREE ACCOUNT</button>
-   <button class="secondary" onclick="showAuth('login')">MEMBER LOGIN</button>
-  </div>
-  <div class="hero-bottom-note">PREDICTIONS • RESULTS • EXCLUSIVE ODDS</div>
- </div>
- <div class="container">
-  <div class="card"><h2 class="gold">FREE ODDS</h2><p class="muted">Create your free account to access FREE football predictions and match results.</p></div>
-  <div class="card"><h2 class="gold">VIP ODDS</h2><p class="muted">Exclusive VIP predictions available to approved VIP members.</p></div>
-  <div class="card"><h2 class="gold">ROLLOVER EXCLUSIVE MEMBER</h2><p class="muted">Exclusive Rollover predictions available to approved Rollover members.</p></div>
-  <div class="card"><h2 class="gold">JOIN OUR COMMUNITY</h2><p class="muted">Register today and become part of ONLYBOSSTIPS.</p><button onclick="showAuth('signup')">SIGN UP FREE</button></div>
-  <div class="explore-card">
-   <h2 class="explore-title">EXPLORE</h2>
-   <div class="explore-links">
-    <a class="explore-link" href="#" onclick="openPublicLogin(event)">Daily predictions</a>
-    <a class="explore-link" href="#" onclick="openPublicLogin(event)">Results &amp; history</a>
-    <a class="explore-link" href="#" onclick="openPublicSignup(event)">Create free account</a>
-   </div>
-   <div class="responsible"><div class="responsible-heading">PLAY RESPONSIBLY</div><p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p></div>
-  </div>
- </div>
-</section>
-
-<section id="authSection" class="container hidden">
- <div class="card form">
-  <div id="signupForm">
-   <h2>CREATE ACCOUNT</h2><p class="muted">Join ONLYBOSSTIPS as a FREE MEMBER.</p>
-   <label>Email address</label><input id="signupEmail" type="email" placeholder="Enter your email">
-   <label>Password</label><div class="password-field">
-    <input id="signupPassword" type="password" placeholder="Create a password" autocomplete="new-password">
-    <button class="password-toggle" type="button" onclick="togglePassword('signupPassword',this)" aria-label="Show password" title="Show password"><svg viewBox="0 0 24 24"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18"/></svg></button>
-   </div>
-   <button id="signupButton" onclick="signUp()">CREATE ACCOUNT</button>
-   <p class="muted">Already registered? <span class="link" onclick="showAuth('login')">Log in</span></p>
-  </div>
-  <div id="loginForm" class="hidden">
-   <h2>MEMBER LOGIN</h2><p class="muted">Log in to access your predictions.</p>
-   <label>Email address</label><input id="loginEmail" type="email" placeholder="Enter your email">
-   <label>Password</label><div class="password-field">
-    <input id="loginPassword" type="password" placeholder="Enter password" autocomplete="current-password">
-    <button class="password-toggle" type="button" onclick="togglePassword('loginPassword',this)" aria-label="Show password" title="Show password"><svg viewBox="0 0 24 24"><path class="eye-open" d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle class="eye-open" cx="12" cy="12" r="3"/><path class="eye-slash" d="M3 3l18 18"/></svg></button>
-   </div>
-   <button id="loginButton" onclick="logIn()">LOG IN</button>
-   <p class="muted"><span class="link" onclick="forgotPassword()">Forgot password?</span></p>
-   <p class="muted">Don't have an account? <span class="link" onclick="showAuth('signup')">Sign up</span></p>
-  </div>
-  <div id="recoveryForm" class="hidden">
-   <h2>RESET PASSWORD</h2><p class="muted">Enter your new password below.</p>
-   <label>New password</label><input id="newPassword" type="password" placeholder="Enter new password" autocomplete="new-password">
-   <label>Confirm new password</label><input id="confirmPassword" type="password" placeholder="Confirm new password" autocomplete="new-password">
-   <button id="savePasswordButton" onclick="saveNewPassword()">SAVE NEW PASSWORD</button>
-  </div>
-  <p id="authMessage" class="message" aria-live="polite"></p>
-  <p class="muted"><span class="link" onclick="showWelcome()">Back to home</span></p>
- </div>
-</section>
-
-<section id="memberDashboard" class="container hidden">
- <div id="adminDashboard" class="admin-panel hidden">
-  <h2>PRIVATE ADMIN DASHBOARD</h2><p class="muted">Only accounts listed in the Supabase admins table can see these controls.</p>
-  <h3>ADD NEW PREDICTION</h3>
-  <div class="admin-grid">
-   <div><label>Home team</label><input id="adminHome" placeholder="e.g. Chelsea"></div>
-   <div><label>Away team</label><input id="adminAway" placeholder="e.g. Arsenal"></div>
-   <div><label>Odd</label><input id="adminOdds" type="number" step="0.01" min="1" placeholder="1.85"></div>
-   <div><label>Prediction</label><input id="adminPick" placeholder="e.g. Home win"></div>
-   <div><label>Kickoff date and time</label><input id="adminKickoff" type="datetime-local"></div>
-   <div><label>League</label><input id="adminLeague" placeholder="e.g. Premier League"></div>
-   <div><label>Prediction category</label><select id="adminVisibility"><option value="free">FREE</option><option value="vip">VIP</option><option value="rollover">ROLLOVER</option></select></div>
-   <div><label>Initial outcome</label><select id="adminStatus"><option value="pending">PENDING</option><option value="won">WON</option><option value="lost">LOST</option><option value="void">VOID</option></select></div>
-   <div class="full"><button id="adminAddButton" onclick="adminAddPrediction()">PUBLISH PREDICTION</button></div>
-  </div>
-  <p id="adminMessage" class="message" aria-live="polite"></p>
-  <h3>UPDATE MATCH RESULTS</h3>
-  <p class="muted">Choose WON, LOST or VOID after a match finishes. Unsettled matches automatically show LIVE after kickoff. You can manually delete a prediction published by mistake.</p>
-  <div id="adminPredictionList"><p class="notice">Loading predictions...</p></div>
- </div>
-
- <div class="member-welcome">
-  <div class="member-welcome-top"><div><h2 class="member-brand brand-wordmark"><span class="brand-only">ONLY</span><span class="brand-boss">BOSSTIPS</span></h2><div class="member-tagline">✦ WHERE SMART PREDICTIONS BEGIN ✦</div></div></div>
-  <div class="member-profile-row">
-   <div class="member-avatar"><svg viewBox="0 0 24 24"><path d="M12 12a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4Zm0 2c-4.1 0-7.4 2.1-7.4 4.8V21h14.8v-2.2c0-2.7-3.3-4.8-7.4-4.8Z"/></svg></div>
-   <div><p id="memberEmail" class="member-email"></p><div class="member-email-label">MEMBER ACCOUNT</div></div>
-  </div>
-  <span id="memberBadge" class="badge">FREE MEMBER</span>
- </div>
-
- <section class="sports-news-section" id="sportsNewsSection" aria-label="Latest sports news">
-  <div class="sports-news-heading"><h2><span>TOP</span> SPORTS STORIES</h2><span class="news-live">LATEST NEWS</span></div>
-  <div class="news-carousel" id="newsCarousel">
-   <div class="news-track" id="newsTrack"><div class="news-loading">Loading the latest sports news...</div></div>
-   <div class="news-carousel-controls"><button class="news-arrow" type="button" onclick="changeSportsNews(-1)" aria-label="Previous story">‹</button><button class="news-arrow" type="button" onclick="changeSportsNews(1)" aria-label="Next story">›</button></div>
-  </div>
-  <div class="news-dots" id="newsDots" aria-label="Sports news slides"></div>
- </section>
-
- <h2 class="section-title">FREE ODDS</h2>
- <div class="selected-calendar-date"><svg class="calendar-icon" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3.5v4M16 3.5v4M3.5 10h17"/></svg><span id="selectedCalendarDate">Today</span></div>
- <p class="odds-intro">Daily match predictions and results</p>
- <div class="prediction-controls">
-  <div class="date-tabs" id="dateTabs">
-   <button class="date-tab" data-date="yesterday" onclick="selectDate('yesterday')">Yesterday</button>
-   <button class="date-tab active" data-date="today" onclick="selectDate('today')">Today</button>
-   <button class="date-tab" data-date="tomorrow" onclick="selectDate('tomorrow')">Tomorrow</button>
-  </div>
-  <div class="league-tabs" id="leagueTabs">
-   <button class="league-tab active" data-league="all" onclick="selectLeague('all')">All</button>
-   <button class="league-tab" data-league="premier league" onclick="selectLeague('premier league')">Premier League</button>
-   <button class="league-tab" data-league="bundesliga" onclick="selectLeague('bundesliga')">Bundesliga</button>
-   <button class="league-tab" data-league="la liga" onclick="selectLeague('la liga')">La Liga</button>
-   <button class="league-tab" data-league="ligue 1" onclick="selectLeague('ligue 1')">Ligue 1</button>
-   <button class="league-tab" data-league="afcon" onclick="selectLeague('afcon')">AFCON</button>
-   <button class="league-tab" data-league="uefa" onclick="selectLeague('uefa')">UEFA</button>
-   <button class="league-tab" data-league="world cup" onclick="selectLeague('world cup')">World Cup</button>
-   <button class="league-tab" data-league="other leagues" onclick="selectLeague('other leagues')">Other Leagues</button>
-   <button class="league-tab" data-league="tennis" onclick="selectLeague('tennis')">Tennis</button>
-   <button class="league-tab" data-league="basketball" onclick="selectLeague('basketball')">Basketball</button>
-  </div>
- </div>
- <div id="freePredictions"><p class="notice">Loading FREE predictions...</p></div>
-
- <div id="membershipUpgradeArea"><button class="vip-upgrade-button" onclick="toggleMembershipPayment()"><span id="membershipButtonText">VIEW MEMBERSHIP PLANS</span></button></div>
- <div id="membershipPaymentPanel" class="card hidden">
-  <h2>CHOOSE YOUR MEMBERSHIP</h2><p class="muted">Each plan unlocks its own exclusive predictions after payment verification.</p>
-  <div class="membership-choice" id="vipMembershipChoice"><h3>VIP MEMBERSHIP</h3><div class="payment-price">₦5,500 <small>monthly</small></div><p>Access to exclusive ONLYBOSSTIPS VIP football predictions.</p><button id="vipPaymentButton" onclick="selectMembership('vip')">PAY FOR VIP MEMBERSHIP</button></div>
-  <div class="membership-choice" id="rolloverMembershipChoice"><h3>ROLLOVER EXCLUSIVE MEMBER</h3><div class="payment-price">₦4,000 <small>Weekly</small></div><p>Access to exclusive ONLYBOSSTIPS Rollover predictions with weekly membership payment.</p><button id="rolloverPaymentButton" class="rollover-button" onclick="selectMembership('rollover')">PAY FOR ROLLOVER EXCLUSIVE</button></div>
-  <div id="selectedPaymentDetails" class="hidden">
-   <h3 id="selectedPlanTitle">PAYMENT DETAILS</h3><p id="selectedPlanDescription" class="muted"></p>
-   <div class="bank-details"><p><strong>Bank:</strong> STERLING BANK</p><p><strong>Account Name:</strong> OLUWANIFELA OMOJOWO</p><p><strong>Account Number:</strong> <span id="bankAccountNumber">0121973273</span></p></div>
-   <button class="payment-button" onclick="copyAccountNumber()">COPY ACCOUNT NUMBER</button>
-   <p class="muted">After making your transfer, send your payment receipt to our WhatsApp for verification.</p>
-   <button class="payment-button" onclick="sendPaymentWhatsApp()">SEND PAYMENT RECEIPT ON WHATSAPP</button>
-   <p class="muted">Your membership will be activated after the administrator confirms your payment.</p><p id="paymentMessage" class="message"></p>
-  </div>
-  <button class="secondary close-payment" onclick="toggleMembershipPayment(false)">CLOSE PAYMENT DETAILS</button>
- </div>
- <h2 class="section-title">VIP ODDS</h2><p class="odds-intro">Exclusive predictions for approved VIP members</p><div id="vipPredictions"><p class="notice">Loading VIP predictions...</p></div>
- <h2 class="section-title">ROLLOVER ODDS</h2><p class="odds-intro">Exclusive predictions for approved Rollover members</p><div id="rolloverPredictions"><p class="notice">Loading Rollover predictions...</p></div>
- <div id="adminNotice" class="card hidden"><h3>ADMINISTRATOR ACCOUNT</h3><p class="muted">Your administrator account is recognised. Use the private administrator dashboard.</p></div>
-
- <div id="winningStreakDashboard" class="streak-dashboard">
-  <h2 class="streak-heading">WINNING STREAK DASHBOARD</h2><p class="streak-intro">Our recorded prediction results, separated by FREE, VIP and ROLLOVER odds. Statistics update when match results are updated.</p>
-  <div class="streak-grid">
-   <div class="streak-card"><h3>FREE ODDS RECORD</h3><div class="streak-stats"><div class="streak-stat"><small>TOTAL WINS</small><strong id="freeWins" class="green">0</strong></div><div class="streak-stat"><small>TOTAL LOSSES</small><strong id="freeLosses">0</strong></div><div class="streak-stat"><small>WIN RATE</small><strong id="freeWinRate">0%</strong></div><div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="freeStreak" class="green">0</strong></div></div></div>
-   <div class="streak-card"><h3>VIP ODDS RECORD</h3><div class="streak-stats"><div class="streak-stat"><small>TOTAL WINS</small><strong id="vipWins" class="green">0</strong></div><div class="streak-stat"><small>TOTAL LOSSES</small><strong id="vipLosses">0</strong></div><div class="streak-stat"><small>WIN RATE</small><strong id="vipWinRate">0%</strong></div><div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="vipStreak" class="green">0</strong></div></div></div>
-   <div class="streak-card"><h3>ROLLOVER ODDS RECORD</h3><div class="streak-stats"><div class="streak-stat"><small>TOTAL WINS</small><strong id="rolloverWins" class="green">0</strong></div><div class="streak-stat"><small>TOTAL LOSSES</small><strong id="rolloverLosses">0</strong></div><div class="streak-stat"><small>WIN RATE</small><strong id="rolloverWinRate">0%</strong></div><div class="streak-stat"><small>CURRENT WIN STREAK</small><strong id="rolloverStreak" class="green">0</strong></div></div></div>
-  </div>
-  <p class="streak-note">Statistics are calculated from recorded WON and LOST results only. Pending, live and void predictions are not counted. Past results do not guarantee future outcomes.</p>
- </div>
- <div class="member-responsible"><div class="responsible"><div class="responsible-heading">PLAY RESPONSIBLY</div><p>18+ only. Predictions are opinions, not guarantees. Never stake more than you can afford to lose.</p></div></div>
- <button class="logout-bottom" onclick="logOut()">LOG OUT</button>
-</section>
-
-<div id="announcementOverlay" class="announcement-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="announcementTitle">
- <div class="announcement-box"><button class="announcement-close" onclick="closeAnnouncement()" aria-label="Close announcement">×</button><h2 id="announcementTitle">IMPORTANT ANNOUNCEMENT</h2><p id="announcementMessage"></p></div>
-</div>
-
-<footer><span class="footer-brand brand-wordmark"><span class="brand-only">ONLY</span><span class="brand-boss">BOSSTIPS</span></span> © 2026. All rights reserved.</footer>
-
-<script>
-const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
-const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
-const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-
-let currentUser=null,currentTier="free",currentMemberships=[],currentIsAdmin=false,recoveryInProgress=false;
-let allPredictions=[],selectedDate="today",selectedLeague="all",selectedMembership="vip";
-let announcementQueue=[],announcementShowing=false,announcementTimer=null;
-let sportsNewsItems=[],sportsNewsIndex=0,sportsNewsTimer=null,sportsNewsRefreshTimer=null,sportsNewsStarted=false;
-let newsTouchStartX=0,newsTouchEndX=0;
-
-/* SPORTS NEWS */
-
-const SPORTS_NEWS_FEEDS=[
- {url:"https://feeds.bbci.co.uk/sport/rss.xml",source:"BBC Sport"},
- {url:"https://feeds.bbci.co.uk/sport/football/rss.xml",source:"BBC Football"},
- {url:"https://www.skysports.com/rss/12040",source:"Sky Sports"},
- {url:"https://www.skysports.com/rss/11095",source:"Sky Football"}
-];
-
-const FALLBACK_NEWS_IMAGES={
- football:"https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=1200&auto=format&fit=crop",
- basketball:"https://images.unsplash.com/photo-1546519638-68e109498ffc?w=1200&auto=format&fit=crop",
- tennis:"https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?w=1200&auto=format&fit=crop",
- cricket:"https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=1200&auto=format&fit=crop",
- motorsport:"https://images.unsplash.com/photo-1504707748692-419802cf939d?w=1200&auto=format&fit=crop",
- other:"https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=1200&auto=format&fit=crop"
-};
-
-function getXmlText(element,names){
- for(const name of names){
-  const found=Array.from(element.getElementsByTagName("*")).find(n=>n.localName&&n.localName.toLowerCase()===name.toLowerCase());
-  if(found&&found.textContent)return found.textContent.trim();
- }
- return "";
-}
-
-function getNewsCategory(title,source){
- const t=String(title||"").toLowerCase();
- if(/tennis|wimbledon|atp|wta|grand slam/.test(t))return"Tennis";
- if(/basketball|nba|wnba|lakers|celtics/.test(t))return"Basketball";
- if(/cricket|ipl|test match|t20/.test(t))return"Cricket";
- if(/formula 1|f1|grand prix|motorsport/.test(t))return"Motorsport";
- if(/golf|rugby|boxing|ufc|mma|athletics|olympic/.test(t))return"Other Sports";
- if(/football|soccer|premier league|champions league|la liga|chelsea|arsenal|manchester|liverpool|real madrid|barcelona/.test(t)||/football/i.test(source))return"Football";
- return"Sports";
-}
-
-function newsImageForCategory(category){
- const c=String(category||"").toLowerCase();
- if(c==="football")return FALLBACK_NEWS_IMAGES.football;
- if(c==="basketball")return FALLBACK_NEWS_IMAGES.basketball;
- if(c==="tennis")return FALLBACK_NEWS_IMAGES.tennis;
- if(c==="cricket")return FALLBACK_NEWS_IMAGES.cricket;
- if(c==="motorsport")return FALLBACK_NEWS_IMAGES.motorsport;
- return FALLBACK_NEWS_IMAGES.other;
-}
-
-function getNewsImage(item){
- return item.image&&/^https?:\/\//i.test(item.image)?item.image:newsImageForCategory(item.category);
-}
-
-async function fetchSportsFeed(feed){
- const response=await fetch("https://proxy.cors.dev/"+feed.url);
- if(!response.ok)throw new Error("Sports feed unavailable");
- const xml=new DOMParser().parseFromString(await response.text(),"text/xml");
- if(xml.querySelector("parsererror"))throw new Error("Invalid sports news feed");
- const items=Array.from(xml.getElementsByTagName("*")).filter(n=>n.localName&&n.localName.toLowerCase()==="item");
- return items.map(item=>{
-  const title=getXmlText(item,["title"]),link=getXmlText(item,["link"]),pubDate=getXmlText(item,["pubDate","date"]);
-  const category=getNewsCategory(title,feed.source);
-  let image="";
-  const enclosure=Array.from(item.children).find(n=>n.localName&&n.localName.toLowerCase()==="enclosure");
-  if(enclosure)image=enclosure.getAttribute("url")||"";
-  if(!image){
-   const content=Array.from(item.getElementsByTagName("*")).find(n=>n.localName&&n.localName.toLowerCase()==="content"&&/^https?:\/\//i.test(n.getAttribute("url")||""));
-   if(content)image=content.getAttribute("url");
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
   }
-  if(!image){
-   const thumb=Array.from(item.getElementsByTagName("*")).find(n=>n.localName&&n.localName.toLowerCase()==="thumbnail");
-   if(thumb)image=thumb.getAttribute("url")||"";
-  }
-  return{title,link,pubDate,source:feed.source,category,image};
- }).filter(item=>item.title&&/^https?:\/\//i.test(item.link));
-}
 
-function createNewsCard(item,index){
- const card=document.createElement("article");card.className="news-card";
- const img=document.createElement("img");img.className="news-card-image";img.src=getNewsImage(item);
- img.alt=item.category+" sports news";img.loading=index===0?"eager":"lazy";
- img.onerror=()=>{img.onerror=null;img.src=newsImageForCategory(item.category)};
- const content=document.createElement("div");content.className="news-card-content";
- const category=document.createElement("span");category.className="news-card-category";category.textContent=item.category.toUpperCase();
- const title=document.createElement("h3");title.className="news-card-title";title.textContent=item.title;
- const meta=document.createElement("div");meta.className="news-card-meta";
- const source=document.createElement("span");source.className="news-source";source.textContent=item.source;
- const separator=document.createElement("span");separator.textContent="•";
- const date=document.createElement("span");const parsedDate=new Date(item.pubDate||"");
- date.textContent=!Number.isNaN(parsedDate.getTime())?parsedDate.toLocaleDateString("en-GB",{day:"numeric",month:"short"}):"Latest update";
- meta.append(source,separator,date);content.append(category,title,meta);card.append(img,content);
- const link=document.createElement("a");link.className="news-card-link";link.href=item.link;link.target="_blank";link.rel="noopener noreferrer";link.setAttribute("aria-label","Read: "+item.title);
- card.appendChild(link);return card;
-}
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
-function renderNewsDots(){
- const dots=document.getElementById("newsDots");if(!dots)return;dots.replaceChildren();
- sportsNewsItems.forEach((item,index)=>{
-  const dot=document.createElement("button");dot.className="news-dot"+(index===sportsNewsIndex?" active":"");
-  dot.type="button";dot.setAttribute("aria-label","Show sports story "+(index+1));
-  dot.onclick=()=>goToSportsNews(index);dots.appendChild(dot);
- });
-}
-
-function updateSportsNewsPosition(){
- const track=document.getElementById("newsTrack");if(!track||!sportsNewsItems.length)return;
- track.style.transform="translateX(-"+sportsNewsIndex*100+"%)";
- document.querySelectorAll(".news-dot").forEach((dot,index)=>dot.classList.toggle("active",index===sportsNewsIndex));
-}
-
-function goToSportsNews(index){
- if(!sportsNewsItems.length)return;
- sportsNewsIndex=(index+sportsNewsItems.length)%sportsNewsItems.length;updateSportsNewsPosition();
-}
-
-function changeSportsNews(direction){if(sportsNewsItems.length)goToSportsNews(sportsNewsIndex+direction)}
-
-function stopSportsNewsTimer(){if(sportsNewsTimer){clearInterval(sportsNewsTimer);sportsNewsTimer=null}}
-
-function startSportsNewsTimer(){
- stopSportsNewsTimer();
- if(sportsNewsItems.length>1)sportsNewsTimer=setInterval(()=>changeSportsNews(1),6500);
-}
-
-async function loadSportsNews(){
- const track=document.getElementById("newsTrack");if(!track)return;
- if(!sportsNewsItems.length)track.innerHTML='<div class="news-loading">Loading the latest sports news...</div>';
- const results=await Promise.allSettled(SPORTS_NEWS_FEEDS.map(fetchSportsFeed));
- const collected=[];results.forEach(r=>{if(r.status==="fulfilled")collected.push(...r.value)});
- const unique=new Map();collected.forEach(item=>{const key=item.link||item.title;if(!unique.has(key))unique.set(key,item)});
- const fresh=Array.from(unique.values()).sort((a,b)=>(new Date(b.pubDate||0).getTime()||0)-(new Date(a.pubDate||0).getTime()||0));
- if(fresh.length){
-  sportsNewsItems=fresh.slice(0,20);sportsNewsIndex=0;track.replaceChildren();
-  sportsNewsItems.forEach((item,index)=>track.appendChild(createNewsCard(item,index)));
-  renderNewsDots();updateSportsNewsPosition();startSportsNewsTimer();
- }else if(!sportsNewsItems.length)track.innerHTML='<div class="news-error">Sports news is temporarily unavailable. Please check again shortly.</div>';
-}
-
-function startSportsNews(){
- if(sportsNewsStarted)return;sportsNewsStarted=true;loadSportsNews();
- sportsNewsRefreshTimer=setInterval(loadSportsNews,15*60*1000);
- const carousel=document.getElementById("newsCarousel");
- if(carousel){
-  carousel.addEventListener("mouseenter",stopSportsNewsTimer);
-  carousel.addEventListener("mouseleave",startSportsNewsTimer);
-  carousel.addEventListener("touchstart",e=>{newsTouchStartX=e.changedTouches[0].screenX},{passive:true});
-  carousel.addEventListener("touchend",e=>{
-   newsTouchEndX=e.changedTouches[0].screenX;const diff=newsTouchStartX-newsTouchEndX;
-   if(Math.abs(diff)>45)changeSportsNews(diff>0?1:-1);
-  },{passive:true});
- }
-}
-/* MEMBERSHIP */
-
-function parseMemberships(value){
- const raw=String(value||"free").toLowerCase().split(/[,+|]/).map(x=>x.trim()).filter(Boolean);
- return [...new Set(raw.filter(x=>x==="vip"||x==="rollover"))];
-}
-
-function membershipLabel(){
- if(currentMemberships.includes("vip")&&currentMemberships.includes("rollover"))return"VIP + ROLLOVER MEMBER";
- if(currentMemberships.includes("rollover"))return"ROLLOVER EXCLUSIVE MEMBER";
- if(currentMemberships.includes("vip"))return"VIP MEMBER";
- return"FREE MEMBER";
-}
-
-function hasVipAccess(){return currentMemberships.includes("vip")||currentIsAdmin}
-function hasRolloverAccess(){return currentMemberships.includes("rollover")||currentIsAdmin}
-
-function togglePassword(inputId,button){
- const input=document.getElementById(inputId);if(!input||!button)return;
- const visible=input.type==="password";input.type=visible?"text":"password";
- button.classList.toggle("is-visible",visible);
- button.setAttribute("aria-label",visible?"Hide password":"Show password");
- button.setAttribute("title",visible?"Hide password":"Show password");
-}
-
-function hideAllSections(){
- ["welcome","authSection","memberDashboard"].forEach(id=>document.getElementById(id).classList.add("hidden"));
-}
-
-/* NAVIGATION */
-
-function showWelcome(){
- document.body.classList.remove("auth-mode");hideAllSections();
- document.getElementById("welcome").classList.remove("hidden");
- document.getElementById("headerButton").classList.remove("hidden");
-}
-
-function showAuth(mode,message){
- document.body.classList.add("auth-mode");hideAllSections();
- document.getElementById("authSection").classList.remove("hidden");
- document.getElementById("headerButton").classList.remove("hidden");
- document.getElementById("signupForm").classList.toggle("hidden",mode!=="signup");
- document.getElementById("loginForm").classList.toggle("hidden",mode!=="login");
- document.getElementById("recoveryForm").classList.add("hidden");
- document.getElementById("authMessage").textContent=message||"";
-}
-
-function openPublicLogin(e){e.preventDefault();showAuth("login")}
-function openPublicSignup(e){e.preventDefault();showAuth("signup")}
-
-function showRecoveryForm(){
- document.body.classList.add("auth-mode");recoveryInProgress=true;hideAllSections();
- document.getElementById("authSection").classList.remove("hidden");
- document.getElementById("headerButton").classList.add("hidden");
- ["signupForm","loginForm"].forEach(id=>document.getElementById(id).classList.add("hidden"));
- document.getElementById("recoveryForm").classList.remove("hidden");
- document.getElementById("authMessage").textContent="Enter and confirm your new password.";
-}
-
-function updateMembershipPlanButtons(){
- const hasVip=currentMemberships.includes("vip"),hasRollover=currentMemberships.includes("rollover");
- const vb=document.getElementById("vipPaymentButton"),rb=document.getElementById("rolloverPaymentButton");
- vb.disabled=hasVip;vb.textContent=hasVip?"VIP MEMBERSHIP ALREADY ACTIVE":"PAY FOR VIP MEMBERSHIP";
- rb.disabled=hasRollover;rb.textContent=hasRollover?"ROLLOVER MEMBERSHIP ALREADY ACTIVE":"PAY FOR ROLLOVER EXCLUSIVE";
- document.getElementById("vipMembershipChoice").style.opacity=hasVip?".65":"1";
- document.getElementById("rolloverMembershipChoice").style.opacity=hasRollover?".65":"1";
- document.getElementById("membershipUpgradeArea").classList.toggle("hidden",hasVip&&hasRollover);
-}
-
-function showDashboard(){
- document.body.classList.remove("auth-mode");hideAllSections();
- document.getElementById("memberDashboard").classList.remove("hidden");
- document.getElementById("headerButton").classList.add("hidden");
- document.getElementById("memberEmail").textContent=currentUser.email||"";
- const badge=document.getElementById("memberBadge");
- badge.textContent=currentIsAdmin?"ADMINISTRATOR":membershipLabel();badge.className="badge";
- if(currentMemberships.includes("rollover"))badge.classList.add("rollover");
- else if(currentMemberships.includes("vip"))badge.classList.add("vip");
- document.getElementById("adminNotice").classList.toggle("hidden",!currentIsAdmin);
- document.getElementById("adminDashboard").classList.toggle("hidden",!currentIsAdmin);
- updateMembershipPlanButtons();
- document.getElementById("membershipPaymentPanel").classList.add("hidden");
- document.getElementById("membershipButtonText").textContent="VIEW MEMBERSHIP PLANS";
- updateSelectedCalendarDate();loadPredictions();loadAnnouncements();startSportsNews();
-}
-
-function toggleMembershipPayment(forceOpen){
- const panel=document.getElementById("membershipPaymentPanel");
- const open=typeof forceOpen==="boolean"?forceOpen:panel.classList.contains("hidden");
- panel.classList.toggle("hidden",!open);
- if(open)setTimeout(()=>panel.scrollIntoView({behavior:"smooth",block:"start"}),100);
-}
-
-function selectMembership(plan){
- if(currentMemberships.includes(plan)){
-  document.getElementById("paymentMessage").textContent="This membership is already active on your account.";
-  document.getElementById("selectedPaymentDetails").classList.remove("hidden");return;
- }
- selectedMembership=plan;document.getElementById("selectedPaymentDetails").classList.remove("hidden");
- document.getElementById("selectedPlanTitle").textContent=plan==="rollover"?"ROLLOVER EXCLUSIVE MEMBER PAYMENT":"VIP MEMBERSHIP PAYMENT";
- document.getElementById("selectedPlanDescription").textContent=plan==="rollover"?"You selected ROLLOVER EXCLUSIVE MEMBER — ₦4,000 Weekly.":"You selected VIP MEMBERSHIP — ₦5,500 monthly.";
- document.getElementById("paymentMessage").textContent="";
- setTimeout(()=>document.getElementById("selectedPaymentDetails").scrollIntoView({behavior:"smooth",block:"start"}),100);
-}
-
-async function copyAccountNumber(){
- const n="0121973273",m=document.getElementById("paymentMessage");
- try{await navigator.clipboard.writeText(n);m.textContent="Sterling Bank account number copied successfully."}
- catch(e){m.textContent="Please copy the account number manually: "+n}
-}
-
-function sendPaymentWhatsApp(){
- if(!currentUser?.email){alert("Please log in before sending your payment confirmation.");return}
- const amount=selectedMembership==="rollover"?"₦4,000 Weekly":"₦5,500 monthly";
- const plan=selectedMembership==="rollover"?"ROLLOVER EXCLUSIVE MEMBER":"VIP MEMBERSHIP";
- const msg="Hello ONLYBOSSTIPS Admin. I have paid "+amount+" for "+plan+". My registered email is: "+currentUser.email+". I am sending my payment receipt for verification.";
- window.open("https://wa.me/2348032413495?text="+encodeURIComponent(msg),"_blank");
-}
-
-/* AUTHENTICATION */
-
-async function signUp(){
- const email=document.getElementById("signupEmail").value.trim(),password=document.getElementById("signupPassword").value;
- const m=document.getElementById("authMessage"),b=document.getElementById("signupButton");
- if(!email||password.length<6){m.textContent="Enter a valid email and a password of at least 6 characters.";return}
- b.disabled=true;m.textContent="Creating your account...";
- try{
-  const {data,error}=await db.auth.signUp({email,password,options:{emailRedirectTo:window.location.origin+"/?auth=signup"}});
-  if(error){m.textContent=error.message;return}
-  if(data.session)await loadUser(data.session.user);
-  else m.textContent="Registration successful! A confirmation link has been sent to your email. Open it to confirm your email, then return here to log in.";
- }catch(e){m.textContent="Something went wrong. Please try again.";console.error("Signup error:",e)}
- finally{b.disabled=false}
-}
-
-async function logIn(){
- const email=document.getElementById("loginEmail").value.trim(),password=document.getElementById("loginPassword").value;
- const m=document.getElementById("authMessage"),b=document.getElementById("loginButton");
- if(!email||!password){m.textContent="Enter your email and password.";return}
- b.disabled=true;m.textContent="Logging in...";
- try{
-  const {data,error}=await db.auth.signInWithPassword({email,password});
-  if(error){m.textContent=error.message;return}
-  recoveryInProgress=false;await loadUser(data.user);
- }catch(e){m.textContent="Login failed. Please try again.";console.error("Login error:",e)}
- finally{b.disabled=false}
-}
-
-async function forgotPassword(){
- const email=document.getElementById("loginEmail").value.trim(),m=document.getElementById("authMessage");
- if(!email){m.textContent="Enter your email address above first.";return}
- m.textContent="Sending password reset email...";
- try{
-  const {error}=await db.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/?auth=recovery"});
-  m.textContent=error?error.message:"Password reset email sent. Check your inbox and spam folder.";
- }catch(e){m.textContent="Could not send the reset email. Please try again.";console.error(e)}
-}
-
-async function saveNewPassword(){
- const p=document.getElementById("newPassword").value,c=document.getElementById("confirmPassword").value;
- const m=document.getElementById("authMessage"),b=document.getElementById("savePasswordButton");
- if(p.length<6){m.textContent="Your password must contain at least 6 characters.";return}
- if(p!==c){m.textContent="The passwords do not match.";return}
- b.disabled=true;m.textContent="Updating your password...";
- try{
-  const {error}=await db.auth.updateUser({password:p});
-  if(error){m.textContent="Password update failed: "+error.message;return}
-  recoveryInProgress=false;m.textContent="Your password has been changed successfully.";
-  document.getElementById("newPassword").value="";document.getElementById("confirmPassword").value="";
-  await db.auth.signOut({scope:"local"});
-  window.history.replaceState({},document.title,window.location.pathname);
-  setTimeout(()=>showAuth("login","Your password has been changed successfully. Please log in with your new password."),1200);
- }catch(e){m.textContent="Password update failed. Please request a new reset link and try again.";console.error(e)}
- finally{b.disabled=false}
-}
-
-async function loadUser(user){
- currentUser=user;currentTier="free";currentMemberships=[];currentIsAdmin=false;
- const {data:profile,error}=await db.from("member_profiles").select("membership_tier").eq("user_id",user.id).maybeSingle();
- if(error){document.getElementById("authMessage").textContent="Could not load your membership. Please try again.";return}
- if(profile){currentTier=String(profile.membership_tier||"free").toLowerCase();currentMemberships=parseMemberships(profile.membership_tier)}
- const {data:admin}=await db.from("admins").select("user_id").eq("user_id",user.id).maybeSingle();
- currentIsAdmin=!!admin;showDashboard();
-}
-
-/* ANNOUNCEMENTS */
-
-function clearAnnouncementTimer(){if(announcementTimer){clearTimeout(announcementTimer);announcementTimer=null}}
-
-function closeAnnouncement(){
- clearAnnouncementTimer();document.getElementById("announcementOverlay").classList.add("hidden");
- announcementShowing=false;showNextAnnouncement();
-}
-
-function showNextAnnouncement(){
- if(announcementShowing||!announcementQueue.length||!currentUser)return;
- const announcement=announcementQueue.shift();announcementShowing=true;
- document.getElementById("announcementMessage").textContent=announcement.message;
- document.getElementById("announcementOverlay").classList.remove("hidden");
- clearAnnouncementTimer();announcementTimer=setTimeout(closeAnnouncement,6000);
-}
-
-async function loadAnnouncements(){
- clearAnnouncementTimer();announcementQueue=[];announcementShowing=false;
- document.getElementById("announcementOverlay").classList.add("hidden");
- const {data,error}=await db.from("member_announcements").select("id,message,created_at").eq("active",true).order("created_at",{ascending:false});
- if(error){console.error("Announcement loading error:",error.message);return}
- announcementQueue=(data||[]).filter(a=>a.message).map(a=>({id:a.id,message:a.message}));showNextAnnouncement();
-}
-
-/* NIGERIA TIME DATE HELPERS */
-
-function watDateParts(date=new Date()){
- const parts=new Intl.DateTimeFormat("en-CA",{timeZone:"Africa/Lagos",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(date);
- const result={};parts.forEach(p=>{if(p.type!=="literal")result[p.type]=p.value});
- return{year:Number(result.year),month:Number(result.month),day:Number(result.day)};
-}
-
-function dateKeyFromParts(p){return p.year+"-"+String(p.month).padStart(2,"0")+"-"+String(p.day).padStart(2,"0")}
-
-function addDaysToDateKey(key,amount){
- const [y,m,d]=key.split("-").map(Number),date=new Date(Date.UTC(y,m-1,d+amount));
- return date.getUTCFullYear()+"-"+String(date.getUTCMonth()+1).padStart(2,"0")+"-"+String(date.getUTCDate()).padStart(2,"0");
-}
-
-function watTodayKey(){return dateKeyFromParts(watDateParts())}
-
-function watDateKey(dateValue){
- const date=new Date(dateValue);if(Number.isNaN(date.getTime()))return"";
- return dateKeyFromParts(watDateParts(date));
-}
-
-function dateForSelection(choice){
- return addDaysToDateKey(watTodayKey(),choice==="yesterday"?-1:choice==="tomorrow"?1:0);
-}
-
-function updateSelectedCalendarDate(){
- const element=document.getElementById("selectedCalendarDate");if(!element)return;
- const key=dateForSelection(selectedDate),[y,m,d]=key.split("-").map(Number),date=new Date(Date.UTC(y,m-1,d,12));
- element.textContent=new Intl.DateTimeFormat("en-GB",{timeZone:"Africa/Lagos",weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(date);
-}
-
-function selectDate(choice){
- selectedDate=choice;
- document.querySelectorAll(".date-tab").forEach(b=>b.classList.toggle("active",b.dataset.date===choice));
- updateSelectedCalendarDate();renderAllPredictionViews();
-}
-
-function selectLeague(league){
- selectedLeague=league;
- document.querySelectorAll(".league-tab").forEach(b=>b.classList.toggle("active",b.dataset.league===league));
- renderAllPredictionViews();
-}
-
-function formatKickoff(v){
- if(!v)return"Time not set";const d=new Date(v);if(Number.isNaN(d.getTime()))return"Time not set";
- return d.toLocaleTimeString("en-US",{timeZone:"Africa/Lagos",hour:"numeric",minute:"2-digit",hour12:true}).replace(/\s/g,"").toLowerCase();
-}
-
-/* MATCH STATUS AND STATS */
-
-function getResult(item){
- const s=String(item.status||"").toLowerCase().trim(),r=String(item.result||"").toLowerCase().trim();
- if(s==="won"||r==="won")return{text:"WON",symbol:"✓",className:"result-won"};
- if(s==="lost"||r==="lost")return{text:"LOST",symbol:"×",className:"result-lost"};
- if(s==="void"||r==="void")return{text:"VOID",symbol:"−",className:"result-void"};
- if(item.kickoff){const kick=new Date(item.kickoff);if(!Number.isNaN(kick.getTime())&&kick<=new Date())return{text:"LIVE",symbol:"●",className:"result-live"}}
- return{text:"PENDING",symbol:"",className:"result-awaiting"};
-}
-
-function calculateStreakStats(visibility){
- const settled=allPredictions.filter(p=>String(p.visibility||"free").toLowerCase()===visibility)
-  .map(p=>({result:getResult(p).text,date:new Date(p.kickoff||p.created_at||0).getTime()}))
-  .filter(p=>["WON","LOST","VOID"].includes(p.result)).sort((a,b)=>b.date-a.date);
- let wins=0,losses=0;settled.forEach(p=>{if(p.result==="WON")wins++;if(p.result==="LOST")losses++});
- let streak=0;
- for(const p of settled){if(p.result==="VOID")continue;if(p.result==="WON")streak++;else if(p.result==="LOST")break}
- const total=wins+losses;return{wins,losses,rate:total?Math.round(wins/total*100):0,streak};
-}
-
-function updateWinningStreakDashboard(){
- ["free","vip","rollover"].forEach(level=>{
-  const s=calculateStreakStats(level);
-  document.getElementById(level+"Wins").textContent=s.wins;
-  document.getElementById(level+"Losses").textContent=s.losses;
-  document.getElementById(level+"WinRate").textContent=s.rate+"%";
-  document.getElementById(level+"Streak").textContent=s.streak;
- });
-}
-
-/* PREDICTION TABLES */
-
-function createTeamDisplay(teamName){
- const team=document.createElement("span");team.className="match-team";
- const name=document.createElement("span");name.className="team-name";name.textContent=teamName||"Unknown";
- team.appendChild(name);return team;
-}
-
-function makePredictionTable(items){
- const wrap=document.createElement("div");wrap.className="prediction-table-wrap";
- const table=document.createElement("table");table.className="prediction-table";
- const thead=document.createElement("thead"),hr=document.createElement("tr");
- ["MATCH","ODD","PREDICTION","TIME","OUTCOME"].forEach(t=>{const th=document.createElement("th");th.textContent=t;hr.appendChild(th)});
- thead.appendChild(hr);table.appendChild(thead);
- const tbody=document.createElement("tbody");
- items.forEach(p=>{
-  const tr=document.createElement("tr");
-  const match=document.createElement("td"),odd=document.createElement("td"),pred=document.createElement("td"),time=document.createElement("td"),outcome=document.createElement("td");
-  match.className="club-name";
-  const teams=document.createElement("div");teams.className="match-teams";
-  teams.appendChild(createTeamDisplay(p.home_team||"Home"));
-  const versus=document.createElement("span");versus.className="match-vs";versus.textContent="vs";
-  teams.appendChild(versus);teams.appendChild(createTeamDisplay(p.away_team||"Away"));match.appendChild(teams);
-  odd.className="odd-value";odd.textContent=p.odds??"-";
-  pred.className="prediction-value";pred.textContent=p.prediction||"-";
-  time.textContent=formatKickoff(p.kickoff);
-  const r=getResult(p);outcome.className="outcome-cell "+r.className;
-  const badge=document.createElement("span");badge.className="outcome-wrap";
-  if(r.symbol){const circle=document.createElement("span");circle.className="outcome-circle";circle.textContent=r.symbol;badge.appendChild(circle)}
-  const label=document.createElement("span");label.textContent=r.text;badge.appendChild(label);outcome.appendChild(badge);
-  [match,odd,pred,time,outcome].forEach(td=>tr.appendChild(td));tbody.appendChild(tr);
- });
- table.appendChild(tbody);wrap.appendChild(table);return wrap;
-}
-
-function renderPredictionGroup(box,items){
- box.replaceChildren();
- if(!items.length){const p=document.createElement("p");p.className="prediction-empty";p.textContent="No predictions available for this date and league.";box.appendChild(p);return}
- const group=document.createElement("div");group.className="prediction-group";
- const h=document.createElement("div");h.className="prediction-date";
- const dateNames={yesterday:"Yesterday",today:"Today",tomorrow:"Tomorrow"};
- const key=dateForSelection(selectedDate),[y,m,d]=key.split("-").map(Number),date=new Date(Date.UTC(y,m-1,d,12));
- h.textContent=(dateNames[selectedDate]||"Today")+" — "+new Intl.DateTimeFormat("en-GB",{timeZone:"Africa/Lagos",day:"numeric",month:"long",year:"numeric"}).format(date);
- group.appendChild(h);group.appendChild(makePredictionTable(items));box.appendChild(group);
-}
-
-function filterItems(items){
- const target=dateForSelection(selectedDate);
- const listed=["premier league","bundesliga","la liga","ligue 1","afcon","uefa","world cup","tennis","basketball"];
- return items.filter(p=>{
-  if(!p.kickoff||watDateKey(p.kickoff)!==target)return false;
-  const league=String(p.league||"").trim().toLowerCase();
-  if(selectedLeague==="all")return true;
-  if(selectedLeague==="other leagues")return league!==""&&!listed.includes(league);
-  return league===selectedLeague;
- });
-}
-
-function renderLocked(box,title,message){
- box.replaceChildren();const card=document.createElement("div");card.className="card";
- const h=document.createElement("h3");h.textContent=title;
- const p=document.createElement("p");p.className="muted";p.textContent=message;
- card.append(h,p);box.appendChild(card);
-}
-
-function renderAllPredictionViews(){
- const free=allPredictions.filter(p=>String(p.visibility||"free").toLowerCase()==="free");
- const vip=allPredictions.filter(p=>String(p.visibility||"").toLowerCase()==="vip");
- const rollover=allPredictions.filter(p=>String(p.visibility||"").toLowerCase()==="rollover");
- renderPredictionGroup(document.getElementById("freePredictions"),filterItems(free));
- if(hasVipAccess())renderPredictionGroup(document.getElementById("vipPredictions"),filterItems(vip));
- else renderLocked(document.getElementById("vipPredictions"),"VIP MEMBERS ONLY","VIP predictions are available to approved VIP members. Tap VIEW MEMBERSHIP PLANS to request VIP access.");
- if(hasRolloverAccess())renderPredictionGroup(document.getElementById("rolloverPredictions"),filterItems(rollover));
- else renderLocked(document.getElementById("rolloverPredictions"),"ROLLOVER MEMBERS ONLY","Rollover predictions are available to approved Rollover members. Tap VIEW MEMBERSHIP PLANS to request Rollover access.");
-}
-
-/* AUTOMATIC CLEANUP: ADMIN-TRIGGERED WAT CLEANUP */
-
-function startOfYesterdayWATAsUTC(){
- const key=addDaysToDateKey(watTodayKey(),-1),[y,m,d]=key.split("-").map(Number);
- return new Date(Date.UTC(y,m-1,d)-60*60*1000).toISOString();
-}
-
-async function cleanupOldPredictions(){
- if(!currentUser||!currentIsAdmin)return;
- const cutoff=startOfYesterdayWATAsUTC();
- const {error}=await db.from("predictions").delete().lt("kickoff",cutoff);
- if(error)console.error("Automatic prediction cleanup failed:",error.message);
- else console.log("Automatic WAT prediction cleanup completed.");
-}
-
-async function loadPredictions(){
- const free=document.getElementById("freePredictions"),vip=document.getElementById("vipPredictions"),rollover=document.getElementById("rolloverPredictions");
- free.textContent="Loading FREE predictions...";vip.textContent="Loading VIP predictions...";rollover.textContent="Loading Rollover predictions...";
- if(currentIsAdmin)await cleanupOldPredictions();
- const {data,error}=await db.from("predictions").select("*").order("kickoff",{ascending:true});
- if(error){
-  free.textContent="Unable to load predictions. Please refresh.";
-  vip.textContent="Unable to load VIP predictions.";rollover.textContent="Unable to load Rollover predictions.";
-  console.error("Prediction loading error:",error.message);return;
- }
- allPredictions=data||[];renderAllPredictionViews();updateWinningStreakDashboard();
- if(currentIsAdmin)renderAdminPredictionList();
-}
-
-/* ADMIN */
-
-function renderAdminPredictionList(){
- const box=document.getElementById("adminPredictionList");if(!box)return;box.replaceChildren();
- if(!allPredictions.length){box.textContent="No predictions have been added yet.";return}
- allPredictions.forEach(p=>{
-  const item=document.createElement("div");item.className="admin-list-item";
-  const title=document.createElement("strong");title.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away")+" — "+String(p.visibility||"free").toUpperCase();
-  const details=document.createElement("p");details.className="muted";
-  details.textContent="Odd: "+(p.odds??"-")+" | Pick: "+(p.prediction||"-")+" | Kickoff: "+formatKickoff(p.kickoff);
-  const select=document.createElement("select");select.setAttribute("aria-label","Set match outcome");
-  ["pending","won","lost","void"].forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v.toUpperCase();select.appendChild(o)});
-  select.value=String(p.status||p.result||"pending").toLowerCase();
-  const save=document.createElement("button");save.textContent="SAVE RESULT";save.onclick=()=>adminUpdateResult(p.id,select.value,save);
-  const remove=document.createElement("button");remove.textContent="DELETE PREDICTION";remove.className="admin-delete-button";remove.onclick=()=>adminDeletePrediction(p.id,remove);
-  item.append(title,details,select,save,remove);box.appendChild(item);
- });
-}
-
-async function adminAddPrediction(){
- if(!currentIsAdmin){alert("Administrator access required.");return}
- const m=document.getElementById("adminMessage"),b=document.getElementById("adminAddButton");
- const home=document.getElementById("adminHome").value.trim(),away=document.getElementById("adminAway").value.trim();
- const odds=Number(document.getElementById("adminOdds").value),pick=document.getElementById("adminPick").value.trim();
- const kick=document.getElementById("adminKickoff").value,league=document.getElementById("adminLeague").value.trim();
- const visibility=document.getElementById("adminVisibility").value,status=document.getElementById("adminStatus").value;
- if(!home||!away||!pick||!kick||!Number.isFinite(odds)||odds<=1){m.textContent="Complete all fields and enter valid odds greater than 1.";return}
- b.disabled=true;m.textContent="Publishing prediction...";
- const row={home_team:home,away_team:away,odds,prediction:pick,kickoff:new Date(kick).toISOString(),league,visibility,status,result:status==="pending"?null:status};
- const {error}=await db.from("predictions").insert([row]);b.disabled=false;
- if(error){m.textContent="Could not publish: "+error.message;return}
- m.textContent="Prediction published successfully.";
- ["adminHome","adminAway","adminOdds","adminPick","adminKickoff","adminLeague"].forEach(id=>document.getElementById(id).value="");
- await loadPredictions();
-}
-
-async function adminUpdateResult(id,value,button){
- if(!currentIsAdmin){alert("Administrator access required.");return}
- if(!id){alert("This prediction has no database ID, so it cannot be updated.");return}
- button.disabled=true;
- const {error}=await db.from("predictions").update({status:value,result:value==="pending"?null:value}).eq("id",id);
- button.disabled=false;
- if(error){alert("Could not update result: "+error.message);return}
- await loadPredictions();const m=document.getElementById("adminMessage");if(m)m.textContent="Match result updated successfully.";
-}
-
-async function adminDeletePrediction(id,button){
- if(!currentIsAdmin){alert("Administrator access required.");return}
- if(!id){alert("This prediction has no database ID, so it cannot be deleted.");return}
- if(!confirm("Are you sure you want to permanently delete this prediction? This cannot be undone."))return;
- button.disabled=true;button.textContent="DELETING...";
- const {error}=await db.from("predictions").delete().eq("id",id);
- if(error){button.disabled=false;button.textContent="DELETE PREDICTION";alert("Could not delete prediction: "+error.message);return}
- await loadPredictions();const m=document.getElementById("adminMessage");if(m)m.textContent="Prediction deleted successfully.";
-}
-
-/* LOG OUT */
-
-async function logOut(){
- clearAnnouncementTimer();announcementQueue=[];announcementShowing=false;
- document.getElementById("announcementOverlay").classList.add("hidden");
- await db.auth.signOut();
- currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
- document.getElementById("headerButton").textContent="JOIN NOW";
- document.getElementById("headerButton").classList.remove("hidden");showWelcome();
-}
-
-/* AUTH EVENTS */
-
-db.auth.onAuthStateChange(event=>{
- if(event==="PASSWORD_RECOVERY")showRecoveryForm();
- if(event==="SIGNED_OUT"&&!recoveryInProgress){
-  clearAnnouncementTimer();announcementQueue=[];announcementShowing=false;
-  document.getElementById("announcementOverlay").classList.add("hidden");
-  currentUser=null;currentTier="free";currentMemberships=[];currentIsAdmin=false;
-  document.getElementById("headerButton").textContent="JOIN NOW";
-  document.getElementById("headerButton").classList.remove("hidden");showWelcome();
- }
+  if (req.method === "OPTIONS") return res.sendStatus(204);
+  next();
 });
 
-/* EMAIL CONFIRMATION AND RESET LINKS */
+app.use(express.json({ limit: "1mb" }));
 
-async function startApp(){
- const params=new URLSearchParams(window.location.search),code=params.get("code"),authType=params.get("auth");
- if(code){
-  const {error}=await db.auth.exchangeCodeForSession(code);
-  if(error){
-   window.history.replaceState({},document.title,window.location.pathname);
-   showAuth("login",authType==="signup"?"This email confirmation link is invalid or has expired. Please request a new confirmation email.":"This password reset link is invalid or has expired. Please request a new one.");
-   return;
-  }
-  window.history.replaceState({},document.title,window.location.pathname);
-  if(authType==="signup"){
-   await db.auth.signOut({scope:"local"});recoveryInProgress=false;
-   showAuth("login","Your email has been confirmed successfully! Your ONLYBOSSTIPS account is ready. Please log in.");return;
-  }
-  if(authType==="recovery"){showRecoveryForm();return}
-  showRecoveryForm();return;
- }
- if(window.location.hash.includes("type=recovery")){
-  const {data,error}=await db.auth.getSession();
-  if(error||!data.session){showAuth("login","This password reset link is invalid or has expired. Request a new one.");return}
-  showRecoveryForm();return;
- }
- const {data,error}=await db.auth.getSession();
- if(error){showWelcome();return}
- if(data.session)await loadUser(data.session.user);else showWelcome();
+// =====================================
+// SUPABASE
+// =====================================
+
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY;
+
+let supabase = null;
+
+if (supabaseUrl && supabaseSecretKey) {
+  supabase = createClient(supabaseUrl, supabaseSecretKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  });
 }
 
-startApp();
+// =====================================
+// SPORTAPI
+// =====================================
 
-/* REFRESH LIVE STATUS */
+const sportApiKey = process.env.SPORTAPI_KEY;
+const sportApiUrl = "https://sportapi.ai/api";
 
-setInterval(()=>{
- const dashboard=document.getElementById("memberDashboard");
- if(currentUser&&dashboard&&!dashboard.classList.contains("hidden")){
-  renderAllPredictionViews();updateWinningStreakDashboard();
- }
-},30000);
+async function sportApiRequest(endpoint) {
+  if (!sportApiKey) throw new Error("SPORTAPI_KEY is missing in Render.");
 
-/* DAILY ADMIN CLEANUP CHECK */
+  const response = await fetch(`${sportApiUrl}${endpoint}`, {
+    method: "GET",
+    headers: { "X-Api-Key": sportApiKey },
+    signal: AbortSignal.timeout(20000)
+  });
 
-let lastCleanupDate="";
+  const responseText = await response.text();
+  let data;
 
-setInterval(async()=>{
- if(!currentUser||!currentIsAdmin)return;
- const today=watTodayKey();
- if(today!==lastCleanupDate){lastCleanupDate=today;await loadPredictions()}
-},60000);
+  try {
+    data = JSON.parse(responseText);
+  } catch {
+    throw new Error(`SportAPI returned invalid JSON. HTTP ${response.status}`);
+  }
 
-</script>
+  if (!response.ok || data.success === false) {
+    throw new Error(
+      `SportAPI HTTP ${response.status}: ${
+        data.message || JSON.stringify(data.error || "Request failed")
+      }`
+    );
+  }
 
-</body>
-</html>                                                                                                                                                                      
-                                                                                                                                                                    
+  return data;
+}
+
+// =====================================
+// GENERAL HELPERS
+// =====================================
+
+function normalizeTeam(name) {
+  const value = String(name || "")
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]/g, "");
+
+  const aliases = {
+    manutd: "manchesterunited",
+    manutdfootball: "manchesterunited",
+    manunited: "manchesterunited",
+    manchesterutd: "manchesterunited",
+    manchesterunitedfc: "manchesterunited",
+    mancity: "manchestercity",
+    manchestercityfc: "manchestercity",
+    liverpoolfc: "liverpool",
+    lfc: "liverpool",
+    arsenalfc: "arsenal",
+    chelseafc: "chelsea",
+    spurs: "tottenhamhotspur",
+    tottenhamhotspurfc: "tottenhamhotspur",
+    newcastleunitedfc: "newcastleunited",
+    nufc: "newcastleunited",
+    psg: "parissaintgermain",
+    parissaintgermainfc: "parissaintgermain",
+    atleticomadrid: "atleticodemadrid",
+    atleticodemadridfc: "atleticodemadrid",
+    inter: "internazionale",
+    intermilan: "internazionale",
+    fcinternazionale: "internazionale",
+    acmilan: "milan",
+    juventusfc: "juventus",
+    bayernmunich: "bayernmunchen",
+    fcbayernmunchen: "bayernmunchen",
+    fcbarcelona: "barcelona",
+    realmadridcf: "realmadrid",
+    dortmund: "borussiadortmund",
+    bvb: "borussiadortmund",
+
+    // Basketball team aliases
+    lalakers: "losangeleslakers",
+    lakers: "losangeleslakers",
+    laclippers: "losangelesclippers",
+    clippers: "losangelesclippers",
+    nyknicks: "newyorkknicks",
+    knicks: "newyorkknicks",
+    gswarriors: "goldenstatewarriors",
+    warriors: "goldenstatewarriors",
+    okcthunder: "oklahomacitythunder",
+    thunder: "oklahomacitythunder",
+    phx: "phoenixsuns",
+    suns: "phoenixsuns",
+    sixers: "philadelphia76ers",
+    philly76ers: "philadelphia76ers",
+    blazers: "portlandtrailblazers",
+    trailblazers: "portlandtrailblazers"
+  };
+
+  if (aliases[value]) return aliases[value];
+
+  return value.replace(
+    /(footballclub|soccerclub|club|women|ladies|fc|cf|afc|sc)$/g,
+    ""
+  );
+}
+
+function teamMatches(first, second) {
+  const a = normalizeTeam(first);
+  const b = normalizeTeam(second);
+  return !!a && !!b && a === b;
+}
+
+function safeNumber(value) {
+  if (value === null || value === undefined || value === "") return null;
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function normalizedText(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[_–—]/g, " ")
+    .replace(/[^a-z0-9.+-]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function finalStatus(status) {
+  return ["FT", "AET", "PENS"].includes(
+    String(status || "").trim().toUpperCase()
+  );
+}
+
+function voidStatus(status) {
+  return ["POSTPONED", "CANCELLED", "CANCELED"].includes(
+    String(status || "").trim().toUpperCase()
+  );
+}
+
+function basketballFinalStatus(status) {
+  return ["FT", "AOT"].includes(
+    String(status || "").trim().toUpperCase()
+  );
+}
+
+function basketballVoidStatus(status) {
+  return ["POST", "CANC"].includes(
+    String(status || "").trim().toUpperCase()
+  );
+}
+
+function kickoffDate(value) {
+  const time = new Date(value);
+  return Number.isFinite(time.getTime())
+    ? time.toISOString().slice(0, 10)
+    : null;
+}
+
+function shiftDate(dateString, days) {
+  const date = new Date(`${dateString}T12:00:00.000Z`);
+  if (!Number.isFinite(date.getTime())) return null;
+  date.setUTCDate(date.getUTCDate() + days);
+  return date.toISOString().slice(0, 10);
+}
+
+function getBasketballTeams(game) {
+  return {
+    home: game?.home?.name || "",
+    away: game?.away?.name || ""
+  };
+}
+
+function getBasketballStart(game) {
+  return game?.start || game?.date || game?.datetime || null;
+}
+
+function getBasketballScores(game) {
+  return {
+    home: safeNumber(game?.home?.score),
+    away: safeNumber(game?.away?.score)
+  };
+}
+
+// =====================================
+// FOOTBALL 1UP / 2UP
+// =====================================
+
+function isOneUpTwoUpMarket(prediction) {
+  const market = normalizedText(
+    `${prediction.market_type || ""} ${prediction.market_category || ""}`
+  );
+  return /\b(1up|2up)\b/.test(market);
+}
+
+function getOneUpTwoUpDetails(prediction) {
+  const marketType = normalizedText(prediction.market_type);
+  const selection = normalizedText(prediction.market_selection);
+  const predictionText = normalizedText(prediction.prediction);
+  const combined = `${marketType} ${selection} ${predictionText}`;
+
+  const requiredLead = /\b2up\b/.test(combined) ? 2 :
+    /\b1up\b/.test(combined) ? 1 : null;
+
+  if (!requiredLead) return null;
+
+  let side = null;
+
+  if (/\b(home|home team)\b/.test(marketType)) side = "home";
+  else if (/\b(away|away team)\b/.test(marketType)) side = "away";
+  else if (/\b(home|home team)\b/.test(selection)) side = "home";
+  else if (/\b(away|away team)\b/.test(selection)) side = "away";
+  else if (prediction.home_team && selection &&
+    teamMatches(selection, prediction.home_team)) side = "home";
+  else if (prediction.away_team && selection &&
+    teamMatches(selection, prediction.away_team)) side = "away";
+
+  return side ? { requiredLead, side } : null;
+}
+
+function settleOneUpTwoUpMarket(prediction, fixture, eventsResponse) {
+  const market = getOneUpTwoUpDetails(prediction);
+  if (!market) return null;
+
+  const finalHome = safeNumber(fixture.home_score);
+  const finalAway = safeNumber(fixture.away_score);
+  if (finalHome === null || finalAway === null) return null;
+
+  let events = [];
+
+  if (Array.isArray(eventsResponse)) events = eventsResponse;
+  else if (Array.isArray(eventsResponse?.data)) events = eventsResponse.data;
+  else if (Array.isArray(eventsResponse?.data?.data)) {
+    events = eventsResponse.data.data;
+  } else return null;
+
+  const goals = [];
+
+  for (let index = 0; index < events.length; index++) {
+    const event = events[index];
+    if (!event) continue;
+
+    if (normalizedText(event.event_type || event.type) !== "goal") continue;
+
+    const side = String(event.team_side || "").trim().toLowerCase();
+    if (side !== "home" && side !== "away") return null;
+
+    const minuteMatch = String(event.minute || "")
+      .trim()
+      .match(/^(\d+)(?:\s*\+\s*(\d+))?/);
+
+    if (!minuteMatch) return null;
+
+    goals.push({
+      side,
+      order: Number(minuteMatch[1]) * 1000 + Number(minuteMatch[2] || 0),
+      originalIndex: index
+    });
+  }
+
+  goals.sort((a, b) =>
+    a.order !== b.order ? a.order - b.order :
+    a.originalIndex - b.originalIndex
+  );
+
+  let homeGoals = 0;
+  let awayGoals = 0;
+  let achievedLead = false;
+
+  for (const goal of goals) {
+    if (goal.side === "home") homeGoals++;
+    else awayGoals++;
+
+    const lead = market.side === "home"
+      ? homeGoals - awayGoals
+      : awayGoals - homeGoals;
+
+    if (lead >= market.requiredLead) achievedLead = true;
+  }
+
+  if (homeGoals !== finalHome || awayGoals !== finalAway) return null;
+  return achievedLead ? "won" : "lost";
+}
+
+// =====================================
+// FOOTBALL MARKET SETTLEMENT
+// =====================================
+
+function settleScoreMarket(prediction, fixture) {
+  const home = safeNumber(fixture.home_score);
+  const away = safeNumber(fixture.away_score);
+  if (home === null || away === null) return null;
+
+  const htHome = safeNumber(fixture.ht_home);
+  const htAway = safeNumber(fixture.ht_away);
+
+  const selection = normalizedText(prediction.market_selection);
+  const marketType = normalizedText(
+    prediction.market_type || prediction.market_category
+  );
+  const category = normalizedText(prediction.market_category);
+  const predictionText = normalizedText(prediction.prediction);
+  const combined = `${marketType} ${selection} ${predictionText}`;
+
+  const line = safeNumber(prediction.market_line) ??
+    (() => {
+      const match = combined.match(/\b(over|under)\s*(\d+(?:\.\d+)?)/);
+      return match ? Number(match[2]) : null;
+    })();
+
+  const homeWin = home > away;
+  const awayWin = away > home;
+  const draw = home === away;
+  const totalGoals = home + away;
+
+  function overUnder(value) {
+    if (line === null) return null;
+
+    if (/\bover\b/.test(selection) || /\bover\b/.test(marketType)) {
+      return value === line ? "void" : value > line ? "won" : "lost";
+    }
+
+    if (/\bunder\b/.test(selection) || /\bunder\b/.test(marketType)) {
+      return value === line ? "void" : value < line ? "won" : "lost";
+    }
+
+    return null;
+  }
+
+  function selectedSide(homeResult, drawResult, awayResult) {
+    const sideText = `${marketType} ${selection} ${predictionText}`;
+
+    if (/\b(home|home team)\b/.test(sideText) || /\b1\b/.test(selection)) {
+      return homeResult;
+    }
+    if (/\b(draw|tie)\b/.test(sideText) || /\bx\b/.test(selection)) {
+      return drawResult;
+    }
+    if (/\b(away|away team)\b/.test(sideText) || /\b2\b/.test(selection)) {
+      return awayResult;
+    }
+    return null;
+  }
+
+  if (/full time result|match result|1x2/.test(marketType) ||
+      category === "match result") {
+    if (/draw no bet/.test(marketType)) {
+      if (draw) return "void";
+      return selectedSide(homeWin ? "won" : "lost", null,
+        awayWin ? "won" : "lost");
+    }
+
+    if (/home win to nil/.test(combined)) {
+      return homeWin && away === 0 ? "won" : "lost";
+    }
+    if (/away win to nil/.test(combined)) {
+      return awayWin && home === 0 ? "won" : "lost";
+    }
+
+    return selectedSide(
+      homeWin ? "won" : "lost",
+      draw ? "won" : "lost",
+      awayWin ? "won" : "lost"
+    );
+  }
+
+  if (category === "double chance" || /double chance/.test(marketType)) {
+    if (/home or draw|1x/.test(selection)) return homeWin || draw ? "won" : "lost";
+    if (/draw or away|x2/.test(selection)) return draw || awayWin ? "won" : "lost";
+    if (/home or away|12/.test(selection)) return homeWin || awayWin ? "won" : "lost";
+  }
+
+  if (category === "both teams to score" ||
+      /both teams to score|btts/.test(marketType)) {
+    const bothScored = home > 0 && away > 0;
+    const text = normalizedText(
+      `${prediction.market_selection || ""} ${prediction.prediction || ""} ` +
+      `${prediction.market_type || ""} ${prediction.market_category || ""}`
+    );
+    const yes = /\b(yes|gg)\b/.test(text);
+    const no = /\b(no|ng)\b/.test(text);
+
+    if (/btts and over 2 5|both teams to score and over 2 5/.test(combined)) {
+      return bothScored && totalGoals > 2.5 ? "won" : "lost";
+    }
+    if (/btts and under 2 5|both teams to score and under 2 5/.test(combined)) {
+      return bothScored && totalGoals < 2.5 ? "won" : "lost";
+    }
+    if (yes && !no) return bothScored ? "won" : "lost";
+    if (no && !yes) return !bothScored ? "won" : "lost";
+    return null;
+  }
+
+  if (/total goals over under/.test(marketType)) return overUnder(totalGoals);
+  if (/home team goals over under/.test(marketType)) return overUnder(home);
+  if (/away team goals over under/.test(marketType)) return overUnder(away);
+
+  if (/exact total goals/.test(marketType)) {
+    const exact = safeNumber(prediction.market_line ?? prediction.market_selection);
+    return exact === null ? null : totalGoals === exact ? "won" : "lost";
+  }
+
+  if (/home team to score/.test(combined)) return home > 0 ? "won" : "lost";
+  if (/away team to score/.test(combined)) return away > 0 ? "won" : "lost";
+  if (/home clean sheet/.test(combined)) return away === 0 ? "won" : "lost";
+  if (/away clean sheet/.test(combined)) return home === 0 ? "won" : "lost";
+  if (/home win by 2 or more/.test(combined)) return home - away >= 2 ? "won" : "lost";
+  if (/away win by 2 or more/.test(combined)) return away - home >= 2 ? "won" : "lost";
+  if (/home win by 1 goal/.test(combined)) return home - away === 1 ? "won" : "lost";
+  if (/away win by 1 goal/.test(combined)) return away - home === 1 ? "won" : "lost";
+  if (/match to have no goals/.test(combined)) return totalGoals === 0 ? "won" : "lost";
+
+  if (/correct score/.test(marketType)) {
+    const match = (selection || predictionText).match(/\b(\d+)\s*[-:]\s*(\d+)\b/);
+    if (match) {
+      return home === Number(match[1]) && away === Number(match[2])
+        ? "won" : "lost";
+    }
+  }
+
+  if (/half time result|half time goals|half time correct score|correct score half time|correct score first half|home half time goals|away half time goals/.test(marketType)) {
+    if (htHome === null || htAway === null) return null;
+
+    if (/half time result/.test(marketType)) {
+      return selectedSide(
+        htHome > htAway ? "won" : "lost",
+        htHome === htAway ? "won" : "lost",
+        htAway > htHome ? "won" : "lost"
+      );
+    }
+
+    if (/half time goals over under/.test(marketType)) {
+      return overUnder(htHome + htAway);
+    }
+    if (/home half time goals/.test(marketType)) return overUnder(htHome);
+    if (/away half time goals/.test(marketType)) return overUnder(htAway);
+
+    if (/correct score/.test(marketType)) {
+      const match = (selection || predictionText).match(/\b(\d+)\s*[-:]\s*(\d+)\b/);
+      if (match) {
+        return htHome === Number(match[1]) && htAway === Number(match[2])
+          ? "won" : "lost";
+      }
+    }
+  }
+
+  if (/second half result|second half goals over under/.test(marketType)) {
+    if (htHome === null || htAway === null) return null;
+
+    const secondHome = home - htHome;
+    const secondAway = away - htAway;
+    if (secondHome < 0 || secondAway < 0) return null;
+
+    if (/second half result/.test(marketType)) {
+      return selectedSide(
+        secondHome > secondAway ? "won" : "lost",
+        secondHome === secondAway ? "won" : "lost",
+        secondAway > secondHome ? "won" : "lost"
+      );
+    }
+
+    if (/second half goals over under/.test(marketType)) {
+      return overUnder(secondHome + secondAway);
+    }
+  }
+
+  if (/goal in first half|goal before half time/.test(combined)) {
+    if (htHome === null || htAway === null) return null;
+    return htHome + htAway > 0 ? "won" : "lost";
+  }
+
+  if (/no goal in first half/.test(combined)) {
+    if (htHome === null || htAway === null) return null;
+    return htHome + htAway === 0 ? "won" : "lost";
+  }
+
+  if (/goal in second half/.test(combined)) {
+    if (htHome === null || htAway === null) return null;
+    return (home - htHome) + (away - htAway) > 0 ? "won" : "lost";
+  }
+
+  if (/goal in both halves/.test(combined)) {
+    if (htHome === null || htAway === null) return null;
+    const first = htHome + htAway;
+    const second = (home - htHome) + (away - htAway);
+    return first > 0 && second > 0 ? "won" : "lost";
+  }
+
+  if (/home team to win either half/.test(combined)) {
+    if (htHome === null || htAway === null) return null;
+    return htHome > htAway || (home - htHome) > (away - htAway)
+      ? "won" : "lost";
+  }
+
+  if (/away team to win either half/.test(combined)) {
+    if (htHome === null || htAway === null) return null;
+    return htAway > htHome || (away - htAway) > (home - htHome)
+      ? "won" : "lost";
+  }
+
+  return null;
+}
+
+// =====================================
+// BASKETBALL MARKET SETTLEMENT
+// =====================================
+
+// SportAPI supplies overall scores and an array of
+// points scored in each period. We only settle markets
+// that can be verified from those scores.
+
+function getBasketballPeriods(game) {
+  const home = Array.isArray(game?.home?.periods)
+    ? game.home.periods.map(safeNumber) : [];
+  const away = Array.isArray(game?.away?.periods)
+    ? game.away.periods.map(safeNumber) : [];
+
+  if (!home.length || !away.length) return null;
+  if (home.some(v => v === null) || away.some(v => v === null)) return null;
+
+  return { home, away };
+}
+
+function basketballSelectionSide(prediction, selection, text) {
+  const combined = `${selection} ${text}`;
+
+  if (prediction.home_team &&
+      (teamMatches(combined, prediction.home_team) ||
+       teamMatches(selection, prediction.home_team))) return "home";
+
+  if (prediction.away_team &&
+      (teamMatches(combined, prediction.away_team) ||
+       teamMatches(selection, prediction.away_team))) return "away";
+
+  if (/\b(home|home team)\b/.test(combined)) return "home";
+  if (/\b(away|away team)\b/.test(combined)) return "away";
+
+  return null;
+}
+
+function basketballLine(prediction, combined) {
+  const stored = safeNumber(prediction.market_line);
+  if (stored !== null) return stored;
+
+  const match = combined.match(/(?:over|under|[+-])\s*(\d+(?:\.\d+)?)/);
+  return match ? Number(match[1]) : null;
+}
+
+function settleBasketballMarket(prediction, game) {
+  const scores = getBasketballScores(game);
+  const periods = getBasketballPeriods(game);
+
+  if (scores.home === null || scores.away === null) return null;
+
+  const selection = normalizedText(prediction.market_selection);
+  const type = normalizedText(prediction.market_type);
+  const category = normalizedText(prediction.market_category);
+  const predictionText = normalizedText(prediction.prediction);
+  const combined = `${type} ${category} ${selection} ${predictionText}`;
+
+  const home = scores.home;
+  const away = scores.away;
+  const total = home + away;
+
+  const side = basketballSelectionSide(
+    prediction,
+    selection,
+    `${type} ${predictionText}`
+  );
+
+  const line = basketballLine(prediction, combined);
+
+  function settleTotal(value) {
+    if (line === null) return null;
+
+    const over = /\bover\b/.test(combined);
+    const under = /\bunder\b/.test(combined);
+
+    if (over === under) return null;
+    if (value === line) return "void";
+
+    return over
+      ? (value > line ? "won" : "lost")
+      : (value < line ? "won" : "lost");
+  }
+
+  function settleWinner(homeScore, awayScore) {
+    if (homeScore === awayScore) return null;
+
+    if (/\b(draw|tie)\b/.test(combined)) return null;
+
+    if (side === "home") return homeScore > awayScore ? "won" : "lost";
+    if (side === "away") return awayScore > homeScore ? "won" : "lost";
+
+    // Also allow the selected team name to appear as
+    // the selection itself.
+    if (prediction.home_team &&
+        teamMatches(selection, prediction.home_team)) {
+      return homeScore > awayScore ? "won" : "lost";
+    }
+
+    if (prediction.away_team &&
+        teamMatches(selection, prediction.away_team)) {
+      return awayScore > homeScore ? "won" : "lost";
+    }
+
+    return null;
+  }
+
+  // Quarter and half markets require verified period scores.
+  if (periods) {
+    const quarterMatch = combined.match(
+      /\b(?:q|quarter)\s*([1-4])\b|\b(first|second|third|fourth)\s+quarter\b/
+    );
+
+    let quarter = null;
+
+    if (quarterMatch) {
+      if (quarterMatch[1]) quarter = Number(quarterMatch[1]);
+      else {
+        quarter = {
+          first: 1,
+          second: 2,
+          third: 3,
+          fourth: 4
+        }[quarterMatch[2]];
+      }
+    }
+
+    if (quarter && periods.home.length >= quarter &&
+        periods.away.length >= quarter) {
+      const qHome = periods.home[quarter - 1];
+      const qAway = periods.away[quarter - 1];
+
+      if (/winner|win|result|moneyline/.test(combined)) {
+        return settleWinner(qHome, qAway);
+      }
+
+      if (/total|over|under|points/.test(combined)) {
+        return settleTotal(qHome + qAway);
+      }
+
+      if (/spread|handicap/.test(combined)) {
+        return settleBasketballSpread(
+          prediction, qHome, qAway, side, line, combined
+        );
+      }
+    }
+
+    if (/first half|1st half|half 1|h1/.test(combined)) {
+      if (periods.home.length < 2 || periods.away.length < 2) return null;
+
+      const hHome = periods.home[0] + periods.home[1];
+      const hAway = periods.away[0] + periods.away[1];
+
+      if (/winner|win|result|moneyline/.test(combined)) {
+        return settleWinner(hHome, hAway);
+      }
+
+      if (/spread|handicap/.test(combined)) {
+        return settleBasketballSpread(
+          prediction, hHome, hAway, side, line, combined
+        );
+      }
+
+      if (/total|over|under|points/.test(combined)) {
+        return settleTotal(hHome + hAway);
+      }
+    }
+
+    if (/second half|2nd half|half 2|h2/.test(combined)) {
+      if (periods.home.length < 4 || periods.away.length < 4) return null;
+
+      const hHome = periods.home[2] + periods.home[3];
+      const hAway = periods.away[2] + periods.away[3];
+
+      if (/winner|win|result|moneyline/.test(combined)) {
+        return settleWinner(hHome, hAway);
+      }
+
+      if (/spread|handicap/.test(combined)) {
+        return settleBasketballSpread(
+          prediction, hHome, hAway, side, line, combined
+        );
+      }
+
+      if (/total|over|under|points/.test(combined)) {
+        return settleTotal(hHome + hAway);
+      }
+    }
+  }
+
+  // Full game team totals.
+  if (/team total|home total|away total|team points/.test(combined)) {
+    let teamSide = side;
+
+    if (!teamSide && /\bhome\b/.test(combined)) teamSide = "home";
+    if (!teamSide && /\baway\b/.test(combined)) teamSide = "away";
+
+    if (!teamSide) return null;
+
+    return settleTotal(teamSide === "home" ? home : away);
+  }
+
+  // Full game point spread / handicap.
+  if (/spread|handicap|points handicap/.test(combined)) {
+    return settleBasketballSpread(
+      prediction, home, away, side, line, combined
+    );
+  }
+
+  // Full game total points.
+  if (/total points|match points|game points|over under|total score/.test(combined)) {
+    return settleTotal(total);
+  }
+
+  // Match winner / moneyline. Basketball has no draw
+  // outcome for ordinary match-winner markets.
+  if (/winner|moneyline|match result|game result|to win/.test(combined)) {
+    return settleWinner(home, away);
+  }
+
+  return null;
+}
+
+function settleBasketballSpread(
+  prediction,
+  homeScore,
+  awayScore,
+  side,
+  line,
+  combined
+) {
+  if (line === null) return null;
+
+  if (!side) {
+    const selection = normalizedText(prediction.market_selection);
+
+    if (prediction.home_team && teamMatches(selection, prediction.home_team)) {
+      side = "home";
+    } else if (prediction.away_team &&
+               teamMatches(selection, prediction.away_team)) {
+      side = "away";
+    }
+  }
+
+  if (!side) return null;
+
+  // Prefer a signed handicap written with the team selection,
+  // such as "Lakers -3.5" or "Celtics +4.5".
+  const signed = String(
+    prediction.market_selection || prediction.prediction || ""
+  ).match(/([+-]\s*\d+(?:\.\d+)?)/);
+
+  let handicap = line;
+
+  if (signed) {
+    handicap = Number(signed[1].replace(/\s/g, ""));
+  } else {
+    // If the selection itself does not contain a sign,
+    // the stored market_line must contain the signed value.
+    if (!String(prediction.market_line ?? "").trim()) return null;
+  }
+
+  const selectedScore = side === "home" ? homeScore : awayScore;
+  const opponentScore = side === "home" ? awayScore : homeScore;
+  const adjusted = selectedScore + handicap;
+
+  if (adjusted === opponentScore) return "void";
+  return adjusted > opponentScore ? "won" : "lost";
+}
+
+// =====================================
+// ADMIN AUTHENTICATION
+// =====================================
+
+async function requireAdmin(req, res, next) {
+  try {
+    if (!supabase) {
+      return res.status(500).json({
+        success: false,
+        message: "Database connection is not configured."
+      });
+    }
+
+    const authorization = req.headers.authorization || "";
+
+    if (!authorization.startsWith("Bearer ")) {
+      return res.status(401).json({
+        success: false,
+        message: "Admin authentication required."
+      });
+    }
+
+    const token = authorization.substring(7).trim();
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Admin authentication required."
+      });
+    }
+
+    const { data: userData, error: userError } =
+      await supabase.auth.getUser(token);
+
+    if (userError || !userData?.user) {
+      console.error("ADMIN TOKEN VERIFICATION FAILED:", userError?.message);
+
+      return res.status(401).json({
+        success: false,
+        message: "Invalid or expired login session."
+      });
+    }
+
+    const { data: admin, error: adminError } = await supabase
+      .from("admins")
+      .select("user_id")
+      .eq("user_id", userData.user.id)
+      .maybeSingle();
+
+    if (adminError) {
+      console.error("ADMIN TABLE LOOKUP FAILED:", adminError.message);
+
+      return res.status(500).json({
+        success: false,
+        message: "Unable to check administrator record."
+      });
+    }
+
+    if (!admin) {
+      return res.status(403).json({
+        success: false,
+        message: "Administrator access denied."
+      });
+    }
+
+    req.adminUser = userData.user;
+    return next();
+
+  } catch (error) {
+    console.error("Admin authentication error:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to verify administrator."
+    });
+  }
+}
+
+// =====================================
+// HEALTH CHECKS
+// =====================================
+
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "ONLYBOSSTIPS API is running.",
+    provider: "SportAPI"
+  });
+});
+
+app.get("/health", (req, res) => {
+  res.json({
+    success: true,
+    message: "ONLYBOSSTIPS backend is online."
+  });
+});
+
+app.get("/health/database", async (req, res) => {
+  try {
+    if (!supabase) {
+      return res.status(500).json({
+        success: false,
+        message: "Supabase environment variables are missing."
+      });
+    }
+
+    const { error } = await supabase
+      .from("predictions")
+      .select("id, api_basketball_game_id")
+      .limit(1);
+
+    if (error) throw error;
+
+    return res.json({
+      success: true,
+      message: "ONLYBOSSTIPS database connection is working."
+    });
+
+  } catch (error) {
+    console.error("Database health error:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      message: "Database connection failed. Check that the basketball ID column exists."
+    });
+  }
+});
+
+app.get("/health/football", async (req, res) => {
+  try {
+    const date = new Date().toISOString().slice(0, 10);
+    const data = await sportApiRequest(`/fixtures/date/${date}`);
+
+    return res.json({
+      success: true,
+      message: "ONLYBOSSTIPS is connected to SportAPI football.",
+      fixtures_returned: Array.isArray(data.data) ? data.data.length : 0
+    });
+
+  } catch (error) {
+    console.error("Football health check failed:", error.message);
+
+    return res.status(502).json({
+      success: false,
+      message: "Unable to verify SportAPI football connection.",
+      diagnostic: error.message
+    });
+  }
+});
+
+app.get("/health/basketball", async (req, res) => {
+  try {
+    const date = new Date().toISOString().slice(0, 10);
+    const data = await sportApiRequest(
+      `/basketball/games/date/${date}?tz=UTC`
+    );
+
+    return res.json({
+      success: true,
+      message: "ONLYBOSSTIPS is connected to SportAPI basketball.",
+      games_returned: Array.isArray(data.data) ? data.data.length : 0
+    });
+
+  } catch (error) {
+    console.error("Basketball health check failed:", error.message);
+
+    return res.status(502).json({
+      success: false,
+      message: "Unable to verify SportAPI basketball connection.",
+      diagnostic: error.message
+    });
+  }
+});
+
+// =====================================
+// FOOTBALL FIXTURE SEARCH
+// =====================================
+
+app.get("/fixtures/search", async (req, res) => {
+  try {
+    const home = String(req.query.home || "").trim();
+    const away = String(req.query.away || "").trim();
+    const date = String(req.query.date || "").trim();
+
+    if (!home || !away || !date) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide home, away and date."
+      });
+    }
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      return res.status(400).json({
+        success: false,
+        message: "Date must use YYYY-MM-DD format."
+      });
+    }
+
+    const data = await sportApiRequest(
+      `/fixtures/date/${encodeURIComponent(date)}`
+    );
+
+    const fixtures = Array.isArray(data.data) ? data.data : [];
+
+    const matches = fixtures.filter(item =>
+      teamMatches(item.home_team, home) &&
+      teamMatches(item.away_team, away)
+    );
+
+    const results = matches.map(item => ({
+      fixture_id: item.id,
+      date: item.date,
+      kickoff_utc: item.kickoff_utc,
+      status: item.status,
+      minute: item.minute,
+      league: item.league_name,
+      home_team: item.home_team,
+      away_team: item.away_team,
+      home_team_id: item.home_id,
+      away_team_id: item.away_id,
+      home_logo: item.home_logo || null,
+      away_logo: item.away_logo || null,
+      home_score: item.home_score,
+      away_score: item.away_score
+    }));
+
+    return res.json({
+      success: true,
+      diagnostic: true,
+      requested: { home, away, date },
+      total_fixtures_returned: fixtures.length,
+      matching_fixtures: results.length,
+      fixtures: results
+    });
+
+  } catch (error) {
+    console.error("Fixture search error:", error.message);
+
+    return res.status(502).json({
+      success: false,
+      message: "Unable to search fixtures.",
+      diagnostic: error.message
+    });
+  }
+});
+
+// =====================================
+// BASKETBALL GAME SEARCH
+// =====================================
+
+app.get("/basketball/games/search", async (req, res) => {
+  try {
+    const home = String(req.query.home || "").trim();
+    const away = String(req.query.away || "").trim();
+    const date = String(req.query.date || "").trim();
+
+    if (!home || !away || !date) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide home, away and date."
+      });
+    }
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      return res.status(400).json({
+        success: false,
+        message: "Date must use YYYY-MM-DD format."
+      });
+    }
+
+    const data = await sportApiRequest(
+      `/basketball/games/date/${encodeURIComponent(date)}?tz=UTC`
+    );
+
+    const games = Array.isArray(data.data) ? data.data : [];
+
+    const matches = games.filter(game =>
+      teamMatches(game?.home?.name, home) &&
+      teamMatches(game?.away?.name, away)
+    );
+
+    return res.json({
+      success: true,
+      requested: { home, away, date },
+      total_games_returned: games.length,
+      matching_games: matches.length,
+      games: matches
+    });
+
+  } catch (error) {
+    console.error("Basketball game search error:", error.message);
+
+    return res.status(502).json({
+      success: false,
+      message: "Unable to search basketball games.",
+      diagnostic: error.message
+    });
+  }
+});
+
+// =====================================
+// SECURE ADMIN FOOTBALL FIXTURE LINKING
+// =====================================
+
+app.post("/predictions/link-fixture", requireAdmin, async (req, res) => {
+  try {
+    const predictionId = req.body.prediction_id;
+    const fixtureId = req.body.fixture_id;
+
+    if (!predictionId || !fixtureId) {
+      return res.status(400).json({
+        success: false,
+        message: "prediction_id and fixture_id are required."
+      });
+    }
+
+    const { data: prediction, error: predictionError } = await supabase
+      .from("predictions")
+      .select("*")
+      .eq("id", predictionId)
+      .maybeSingle();
+
+    if (predictionError) throw predictionError;
+    if (!prediction) {
+      return res.status(404).json({
+        success: false,
+        message: "Prediction not found."
+      });
+    }
+
+    if (prediction.status !== "pending") {
+      return res.status(409).json({
+        success: false,
+        message: "Only pending predictions can be linked."
+      });
+    }
+
+    if (prediction.api_fixture_id || prediction.api_basketball_game_id) {
+      return res.status(409).json({
+        success: false,
+        message: "This prediction already has a linked fixture."
+      });
+    }
+
+    const fixtureData = await sportApiRequest(
+      `/fixtures/${encodeURIComponent(fixtureId)}`
+    );
+
+    const fixture = fixtureData.fixture;
+
+    if (!fixture) {
+      return res.status(404).json({
+        success: false,
+        message: "Fixture not found on SportAPI."
+      });
+    }
+
+    if (!teamMatches(prediction.home_team, fixture.home_team) ||
+        !teamMatches(prediction.away_team, fixture.away_team)) {
+      return res.status(400).json({
+        success: false,
+        message: "The selected fixture does not match this prediction."
+      });
+    }
+
+    const predictionTime = new Date(prediction.kickoff).getTime();
+    const fixtureTime = new Date(
+      fixture.kickoff_utc || fixture.datetime
+    ).getTime();
+
+    if (!Number.isFinite(predictionTime) || !Number.isFinite(fixtureTime) ||
+        Math.abs(predictionTime - fixtureTime) > 18 * 60 * 60 * 1000) {
+      return res.status(400).json({
+        success: false,
+        message: "Unable to verify kickoff time or the time differs by more than 18 hours."
+      });
+    }
+
+    const { data: linked, error: updateError } = await supabase
+      .from("predictions")
+      .update({
+        api_fixture_id: fixture.id,
+        fixture_status: fixture.status,
+        tracking_updated_at: new Date().toISOString()
+      })
+      .eq("id", predictionId)
+      .eq("status", "pending")
+      .is("api_fixture_id", null)
+      .is("api_basketball_game_id", null)
+      .select()
+      .single();
+
+    if (updateError) throw updateError;
+
+    return res.json({
+      success: true,
+      message: "Football fixture successfully linked.",
+      prediction: linked
+    });
+
+  } catch (error) {
+    console.error("Football fixture linking error:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to link football fixture.",
+      diagnostic: error.message
+    });
+  }
+});
+
+// =====================================
+// SECURE ADMIN BASKETBALL GAME LINKING
+// =====================================
+
+app.post("/predictions/link-basketball-game", requireAdmin, async (req, res) => {
+  try {
+    const predictionId = req.body.prediction_id;
+    const gameId = req.body.game_id;
+
+    if (!predictionId || !gameId) {
+      return res.status(400).json({
+        success: false,
+        message: "prediction_id and game_id are required."
+      });
+    }
+
+    const { data: prediction, error: predictionError } = await supabase
+      .from("predictions")
+      .select("*")
+      .eq("id", predictionId)
+      .maybeSingle();
+
+    if (predictionError) throw predictionError;
+    if (!prediction) {
+      return res.status(404).json({
+        success: false,
+        message: "Prediction not found."
+      });
+    }
+
+    if (prediction.status !== "pending") {
+      return res.status(409).json({
+        success: false,
+        message: "Only pending predictions can be linked."
+      });
+    }
+
+    if (prediction.api_fixture_id || prediction.api_basketball_game_id) {
+      return res.status(409).json({
+        success: false,
+        message: "This prediction already has a linked game."
+      });
+    }
+
+    const response = await sportApiRequest(
+      `/basketball/games/${encodeURIComponent(gameId)}`
+    );
+
+    const game = response.data;
+
+    if (!game) {
+      return res.status(404).json({
+        success: false,
+        message: "Basketball game not found on SportAPI."
+      });
+    }
+
+    const teams = getBasketballTeams(game);
+
+    if (!teamMatches(prediction.home_team, teams.home) ||
+        !teamMatches(prediction.away_team, teams.away)) {
+      return res.status(400).json({
+        success: false,
+        message: "Basketball teams do not match this prediction."
+      });
+    }
+
+    const predictionTime = new Date(prediction.kickoff).getTime();
+    const gameTime = new Date(getBasketballStart(game)).getTime();
+
+    if (!Number.isFinite(predictionTime) || !Number.isFinite(gameTime) ||
+        Math.abs(predictionTime - gameTime) > 18 * 60 * 60 * 1000) {
+      return res.status(400).json({
+        success: false,
+        message: "Unable to verify basketball game kickoff time."
+      });
+    }
+
+    const { data: linked, error: updateError } = await supabase
+      .from("predictions")
+      .update({
+        api_basketball_game_id: String(game.id),
+        fixture_status: game.status || null,
+        tracking_updated_at: new Date().toISOString()
+      })
+      .eq("id", predictionId)
+      .eq("status", "pending")
+      .is("api_fixture_id", null)
+      .is("api_basketball_game_id", null)
+      .select()
+      .single();
+
+    if (updateError) throw updateError;
+
+    return res.json({
+      success: true,
+      message: "Basketball game successfully linked.",
+      prediction: linked,
+      game
+    });
+
+  } catch (error) {
+    console.error("Basketball game linking error:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to link basketball game.",
+      diagnostic: error.message
+    });
+  }
+});
+
+// =====================================
+// AUTOMATIC MATCH TRACKING & SETTLEMENT
+// =====================================
+
+let trackingBusy = false;
+
+const missingFixtureChecks = new Map();
+const MISSING_FIXTURE_RECHECK_MS = 15 * 60 * 1000;
+
+let lastAutoLinkScanAt = 0;
+const AUTO_LINK_INTERVAL_MS = 15 * 60 * 1000;
+const AUTO_LINK_MAX_PREDICTIONS = 100;
+const AUTO_LINK_MAX_DATE_GROUPS = 12;
+
+// =====================================
+// AUTOMATIC MATCHING FOR BOTH SPORTS
+// =====================================
+
+// Predictions use the same publishing form, so the
+// backend checks both SportAPI sports before linking.
+//
+// A prediction is linked only when exactly one sport
+// has exactly one matching fixture and the other sport
+// has no matching fixture.
+//
+// This prevents basketball IDs being stored as football IDs.
+
+async function autoLinkUnlinkedPredictions() {
+  if (!supabase || !sportApiKey) return;
+
+  if (Date.now() - lastAutoLinkScanAt < AUTO_LINK_INTERVAL_MS) {
+    return;
+  }
+
+  try {
+    const { data: unlinked, error } = await supabase
+      .from("predictions")
+      .select("*")
+      .eq("status", "pending")
+      .is("api_fixture_id", null)
+      .is("api_basketball_game_id", null)
+      .limit(AUTO_LINK_MAX_PREDICTIONS);
+
+    if (error) throw error;
+
+    lastAutoLinkScanAt = Date.now();
+
+    if (!unlinked || unlinked.length === 0) {
+      console.log("Automatic matching: no unlinked pending predictions.");
+      return;
+    }
+
+    const now = Date.now();
+    const earliestAllowed = now - 36 * 60 * 60 * 1000;
+    const latestAllowed = now + 7 * 24 * 60 * 60 * 1000;
+
+    const eligible = unlinked.filter(prediction => {
+      const kickoff = new Date(prediction.kickoff).getTime();
+
+      return Number.isFinite(kickoff) &&
+        kickoff >= earliestAllowed &&
+        kickoff <= latestAllowed &&
+        prediction.home_team &&
+        prediction.away_team;
+    });
+
+    const dateGroups = new Map();
+
+    for (const prediction of eligible) {
+      const date = kickoffDate(prediction.kickoff);
+      if (!date) continue;
+
+      if (!dateGroups.has(date)) dateGroups.set(date, []);
+      dateGroups.get(date).push(prediction);
+    }
+
+    const footballCache = new Map();
+    const basketballCache = new Map();
+
+    async function getFootballFixtures(date) {
+      if (!footballCache.has(date)) {
+        footballCache.set(
+          date,
+          sportApiRequest(`/fixtures/date/${encodeURIComponent(date)}`)
+            .then(data => Array.isArray(data.data) ? data.data : [])
+        );
+      }
+
+      return footballCache.get(date);
+    }
+
+    async function getBasketballGames(date) {
+      if (!basketballCache.has(date)) {
+        basketballCache.set(
+          date,
+          sportApiRequest(
+            `/basketball/games/date/${encodeURIComponent(date)}?tz=UTC`
+          ).then(data => Array.isArray(data.data) ? data.data : [])
+        );
+      }
+
+      return basketballCache.get(date);
+    }
+
+    let scannedGroups = 0;
+    let footballLinked = 0;
+    let basketballLinked = 0;
+
+    for (const [date, predictionsForDate] of dateGroups) {
+      scannedGroups++;
+
+      if (scannedGroups > AUTO_LINK_MAX_DATE_GROUPS) {
+        console.log("Automatic matching date scan limit reached.");
+        break;
+      }
+
+      const dates = [
+        shiftDate(date, -1),
+        date,
+        shiftDate(date, 1)
+      ].filter(Boolean);
+
+      let footballFixtures = [];
+      let basketballGames = [];
+
+      for (const searchDate of dates) {
+        try {
+          const fixtures = await getFootballFixtures(searchDate);
+          footballFixtures.push(...fixtures);
+        } catch (error) {
+          console.error(
+            `Football fixture search failed for ${searchDate}:`,
+            error.message
+          );
+        }
+
+        try {
+          const games = await getBasketballGames(searchDate);
+          basketballGames.push(...games);
+        } catch (error) {
+          console.error(
+            `Basketball game search failed for ${searchDate}:`,
+            error.message
+          );
+        }
+      }
+
+      const uniqueFootball = new Map();
+
+      for (const fixture of footballFixtures) {
+        if (fixture?.id !== undefined && fixture?.id !== null) {
+          uniqueFootball.set(String(fixture.id), fixture);
+        }
+      }
+
+      const uniqueBasketball = new Map();
+
+      for (const game of basketballGames) {
+        if (game?.id !== undefined && game?.id !== null) {
+          uniqueBasketball.set(String(game.id), game);
+        }
+      }
+
+      footballFixtures = Array.from(uniqueFootball.values());
+      basketballGames = Array.from(uniqueBasketball.values());
+
+      for (const prediction of predictionsForDate) {
+        const predictionTime = new Date(prediction.kickoff).getTime();
+
+        const matchingFootball = footballFixtures.filter(fixture => {
+          if (
+            !teamMatches(prediction.home_team, fixture.home_team) ||
+            !teamMatches(prediction.away_team, fixture.away_team)
+          ) {
+            return false;
+          }
+
+          const fixtureTime = new Date(
+            fixture.kickoff_utc || fixture.datetime || fixture.date
+          ).getTime();
+
+          return Number.isFinite(fixtureTime) &&
+            Math.abs(predictionTime - fixtureTime) <= 18 * 60 * 60 * 1000;
+        });
+
+        const matchingBasketball = basketballGames.filter(game => {
+          const teams = getBasketballTeams(game);
+          const start = getBasketballStart(game);
+          const gameTime = new Date(start).getTime();
+
+          if (
+            !teamMatches(prediction.home_team, teams.home) ||
+            !teamMatches(prediction.away_team, teams.away)
+          ) {
+            return false;
+          }
+
+          return Number.isFinite(gameTime) &&
+            Math.abs(predictionTime - gameTime) <= 18 * 60 * 60 * 1000;
+        });
+
+        // Never guess if both sports match or if either
+        // sport has multiple possible games.
+
+        if (
+          matchingFootball.length > 0 &&
+          matchingBasketball.length > 0
+        ) {
+          console.log(
+            `Prediction ${prediction.id}: both sports produced possible matches. Left pending for safety.`
+          );
+          continue;
+        }
+
+        if (
+          matchingFootball.length > 1 ||
+          matchingBasketball.length > 1
+        ) {
+          console.log(
+            `Prediction ${prediction.id}: multiple possible games. Left pending.`
+          );
+          continue;
+        }
+
+        if (
+          matchingFootball.length === 0 &&
+          matchingBasketball.length === 0
+        ) {
+          continue;
+        }
+
+        if (matchingFootball.length === 1) {
+          const fixture = matchingFootball[0];
+
+          const { data: linked, error: linkError } = await supabase
+            .from("predictions")
+            .update({
+              api_fixture_id: fixture.id,
+              fixture_status: fixture.status || null,
+              tracking_updated_at: new Date().toISOString()
+            })
+            .eq("id", prediction.id)
+            .eq("status", "pending")
+            .is("api_fixture_id", null)
+            .is("api_basketball_game_id", null)
+            .select("id");
+
+          if (linkError) {
+            console.error(
+              `Football auto-link failed for ${prediction.id}:`,
+              linkError.message
+            );
+            continue;
+          }
+
+          if (linked?.length) {
+            footballLinked++;
+            console.log(
+              `Prediction ${prediction.id} linked to football fixture ${fixture.id}.`
+            );
+          }
+        }
+
+        if (matchingBasketball.length === 1) {
+          const game = matchingBasketball[0];
+
+          const { data: linked, error: linkError } = await supabase
+            .from("predictions")
+            .update({
+              api_basketball_game_id: String(game.id),
+              fixture_status: game.status || null,
+              tracking_updated_at: new Date().toISOString()
+            })
+            .eq("id", prediction.id)
+            .eq("status", "pending")
+            .is("api_fixture_id", null)
+            .is("api_basketball_game_id", null)
+            .select("id");
+
+          if (linkError) {
+            console.error(
+              `Basketball auto-link failed for ${prediction.id}:`,
+              linkError.message
+            );
+            continue;
+          }
+
+          if (linked?.length) {
+            basketballLinked++;
+            console.log(
+              `Prediction ${prediction.id} linked to basketball game ${game.id}.`
+            );
+          }
+        }
+      }
+    }
+
+    console.log(
+      `Automatic matching completed. Football: ${footballLinked}; Basketball: ${basketballLinked}.`
+    );
+
+  } catch (error) {
+    console.error("Automatic matching scan failed:", error.message);
+  }
+}
+
+// =====================================
+// FOOTBALL FIXTURE EVENTS
+// =====================================
+
+async function getFixtureEvents(fixtureId) {
+  const data = await sportApiRequest(
+    `/fixtures/${encodeURIComponent(fixtureId)}/events`
+  );
+
+  if (Array.isArray(data.data)) return data.data;
+  if (Array.isArray(data.data?.data)) return data.data.data;
+
+  return null;
+}
+
+// =====================================
+// FOOTBALL AUTOMATIC TRACKING
+// =====================================
+
+async function trackFootballPredictions() {
+  const { data: predictions, error } = await supabase
+    .from("predictions")
+    .select("*")
+    .eq("status", "pending")
+    .not("api_fixture_id", "is", null)
+    .limit(200);
+
+  if (error) throw error;
+  if (!predictions?.length) return;
+
+  const dateGroups = new Map();
+
+  for (const prediction of predictions) {
+    const date = kickoffDate(prediction.kickoff);
+
+    if (!date) continue;
+    if (!dateGroups.has(date)) dateGroups.set(date, []);
+    dateGroups.get(date).push(prediction);
+  }
+
+  const detailCache = new Map();
+  const eventsCache = new Map();
+
+  async function getFixtureDetails(fixtureId) {
+    const key = String(fixtureId);
+
+    if (!detailCache.has(key)) {
+      detailCache.set(
+        key,
+        sportApiRequest(`/fixtures/${encodeURIComponent(fixtureId)}`)
+          .then(data => data.fixture || null)
+      );
+    }
+
+    return detailCache.get(key);
+  }
+
+  async function getCachedEvents(fixtureId) {
+    const key = String(fixtureId);
+
+    if (!eventsCache.has(key)) {
+      eventsCache.set(
+        key,
+        getFixtureEvents(fixtureId).catch(error => {
+          console.error(
+            `Goal events unavailable for ${fixtureId}:`,
+            error.message
+          );
+          return null;
+        })
+      );
+    }
+
+    return eventsCache.get(key);
+  }
+
+  async function processFootballPrediction(prediction, fixture) {
+    if (!fixture) return;
+
+    const status = String(fixture.status || "").trim().toUpperCase();
+    const now = new Date().toISOString();
+
+    const update = {
+      fixture_status: fixture.status || null,
+      home_score: safeNumber(fixture.home_score),
+      away_score: safeNumber(fixture.away_score),
+      tracking_updated_at: now
+    };
+
+    if (voidStatus(status)) {
+      const reason = status === "POSTPONED"
+        ? "Match postponed by SportAPI"
+        : "Match officially cancelled by SportAPI";
+
+      const { data: settled, error } = await supabase
+        .from("predictions")
+        .update({
+          ...update,
+          status: "void",
+          result: `Automatically settled VOID: ${reason}.`
+        })
+        .eq("id", prediction.id)
+        .eq("status", "pending")
+        .eq("api_fixture_id", prediction.api_fixture_id)
+        .select("id");
+
+      if (error) {
+        console.error("Football VOID settlement failed:", error.message);
+      } else if (settled?.length) {
+        console.log(`Football prediction ${prediction.id} marked VOID.`);
+      }
+
+      return;
+    }
+
+    if (!finalStatus(status)) {
+      const { error } = await supabase
+        .from("predictions")
+        .update(update)
+        .eq("id", prediction.id)
+        .eq("status", "pending")
+        .eq("api_fixture_id", prediction.api_fixture_id);
+
+      if (error) {
+        console.error("Football score update failed:", error.message);
+      }
+
+      return;
+    }
+
+    let finalFixture = fixture;
+
+    try {
+      const details = await getFixtureDetails(prediction.api_fixture_id);
+      if (details) finalFixture = { ...fixture, ...details };
+    } catch (error) {
+      console.error("Football detail lookup failed:", error.message);
+    }
+
+    update.home_score = safeNumber(finalFixture.home_score);
+    update.away_score = safeNumber(finalFixture.away_score);
+    update.halftime_home_score = safeNumber(finalFixture.ht_home);
+    update.halftime_away_score = safeNumber(finalFixture.ht_away);
+
+    if (update.home_score === null || update.away_score === null) {
+      await supabase
+        .from("predictions")
+        .update(update)
+        .eq("id", prediction.id)
+        .eq("status", "pending")
+        .eq("api_fixture_id", prediction.api_fixture_id);
+
+      console.log(
+        `Football prediction ${prediction.id}: final score unavailable; still pending.`
+      );
+      return;
+    }
+
+    let outcome = null;
+
+    if (isOneUpTwoUpMarket(prediction)) {
+      const events = await getCachedEvents(prediction.api_fixture_id);
+
+      outcome = settleOneUpTwoUpMarket(
+        prediction,
+        finalFixture,
+        events
+      );
+    } else {
+      outcome = settleScoreMarket(prediction, finalFixture);
+    }
+
+    if (!["won", "lost", "void"].includes(outcome)) {
+      await supabase
+        .from("predictions")
+        .update(update)
+        .eq("id", prediction.id)
+        .eq("status", "pending")
+        .eq("api_fixture_id", prediction.api_fixture_id);
+
+      console.log(
+        `Football prediction ${prediction.id}: unsupported or unverified market; still pending.`
+      );
+      return;
+    }
+
+    const scoreText = `${update.home_score}-${update.away_score}`;
+
+    const resultText = isOneUpTwoUpMarket(prediction)
+      ? `Automatically settled ${outcome.toUpperCase()} using verified SportAPI goal events. Final score ${scoreText}.`
+      : outcome === "void"
+        ? `Automatically settled VOID: market resulted in a push. Final score ${scoreText}.`
+        : `Automatically settled ${outcome.toUpperCase()}: final score ${scoreText}.`;
+
+    const { data: settled, error } = await supabase
+      .from("predictions")
+      .update({
+        ...update,
+        status: outcome,
+        result: resultText
+      })
+      .eq("id", prediction.id)
+      .eq("status", "pending")
+      .eq("api_fixture_id", prediction.api_fixture_id)
+      .select("id");
+
+    if (error) {
+      console.error(
+        `Football settlement failed for ${prediction.id}:`,
+        error.message
+      );
+    } else if (settled?.length) {
+      console.log(
+        `Football prediction ${prediction.id} settled ${outcome.toUpperCase()}.`
+      );
+    }
+  }
+
+  for (const [date, group] of dateGroups) {
+    let fixtures = [];
+
+    try {
+      const dailyData = await sportApiRequest(
+        `/fixtures/date/${encodeURIComponent(date)}`
+      );
+
+      fixtures = Array.isArray(dailyData.data) ? dailyData.data : [];
+    } catch (error) {
+      console.error(`Football date lookup failed for ${date}:`, error.message);
+    }
+
+    for (const prediction of group) {
+      let fixture = fixtures.find(
+        item => String(item.id) === String(prediction.api_fixture_id)
+      );
+
+      if (!fixture) {
+        const key = String(prediction.api_fixture_id);
+        const lastCheck = missingFixtureChecks.get(`football-${key}`) || 0;
+
+        if (Date.now() - lastCheck >= MISSING_FIXTURE_RECHECK_MS) {
+          missingFixtureChecks.set(`football-${key}`, Date.now());
+
+          try {
+            fixture = await getFixtureDetails(prediction.api_fixture_id);
+          } catch (error) {
+            console.error(
+              `Football rescheduled fixture lookup failed for ${key}:`,
+              error.message
+            );
+          }
+        }
+      }
+
+      if (!fixture) {
+        console.log(
+          `Football fixture ${prediction.api_fixture_id} not found yet.`
+        );
+        continue;
+      }
+
+      if (
+        !teamMatches(prediction.home_team, fixture.home_team) ||
+        !teamMatches(prediction.away_team, fixture.away_team)
+      ) {
+        console.error(
+          `Football team mismatch for prediction ${prediction.id}. Settlement blocked.`
+        );
+        continue;
+      }
+
+      try {
+        await processFootballPrediction(prediction, fixture);
+      } catch (error) {
+        console.error(
+          `Football prediction ${prediction.id} processing failed:`,
+          error.message
+        );
+      }
+    }
+  }
+}
+
+// =====================================
+// BASKETBALL AUTOMATIC TRACKING
+// =====================================
+
+async function trackBasketballPredictions() {
+  const { data: predictions, error } = await supabase
+    .from("predictions")
+    .select("*")
+    .eq("status", "pending")
+    .not("api_basketball_game_id", "is", null)
+    .limit(200);
+
+  if (error) throw error;
+  if (!predictions?.length) return;
+
+  const dateGroups = new Map();
+
+  for (const prediction of predictions) {
+    const date = kickoffDate(prediction.kickoff);
+
+    if (!date) continue;
+    if (!dateGroups.has(date)) dateGroups.set(date, []);
+    dateGroups.get(date).push(prediction);
+  }
+
+  const gameCache = new Map();
+
+  async function getBasketballGame(gameId) {
+    const key = String(gameId);
+
+    if (!gameCache.has(key)) {
+      gameCache.set(
+        key,
+        sportApiRequest(
+          `/basketball/games/${encodeURIComponent(gameId)}`
+        ).then(response => response.data || null)
+      );
+    }
+
+    return gameCache.get(key);
+  }
+
+  async function processBasketballPrediction(prediction, game) {
+    if (!game) return;
+
+    const status = String(game.status || "").trim().toUpperCase();
+    const scores = getBasketballScores(game);
+    const now = new Date().toISOString();
+
+    const update = {
+      fixture_status: game.status || null,
+      home_score: scores.home,
+      away_score: scores.away,
+      tracking_updated_at: now
+    };
+
+    // Only documented postponed/cancelled statuses are voided.
+
+    if (basketballVoidStatus(status)) {
+      const reason = status === "POST"
+        ? "Basketball game postponed by SportAPI"
+        : "Basketball game cancelled by SportAPI";
+
+      const { data: settled, error } = await supabase
+        .from("predictions")
+        .update({
+          ...update,
+          status: "void",
+          result: `Automatically settled VOID: ${reason}.`
+        })
+        .eq("id", prediction.id)
+        .eq("status", "pending")
+        .eq("api_basketball_game_id", String(prediction.api_basketball_game_id))
+        .select("id");
+
+      if (error) {
+        console.error(
+          `Basketball VOID settlement failed for ${prediction.id}:`,
+          error.message
+        );
+      } else if (settled?.length) {
+        console.log(
+          `Basketball prediction ${prediction.id} automatically marked VOID.`
+        );
+      }
+
+      return;
+    }
+
+    // Never settle a game that is still live or not started.
+
+    if (!basketballFinalStatus(status)) {
+      const { error } = await supabase
+        .from("predictions")
+        .update(update)
+        .eq("id", prediction.id)
+        .eq("status", "pending")
+        .eq("api_basketball_game_id", String(prediction.api_basketball_game_id));
+
+      if (error) {
+        console.error(
+          `Basketball score update failed for ${prediction.id}:`,
+          error.message
+        );
+      }
+
+      return;
+    }
+
+    // Fetch the latest full game object after the final status.
+    // It contains the period scores needed for quarter and half markets.
+
+    let finalGame = game;
+
+    try {
+      const details = await getBasketballGame(
+        prediction.api_basketball_game_id
+      );
+
+      if (details) finalGame = { ...game, ...details };
+    } catch (error) {
+      console.error(
+        `Basketball game detail lookup failed for ${prediction.api_basketball_game_id}:`,
+        error.message
+      );
+    }
+
+    const finalScores = getBasketballScores(finalGame);
+
+    update.home_score = finalScores.home;
+    update.away_score = finalScores.away;
+    update.fixture_status = finalGame.status || status;
+
+    if (update.home_score === null || update.away_score === null) {
+      await supabase
+        .from("predictions")
+        .update(update)
+        .eq("id", prediction.id)
+        .eq("status", "pending")
+        .eq("api_basketball_game_id", String(prediction.api_basketball_game_id));
+
+      console.log(
+        `Basketball prediction ${prediction.id}: final score unavailable; still pending.`
+      );
+      return;
+    }
+
+    const outcome = settleBasketballMarket(prediction, finalGame);
+
+    if (!["won", "lost", "void"].includes(outcome)) {
+      await supabase
+        .from("predictions")
+        .update(update)
+        .eq("id", prediction.id)
+        .eq("status", "pending")
+        .eq("api_basketball_game_id", String(prediction.api_basketball_game_id));
+
+      console.log(
+        `Basketball prediction ${prediction.id}: market could not be verified; still pending.`
+      );
+      return;
+    }
+
+    const scoreText = `${update.home_score}-${update.away_score}`;
+
+    const resultText = outcome === "void"
+      ? `Automatically settled VOID: basketball market resulted in a push. Final score ${scoreText}.`
+      : `Automatically settled ${outcome.toUpperCase()} using SportAPI basketball results. Final score ${scoreText}.`;
+
+    // Only update a still-pending prediction linked to this
+    // exact basketball game. Manual results are never overwritten.
+
+    const { data: settled, error: settleError } = await supabase
+      .from("predictions")
+      .update({
+        ...update,
+        status: outcome,
+        result: resultText
+      })
+      .eq("id", prediction.id)
+      .eq("status", "pending")
+      .eq("api_basketball_game_id", String(prediction.api_basketball_game_id))
+      .select("id");
+
+    if (settleError) {
+      console.error(
+        `Basketball settlement failed for ${prediction.id}:`,
+        settleError.message
+      );
+      return;
+    }
+
+    if (settled?.length) {
+      console.log(
+        `Basketball prediction ${prediction.id} automatically settled ${outcome.toUpperCase()}. Score: ${scoreText}.`
+      );
+    }
+  }
+
+  for (const [date, group] of dateGroups) {
+    let games = [];
+
+    try {
+      const response = await sportApiRequest(
+        `/basketball/games/date/${encodeURIComponent(date)}?tz=UTC`
+      );
+
+      games = Array.isArray(response.data) ? response.data : [];
+    } catch (error) {
+      console.error(
+        `Basketball date lookup failed for ${date}:`,
+        error.message
+      );
+    }
+
+    for (const prediction of group) {
+      let game = games.find(
+        item => String(item.id) === String(prediction.api_basketball_game_id)
+      );
+
+      if (!game) {
+        const key = String(prediction.api_basketball_game_id);
+        const lastCheck = missingFixtureChecks.get(`basketball-${key}`) || 0;
+
+        if (Date.now() - lastCheck >= MISSING_FIXTURE_RECHECK_MS) {
+          missingFixtureChecks.set(`basketball-${key}`, Date.now());
+
+          try {
+            game = await getBasketballGame(prediction.api_basketball_game_id);
+          } catch (error) {
+            console.error(
+              `Basketball rescheduled game lookup failed for ${key}:`,
+              error.message
+            );
+          }
+        }
+      }
+
+      if (!game) {
+        console.log(
+          `Basketball game ${prediction.api_basketball_game_id} not found yet.`
+        );
+        continue;
+      }
+
+      const teams = getBasketballTeams(game);
+
+      if (
+        !teamMatches(prediction.home_team, teams.home) ||
+        !teamMatches(prediction.away_team, teams.away)
+      ) {
+        console.error(
+          `Basketball team mismatch for prediction ${prediction.id}. Settlement blocked.`
+        );
+        continue;
+      }
+
+      try {
+        await processBasketballPrediction(prediction, game);
+      } catch (error) {
+        console.error(
+          `Basketball prediction ${prediction.id} processing failed:`,
+          error.message
+        );
+      }
+    }
+  }
+}
+
+// =====================================
+// MAIN TRACKING RUNNER
+// =====================================
+
+async function trackPredictions() {
+  if (!supabase || !sportApiKey || trackingBusy) return;
+
+  trackingBusy = true;
+
+  try {
+    // Match unlinked predictions against both sports first.
+    await autoLinkUnlinkedPredictions();
+
+    // Then independently process linked predictions.
+    await trackFootballPredictions();
+    await trackBasketballPredictions();
+
+  } catch (error) {
+    console.error("Automatic tracking error:", error.message);
+
+  } finally {
+    trackingBusy = false;
+  }
+}
+
+// =====================================
+// TRACKING SCHEDULE
+// =====================================
+
+setInterval(trackPredictions, 3 * 60 * 1000);
+
+// =====================================
+// START SERVER
+// =====================================
+
+app.listen(PORT, () => {
+  console.log(`ONLYBOSSTIPS API running on port ${PORT}`);
+
+  console.log("Football provider: SportAPI");
+  console.log("Basketball provider: SportAPI");
+  console.log("Football automatic settlement: ENABLED");
+  console.log("Basketball automatic settlement: ENABLED");
+  console.log("Automatic football fixture matching: ENABLED");
+  console.log("Automatic basketball game matching: ENABLED");
+  console.log("Basketball match winner: ENABLED");
+  console.log("Basketball quarter winner: ENABLED");
+  console.log("Basketball half winner: ENABLED");
+  console.log("Basketball total points: ENABLED");
+  console.log("Basketball team totals: ENABLED");
+  console.log("Basketball point spread/handicap: ENABLED");
+  console.log("Manual settlement protection: ENABLED");
+  console.log("Unsupported markets: REMAIN PENDING");
+
+  if (!sportApiKey) {
+    console.error("WARNING: SPORTAPI_KEY is missing.");
+  }
+
+  if (!supabase) {
+    console.error("WARNING: Supabase is not configured.");
+  }
+
+  setTimeout(trackPredictions, 15000);
+});
