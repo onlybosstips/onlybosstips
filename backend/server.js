@@ -637,8 +637,6 @@ function settleBasketballMarket(prediction, game) {
     if (side === "home") return homeScore > awayScore ? "won" : "lost";
     if (side === "away") return awayScore > homeScore ? "won" : "lost";
 
-    // Also allow the selected team name to appear as
-    // the selection itself.
     if (prediction.home_team &&
         teamMatches(selection, prediction.home_team)) {
       return homeScore > awayScore ? "won" : "lost";
@@ -652,7 +650,6 @@ function settleBasketballMarket(prediction, game) {
     return null;
   }
 
-  // Quarter and half markets require verified period scores.
   if (periods) {
     const quarterMatch = combined.match(
       /\b(?:q|quarter)\s*([1-4])\b|\b(first|second|third|fourth)\s+quarter\b/
@@ -735,7 +732,6 @@ function settleBasketballMarket(prediction, game) {
     }
   }
 
-  // Full game team totals.
   if (/team total|home total|away total|team points/.test(combined)) {
     let teamSide = side;
 
@@ -747,20 +743,16 @@ function settleBasketballMarket(prediction, game) {
     return settleTotal(teamSide === "home" ? home : away);
   }
 
-  // Full game point spread / handicap.
   if (/spread|handicap|points handicap/.test(combined)) {
     return settleBasketballSpread(
       prediction, home, away, side, line, combined
     );
   }
 
-  // Full game total points.
   if (/total points|match points|game points|over under|total score/.test(combined)) {
     return settleTotal(total);
   }
 
-  // Match winner / moneyline. Basketball has no draw
-  // outcome for ordinary match-winner markets.
   if (/winner|moneyline|match result|game result|to win/.test(combined)) {
     return settleWinner(home, away);
   }
@@ -791,8 +783,6 @@ function settleBasketballSpread(
 
   if (!side) return null;
 
-  // Prefer a signed handicap written with the team selection,
-  // such as "Lakers -3.5" or "Celtics +4.5".
   const signed = String(
     prediction.market_selection || prediction.prediction || ""
   ).match(/([+-]\s*\d+(?:\.\d+)?)/);
@@ -802,8 +792,6 @@ function settleBasketballSpread(
   if (signed) {
     handicap = Number(signed[1].replace(/\s/g, ""));
   } else {
-    // If the selection itself does not contain a sign,
-    // the stored market_line must contain the signed value.
     if (!String(prediction.market_line ?? "").trim()) return null;
   }
 
@@ -990,7 +978,251 @@ app.get("/health/basketball", async (req, res) => {
 });
 
 // =====================================
+// MEMBER LIVE SCORES
+// =====================================
+
+// Cache results for five minutes to reduce SportAPI requests.
+
+const LIVE_SCORES_CACHE_MS = 5 * 60 * 1000;
+
+let liveScoresCache = {
+  data: null,
+  expiresAt: 0,
+  pending: null
+};
+
+function getSportApiArray(response) {
+  if (Array.isArray(response?.data)) return response.data;
+  if (Array.isArray(response?.data?.data)) return response.data.data;
+  if (Array.isArray(response?.games)) return response.games;
+  if (Array.isArray(response?.fixtures)) return response.fixtures;
+  return [];
+}
+
+function getFootballDate() {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Berlin",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date());
+
+  const values = {};
+
+  for (const part of parts) {
+    if (part.type !== "literal") {
+      values[part.type] = part.value;
+    }
+  }
+
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+function normalizeFootballLiveMatch(fixture) {
+  return {
+    id: fixture.id,
+    sport: "football",
+    league: fixture.league_name || fixture.league || "Football",
+    home_team: fixture.home_team || "",
+    away_team: fixture.away_team || "",
+    home_score: safeNumber(fixture.home_score),
+    away_score: safeNumber(fixture.away_score),
+    status: fixture.status || "LIVE",
+    minute: fixture.minute ?? null,
+    kickoff: fixture.kickoff_utc || fixture.datetime || fixture.date || null,
+    home_logo: fixture.home_logo || null,
+    away_logo: fixture.away_logo || null
+  };
+}
+
+function normalizeBasketballLiveMatch(game) {
+  return {
+    id: game.id,
+    sport: "basketball",
+    league: game.league?.name || game.league_name ||
+      game.league || "Basketball",
+    home_team: game.home?.name || "",
+    away_team: game.away?.name || "",
+    home_score: safeNumber(game.home?.score),
+    away_score: safeNumber(game.away?.score),
+    status: game.status || "LIVE",
+    period: game.period || game.current_period || null,
+    clock: game.clock || game.time_remaining || null,
+    kickoff: game.start || game.date || game.datetime || null,
+    home_logo: game.home?.logo_url || game.home?.logo || null,
+    away_logo: game.away?.logo_url || game.away?.logo || null
+  };
+}
+
+async function buildLiveScoresResponse() {
+  const footballDate = getFootballDate();
+  const basketballDate = new Date().toISOString().slice(0, 10);
+
+  const [footballResult, basketballLiveResult, basketballDateResult] =
+    await Promise.allSettled([
+      sportApiRequest(
+        `/fixtures/date/${encodeURIComponent(footballDate)}`
+      ),
+      sportApiRequest("/basketball/games/live"),
+      sportApiRequest(
+        `/basketball/games/date/${encodeURIComponent(basketballDate)}?tz=UTC`
+      )
+    ]);
+
+  const warnings = [];
+
+  let footballLive = [];
+  let footballFinished = [];
+  let basketballLive = [];
+  let basketballFinished = [];
+
+  if (footballResult.status === "fulfilled") {
+    const fixtures = getSportApiArray(footballResult.value);
+
+    const liveStatuses = [
+      "LIVE", "1H", "2H", "HT", "ET", "P",
+      "INPLAY", "IN PLAY", "SUSPENDED"
+    ];
+
+    footballLive = fixtures
+      .filter(fixture =>
+        liveStatuses.includes(
+          String(fixture.status || "").trim().toUpperCase()
+        )
+      )
+      .map(normalizeFootballLiveMatch);
+
+    footballFinished = fixtures
+      .filter(fixture => finalStatus(fixture.status))
+      .map(normalizeFootballLiveMatch);
+
+  } else {
+    warnings.push("Football scores are temporarily unavailable.");
+    console.error(
+      "Live football scores error:",
+      footballResult.reason?.message
+    );
+  }
+
+  let basketballLiveAvailable = false;
+  let basketballFinishedAvailable = false;
+
+  if (basketballLiveResult.status === "fulfilled") {
+    basketballLiveAvailable = true;
+
+    const games = getSportApiArray(basketballLiveResult.value);
+
+    basketballLive = games
+      .filter(game => {
+        const status = String(game.status || "").trim().toUpperCase();
+
+        return game.live === true ||
+          ["Q1", "Q2", "Q3", "Q4", "H1", "H2", "HT", "OT",
+            "OVERTIME", "LIVE"].includes(status);
+      })
+      .map(normalizeBasketballLiveMatch);
+
+  } else {
+    warnings.push("Live basketball games are temporarily unavailable.");
+    console.error(
+      "Live basketball scores error:",
+      basketballLiveResult.reason?.message
+    );
+  }
+
+  if (basketballDateResult.status === "fulfilled") {
+    basketballFinishedAvailable = true;
+
+    const games = getSportApiArray(basketballDateResult.value);
+
+    basketballFinished = games
+      .filter(game => basketballFinalStatus(game.status))
+      .map(normalizeBasketballLiveMatch);
+
+  } else {
+    warnings.push("Basketball results are temporarily unavailable.");
+    console.error(
+      "Basketball results error:",
+      basketballDateResult.reason?.message
+    );
+  }
+
+  const footballAvailable = footballResult.status === "fulfilled";
+  const basketballAvailable =
+    basketballLiveAvailable || basketballFinishedAvailable;
+
+  return {
+    success: footballAvailable || basketballAvailable,
+    provider: "SportAPI",
+    updated_at: new Date().toISOString(),
+
+    football: {
+      live: footballLive,
+      finished: footballFinished
+    },
+
+    basketball: {
+      live: basketballLive,
+      finished: basketballFinished
+    },
+
+    warnings
+  };
+}
+
+// Public endpoint for the member website.
+
+app.get("/live-scores", async (req, res) => {
+  try {
+    if (
+      liveScoresCache.data &&
+      Date.now() < liveScoresCache.expiresAt
+    ) {
+      return res.json({
+        ...liveScoresCache.data,
+        cached: true
+      });
+    }
+
+    if (!liveScoresCache.pending) {
+      liveScoresCache.pending = buildLiveScoresResponse()
+        .then(data => {
+          liveScoresCache.data = data;
+          liveScoresCache.expiresAt =
+            Date.now() + LIVE_SCORES_CACHE_MS;
+
+          return data;
+        })
+        .finally(() => {
+          liveScoresCache.pending = null;
+        });
+    }
+
+    const data = await liveScoresCache.pending;
+
+    if (!data.success) {
+      return res.status(502).json(data);
+    }
+
+    return res.json({
+      ...data,
+      cached: false
+    });
+
+  } catch (error) {
+    console.error("Live scores endpoint error:", error.message);
+
+    return res.status(502).json({
+      success: false,
+      message: "Unable to retrieve live scores right now."
+    });
+  }
+});
+
+// =====================================
 // FOOTBALL FIXTURE SEARCH
+// =====================================
+
 // =====================================
 
 app.get("/fixtures/search", async (req, res) => {
@@ -1356,15 +1588,6 @@ const AUTO_LINK_MAX_DATE_GROUPS = 12;
 // AUTOMATIC MATCHING FOR BOTH SPORTS
 // =====================================
 
-// Predictions use the same publishing form, so the
-// backend checks both SportAPI sports before linking.
-//
-// A prediction is linked only when exactly one sport
-// has exactly one matching fixture and the other sport
-// has no matching fixture.
-//
-// This prevents basketball IDs being stored as football IDs.
-
 async function autoLinkUnlinkedPredictions() {
   if (!supabase || !sportApiKey) return;
 
@@ -1538,9 +1761,6 @@ async function autoLinkUnlinkedPredictions() {
           return Number.isFinite(gameTime) &&
             Math.abs(predictionTime - gameTime) <= 18 * 60 * 60 * 1000;
         });
-
-        // Never guess if both sports match or if either
-        // sport has multiple possible games.
 
         if (
           matchingFootball.length > 0 &&
@@ -1983,8 +2203,6 @@ async function trackBasketballPredictions() {
       tracking_updated_at: now
     };
 
-    // Only documented postponed/cancelled statuses are voided.
-
     if (basketballVoidStatus(status)) {
       const reason = status === "POST"
         ? "Basketball game postponed by SportAPI"
@@ -2016,8 +2234,6 @@ async function trackBasketballPredictions() {
       return;
     }
 
-    // Never settle a game that is still live or not started.
-
     if (!basketballFinalStatus(status)) {
       const { error } = await supabase
         .from("predictions")
@@ -2035,9 +2251,6 @@ async function trackBasketballPredictions() {
 
       return;
     }
-
-    // Fetch the latest full game object after the final status.
-    // It contains the period scores needed for quarter and half markets.
 
     let finalGame = game;
 
@@ -2095,9 +2308,6 @@ async function trackBasketballPredictions() {
     const resultText = outcome === "void"
       ? `Automatically settled VOID: basketball market resulted in a push. Final score ${scoreText}.`
       : `Automatically settled ${outcome.toUpperCase()} using SportAPI basketball results. Final score ${scoreText}.`;
-
-    // Only update a still-pending prediction linked to this
-    // exact basketball game. Manual results are never overwritten.
 
     const { data: settled, error: settleError } = await supabase
       .from("predictions")
@@ -2206,10 +2416,8 @@ async function trackPredictions() {
   trackingBusy = true;
 
   try {
-    // Match unlinked predictions against both sports first.
     await autoLinkUnlinkedPredictions();
 
-    // Then independently process linked predictions.
     await trackFootballPredictions();
     await trackBasketballPredictions();
 
@@ -2236,6 +2444,8 @@ app.listen(PORT, () => {
 
   console.log("Football provider: SportAPI");
   console.log("Basketball provider: SportAPI");
+  console.log("Live scores endpoint: ENABLED");
+  console.log("Live scores cache: 5 MINUTES");
   console.log("Football automatic settlement: ENABLED");
   console.log("Basketball automatic settlement: ENABLED");
   console.log("Automatic football fixture matching: ENABLED");
