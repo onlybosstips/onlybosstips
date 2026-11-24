@@ -4,36 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#050b08">
-<title>onlybosstips | Football Prediction Hub</title>
+<title>ONLYBOSSTIPS | Premium Sports Hub</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root{
  --bg:#050b08;
- --panel:#0c1711;
- --panel2:#101f16;
- --panel3:#14271b;
+ --panel:#0b1710;
+ --panel2:#102117;
+ --panel3:#142b1d;
  --green:#20c878;
- --green2:#0b8f58;
+ --green2:#087e4d;
  --mint:#a6f5cb;
  --white:#f4fff8;
  --muted:#91a99a;
- --line:rgba(166,245,203,.12);
- --red:#ff5d69;
- --yellow:#f7c65d;
- --blue:#65b9ff;
- --radius:18px;
- --shadow:0 15px 45px rgba(0,0,0,.28);
+ --line:rgba(166,245,203,.13);
+ --red:#ff5968;
+ --yellow:#f4c45e;
+ --blue:#69baff;
+ --radius:19px;
+ --shadow:0 16px 48px rgba(0,0,0,.32);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
 body{
  margin:0;background:var(--bg);color:var(--white);
  font-family:"DM Sans",sans-serif;min-height:100vh;
+ padding-bottom:0;
 }
 button,input,select{font:inherit}
 button{cursor:pointer}
@@ -41,51 +42,103 @@ a{color:inherit;text-decoration:none}
 .hidden{display:none!important}
 .muted{color:var(--muted)}
 .small{font-size:12px}
-.script-brand{
- font-family:"Great Vibes",cursive;
- color:var(--mint);font-size:38px;line-height:1;
- letter-spacing:.5px;text-shadow:0 0 22px rgba(32,200,120,.2)
-}
 .container{width:min(1180px,94%);margin:auto}
+.brand-name{
+ font-family:"Montserrat",sans-serif;font-weight:900;
+ letter-spacing:2px;color:var(--mint);
+ text-shadow:0 0 24px rgba(32,200,120,.22)
+}
 .topbar{
- position:sticky;top:0;z-index:50;
- background:rgba(5,11,8,.94);backdrop-filter:blur(16px);
+ position:sticky;top:0;z-index:80;
+ background:rgba(5,11,8,.96);backdrop-filter:blur(18px);
  border-bottom:1px solid var(--line)
 }
 .topbar-inner{
- min-height:68px;display:flex;align-items:center;
+ min-height:66px;display:flex;align-items:center;
  justify-content:space-between;gap:12px
 }
 .brand-wrap{display:flex;align-items:center;gap:10px}
-.brand-mark{
- width:38px;height:38px;border-radius:13px;
- display:grid;place-items:center;color:#04140b;
- background:linear-gradient(135deg,var(--mint),var(--green2));
- font-weight:900
-}
+.brand-name.header-brand{font-size:19px}
 .header-actions{display:flex;align-items:center;gap:8px}
 .btn{
  border:1px solid var(--line);border-radius:12px;padding:11px 15px;
  background:var(--panel2);color:var(--white);font-weight:800;
  transition:.2s
 }
-.btn:hover{border-color:var(--green);transform:translateY(-1px)}
+.btn:hover{border-color:var(--green)}
 .btn-primary{
  background:linear-gradient(135deg,var(--green),var(--green2));
  color:#03140a;border:0
 }
 .btn-ghost{background:transparent}
-.btn-danger{background:rgba(255,93,105,.12);color:#ff8991}
+.btn-danger{background:rgba(255,89,104,.12);color:#ff8993}
+.full{width:100%}
 .hero{
- padding:44px 0 28px;text-align:center;
- background:radial-gradient(ellipse at 50% 0%,rgba(32,200,120,.14),transparent 65%)
+ min-height:calc(100svh - 66px);display:grid;place-items:center;
+ position:relative;isolation:isolate;overflow:hidden;
+ padding:55px 0;text-align:center;
+ background:
+ linear-gradient(90deg,rgba(2,9,5,.91),rgba(2,9,5,.63),rgba(2,9,5,.91)),
+ url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2000&q=85") center/cover
 }
-.hero-kicker{font-size:11px;letter-spacing:3px;color:var(--mint);font-weight:800}
-.hero h1{font-family:"Cinzel",serif;font-size:clamp(25px,5vw,44px);margin:14px 0 8px}
-.hero-sub{color:var(--muted);font-size:13px;letter-spacing:2px}
-.hero-brand{font-family:"Great Vibes",cursive;color:var(--mint);font-size:clamp(45px,9vw,76px)}
-.hero-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:23px}
-.section{padding:22px 0}
+.hero:before{
+ content:"";position:absolute;inset:0;z-index:-1;
+ background:
+ linear-gradient(135deg,rgba(10,60,35,.35),transparent 48%),
+ radial-gradient(ellipse at 50% 50%,transparent 15%,rgba(0,0,0,.5) 100%)
+}
+.hero-content{width:min(760px,92%);margin:auto}
+.hero-kicker{
+ color:var(--mint);font-size:11px;font-weight:900;
+ letter-spacing:4px;text-transform:uppercase
+}
+.hero h1{
+ font-family:"Cinzel",serif;font-size:clamp(30px,6vw,58px);
+ line-height:1.2;margin:20px 0 10px
+}
+.hero-brand{
+ font-family:"Montserrat",sans-serif;font-size:clamp(36px,8vw,76px);
+ font-weight:900;letter-spacing:clamp(2px,1vw,8px);
+ color:#d8ffea;text-shadow:0 0 35px rgba(32,200,120,.32)
+}
+.hero-sub{
+ color:#c4e8d1;font-size:12px;letter-spacing:3px;
+ margin-top:15px;font-weight:700
+}
+.hero-copy{
+ max-width:570px;margin:20px auto 0;color:#d0dfd5;
+ line-height:1.8;font-size:14px
+}
+.hero-actions{display:flex;justify-content:center;gap:11px;flex-wrap:wrap;margin-top:28px}
+.hero-sports{
+ display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+ margin:38px auto 0;max-width:650px
+}
+.hero-sport{
+ min-height:105px;border:1px solid rgba(255,255,255,.2);
+ border-radius:15px;overflow:hidden;position:relative;
+ display:flex;align-items:end;justify-content:center;
+ padding:13px;font-size:11px;font-weight:900;letter-spacing:2px;
+ background-position:center;background-size:cover
+}
+.hero-sport:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8),rgba(0,0,0,.05))}
+.hero-sport span{position:relative}
+.hero-football{background-image:url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700&q=80")}
+.hero-basketball{background-image:url("https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=700&q=80")}
+.hero-tennis{background-image:url("https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?auto=format&fit=crop&w=700&q=80")}
+.auth-wrap{width:min(470px,94%);margin:35px auto}
+.auth-card{padding:25px}
+.auth-card h2{font-family:"Cinzel",serif;margin:0 0 6px}
+.auth-brand{text-align:center;font-size:24px;margin-bottom:20px}
+.field{margin:14px 0}
+.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}
+.field input,.field select{
+ width:100%;background:#07110b;border:1px solid var(--line);
+ color:var(--white);padding:13px;border-radius:11px;outline:none
+}
+.field input:focus,.field select:focus{border-color:var(--green)}
+.auth-links{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--mint)}
+.section{padding:18px 0}
 .section-heading{
  display:flex;align-items:center;justify-content:space-between;
  gap:12px;margin-bottom:14px
@@ -97,28 +150,24 @@ a{color:inherit;text-decoration:none}
  border:1px solid var(--line);border-radius:var(--radius);
  padding:17px;box-shadow:var(--shadow)
 }
-.auth-wrap{max-width:470px;margin:35px auto}
-.auth-card{padding:24px}
-.auth-card h2{font-family:"Cinzel",serif;margin:0 0 6px}
-.field{margin:14px 0}
-.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}
-.field input,.field select{
- width:100%;background:#07110b;border:1px solid var(--line);
- color:var(--white);padding:13px;border-radius:11px;outline:none
-}
-.field input:focus,.field select:focus{border-color:var(--green)}
-.full{width:100%}
-.auth-links{display:flex;justify-content:space-between;gap:10px;margin-top:14px;font-size:12px;color:var(--mint)}
-.dashboard{padding:20px 0 50px}
+.dashboard{padding:20px 0 105px}
 .member-head{
  display:flex;align-items:center;justify-content:space-between;
  flex-wrap:wrap;gap:14px
 }
-.member-info{display:flex;align-items:center;gap:12px}
+.member-info{display:flex;align-items:center;gap:13px}
+.avatar-wrap{position:relative;width:58px;height:58px;flex:0 0 58px}
 .avatar{
- width:46px;height:46px;border-radius:50%;
- display:grid;place-items:center;background:var(--panel3);
- border:1px solid var(--green);font-weight:900;color:var(--mint)
+ width:58px;height:58px;border-radius:50%;
+ display:grid;place-items:center;background:#fff;
+ border:3px solid #d9ffe9;color:#087e4d;
+ box-shadow:0 0 0 3px rgba(32,200,120,.2)
+}
+.avatar svg{width:30px;height:30px}
+.online-dot{
+ position:absolute;right:0;bottom:1px;width:14px;height:14px;
+ background:#20c878;border:3px solid #fff;border-radius:50%;
+ box-shadow:0 0 12px rgba(32,200,120,.7)
 }
 .badge{
  display:inline-flex;padding:6px 10px;border-radius:30px;
@@ -126,86 +175,157 @@ a{color:inherit;text-decoration:none}
  border:1px solid rgba(32,200,120,.25);
  font-size:10px;font-weight:900;letter-spacing:1px
 }
-.quick-grid{
- display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
- gap:12px;margin:20px 0
+.news-feature{
+ border:1px solid rgba(32,200,120,.3);
+ border-radius:20px;overflow:hidden;
+ background:linear-gradient(135deg,#173c28,#09150e);
+ min-height:220px;position:relative
 }
-.quick-tile{
- min-height:112px;border:1px solid var(--line);border-radius:17px;
- padding:17px 14px;text-align:left;color:var(--white);
- background:linear-gradient(145deg,#14291c,#09140d);
- position:relative;overflow:hidden
+.news-feature-inner{padding:22px;position:relative;z-index:1}
+.news-feature-label{font-size:10px;color:var(--mint);font-weight:900;letter-spacing:2px}
+.news-feature h3{font-family:"Cinzel",serif;font-size:clamp(18px,3vw,26px);line-height:1.4;margin:14px 0}
+.news-feature p{color:#c0d7c9;font-size:12px;line-height:1.6}
+.news-feature:after{
+ content:"NEWS";position:absolute;right:15px;bottom:-20px;
+ font-family:"Montserrat",sans-serif;font-size:clamp(60px,12vw,110px);
+ font-weight:900;color:rgba(255,255,255,.035);pointer-events:none
 }
-.quick-tile:after{
- content:"";position:absolute;width:95px;height:95px;border-radius:50%;
- right:-35px;bottom:-45px;background:rgba(32,200,120,.12)
+.news-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:12px}
+.news-card{
+ display:flex;gap:12px;padding:13px;
+ border:1px solid var(--line);border-radius:14px;background:#09140d;
+ min-width:0
 }
-.quick-tile .tile-icon{font-size:22px;margin-bottom:10px}
-.quick-tile strong{display:block;font-family:"Cinzel",serif;font-size:13px}
-.quick-tile span{font-size:10px;color:var(--muted)}
-.quick-tile.active{border-color:var(--green);box-shadow:0 0 0 1px rgba(32,200,120,.15)}
-.sports-tabs,.filter-tabs,.date-tabs{
- display:flex;gap:8px;overflow-x:auto;padding:3px 1px 10px;
- scrollbar-width:none
+.news-thumb{
+ flex:0 0 58px;height:58px;border-radius:11px;
+ background:linear-gradient(135deg,#153d27,#0b1710);
+ display:grid;place-items:center;color:var(--mint)
 }
-.sports-tabs::-webkit-scrollbar,.filter-tabs::-webkit-scrollbar,.date-tabs::-webkit-scrollbar{display:none}
+.news-thumb svg{width:27px;height:27px}
+.news-card h4{font-size:12px;margin:0 0 7px;line-height:1.5}
+.news-card p{font-size:10px;color:var(--muted);margin:0 0 7px}
+.news-card a{font-size:10px;color:var(--mint);font-weight:900}
+.calendar-clock{
+ display:grid;grid-template-columns:1fr 1.2fr;
+ align-items:center;gap:18px
+}
+.clock-time{font-size:clamp(24px,4vw,34px);font-weight:900;color:var(--mint);font-variant-numeric:tabular-nums}
+.clock-date{font-size:12px;color:var(--muted);margin-top:4px}
+.date-tabs{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px
+}
+.date-tab{
+ min-width:0;text-align:center;border:1px solid var(--line);
+ background:#09140d;color:var(--muted);padding:11px 5px;border-radius:12px
+}
+.date-tab strong{display:block;font-size:10px}
+.date-tab span{font-size:10px}
+.date-tab.active{background:var(--green);border-color:var(--green);color:#03140a}
+.sports-tabs,.filter-tabs{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0
+}
 .tab{
- flex:0 0 auto;border:1px solid var(--line);background:#09140d;
- color:var(--muted);padding:9px 14px;border-radius:30px;
- font-size:11px;font-weight:800
+ border:1px solid var(--line);background:#09140d;
+ color:var(--muted);padding:10px 12px;border-radius:11px;
+ font-size:11px;font-weight:900;text-align:center
 }
 .tab.active{background:var(--green);border-color:var(--green);color:#03140a}
-.date-tab{min-width:75px;text-align:center}
-.date-tab strong{display:block;font-size:12px}
-.date-tab span{font-size:10px}
-.live-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(260px,1fr);gap:14px}
-.match-list{display:grid;gap:10px}
+.league-filters{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:8px;margin:13px 0
+}
+.league-filters .tab{min-height:40px}
+.live-layout{display:grid;grid-template-columns:1fr;gap:13px}
+.match-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .match-card{
  background:#09140d;border:1px solid var(--line);border-radius:14px;
- padding:14px;cursor:pointer;transition:.2s
+ padding:14px;cursor:pointer;transition:.2s;min-width:0
 }
 .match-card:hover{border-color:var(--green)}
 .match-top{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:10px}
-.match-teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin-top:12px}
-.team{text-align:center;font-size:12px;font-weight:800}
-.team-score{font-size:22px;font-weight:900;color:var(--mint);text-align:center}
-.match-status{font-size:10px;color:var(--green);font-weight:900}
-.news-card{
- display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)
-}
-.news-card:last-child{border:0}
-.news-thumb{
- flex:0 0 72px;height:62px;border-radius:10px;
- background:linear-gradient(135deg,#153d27,#0b1710);
- display:grid;place-items:center;font-size:22px
-}
-.news-card h4{font-size:12px;margin:0 0 6px;line-height:1.45}
-.news-card p{font-size:10px;color:var(--muted);margin:0}
-.prediction-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.match-teams{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;margin-top:13px}
+.team{text-align:center;font-size:12px;font-weight:800;overflow-wrap:anywhere}
+.team-score{font-size:21px;font-weight:900;color:var(--mint);text-align:center;white-space:nowrap}
+.match-status{font-size:10px;color:var(--green);font-weight:900;white-space:nowrap}
+.match-logo{width:27px;height:27px;object-fit:contain;display:block;margin:0 auto 6px}
+.match-minute{color:var(--yellow);font-size:10px;text-align:center;margin-top:6px}
+.prediction-list{display:grid;grid-template-columns:1fr;gap:10px}
 .prediction-card{
- background:#09140d;border:1px solid var(--line);border-radius:14px;padding:14px
+ background:#09140d;border:1px solid var(--line);border-radius:15px;padding:16px;
+ border-left:3px solid rgba(32,200,120,.55)
 }
-.prediction-meta{display:flex;justify-content:space-between;gap:8px;font-size:10px;color:var(--muted)}
-.prediction-teams{font-size:13px;font-weight:900;margin:12px 0}
-.prediction-pick{color:var(--mint);font-weight:900;font-size:12px}
-.odds{color:var(--yellow);font-weight:900}
-.result{font-size:10px;font-weight:900;padding:5px 8px;border-radius:20px}
+.prediction-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:10px;color:var(--muted)}
+.prediction-teams{font-size:15px;font-weight:900;margin:13px 0}
+.prediction-pick{color:var(--mint);font-weight:800;font-size:12px;line-height:1.5}
+.prediction-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:13px;padding-top:11px;border-top:1px solid var(--line)}
+.odds{color:var(--yellow);font-weight:900;font-size:14px}
+.result{
+ display:inline-flex;align-items:center;gap:6px;
+ font-size:10px;font-weight:900;padding:6px 9px;border-radius:20px
+}
+.result:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
 .result-won{background:rgba(32,200,120,.15);color:var(--mint)}
-.result-lost{background:rgba(255,93,105,.14);color:#ff8991}
-.result-void{background:rgba(247,198,93,.13);color:var(--yellow)}
-.result-pending{background:rgba(101,185,255,.12);color:var(--blue)}
-.calendar-clock{
- display:flex;align-items:center;justify-content:space-between;
- flex-wrap:wrap;gap:12px
-}
-.clock-time{font-size:25px;font-weight:900;color:var(--mint);font-variant-numeric:tabular-nums}
-.clock-date{font-size:11px;color:var(--muted)}
+.result-won:before{content:"✓";width:15px;height:15px;display:grid;place-items:center;border:1.5px solid currentColor;border-radius:50%;font-size:10px}
+.result-lost{background:rgba(255,89,104,.14);color:#ff8993}
+.result-lost:before{content:"×";width:15px;height:15px;display:grid;place-items:center;border:1.5px solid currentColor;border-radius:50%;font-size:12px}
+.result-void{background:rgba(145,169,154,.14);color:#c4d4ca}
+.result-void:before{content:"–";width:15px;height:15px;display:grid;place-items:center;border:1.5px solid currentColor;border-radius:50%;font-size:12px}
+.result-pending{background:rgba(247,198,93,.12);color:var(--yellow)}
+.result-live{background:rgba(255,89,104,.12);color:#ff8993}
+.result-live:before{animation:livePulse 1.8s infinite}
+@keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,89,104,.4)}50%{opacity:.45;box-shadow:0 0 0 5px rgba(255,89,104,0)}}
 .payment-box{border:1px solid rgba(32,200,120,.25);background:rgba(32,200,120,.05);border-radius:15px;padding:16px}
 .bank-number{font-size:23px;font-weight:900;letter-spacing:2px;color:var(--mint)}
 .copy-row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.notice{border:1px solid rgba(247,198,93,.25);background:rgba(247,198,93,.06);padding:13px;border-radius:12px;font-size:12px;color:#f7d78d}
+.notice{border:1px solid rgba(247,198,93,.25);background:rgba(247,198,93,.06);padding:13px;border-radius:12px;font-size:12px;color:#f7d78d;line-height:1.6}
+.stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat-box{text-align:center;background:#09140d;border:1px solid var(--line);border-radius:13px;padding:15px}
+.stat-box strong{display:block;font-size:25px;color:var(--mint)}
+.stat-box span{font-size:10px;color:var(--muted);font-weight:800}
+.admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.admin-list{display:grid;gap:8px;margin-top:14px}
+.admin-item{padding:12px;border:1px solid var(--line);border-radius:12px;background:#09140d}
+.destination-page{padding:20px 0 110px;min-height:65vh}
+.destination-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.destination-toolbar h2{font-family:"Cinzel",serif;margin:0}
+.match-centre{
+ position:fixed;inset:0;z-index:200;background:#050b08;
+ overflow-y:auto;padding:20px 0 40px
+}
+.match-centre-inner{width:min(850px,94%);margin:auto}
+.match-centre-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.match-centre-score{
+ margin:25px 0;padding:30px 15px;text-align:center;
+ background:linear-gradient(145deg,#143521,#09140d);
+ border:1px solid var(--line);border-radius:22px
+}
+.match-centre-teams{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:15px}
+.match-centre-team{font-size:15px;font-weight:900;overflow-wrap:anywhere}
+.match-centre-team img{width:55px;height:55px;object-fit:contain;display:block;margin:0 auto 10px}
+.match-centre-numbers{font-size:clamp(30px,8vw,48px);font-weight:900;color:var(--mint)}
+.match-centre-status{color:var(--yellow);font-size:12px;font-weight:900;margin-top:10px}
+.match-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.match-detail{padding:14px;background:#0b1710;border:1px solid var(--line);border-radius:12px}
+.match-detail span{display:block;color:var(--muted);font-size:10px;margin-bottom:5px}
+.match-detail strong{font-size:12px;overflow-wrap:anywhere}
+.bottom-nav{
+ position:fixed;left:0;right:0;bottom:0;z-index:100;
+ background:rgba(5,11,8,.97);backdrop-filter:blur(18px);
+ border-top:1px solid var(--line);
+ padding:8px max(10px,env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom));
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px
+}
+.nav-item{
+ border:0;background:transparent;color:#84998b;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:5px;padding:6px 2px;min-width:0;font-size:9px;font-weight:900;
+ letter-spacing:.4px
+}
+.nav-item svg{width:22px;height:22px;stroke:currentColor}
+.nav-item.active{color:var(--mint)}
+.nav-item.active svg{filter:drop-shadow(0 0 6px rgba(32,200,120,.4))}
 .announcement-overlay{
- position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.82);
+ position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.86);
  display:grid;place-items:center;padding:20px
 }
 .announcement-card{
@@ -213,39 +333,37 @@ a{color:inherit;text-decoration:none}
  border-radius:20px;padding:24px;box-shadow:var(--shadow)
 }
 .announcement-card h2{font-family:"Cinzel",serif;color:var(--mint)}
-.admin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.admin-list{display:grid;gap:8px;margin-top:14px}
-.admin-item{padding:12px;border:1px solid var(--line);border-radius:12px;background:#09140d}
-.stats-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.stat-box{text-align:center;background:#09140d;border:1px solid var(--line);border-radius:13px;padding:15px}
-.stat-box strong{display:block;font-size:23px;color:var(--mint)}
-.stat-box span{font-size:10px;color:var(--muted)}
-.footer{border-top:1px solid var(--line);padding:25px 0;text-align:center;color:var(--muted);font-size:11px}
-.footer .script-brand{font-size:30px}
+.footer{border-top:1px solid var(--line);padding:28px 0 110px;text-align:center;color:var(--muted);font-size:11px}
+.footer .brand-name{font-size:20px}
 @media(max-width:760px){
- .quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
- .live-layout{grid-template-columns:1fr}
- .prediction-grid{grid-template-columns:1fr}
+ .hero{min-height:calc(100svh - 60px)}
+ .hero-sport{min-height:82px;font-size:9px}
+ .news-list{grid-template-columns:1fr}
+ .calendar-clock{grid-template-columns:1fr}
+ .match-list{grid-template-columns:1fr}
+ .league-filters{grid-template-columns:repeat(2,minmax(0,1fr))}
  .admin-grid{grid-template-columns:1fr}
- .hero{padding-top:30px}
  .topbar-inner{min-height:60px}
- .script-brand{font-size:32px}
+ .brand-name.header-brand{font-size:16px}
+ .member-head .btn{padding:9px 11px}
 }
-@media(max-width:380px){
- .quick-tile{padding:13px;min-height:100px}
- .quick-tile strong{font-size:11px}
- .stats-grid{grid-template-columns:1fr 1fr}
+@media(max-width:390px){
+ .hero-sports{gap:6px}
+ .hero-sport{padding:8px 4px}
+ .stats-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .stat-box{padding:12px 5px}
+ .stat-box strong{font-size:21px}
+ .nav-item{font-size:8px}
 }
 </style>
 </head>
 
 <body>
 
-<header class="topbar">
+<header class="topbar" id="publicHeader">
  <div class="container topbar-inner">
   <div class="brand-wrap">
-   <div class="brand-mark">✦</div>
-   <div class="script-brand">onlybosstips</div>
+   <div class="brand-name header-brand">ONLYBOSSTIPS</div>
   </div>
   <div class="header-actions">
    <button class="btn btn-ghost" id="headerLoginBtn" onclick="showAuth('login')">LOGIN</button>
@@ -255,29 +373,23 @@ a{color:inherit;text-decoration:none}
 </header>
 
 <main id="publicPage">
- <section class="hero container">
-  <div class="hero-kicker">✦ ─── WELCOME TO ─── ✦</div>
-  <div class="hero-brand">onlybosstips</div>
-  <div class="hero-sub">✧ YOUR FOOTBALL PREDICTION HUB ✧</div>
-  <p class="muted" style="max-width:560px;margin:18px auto 0;font-size:13px;line-height:1.7">
-   Follow match updates, explore predictions and stay connected with the latest sports action.
-  </p>
-  <div class="hero-actions">
-   <button class="btn btn-primary" onclick="showAuth('signup')">CREATE ACCOUNT</button>
-   <button class="btn" onclick="showAuth('login')">MEMBER LOGIN</button>
-  </div>
- </section>
-
- <section class="container section">
-  <div class="panel">
-   <div class="section-heading">
-    <div><h2>YOUR MATCHDAY HUB</h2><p>Scores, fixtures, updates and predictions</p></div>
-    <span class="badge">LIVE HUB</span>
+ <section class="hero">
+  <div class="hero-content">
+   <div class="hero-kicker">PREMIUM SPORTS & PREDICTIONS</div>
+   <div class="hero-brand">ONLYBOSSTIPS</div>
+   <div class="hero-sub">YOUR SPORTS. YOUR MATCHDAY. YOUR HUB.</div>
+   <p class="hero-copy">
+    Follow live match updates, explore carefully presented predictions
+    and stay connected with football, basketball and tennis.
+   </p>
+   <div class="hero-actions">
+    <button class="btn btn-primary" onclick="showAuth('signup')">CREATE ACCOUNT</button>
+    <button class="btn" onclick="showAuth('login')">MEMBER LOGIN</button>
    </div>
-   <div class="stats-grid">
-    <div class="stat-box"><strong>⚽</strong><span>FOOTBALL</span></div>
-    <div class="stat-box"><strong>🏀</strong><span>BASKETBALL</span></div>
-    <div class="stat-box"><strong>✦</strong><span>PREDICTIONS</span></div>
+   <div class="hero-sports">
+    <div class="hero-sport hero-football"><span>FOOTBALL</span></div>
+    <div class="hero-sport hero-basketball"><span>BASKETBALL</span></div>
+    <div class="hero-sport hero-tennis"><span>TENNIS</span></div>
    </div>
   </div>
  </section>
@@ -285,11 +397,11 @@ a{color:inherit;text-decoration:none}
 
 <section id="authPage" class="container hidden">
  <div class="auth-wrap panel auth-card">
-  <div class="script-brand" style="text-align:center;margin-bottom:16px">onlybosstips</div>
+  <div class="brand-name auth-brand">ONLYBOSSTIPS</div>
 
   <div id="signupForm">
    <h2>CREATE ACCOUNT</h2>
-   <p class="muted small">Join the onlybosstips member community.</p>
+   <p class="muted small">Join the ONLYBOSSTIPS member community.</p>
    <div class="field"><label>Full name</label><input id="signupName" type="text" placeholder="Enter your full name"></div>
    <div class="field"><label>Email address</label><input id="signupEmail" type="email" placeholder="Enter your email"></div>
    <div class="field"><label>Password</label><input id="signupPassword" type="password" placeholder="Create a password"></div>
@@ -320,103 +432,154 @@ a{color:inherit;text-decoration:none}
 <section id="memberPage" class="container dashboard hidden">
  <div class="panel member-head">
   <div class="member-info">
-   <div class="avatar" id="memberAvatar">M</div>
+   <div class="avatar-wrap">
+    <div class="avatar">
+     <svg viewBox="0 0 24 24" fill="none" stroke="#087e4d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="8" r="3.4"/>
+      <path d="M5.2 20c.6-3.7 3-5.6 6.8-5.6s6.2 1.9 6.8 5.6"/>
+     </svg>
+    </div>
+    <span class="online-dot"></span>
+   </div>
    <div>
     <strong id="memberEmail">Member</strong>
     <div class="small muted" id="memberWelcome">Welcome back</div>
     <span id="memberBadge" class="badge">FREE MEMBER</span>
    </div>
   </div>
-  <button class="btn btn-ghost" onclick="logout()">LOG OUT</button>
- </div>
-
- <div class="quick-grid">
-  <button class="quick-tile active" onclick="openDestination('free')">
-   <div class="tile-icon">⚽</div><strong>FREE ODD</strong><span>Free predictions</span>
-  </button>
-  <button class="quick-tile" onclick="openDestination('vip')">
-   <div class="tile-icon">★</div><strong>VIP ODD</strong><span>VIP members</span>
-  </button>
-  <button class="quick-tile" onclick="openDestination('rollover')">
-   <div class="tile-icon">♻</div><strong>ROLLOVER</strong><span>Rollover members</span>
-  </button>
-  <button class="quick-tile" onclick="openDestination('announcements')">
-   <div class="tile-icon">🔔</div><strong>NEVER MISS</strong><span>Member announcements</span>
-  </button>
  </div>
 
  <div id="homeDestination">
+  <!-- NEWS IS THE FIRST HOMEPAGE SECTION -->
+  <section class="section">
+   <div class="section-heading">
+    <div><h2>SPORTS NEWS</h2><p>Latest headlines and matchday updates</p></div>
+    <span class="badge">LATEST</span>
+   </div>
+   <div id="featuredNews" class="news-feature">
+    <div class="news-feature-inner">
+     <div class="news-feature-label">TOP SPORTS STORY</div>
+     <h3>Loading the latest sports headlines...</h3>
+     <p>Stay connected with the latest sports updates.</p>
+    </div>
+   </div>
+   <div id="sportsNewsList" class="news-list"></div>
+  </section>
+
+  <!-- NIGERIA TIME AND CALENDAR TOGETHER -->
   <section class="section">
    <div class="panel calendar-clock">
-    <div><div class="small muted">NIGERIA TIME (WAT)</div><div class="clock-time" id="nigeriaClock">--:--:--</div><div class="clock-date" id="nigeriaClockDate">Loading date...</div></div>
-    <div><div class="small muted">MATCH CALENDAR</div><div class="date-tabs" id="dateTabs"></div></div>
+    <div>
+     <div class="small muted">NIGERIA TIME (WAT)</div>
+     <div class="clock-time" id="nigeriaClock">--:--:--</div>
+     <div class="clock-date" id="nigeriaClockDate">Loading date...</div>
+    </div>
+    <div>
+     <div class="small muted" style="margin-bottom:9px">MATCH CALENDAR</div>
+     <div class="date-tabs" id="dateTabs"></div>
+    </div>
    </div>
   </section>
 
+  <!-- LIVE AND FINISHED SCORES -->
   <section class="section">
-   <div class="section-heading"><div><h2>SPORTS CENTRE</h2><p>Live scores and match updates</p></div><span class="badge" id="liveScoresUpdated">UPDATING</span></div>
+   <div class="section-heading">
+    <div><h2>LIVE SCORES & RESULTS</h2><p>Football and basketball match centre</p></div>
+    <span class="badge" id="liveScoresUpdated">UPDATING</span>
+   </div>
    <div class="sports-tabs">
-    <button class="tab active" id="footballSportTab" onclick="setSport('football')">⚽ FOOTBALL</button>
-    <button class="tab" id="basketballSportTab" onclick="setSport('basketball')">🏀 BASKETBALL</button>
+    <button class="tab active" id="footballSportTab" onclick="setSport('football')">FOOTBALL</button>
+    <button class="tab" id="basketballSportTab" onclick="setSport('basketball')">BASKETBALL</button>
    </div>
    <div class="filter-tabs">
     <button class="tab active" id="liveFilterTab" onclick="setScoreFilter('live')">LIVE</button>
     <button class="tab" id="finishedFilterTab" onclick="setScoreFilter('finished')">FINISHED</button>
    </div>
-   <div class="live-layout">
-    <div class="panel">
-     <div class="section-heading"><h2 id="scoreHeading">LIVE MATCHES</h2><span class="small muted" id="scoreCount">0 matches</span></div>
-     <div id="liveScoreList" class="match-list"><p class="muted small">Loading match data...</p></div>
+   <div class="panel">
+    <div class="section-heading">
+     <h2 id="scoreHeading">LIVE MATCHES</h2>
+     <span class="small muted" id="scoreCount">0 matches</span>
     </div>
-    <aside class="panel">
-     <div class="section-heading"><h2>SPORTS NEWS</h2><span class="badge">LATEST</span></div>
-     <div id="sportsNewsList"><p class="muted small">Loading sports news...</p></div>
-    </aside>
+    <div id="liveScoreList" class="match-list">
+     <p class="muted small">Loading match data...</p>
+    </div>
+   </div>
+  </section>
+
+  <!-- FREE PREDICTIONS PREVIEW -->
+  <section class="section">
+   <div class="section-heading">
+    <div><h2>FREE PREDICTIONS</h2><p>Available to all registered members</p></div>
+    <button class="btn btn-ghost" onclick="openDestination('free')">VIEW ALL</button>
+   </div>
+   <div class="league-filters" id="freeLeagueFilters">
+    <button class="tab active" data-league="all" onclick="setLeague('all',this)">ALL</button>
+    <button class="tab" data-league="Premier League" onclick="setLeague('Premier League',this)">PREMIER LEAGUE</button>
+    <button class="tab" data-league="La Liga" onclick="setLeague('La Liga',this)">LA LIGA</button>
+    <button class="tab" data-league="Bundesliga" onclick="setLeague('Bundesliga',this)">BUNDESLIGA</button>
+    <button class="tab" data-league="Ligue 1" onclick="setLeague('Ligue 1',this)">LIGUE 1</button>
+    <button class="tab" data-league="UCL" onclick="setLeague('UCL',this)">CHAMPIONS LEAGUE</button>
+    <button class="tab" data-league="Europa League" onclick="setLeague('Europa League',this)">EUROPA LEAGUE</button>
+    <button class="tab" data-league="Conference League" onclick="setLeague('Conference League',this)">CONFERENCE LEAGUE</button>
+    <button class="tab" data-league="AFCON" onclick="setLeague('AFCON',this)">AFCON</button>
+    <button class="tab" data-league="World Cup" onclick="setLeague('World Cup',this)">WORLD CUP</button>
+    <button class="tab" data-league="Other Leagues" onclick="setLeague('Other Leagues',this)">OTHER LEAGUES</button>
+    <button class="tab" data-league="Basketball" onclick="setLeague('Basketball',this)">BASKETBALL</button>
+    <button class="tab" data-league="Tennis" onclick="setLeague('Tennis',this)">TENNIS</button>
+   </div>
+   <div id="freePredictions" class="prediction-list"></div>
+  </section>
+
+  <!-- WINNING STREAK -->
+  <section class="section">
+   <div class="section-heading">
+    <div><h2>WINNING STREAK DASHBOARD</h2><p>Prediction result statistics</p></div>
+   </div>
+   <div class="stats-grid">
+    <div class="stat-box"><strong id="statWon">0</strong><span>WON</span></div>
+    <div class="stat-box"><strong id="statLost">0</strong><span>LOST</span></div>
+    <div class="stat-box"><strong id="statPending">0</strong><span>PENDING</span></div>
    </div>
   </section>
 
   <section class="section">
-   <div class="section-heading"><div><h2>FREE PREDICTIONS</h2><p>Available to all registered members</p></div></div>
-   <div class="filter-tabs" id="freeLeagueFilters">
-    <button class="tab active" data-league="all" onclick="setLeague('all',this)">ALL</button>
-    <button class="tab" data-league="Premier League" onclick="setLeague('Premier League',this)">PREMIER LEAGUE</button>
-    <button class="tab" data-league="Bundesliga" onclick="setLeague('Bundesliga',this)">BUNDESLIGA</button>
-    <button class="tab" data-league="La Liga" onclick="setLeague('La Liga',this)">LA LIGA</button>
-    <button class="tab" data-league="Ligue 1" onclick="setLeague('Ligue 1',this)">LIGUE 1</button>
-    <button class="tab" data-league="AFCON" onclick="setLeague('AFCON',this)">AFCON</button>
-    <button class="tab" data-league="UEFA" onclick="setLeague('UEFA',this)">UEFA</button>
-    <button class="tab" data-league="World Cup" onclick="setLeague('World Cup',this)">WORLD CUP</button>
-    <button class="tab" data-league="Other Leagues" onclick="setLeague('Other Leagues',this)">OTHER LEAGUES</button>
-    <button class="tab" data-league="Tennis" onclick="setLeague('Tennis',this)">TENNIS</button>
-    <button class="tab" data-league="Basketball" onclick="setLeague('Basketball',this)">BASKETBALL</button>
-   </div>
-   <div id="freePredictions" class="prediction-grid"></div>
+   <div class="notice">Please gamble responsibly. Predictions are for informational and entertainment purposes only. No result is guaranteed.</div>
   </section>
  </div>
 
- <section id="destinationPage" class="section hidden">
-  <div class="section-heading">
-   <div><h2 id="destinationTitle">FREE ODD</h2><p id="destinationSubtitle">Published predictions</p></div>
-   <button class="btn btn-ghost" onclick="backToHome()">← BACK</button>
+ <!-- FULL-WIDTH DESTINATION PAGES -->
+ <section id="destinationPage" class="destination-page hidden">
+  <div class="destination-toolbar">
+   <div><h2 id="destinationTitle">FREE ODD</h2><p id="destinationSubtitle" class="small muted">Published predictions</p></div>
+   <button class="btn btn-ghost" onclick="backToHome()">BACK HOME</button>
   </div>
-  <div id="destinationContent"></div>
- </section>
-
- <section class="section">
-  <div class="section-heading"><div><h2>WINNING STREAK DASHBOARD</h2><p>Prediction result statistics</p></div></div>
-  <div class="stats-grid">
-   <div class="stat-box"><strong id="statWon">0</strong><span>WON</span></div>
-   <div class="stat-box"><strong id="statLost">0</strong><span>LOST</span></div>
-   <div class="stat-box"><strong id="statPending">0</strong><span>PENDING</span></div>
+  <div class="panel" style="margin-bottom:14px">
+   <div class="calendar-clock">
+    <div><div class="small muted">NIGERIA TIME</div><div class="clock-time" id="destinationClock">--:--:--</div></div>
+    <div><div class="small muted" style="margin-bottom:8px">SELECT DATE</div><div class="date-tabs" id="destinationDateTabs"></div></div>
+   </div>
   </div>
+  <div class="league-filters" id="destinationLeagueFilters">
+   <button class="tab active" data-dest-league="all" onclick="setDestinationLeague('all',this)">ALL LEAGUES</button>
+   <button class="tab" data-dest-league="Premier League" onclick="setDestinationLeague('Premier League',this)">PREMIER LEAGUE</button>
+   <button class="tab" data-dest-league="La Liga" onclick="setDestinationLeague('La Liga',this)">LA LIGA</button>
+   <button class="tab" data-dest-league="Bundesliga" onclick="setDestinationLeague('Bundesliga',this)">BUNDESLIGA</button>
+   <button class="tab" data-dest-league="Ligue 1" onclick="setDestinationLeague('Ligue 1',this)">LIGUE 1</button>
+   <button class="tab" data-dest-league="Champions League" onclick="setDestinationLeague('Champions League',this)">CHAMPIONS LEAGUE</button>
+   <button class="tab" data-dest-league="Europa League" onclick="setDestinationLeague('Europa League',this)">EUROPA LEAGUE</button>
+   <button class="tab" data-dest-league="Conference League" onclick="setDestinationLeague('Conference League',this)">CONFERENCE LEAGUE</button>
+   <button class="tab" data-dest-league="AFCON" onclick="setDestinationLeague('AFCON',this)">AFCON</button>
+   <button class="tab" data-dest-league="World Cup" onclick="setDestinationLeague('World Cup',this)">WORLD CUP</button>
+   <button class="tab" data-dest-league="Other Leagues" onclick="setDestinationLeague('Other Leagues',this)">OTHER LEAGUES</button>
+   <button class="tab" data-dest-league="Basketball" onclick="setDestinationLeague('Basketball',this)">BASKETBALL</button>
+   <button class="tab" data-dest-league="Tennis" onclick="setDestinationLeague('Tennis',this)">TENNIS</button>
+  </div>
+  <div id="destinationContent" class="prediction-list"></div>
  </section>
 
- <section class="section">
-  <div class="notice">⚠️ Please gamble responsibly. Predictions are for informational and entertainment purposes only. No result is guaranteed.</div>
- </section>
-
+ <!-- ADMIN -->
  <section id="adminSection" class="section hidden">
-  <div class="section-heading"><div><h2>ADMIN CONTROL CENTRE</h2><p>Manage predictions and member announcements</p></div><span class="badge">ADMIN</span></div>
+  <div class="section-heading"><div><h2>ADMIN CONTROL CENTRE</h2><p>Manage predictions and announcements</p></div><span class="badge">ADMIN</span></div>
   <div class="panel">
    <h3 style="font-family:Cinzel;margin-top:0">PUBLISH PREDICTION</h3>
    <div class="admin-grid">
@@ -424,7 +587,7 @@ a{color:inherit;text-decoration:none}
     <div class="field"><label>Away team / Player</label><input id="adminAway" placeholder="Away team"></div>
     <div class="field"><label>League / Competition</label><input id="adminLeague" placeholder="Competition"></div>
     <div class="field"><label>Odds</label><input id="adminOdds" type="number" step="0.01" placeholder="1.85"></div>
-    <div class="field"><label>Prediction</label><input id="adminPrediction" placeholder="e.g. Home win"></div>
+    <div class="field"><label>Prediction market and selection</label><input id="adminPrediction" placeholder="e.g. Full Time Result - Home Win"></div>
     <div class="field"><label>Kickoff date and time</label><input id="adminKickoff" type="datetime-local"></div>
     <div class="field"><label>Category</label><select id="adminCategory"><option value="free">FREE</option><option value="vip">VIP</option><option value="rollover">ROLLOVER</option></select></div>
     <div class="field"><label>Initial result</label><select id="adminResult"><option value="pending">PENDING</option><option value="won">WON</option><option value="lost">LOST</option><option value="void">VOID</option></select></div>
@@ -444,6 +607,50 @@ a{color:inherit;text-decoration:none}
    <div id="adminPredictionList" class="admin-list"></div>
   </div>
  </section>
+
+ <div class="section">
+  <button class="btn btn-danger full" onclick="logout()">LOG OUT</button>
+ </div>
+</section>
+
+<!-- FIXED PREMIUM BOTTOM NAVIGATION -->
+<nav id="bottomNav" class="bottom-nav hidden" aria-label="Member navigation">
+ <button class="nav-item active" id="navFree" onclick="openDestination('free')">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 20 7.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m12 3 2.5 5.5L20 7.5M4 7.5l5.5 1L12 3m0 18-2.5-5.5L4 16.5m16 0-5.5-1L12 21m-2.5-5.5h5L17 11l-2.5-2.5h-5L7 11l2.5 4.5Z"/></svg>
+  <span>FREE ODD</span>
+ </button>
+ <button class="nav-item" id="navVip" onclick="openDestination('vip')">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.2 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.2 5.9-.9L12 3Z"/></svg>
+  <span>VIP ODD</span>
+ </button>
+ <button class="nav-item" id="navRollover" onclick="openDestination('rollover')">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7v5h-5"/><path d="M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"/></svg>
+  <span>ROLLOVER</span>
+ </button>
+ <button class="nav-item" id="navNever" onclick="openDestination('announcements')">
+  <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+  <span>NEVER MISS</span>
+ </button>
+</nav>
+
+<!-- FULL-SCREEN MATCH CENTRE -->
+<section id="matchCentre" class="match-centre hidden">
+ <div class="match-centre-inner">
+  <div class="match-centre-top">
+   <div class="brand-name">ONLYBOSSTIPS</div>
+   <button class="btn btn-ghost" onclick="closeMatchDetails()">CLOSE</button>
+  </div>
+  <div class="match-centre-score">
+   <div class="small muted" id="mcCompetition">COMPETITION</div>
+   <div class="match-centre-teams">
+    <div class="match-centre-team"><img id="mcHomeLogo" class="hidden" alt=""><div id="mcHome">Home</div></div>
+    <div><div class="match-centre-numbers" id="mcScore">- : -</div><div class="match-centre-status" id="mcStatus">LIVE</div></div>
+    <div class="match-centre-team"><img id="mcAwayLogo" class="hidden" alt=""><div id="mcAway">Away</div></div>
+   </div>
+  </div>
+  <div class="section-heading"><h2>MATCH INFORMATION</h2></div>
+  <div class="match-detail-grid" id="matchDetailGrid"></div>
+ </div>
 </section>
 
 <div id="announcementOverlay" class="announcement-overlay hidden">
@@ -455,70 +662,75 @@ a{color:inherit;text-decoration:none}
  </div>
 </div>
 
-<footer class="footer">
- <div class="script-brand">onlybosstips</div>
- <p>✧ YOUR FOOTBALL PREDICTION HUB ✧</p>
- <p>© <span id="footerYear"></span> onlybosstips. All rights reserved.</p>
+<footer class="footer" id="siteFooter">
+ <div class="brand-name">ONLYBOSSTIPS</div>
+ <p>PREMIUM SPORTS & PREDICTIONS</p>
+ <p>© <span id="footerYear"></span> ONLYBOSSTIPS. All rights reserved.</p>
 </footer>
+
 <script>
-/* =========================================
+ /* =========================================
    ONLYBOSSTIPS - APPLICATION CONFIGURATION
 ========================================= */
 
-const SUPABASE_URL = "https://mumntekskdfexzupjvmc.supabase.co";
-const SUPABASE_KEY = "sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
+const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
+const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
+const LIVE_API="https://onlybosstips-api.onrender.com/live-scores";
 
-const LIVE_API = "https://onlybosstips-api.onrender.com/live-scores";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-let currentUser = null;
-let currentProfile = null;
-let currentTier = "free";
-let currentIsAdmin = false;
-let allPredictions = [];
-let allAnnouncements = [];
-let selectedCalendarDate = "today";
-let selectedLeague = "all";
-let currentSport = "football";
-let currentScoreFilter = "live";
-let liveData = { football: {live:[],finished:[]}, basketball:{live:[],finished:[]} };
-let announcementQueue = [];
-let announcementTimer = null;
-let liveRefreshTimer = null;
-let newsItems = [];
+let currentUser=null;
+let currentProfile=null;
+let currentTier="free";
+let currentIsAdmin=false;
+let allPredictions=[];
+let allAnnouncements=[];
+let selectedCalendarDate="today";
+let selectedLeague="all";
+let selectedDestinationLeague="all";
+let currentDestination="free";
+let currentSport="football";
+let currentScoreFilter="live";
+let liveData={
+ football:{live:[],finished:[]},
+ basketball:{live:[],finished:[]}
+};
+let announcementQueue=[];
+let announcementTimer=null;
+let liveRefreshTimer=null;
+let newsItems=[];
+let appStartPromise=null;
 
 /* =========================================
-   BASIC HELPERS
+   HELPERS
 ========================================= */
 
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
 
 function escapeHTML(value=""){
- return String(value).replace(/[&<>"']/g, char => ({
+ return String(value).replace(/[&<>"']/g,char=>({
   "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
  }[char]));
 }
 
-function notify(message){
- alert(message);
-}
+function notify(message){alert(message)}
 
 function nigeriaNow(){
  return new Date(new Date().toLocaleString("en-US",{timeZone:"Africa/Lagos"}));
 }
 
 function nigeriaDateString(date=nigeriaNow()){
- const y=date.getFullYear();
- const m=String(date.getMonth()+1).padStart(2,"0");
- const d=String(date.getDate()).padStart(2,"0");
- return `${y}-${m}-${d}`;
+ return [
+  date.getFullYear(),
+  String(date.getMonth()+1).padStart(2,"0"),
+  String(date.getDate()).padStart(2,"0")
+ ].join("-");
 }
 
 function getRelativeDate(day){
- const d=nigeriaNow();
- d.setDate(d.getDate()+day);
- return nigeriaDateString(d);
+ const date=nigeriaNow();
+ date.setDate(date.getDate()+day);
+ return nigeriaDateString(date);
 }
 
 function formatDate(value){
@@ -526,7 +738,8 @@ function formatDate(value){
  const date=new Date(value);
  if(Number.isNaN(date.getTime()))return "Date unavailable";
  return date.toLocaleDateString("en-NG",{
-  day:"numeric",month:"short",year:"numeric"
+  day:"numeric",month:"short",year:"numeric",
+  timeZone:"Africa/Lagos"
  });
 }
 
@@ -535,7 +748,8 @@ function formatTime(value){
  const date=new Date(value);
  if(Number.isNaN(date.getTime()))return "";
  return date.toLocaleTimeString("en-NG",{
-  hour:"2-digit",minute:"2-digit",hour12:true
+  hour:"2-digit",minute:"2-digit",hour12:true,
+  timeZone:"Africa/Lagos"
  });
 }
 
@@ -547,11 +761,60 @@ function normaliseTier(value){
 }
 
 function getPredictionDate(item){
- const value=item.kickoff || item.kickoff_at || item.match_date || item.created_at;
+ const value=item.kickoff||item.kickoff_at||item.match_date||item.created_at;
  if(!value)return "";
  const date=new Date(value);
  if(Number.isNaN(date.getTime()))return "";
- return nigeriaDateString(new Date(date.toLocaleString("en-US",{timeZone:"Africa/Lagos"})));
+ return nigeriaDateString(
+  new Date(date.toLocaleString("en-US",{timeZone:"Africa/Lagos"}))
+ );
+}
+
+function getHome(item){
+ return item.home_team||item.home||item.team1||"";
+}
+
+function getAway(item){
+ return item.away_team||item.away||item.team2||"";
+}
+
+function getLeague(item){
+ return item.league||item.competition||"Other Leagues";
+}
+
+function getPick(item){
+ return item.prediction||item.tip||item.selection||"Prediction";
+}
+
+function getOdds(item){
+ return item.odds??item.odd??"-";
+}
+
+function getCategory(item){
+ return normaliseTier(item.category||item.membership||item.type);
+}
+
+function getStoredResult(item){
+ return String(item.result||"pending").toLowerCase();
+}
+
+/* Display LIVE from kickoff time when an admin has not settled it.
+   This is a visual status only; it does not change the database result. */
+function getDisplayResult(item){
+ const saved=getStoredResult(item);
+ if(["won","lost","void"].includes(saved))return saved;
+
+ const kickoff=item.kickoff||item.kickoff_at;
+ if(!kickoff)return saved;
+
+ const start=new Date(kickoff).getTime();
+ if(!Number.isFinite(start))return saved;
+
+ const now=Date.now();
+ const fourHours=4*60*60*1000;
+
+ if(now>=start && now<=start+fourHours)return "live";
+ return "pending";
 }
 
 function resultClass(result){
@@ -559,35 +822,31 @@ function resultClass(result){
  if(value==="won")return "result-won";
  if(value==="lost")return "result-lost";
  if(value==="void")return "result-void";
+ if(value==="live")return "result-live";
  return "result-pending";
 }
 
 function resultLabel(result){
- return String(result||"pending").toUpperCase();
+ const value=String(result||"pending").toUpperCase();
+ return value==="LIVE"?"LIVE":value;
 }
 
-function getHome(item){
- return item.home_team || item.home || item.team1 || "Home";
-}
+function isSameLeague(item,selected){
+ if(selected==="all")return true;
+ const league=getLeague(item).toLowerCase();
+ const choice=selected.toLowerCase();
 
-function getAway(item){
- return item.away_team || item.away || item.team2 || "Away";
-}
-
-function getLeague(item){
- return item.league || item.competition || "Football";
-}
-
-function getPick(item){
- return item.prediction || item.tip || item.selection || "Prediction";
-}
-
-function getOdds(item){
- return item.odds ?? item.odd ?? "-";
-}
-
-function getCategory(item){
- return normaliseTier(item.category || item.membership || item.type);
+ if(choice==="ucl"){
+  return league.includes("champions league")||league.includes("ucl");
+ }
+ if(choice==="other leagues"){
+  return ![
+   "premier league","la liga","bundesliga","ligue 1",
+   "champions league","europa league","conference league",
+   "afcon","world cup","basketball","tennis"
+  ].some(name=>league.includes(name));
+ }
+ return league.includes(choice);
 }
 
 /* =========================================
@@ -598,6 +857,9 @@ function showPublic(){
  $("publicPage").classList.remove("hidden");
  $("authPage").classList.add("hidden");
  $("memberPage").classList.add("hidden");
+ $("publicHeader").classList.remove("hidden");
+ $("siteFooter").classList.remove("hidden");
+ $("bottomNav").classList.add("hidden");
  $("headerLoginBtn").classList.remove("hidden");
  $("headerJoinBtn").classList.remove("hidden");
 }
@@ -606,6 +868,9 @@ function showAuth(mode){
  $("publicPage").classList.add("hidden");
  $("authPage").classList.remove("hidden");
  $("memberPage").classList.add("hidden");
+ $("publicHeader").classList.remove("hidden");
+ $("siteFooter").classList.remove("hidden");
+ $("bottomNav").classList.add("hidden");
 
  $("signupForm").classList.toggle("hidden",mode!=="signup");
  $("loginForm").classList.toggle("hidden",mode!=="login");
@@ -618,14 +883,28 @@ function showMember(){
  $("publicPage").classList.add("hidden");
  $("authPage").classList.add("hidden");
  $("memberPage").classList.remove("hidden");
- $("headerLoginBtn").classList.add("hidden");
- $("headerJoinBtn").classList.add("hidden");
+ $("publicHeader").classList.add("hidden");
+ $("siteFooter").classList.add("hidden");
+ $("bottomNav").classList.remove("hidden");
 
- $("memberEmail").textContent=currentUser?.email || "Member";
- $("memberAvatar").textContent=(currentUser?.email || "M").charAt(0).toUpperCase();
- $("memberWelcome").textContent="Welcome back to onlybosstips";
- $("memberBadge").textContent=currentIsAdmin?"ADMIN":currentTier.toUpperCase()+" MEMBER";
+ $("memberEmail").textContent=currentProfile?.full_name||
+  currentUser?.email||"Member";
+ $("memberWelcome").textContent=currentUser?.email||"Welcome back";
+ $("memberBadge").textContent=currentIsAdmin?
+  "ADMIN":currentTier.toUpperCase()+" MEMBER";
+
  $("adminSection").classList.toggle("hidden",!currentIsAdmin);
+ updateBottomNav("free");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function updateBottomNav(destination){
+ const ids={
+  free:"navFree",vip:"navVip",
+  rollover:"navRollover",announcements:"navNever"
+ };
+ Object.values(ids).forEach(id=>$(id).classList.remove("active"));
+ $(ids[destination]||ids.free).classList.add("active");
 }
 
 /* =========================================
@@ -637,7 +916,7 @@ async function signup(){
  const email=$("signupEmail").value.trim();
  const password=$("signupPassword").value;
 
- if(!name || !email || !password){
+ if(!name||!email||!password){
   $("authMessage").textContent="Please complete all fields.";
   return;
  }
@@ -649,8 +928,7 @@ async function signup(){
  $("authMessage").textContent="Creating your account...";
 
  const {data,error}=await db.auth.signUp({
-  email,password,
-  options:{data:{full_name:name}}
+  email,password,options:{data:{full_name:name}}
  });
 
  if(error){
@@ -660,14 +938,10 @@ async function signup(){
 
  if(data.user){
   const {error:profileError}=await db.from("member_profiles").upsert({
-   id:data.user.id,
-   email,
-   full_name:name
+   id:data.user.id,email,full_name:name
   },{onConflict:"id"});
 
-  if(profileError){
-   console.warn("Profile creation:",profileError.message);
-  }
+  if(profileError)console.warn("Profile creation:",profileError.message);
  }
 
  $("authMessage").textContent=
@@ -678,7 +952,7 @@ async function login(){
  const email=$("loginEmail").value.trim();
  const password=$("loginPassword").value;
 
- if(!email || !password){
+ if(!email||!password){
   $("authMessage").textContent="Enter your email and password.";
   return;
  }
@@ -713,42 +987,42 @@ async function resetPassword(){
 }
 
 async function logout(){
+ clearInterval(liveRefreshTimer);
+ clearTimeout(announcementTimer);
  await db.auth.signOut();
+
  currentUser=null;
  currentProfile=null;
  currentTier="free";
  currentIsAdmin=false;
- clearInterval(liveRefreshTimer);
+ appStartPromise=null;
+ announcementQueue=[];
+ $("announcementOverlay").classList.add("hidden");
  showPublic();
 }
 
 /* =========================================
-   PROFILE AND MEMBERSHIP ACCESS
+   PROFILE AND MEMBERSHIP
 ========================================= */
 
 async function loadMemberProfile(){
  const {data,error}=await db.from("member_profiles")
-  .select("*")
-  .eq("id",currentUser.id)
-  .maybeSingle();
+  .select("*").eq("id",currentUser.id).maybeSingle();
 
  if(error)console.warn("Profile:",error.message);
- currentProfile=data || {};
+ currentProfile=data||{};
 }
 
 async function checkAdmin(){
  currentIsAdmin=false;
 
  const {data,error}=await db.from("admins")
-  .select("*")
-  .eq("user_id",currentUser.id)
-  .maybeSingle();
+  .select("*").eq("user_id",currentUser.id).maybeSingle();
 
  if(error){
   console.warn("Admin lookup:",error.message);
   return;
  }
-
  currentIsAdmin=!!data;
 }
 
@@ -761,28 +1035,27 @@ async function loadMembership(){
  }
 
  const profileTier=normaliseTier(
-  currentProfile?.membership_tier ||
-  currentProfile?.membership ||
+  currentProfile?.membership_tier||
+  currentProfile?.membership||
   currentProfile?.tier
  );
 
  const approved=
-  currentProfile?.membership_active===true ||
-  currentProfile?.is_active===true ||
+  currentProfile?.membership_active===true||
+  currentProfile?.is_active===true||
   currentProfile?.approved===true;
 
- if(approved && profileTier!=="free"){
-  currentTier=profileTier;
- }
+ if(approved&&profileTier!=="free")currentTier=profileTier;
 }
 
 /* =========================================
-   NIGERIA CLOCK AND DATE SELECTOR
+   NIGERIA CLOCK AND CALENDAR
 ========================================= */
 
 function updateNigeriaClock(){
  const now=new Date();
- const parts=new Intl.DateTimeFormat("en-GB",{
+
+ const time=new Intl.DateTimeFormat("en-GB",{
   timeZone:"Africa/Lagos",
   hour:"2-digit",minute:"2-digit",second:"2-digit",
   hour12:false
@@ -793,7 +1066,8 @@ function updateNigeriaClock(){
   weekday:"long",day:"numeric",month:"long",year:"numeric"
  }).format(now);
 
- $("nigeriaClock").textContent=parts;
+ $("nigeriaClock").textContent=time;
+ $("destinationClock").textContent=time;
  $("nigeriaClockDate").textContent=date;
  $("footerYear").textContent=new Date().getFullYear();
 }
@@ -805,22 +1079,35 @@ function renderDateTabs(){
   {key:"tomorrow",offset:1,label:"TOMORROW"}
  ];
 
- $("dateTabs").innerHTML=dates.map(item=>{
-  const date=new Date(nigeriaNow());
+ const html=dates.map(item=>{
+  const date=nigeriaNow();
   date.setDate(date.getDate()+item.offset);
-  const day=date.toLocaleDateString("en-NG",{day:"numeric",month:"short"});
-  return `
-   <button class="tab date-tab ${selectedCalendarDate===item.key?"active":""}"
-    onclick="selectDate('${item.key}')">
-    <strong>${item.label}</strong><span>${day}</span>
-   </button>`;
+  const label=date.toLocaleDateString("en-NG",{
+   day:"numeric",month:"short"
+  });
+
+  return `<button class="date-tab ${selectedCalendarDate===item.key?"active":""}"
+   onclick="selectDate('${item.key}')">
+   <strong>${item.label}</strong><span>${label}</span>
+  </button>`;
  }).join("");
+
+ $("dateTabs").innerHTML=html;
+ $("destinationDateTabs").innerHTML=html.replaceAll(
+  "selectDate(","selectDestinationDate("
+ );
 }
 
 function selectDate(value){
  selectedCalendarDate=value;
  renderDateTabs();
  renderPredictions();
+}
+
+function selectDestinationDate(value){
+ selectedCalendarDate=value;
+ renderDateTabs();
+ renderDestinationPredictions();
 }
 
 function selectedDateValue(){
@@ -830,7 +1117,7 @@ function selectedDateValue(){
 }
 
 /* =========================================
-   SPORTS LIVE SCORES
+   LIVE SCORES - ACTUAL API FIELD MAPPING
 ========================================= */
 
 function setSport(sport){
@@ -844,8 +1131,19 @@ function setScoreFilter(filter){
  currentScoreFilter=filter;
  $("liveFilterTab").classList.toggle("active",filter==="live");
  $("finishedFilterTab").classList.toggle("active",filter==="finished");
- $("scoreHeading").textContent=filter==="live"?"LIVE MATCHES":"FINISHED MATCHES";
+ $("scoreHeading").textContent=
+  filter==="live"?"LIVE MATCHES":"FINISHED MATCHES";
  renderLiveScores();
+}
+
+function getMatchDate(match){
+ const value=match.kickoff||match.date||match.fixture?.date;
+ if(!value)return "";
+ const date=new Date(value);
+ if(Number.isNaN(date.getTime()))return "";
+ return nigeriaDateString(
+  new Date(date.toLocaleString("en-US",{timeZone:"Africa/Lagos"}))
+ );
 }
 
 async function fetchLiveScores(){
@@ -866,11 +1164,12 @@ async function fetchLiveScores(){
    }
   };
 
-  $("liveScoresUpdated").textContent="UPDATED "+new Date().toLocaleTimeString();
-  renderLiveScores();
+  $("liveScoresUpdated").textContent="UPDATED "+
+   new Date().toLocaleTimeString("en-NG",{hour:"2-digit",minute:"2-digit"});
 
+  renderLiveScores();
  }catch(error){
-  console.error(error);
+  console.error("Live scores:",error);
   $("liveScoresUpdated").textContent="UPDATE FAILED";
   $("liveScoreList").innerHTML=
    '<p class="muted small">Live scores are temporarily unavailable. Please try again shortly.</p>';
@@ -878,81 +1177,151 @@ async function fetchLiveScores(){
 }
 
 function readMatchTeam(match,side){
- const team=side==="home"?
-  (match.homeTeam||match.home||match.team1):
-  (match.awayTeam||match.away||match.team2);
+ const value=side==="home"?
+  (match.home_team??match.homeTeam??match.home??match.team1):
+  (match.away_team??match.awayTeam??match.away??match.team2);
 
- if(typeof team==="string")return team;
- return team?.name || team?.shortName || (side==="home"?"Home":"Away");
+ if(typeof value==="string")return value;
+ if(value&&typeof value==="object")return value.name||value.shortName||"";
+ return "";
 }
 
 function readMatchScore(match,side){
- const score=side==="home"?
-  (match.homeScore??match.score?.home??match.scores?.home):
-  (match.awayScore??match.score?.away??match.scores?.away);
+ const value=side==="home"?
+  (match.home_score??match.homeScore??match.score?.home??match.scores?.home):
+  (match.away_score??match.awayScore??match.score?.away??match.scores?.away);
 
- if(score && typeof score==="object")return score.current??score.display??"-";
- return score??"-";
+ if(value&&typeof value==="object"){
+  return value.current??value.display??"-";
+ }
+ return value===null||value===undefined?"-":value;
+}
+
+function readMatchLeague(match){
+ const value=match.league??match.competition??"";
+ if(typeof value==="string")return value;
+ return value?.name||"";
+}
+
+function readMatchStatus(match){
+ const value=match.status;
+ if(typeof value==="string")return value;
+ return value?.long||value?.short||
+  (currentScoreFilter==="live"?"LIVE":"FT");
+}
+
+function readMatchLogo(match,side){
+ const value=side==="home"?
+  (match.home_logo||match.homeTeam?.logo):
+  (match.away_logo||match.awayTeam?.logo);
+ return typeof value==="string"&&value.startsWith("http")?value:"";
 }
 
 function renderLiveScores(){
- const matches=liveData[currentSport]?.[currentScoreFilter] || [];
+ let matches=liveData[currentSport]?.[currentScoreFilter]||[];
+
+ const selectedDate=selectedDateValue();
+ matches=matches.filter(match=>{
+  const date=getMatchDate(match);
+  return !date||date===selectedDate;
+ });
 
  $("scoreCount").textContent=matches.length+" matches";
 
  if(!matches.length){
   $("liveScoreList").innerHTML=
-   '<p class="muted small">No matches available in this category right now.</p>';
+   '<p class="muted small">No '+currentScoreFilter+' '+currentSport+
+   ' matches found for this date.</p>';
   return;
  }
 
  $("liveScoreList").innerHTML=matches.map((match,index)=>{
-  const home=readMatchTeam(match,"home");
-  const away=readMatchTeam(match,"away");
+  const home=readMatchTeam(match,"home")||"Team unavailable";
+  const away=readMatchTeam(match,"away")||"Team unavailable";
   const homeScore=readMatchScore(match,"home");
   const awayScore=readMatchScore(match,"away");
-  const league=match.league?.name || match.competition?.name ||
-   match.league || match.competition || currentSport.toUpperCase();
-  const status=match.status?.short || match.status?.long ||
-   match.status || (currentScoreFilter==="live"?"LIVE":"FT");
+  const league=readMatchLeague(match)||currentSport.toUpperCase();
+  const status=readMatchStatus(match);
+  const minute=match.minute||match.clock||"";
+  const homeLogo=readMatchLogo(match,"home");
+  const awayLogo=readMatchLogo(match,"away");
 
   return `
-   <div class="match-card" onclick="showMatchDetails(${index})">
+   <div class="match-card" data-match-id="${escapeHTML(match.id??index)}"
+    onclick="showMatchDetails('${currentSport}','${currentScoreFilter}',${index})">
     <div class="match-top">
      <span>${escapeHTML(league)}</span>
      <span class="match-status">${escapeHTML(status)}</span>
     </div>
     <div class="match-teams">
-     <div class="team">${escapeHTML(home)}</div>
+     <div class="team">
+      ${homeLogo?`<img class="match-logo" src="${escapeHTML(homeLogo)}" alt="">`:""}
+      ${escapeHTML(home)}
+     </div>
      <div class="team-score">${escapeHTML(homeScore)} : ${escapeHTML(awayScore)}</div>
-     <div class="team">${escapeHTML(away)}</div>
+     <div class="team">
+      ${awayLogo?`<img class="match-logo" src="${escapeHTML(awayLogo)}" alt="">`:""}
+      ${escapeHTML(away)}
+     </div>
     </div>
+    ${minute?`<div class="match-minute">${escapeHTML(minute)}</div>`:""}
    </div>`;
  }).join("");
 }
 
-function showMatchDetails(index){
- const matches=liveData[currentSport]?.[currentScoreFilter] || [];
- const match=matches[index];
+function showMatchDetails(sport,filter,index){
+ const match=liveData[sport]?.[filter]?.[index];
  if(!match)return;
 
- const home=readMatchTeam(match,"home");
- const away=readMatchTeam(match,"away");
- const league=match.league?.name || match.competition?.name ||
-  match.league || match.competition || currentSport.toUpperCase();
+ const home=readMatchTeam(match,"home")||"Team unavailable";
+ const away=readMatchTeam(match,"away")||"Team unavailable";
+ const league=readMatchLeague(match)||sport.toUpperCase();
+ const homeScore=readMatchScore(match,"home");
+ const awayScore=readMatchScore(match,"away");
+ const status=readMatchStatus(match);
+ const kickoff=match.kickoff||match.date||"";
+ const homeLogo=readMatchLogo(match,"home");
+ const awayLogo=readMatchLogo(match,"away");
+
+ $("mcCompetition").textContent=league;
+ $("mcHome").textContent=home;
+ $("mcAway").textContent=away;
+ $("mcScore").textContent=homeScore+" : "+awayScore;
+ $("mcStatus").textContent=status+(match.minute?" · "+match.minute:"");
+
+ const homeImage=$("mcHomeLogo");
+ const awayImage=$("mcAwayLogo");
+
+ homeImage.classList.toggle("hidden",!homeLogo);
+ awayImage.classList.toggle("hidden",!awayLogo);
+ if(homeLogo)homeImage.src=homeLogo;
+ if(awayLogo)awayImage.src=awayLogo;
 
  const details=[
-  ["Competition",league],
-  ["Status",match.status?.long||match.status?.short||match.status||"Unavailable"],
-  ["Home",home],
-  ["Away",away],
-  ["Score",readMatchScore(match,"home")+" - "+readMatchScore(match,"away")],
-  ["Venue",match.venue?.name||match.venue||"Not supplied by API"],
-  ["Date",match.date||match.fixture?.date||"Not supplied by API"]
+  ["SPORT",sport.toUpperCase()],
+  ["COMPETITION",league],
+  ["MATCH STATUS",status],
+  ["KICKOFF DATE",kickoff?formatDate(kickoff):"Not supplied by API"],
+  ["KICKOFF TIME",kickoff?formatTime(kickoff):"Not supplied by API"],
+  ["MATCH MINUTE",match.minute||"Not supplied by API"],
+  ["VENUE",match.venue?.name||match.venue||"Not supplied by API"],
+  ["PERIOD",match.period??"Not supplied by API"]
  ];
 
- const message=details.map(item=>item[0]+": "+item[1]).join("\n");
- alert("MATCH CENTRE\n\n"+message);
+ $("matchDetailGrid").innerHTML=details.map(item=>`
+  <div class="match-detail">
+   <span>${escapeHTML(item[0])}</span>
+   <strong>${escapeHTML(item[1])}</strong>
+  </div>
+ `).join("");
+
+ $("matchCentre").classList.remove("hidden");
+ document.body.style.overflow="hidden";
+}
+
+function closeMatchDetails(){
+ $("matchCentre").classList.add("hidden");
+ document.body.style.overflow="";
 }
 
 /* =========================================
@@ -977,9 +1346,7 @@ async function loadSportsNews(){
    const xmlText=await response.text();
    const xml=new DOMParser().parseFromString(xmlText,"text/xml");
 
-   const entries=[...xml.querySelectorAll("item")];
-
-   entries.slice(0,8).forEach(item=>{
+   [...xml.querySelectorAll("item")].slice(0,8).forEach(item=>{
     collected.push({
      title:item.querySelector("title")?.textContent||"Sports update",
      link:item.querySelector("link")?.textContent||"#",
@@ -994,20 +1361,42 @@ async function loadSportsNews(){
  newsItems=collected.slice(0,12);
 
  if(!newsItems.length){
-  $("sportsNewsList").innerHTML=
-   '<p class="muted small">Sports news is temporarily unavailable.</p>';
+  $("featuredNews").innerHTML=`
+   <div class="news-feature-inner">
+    <div class="news-feature-label">SPORTS NEWS</div>
+    <h3>Sports headlines are temporarily unavailable.</h3>
+    <p>Please check again shortly.</p>
+   </div>`;
+  $("sportsNewsList").innerHTML="";
   return;
  }
 
- $("sportsNewsList").innerHTML=newsItems.map(item=>`
-  <div class="news-card">
-   <div class="news-thumb">⚽</div>
+ const featured=newsItems[0];
+
+ $("featuredNews").innerHTML=`
+  <div class="news-feature-inner">
+   <div class="news-feature-label">TOP SPORTS STORY</div>
+   <h3>${escapeHTML(featured.title)}</h3>
+   <p>${escapeHTML(featured.date)}</p>
+   <a class="btn btn-primary" href="${escapeHTML(featured.link)}"
+    target="_blank" rel="noopener">READ FULL STORY</a>
+  </div>`;
+
+ $("sportsNewsList").innerHTML=newsItems.slice(1).map(item=>`
+  <article class="news-card">
+   <div class="news-thumb">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+     stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M4 5h16v14H4z"/><path d="m4 15 5-5 4 4 3-3 4 4"/>
+     <circle cx="9" cy="9" r="1"/>
+    </svg>
+   </div>
    <div>
     <h4>${escapeHTML(item.title)}</h4>
     <p>${escapeHTML(item.date)}</p>
-    <a class="small" style="color:var(--mint)" href="${escapeHTML(item.link)}" target="_blank" rel="noopener">READ STORY ↗</a>
+    <a href="${escapeHTML(item.link)}" target="_blank" rel="noopener">READ STORY</a>
    </div>
-  </div>
+  </article>
  `).join("");
 }
 
@@ -1017,8 +1406,7 @@ async function loadSportsNews(){
 
 async function loadPredictions(){
  const {data,error}=await db.from("predictions")
-  .select("*")
-  .order("kickoff",{ascending:true});
+  .select("*").order("kickoff",{ascending:true});
 
  if(error){
   console.error("Predictions:",error.message);
@@ -1027,28 +1415,33 @@ async function loadPredictions(){
   return;
  }
 
- allPredictions=data || [];
+ allPredictions=data||[];
  renderPredictions();
  updateStatistics();
+
  if(currentIsAdmin)renderAdminPredictions();
+
+ if(!$("destinationPage").classList.contains("hidden")){
+  renderDestinationPredictions();
+ }
 }
 
 function setLeague(league,button){
  selectedLeague=league;
-
- document.querySelectorAll("#freeLeagueFilters .tab").forEach(tab=>{
-  tab.classList.remove("active");
- });
+ document.querySelectorAll("#freeLeagueFilters .tab")
+  .forEach(tab=>tab.classList.remove("active"));
  button.classList.add("active");
  renderPredictions();
 }
 
 function predictionCard(item,admin=false){
- const id=escapeHTML(item.id);
- const result=String(item.result||"pending").toLowerCase();
+ const id=String(item.id??"");
+ const result=getDisplayResult(item);
+ const stored=getStoredResult(item);
+ const kickoff=item.kickoff||item.kickoff_at||item.match_date;
 
  return `
-  <div class="prediction-card">
+  <article class="prediction-card">
    <div class="prediction-meta">
     <span>${escapeHTML(getLeague(item))}</span>
     <span class="result ${resultClass(result)}">${resultLabel(result)}</span>
@@ -1057,51 +1450,85 @@ function predictionCard(item,admin=false){
     ${escapeHTML(getHome(item))} vs ${escapeHTML(getAway(item))}
    </div>
    <div class="prediction-pick">${escapeHTML(getPick(item))}</div>
-   <div class="prediction-meta" style="margin-top:12px">
+   <div class="prediction-bottom">
     <span>ODDS: <b class="odds">${escapeHTML(getOdds(item))}</b></span>
-    <span>${escapeHTML(formatDate(item.kickoff||item.kickoff_at))}</span>
+    <span class="small muted">${escapeHTML(formatDate(kickoff))}</span>
    </div>
    ${admin?`
     <div class="field">
-     <label>Update result</label>
-     <select onchange="updatePredictionResult('${id}',this.value)">
-      <option value="pending" ${result==="pending"?"selected":""}>PENDING</option>
-      <option value="won" ${result==="won"?"selected":""}>WON</option>
-      <option value="lost" ${result==="lost"?"selected":""}>LOST</option>
-      <option value="void" ${result==="void"?"selected":""}>VOID</option>
+     <label>Update official result</label>
+     <select onchange="updatePredictionResult('${escapeHTML(id)}',this.value)">
+      <option value="pending" ${stored==="pending"?"selected":""}>PENDING</option>
+      <option value="won" ${stored==="won"?"selected":""}>WON</option>
+      <option value="lost" ${stored==="lost"?"selected":""}>LOST</option>
+      <option value="void" ${stored==="void"?"selected":""}>VOID</option>
      </select>
     </div>
-    <button class="btn btn-danger full" onclick="deletePrediction('${id}')">DELETE PREDICTION</button>
+    <button class="btn btn-danger full" onclick="deletePrediction('${escapeHTML(id)}')">DELETE PREDICTION</button>
    `:""}
-  </div>`;
+  </article>`;
+}
+
+function groupPredictionsByLeague(items){
+ const groups={};
+ items.forEach(item=>{
+  const league=getLeague(item);
+  if(!groups[league])groups[league]=[];
+  groups[league].push(item);
+ });
+ return groups;
+}
+
+function renderPredictionGroups(items,admin=false){
+ if(!items.length){
+  return '<div class="panel"><p class="muted small">No predictions are available for this date and category.</p></div>';
+ }
+
+ const groups=groupPredictionsByLeague(items);
+
+ return Object.entries(groups).map(([league,predictions])=>`
+  <section style="margin-bottom:20px">
+   <div class="section-heading">
+    <h2>${escapeHTML(league)}</h2>
+    <span class="small muted">${predictions.length} prediction${predictions.length===1?"":"s"}</span>
+   </div>
+   <div class="prediction-list">
+    ${predictions.map(item=>predictionCard(item,admin)).join("")}
+   </div>
+  </section>
+ `).join("");
 }
 
 function renderPredictions(){
  const date=selectedDateValue();
 
- const free=allPredictions.filter(item=>{
-  const category=getCategory(item);
-  const sameDate=getPredictionDate(item)===date;
-  const sameLeague=selectedLeague==="all" ||
-   getLeague(item).toLowerCase().includes(selectedLeague.toLowerCase());
-
-  return category==="free" && sameDate && sameLeague;
- });
+ const free=allPredictions.filter(item=>
+  getCategory(item)==="free"&&
+  getPredictionDate(item)===date&&
+  isSameLeague(item,selectedLeague)
+ );
 
  $("freePredictions").innerHTML=free.length?
-  free.map(item=>predictionCard(item)).join(""):
-  '<p class="muted small">No free predictions published for this date and filter.</p>';
+  renderPredictionGroups(free,false):
+  '<div class="panel"><p class="muted small">No free predictions published for this date and filter.</p></div>';
 }
 
+/* =========================================
+   DESTINATION PAGES / BOTTOM NAV
+========================================= */
+
 function openDestination(destination){
+ currentDestination=destination;
+ selectedDestinationLeague="all";
+
  $("homeDestination").classList.add("hidden");
  $("destinationPage").classList.remove("hidden");
  $("destinationPage").dataset.destination=destination;
 
- document.querySelectorAll(".quick-tile").forEach(tile=>tile.classList.remove("active"));
+ updateBottomNav(destination);
 
  const titles={
-  free:["FREE ODD","Free predictions available to members."],
+  free:["FREE ODD","Free predictions available to all members."],
   vip:["VIP ODD","Exclusive VIP predictions."],
   rollover:["ROLLOVER","Exclusive Rollover predictions."],
   announcements:["NEVER MISS","Important member announcements."]
@@ -1110,38 +1537,70 @@ function openDestination(destination){
  $("destinationTitle").textContent=titles[destination][0];
  $("destinationSubtitle").textContent=titles[destination][1];
 
- const content=$("destinationContent");
+ $("destinationLeagueFilters").classList.toggle(
+  "hidden",destination==="announcements"
+ );
+
+ document.querySelectorAll("#destinationLeagueFilters .tab")
+  .forEach(tab=>tab.classList.toggle(
+   "active",tab.dataset.destLeague==="all"
+  ));
 
  if(destination==="announcements"){
   renderAnnouncementDestination();
-  return;
+ }else if(destination==="vip"&&currentTier!=="vip"&&!currentIsAdmin){
+  $("destinationContent").innerHTML=paymentPanel("VIP");
+ }else if(destination==="rollover"&&currentTier!=="rollover"&&!currentIsAdmin){
+  $("destinationContent").innerHTML=paymentPanel("ROLLOVER");
+ }else{
+  renderDestinationPredictions();
  }
 
- if(destination==="vip" && currentTier!=="vip" && !currentIsAdmin){
-  content.innerHTML=paymentPanel("VIP");
-  return;
- }
+ window.scrollTo({top:0,behavior:"smooth"});
+}
 
- if(destination==="rollover" && currentTier!=="rollover" && !currentIsAdmin){
-  content.innerHTML=paymentPanel("ROLLOVER");
-  return;
- }
+function setDestinationLeague(league,button){
+ selectedDestinationLeague=league;
+ document.querySelectorAll("#destinationLeagueFilters .tab")
+  .forEach(tab=>tab.classList.remove("active"));
+ button.classList.add("active");
+ renderDestinationPredictions();
+}
 
- const list=allPredictions.filter(item=>{
-  if(destination==="free")return getCategory(item)==="free";
-  if(destination==="vip")return getCategory(item)==="vip";
-  return getCategory(item)==="rollover";
+function renderDestinationPredictions(){
+ const destination=currentDestination;
+ if(destination==="announcements")return;
+
+ const date=selectedDateValue();
+
+ const items=allPredictions.filter(item=>{
+  const category=getCategory(item);
+  const categoryMatch=
+   destination==="free"?category==="free":
+   destination==="vip"?category==="vip":
+   category==="rollover";
+
+  return categoryMatch&&
+   getPredictionDate(item)===date&&
+   isSameLeague(item,selectedDestinationLeague);
  });
 
- content.innerHTML=list.length?
-  `<div class="prediction-grid">${list.map(item=>predictionCard(item,currentIsAdmin)).join("")}</div>`:
-  '<div class="panel"><p class="muted small">No predictions have been published in this section yet.</p></div>';
+ $("destinationContent").innerHTML=renderPredictionGroups(
+  items,currentIsAdmin
+ );
 }
 
 function backToHome(){
  $("destinationPage").classList.add("hidden");
  $("homeDestination").classList.remove("hidden");
+ currentDestination="free";
+ updateBottomNav("free");
+ window.scrollTo({top:0,behavior:"smooth"});
 }
+
+/* =========================================
+   PAYMENT DETAILS
+========================================= */
 
 function paymentPanel(type){
  const isVip=type==="VIP";
@@ -1190,28 +1649,25 @@ function copyAccount(){
 
 async function loadAnnouncements(){
  const {data,error}=await db.from("member_announcements")
-  .select("*")
-  .order("created_at",{ascending:false});
+  .select("*").order("created_at",{ascending:false});
 
  if(error){
   console.warn("Announcements:",error.message);
   return;
  }
 
- allAnnouncements=data || [];
-
+ allAnnouncements=data||[];
  if(currentIsAdmin)renderAdminAnnouncements();
 }
 
 function renderAnnouncementDestination(){
- const content=$("destinationContent");
-
  if(!allAnnouncements.length){
-  content.innerHTML='<div class="panel"><p class="muted small">There are no current announcements.</p></div>';
+  $("destinationContent").innerHTML=
+   '<div class="panel"><p class="muted small">There are no current announcements.</p></div>';
   return;
  }
 
- content.innerHTML=allAnnouncements.map(item=>`
+ $("destinationContent").innerHTML=allAnnouncements.map(item=>`
   <div class="panel" style="margin-bottom:12px">
    <div class="small muted">${escapeHTML(formatDate(item.created_at))}</div>
    <p style="line-height:1.7">${escapeHTML(item.message||item.announcement||"")}</p>
@@ -1223,7 +1679,6 @@ function showNextAnnouncement(){
  if(!announcementQueue.length)return;
 
  const item=announcementQueue.shift();
-
  $("announcementMessage").textContent=
   item.message||item.announcement||"";
 
@@ -1251,8 +1706,7 @@ async function publishAnnouncement(){
  }
 
  const {error}=await db.from("member_announcements").insert({
-  message,
-  created_at:new Date().toISOString()
+  message,created_at:new Date().toISOString()
  });
 
  if(error){
@@ -1277,7 +1731,8 @@ function renderAdminAnnouncements(){
 async function deleteAnnouncement(id){
  if(!confirm("Remove this announcement?"))return;
 
- const {error}=await db.from("member_announcements").delete().eq("id",id);
+ const {error}=await db.from("member_announcements")
+  .delete().eq("id",id);
 
  if(error){
   notify("Unable to remove announcement: "+error.message);
@@ -1302,8 +1757,8 @@ async function addPrediction(){
  const category=$("adminCategory").value;
  const result=$("adminResult").value;
 
- if(!home || !away || !prediction || !kickoff){
-  notify("Complete the required prediction fields.");
+ if(!home||!away||!league||!odds||!prediction||!kickoff){
+  notify("Complete all prediction fields.");
   return;
  }
 
@@ -1325,8 +1780,10 @@ async function addPrediction(){
   return;
  }
 
- ["adminHome","adminAway","adminLeague","adminOdds","adminPrediction","adminKickoff"]
-  .forEach(id=>$(id).value="");
+ [
+  "adminHome","adminAway","adminLeague","adminOdds",
+  "adminPrediction","adminKickoff"
+ ].forEach(id=>$(id).value="");
 
  await loadPredictions();
  notify("Prediction published successfully.");
@@ -1334,8 +1791,7 @@ async function addPrediction(){
 
 async function updatePredictionResult(id,result){
  const {error}=await db.from("predictions")
-  .update({result})
-  .eq("id",id);
+  .update({result}).eq("id",id);
 
  if(error){
   notify("Result update failed: "+error.message);
@@ -1349,8 +1805,7 @@ async function deletePrediction(id){
  if(!confirm("Are you sure you want to delete this prediction?"))return;
 
  const {error}=await db.from("predictions")
-  .delete()
-  .eq("id",id);
+  .delete().eq("id",id);
 
  if(error){
   notify("Unable to delete prediction: "+error.message);
@@ -1371,25 +1826,29 @@ function renderAdminPredictions(){
 ========================================= */
 
 function updateStatistics(){
- const visible=allPredictions.filter(item=>{
-  return currentIsAdmin || getCategory(item)==="free" ||
-   (getCategory(item)==="vip" && currentTier==="vip") ||
-   (getCategory(item)==="rollover" && currentTier==="rollover");
- });
+ const visible=allPredictions.filter(item=>
+  currentIsAdmin||
+  getCategory(item)==="free"||
+  (getCategory(item)==="vip"&&currentTier==="vip")||
+  (getCategory(item)==="rollover"&&currentTier==="rollover")
+ );
 
- const won=visible.filter(item=>item.result==="won").length;
- const lost=visible.filter(item=>item.result==="lost").length;
- const pending=visible.filter(item=>!item.result||item.result==="pending").length;
+ $("statWon").textContent=visible.filter(
+  item=>getStoredResult(item)==="won"
+ ).length;
 
- $("statWon").textContent=won;
- $("statLost").textContent=lost;
- $("statPending").textContent=pending;
+ $("statLost").textContent=visible.filter(
+  item=>getStoredResult(item)==="lost"
+ ).length;
+
+ $("statPending").textContent=visible.filter(item=>
+  !["won","lost","void"].includes(getStoredResult(item))
+ ).length;
 }
 
 /* =========================================
    AUTOMATIC OLD PREDICTION CLEANUP
-   Nigeria time: retain yesterday, today
-   and tomorrow. Manual deletion remains.
+   Keep yesterday, today and tomorrow.
 ========================================= */
 
 async function cleanupOldPredictions(){
@@ -1398,8 +1857,7 @@ async function cleanupOldPredictions(){
  const yesterdayStart=getRelativeDate(-1)+"T00:00:00+01:00";
 
  const {error}=await db.from("predictions")
-  .delete()
-  .lt("kickoff",yesterdayStart);
+  .delete().lt("kickoff",yesterdayStart);
 
  if(error){
   console.warn("Automatic cleanup:",error.message);
@@ -1413,54 +1871,70 @@ async function cleanupOldPredictions(){
 ========================================= */
 
 async function startApp(){
- const {data}=await db.auth.getUser();
- currentUser=data?.user || null;
+ if(appStartPromise)return appStartPromise;
 
- if(!currentUser){
-  showPublic();
-  return;
+ appStartPromise=(async()=>{
+  const {data,error}=await db.auth.getUser();
+
+  if(error||!data?.user){
+   showPublic();
+   return;
+  }
+
+  currentUser=data.user;
+
+  await loadMemberProfile();
+  await checkAdmin();
+  await loadMembership();
+
+  showMember();
+  updateNigeriaClock();
+  renderDateTabs();
+
+  await Promise.all([
+   loadPredictions(),
+   loadAnnouncements(),
+   fetchLiveScores(),
+   loadSportsNews()
+  ]);
+
+  if(currentIsAdmin){
+   await cleanupOldPredictions();
+   await loadPredictions();
+  }
+
+  announcementQueue=allAnnouncements.slice();
+  showNextAnnouncement();
+
+  clearInterval(liveRefreshTimer);
+  liveRefreshTimer=setInterval(fetchLiveScores,60000);
+
+ })();
+
+ try{
+  await appStartPromise;
+ }finally{
+  appStartPromise=null;
  }
-
- await loadMemberProfile();
- await checkAdmin();
- await loadMembership();
-
- showMember();
-
- updateNigeriaClock();
- renderDateTabs();
-
- await Promise.all([
-  loadPredictions(),
-  loadAnnouncements(),
-  fetchLiveScores(),
-  loadSportsNews()
- ]);
-
- if(currentIsAdmin){
-  await cleanupOldPredictions();
-  await loadPredictions();
- }
-
- announcementQueue=allAnnouncements.slice();
- showNextAnnouncement();
-
- clearInterval(liveRefreshTimer);
- liveRefreshTimer=setInterval(fetchLiveScores,60000);
 }
 
 /* =========================================
    AUTH STATE AND INITIAL LOAD
 ========================================= */
 
-db.auth.onAuthStateChange(async(event,session)=>{
- if(event==="SIGNED_IN" && session?.user){
-  currentUser=session.user;
-  setTimeout(startApp,0);
+db.auth.onAuthStateChange((event,session)=>{
+ if(event==="SIGNED_IN"&&session?.user){
+  if(!currentUser||currentUser.id!==session.user.id){
+   setTimeout(startApp,0);
+  }
  }
 
  if(event==="SIGNED_OUT"){
   currentUser=null;
+  currentProfile=null;
+  currentTier="free";
+  currentIsAdmin=false;
+  clearInterval(liveRefreshTimer);
   showPublic();
  }
 });
@@ -1468,7 +1942,6 @@ db.auth.onAuthStateChange(async(event,session)=>{
 document.addEventListener("DOMContentLoaded",async()=>{
  updateNigeriaClock();
  setInterval(updateNigeriaClock,1000);
-
  renderDateTabs();
 
  const {data}=await db.auth.getSession();
@@ -1481,6 +1954,16 @@ document.addEventListener("DOMContentLoaded",async()=>{
 
  $("footerYear").textContent=new Date().getFullYear();
 });
+
+/* Refresh the displayed LIVE/PENDING prediction labels periodically. */
+setInterval(()=>{
+ if(allPredictions.length){
+  renderPredictions();
+  if(!$("destinationPage").classList.contains("hidden")){
+   renderDestinationPredictions();
+  }
+ }
+},60000);
 
 /* =========================================
    END OF ONLYBOSSTIPS APPLICATION
