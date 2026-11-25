@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,1138 +8,240 @@
 <title>onlybosstips | Member Center</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 :root{
- --bg:#070c09;
- --panel:#0e1711;
- --panel2:#14231a;
- --green:#19c779;
- --green2:#0e9f5d;
- --green3:#a6f0c2;
- --text:#f2f8f4;
- --muted:#91a198;
- --line:#26382c;
- --red:#f15c67;
- --gold:#e5bd65;
- --yellow:#ffd34e;
- --radius:17px;
+ --bg:#070c09;--panel:#0e1711;--panel2:#14231a;
+ --green:#19c779;--green2:#0e9f5d;--green3:#a6f0c2;
+ --text:#f2f8f4;--muted:#91a198;--line:#26382c;
+ --red:#f15c67;--gold:#e5bd65;--yellow:#ffd34e;--radius:15px
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
- margin:0;
- background:
-  radial-gradient(ellipse at 50% -15%,#12301f 0%,transparent 42%),
-  var(--bg);
- color:var(--text);
- font-family:"DM Sans",sans-serif;
- padding-bottom:94px;
-}
-button,input{font:inherit}
-button{cursor:pointer}
-button:focus-visible,input:focus-visible{
- outline:2px solid var(--green);
- outline-offset:3px
-}
-a{color:inherit}
-.hidden{display:none!important}
-
-.topbar{
- height:68px;
- padding:0 18px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- border-bottom:1px solid #294333;
- background:rgba(7,14,9,.96);
- position:sticky;
- top:0;
- z-index:20;
- backdrop-filter:blur(18px);
- box-shadow:0 7px 25px #0004
-}
-.brand{
- font-family:"Cinzel",serif;
- font-size:20px;
- font-weight:800;
- letter-spacing:1px;
- color:#b7f2d2;
- cursor:pointer;
- text-shadow:0 0 20px #19c77930
-}
+body{margin:0;background:radial-gradient(ellipse at 50% -15%,#12301f 0%,transparent 42%),var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;padding-bottom:94px}
+button,input{font:inherit}button{cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+a{color:inherit}.hidden{display:none!important}
+.topbar{height:64px;padding:0 17px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #294333;background:rgba(7,14,9,.96);position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);box-shadow:0 7px 25px #0004}
+.brand{font-family:"Cinzel",serif;font-size:19px;font-weight:800;letter-spacing:1px;color:#b7f2d2;cursor:pointer;text-shadow:0 0 20px #19c77930}
 .brand span{color:var(--green)}
-.online{
- font-size:9px;
- letter-spacing:1.3px;
- color:var(--green3);
- display:flex;
- align-items:center;
- gap:8px;
- font-weight:800
-}
-.online:before{
- content:"";
- width:7px;
- height:7px;
- border-radius:50%;
- background:var(--green);
- box-shadow:0 0 10px var(--green)
-}
-main{max-width:960px;margin:auto;padding:18px 14px 32px}
-.screen{display:none;animation:appear .22s ease}
-.screen.active{display:block}
-@keyframes appear{
- from{opacity:.4;transform:translateY(5px)}
- to{opacity:1;transform:none}
-}
-.card{
- background:linear-gradient(145deg,#111d15,#0c140f);
- border:1px solid var(--line);
- border-radius:var(--radius);
- padding:15px;
- margin-bottom:14px;
- box-shadow:0 10px 28px #0002
-}
-.section-title{
- font-size:13px;
- font-weight:900;
- letter-spacing:1px;
- margin:22px 0 12px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:10px
-}
-.section-title:before{
- content:"";
- width:3px;
- height:16px;
- border-radius:5px;
- background:var(--green);
- box-shadow:0 0 10px #19c77965;
- margin-right:1px
-}
-.section-title small{
- font-size:10px;
- color:var(--muted);
- font-weight:600;
- letter-spacing:.2px
-}
-.page-heading{margin:4px 0 17px}
-.page-heading h1{
- font-size:22px;
- letter-spacing:.3px;
- margin:0 0 6px;
- font-weight:900
-}
-.page-heading p{
- font-size:11px;
- color:var(--muted);
- margin:0;
- line-height:1.6
-}
-.back-home{
- display:inline-flex;
- align-items:center;
- justify-content:center;
- gap:9px;
- background:linear-gradient(135deg,#17452d,#0e2418);
- border:1px solid #34784e;
- color:#c4f8d9;
- border-radius:10px;
- padding:10px 15px;
- font-size:10px;
- font-weight:900;
- letter-spacing:1px;
- margin-bottom:15px;
- box-shadow:0 5px 16px #0004,inset 0 1px #ffffff0c;
- transition:.2s
-}
-.back-home:hover{
- background:linear-gradient(135deg,#1c5938,#123321);
- border-color:var(--green)
-}
-.back-home svg{
- width:16px;
- height:16px;
- stroke:currentColor;
- fill:none;
- stroke-width:2;
- stroke-linecap:round;
- stroke-linejoin:round
-}
-.primary{
- background:linear-gradient(135deg,#20d486,#0eaa62);
- color:#041b10;
- border:1px solid #5be5a0;
- border-radius:10px;
- padding:12px 17px;
- font-size:11px;
- font-weight:900;
- letter-spacing:.3px;
- box-shadow:0 6px 18px #0e9f5d22
-}
-.secondary{
- background:#14251a;
- color:#b7f2d2;
- border:1px solid #31523e;
- border-radius:10px;
- padding:11px 15px;
- font-size:11px;
- font-weight:800
-}
-.muted{color:var(--muted)}
-.error-text{color:#ff8992;font-size:11px;line-height:1.5}
-.success-text{color:#75e5a5;font-size:11px;line-height:1.5}
+.online{font-size:9px;letter-spacing:1.2px;color:var(--green3);display:flex;align-items:center;gap:8px;font-weight:800}
+.online:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+main{max-width:960px;margin:auto;padding:16px 13px 30px}
+.screen{display:none;animation:appear .22s ease}.screen.active{display:block}
+@keyframes appear{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
+.card{background:linear-gradient(145deg,#111d15,#0c140f);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:13px;box-shadow:0 8px 24px #0002}
+.section-title{font-size:12px;font-weight:900;letter-spacing:1px;margin:20px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:9px}
+.section-title:before{content:"";width:3px;height:15px;border-radius:5px;background:var(--green);box-shadow:0 0 10px #19c77965;margin-right:1px;flex-shrink:0}
+.section-title small{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.2px}
+.page-heading{margin:4px 0 15px}.page-heading h1{font-size:21px;letter-spacing:.3px;margin:0 0 5px;font-weight:900}
+.page-heading p{font-size:11px;color:var(--muted);margin:0;line-height:1.6}
+.back-home{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#17452d,#0e2418);border:1px solid #34784e;color:#c4f8d9;border-radius:9px;padding:9px 13px;font-size:10px;font-weight:900;letter-spacing:1px;margin-bottom:13px;box-shadow:0 5px 16px #0004;transition:.2s}
+.back-home:hover{background:linear-gradient(135deg,#1c5938,#123321);border-color:var(--green)}
+.back-home svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.primary{background:linear-gradient(135deg,#20d486,#0eaa62);color:#041b10;border:1px solid #5be5a0;border-radius:9px;padding:11px 16px;font-size:11px;font-weight:900;letter-spacing:.3px;box-shadow:0 6px 18px #0e9f5d22}
+.secondary{background:#14251a;color:#b7f2d2;border:1px solid #31523e;border-radius:9px;padding:10px 14px;font-size:11px;font-weight:800}
+.muted{color:var(--muted)}.error-text{color:#ff8992;font-size:11px;line-height:1.5}.success-text{color:#75e5a5;font-size:11px;line-height:1.5}
 
 /* AUTHENTICATION */
-.auth-wrap{max-width:450px;margin:35px auto;padding:10px}
-.auth-card{
- background:linear-gradient(145deg,#122219,#0d1510);
- border:1px solid #294333;
- border-radius:22px;
- padding:24px 19px;
- box-shadow:0 18px 55px #0007
-}
-.auth-brand{
- text-align:center;
- font-family:"Cinzel",serif;
- font-size:24px;
- font-weight:800;
- color:#b7f2d2;
- margin-bottom:8px
-}
+.auth-wrap{max-width:450px;margin:32px auto;padding:10px}
+.auth-card{background:linear-gradient(145deg,#122219,#0d1510);border:1px solid #294333;border-radius:21px;padding:23px 18px;box-shadow:0 18px 55px #0007}
+.auth-brand{text-align:center;font-family:"Cinzel",serif;font-size:23px;font-weight:800;color:#b7f2d2;margin-bottom:8px}
 .auth-brand span{color:var(--green)}
-.auth-subtitle{
- text-align:center;
- color:var(--muted);
- font-size:10px;
- letter-spacing:1.2px;
- margin-bottom:22px
-}
-.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:18px}
-.auth-tabs button{
- padding:11px;
- border-radius:9px;
- background:#0b130e;
- color:var(--muted);
- border:1px solid var(--line);
- font-size:10px;
- font-weight:900
-}
-.auth-tabs button.active{
- background:#17452d;
- color:#c4f8d9;
- border-color:#238d57
-}
-.field{margin-bottom:13px}
-.field label{
- display:block;
- font-size:10px;
- color:#b8c9be;
- margin-bottom:7px;
- font-weight:800;
- letter-spacing:.4px
-}
-.field input{
- width:100%;
- background:#080f0b;
- color:var(--text);
- border:1px solid #304538;
- border-radius:10px;
- padding:13px;
- font-size:12px
-}
-.password-wrap{display:flex;gap:7px}
-.password-wrap input{flex:1;min-width:0}
-.show-password{
- border:1px solid #304538;
- background:#14251a;
- color:#9af0bc;
- border-radius:9px;
- padding:0 11px;
- font-size:10px
-}
+.auth-subtitle{text-align:center;color:var(--muted);font-size:10px;letter-spacing:1.2px;margin-bottom:21px}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:17px}
+.auth-tabs button{padding:10px;border-radius:9px;background:#0b130e;color:var(--muted);border:1px solid var(--line);font-size:10px;font-weight:900}
+.auth-tabs button.active{background:#17452d;color:#c4f8d9;border-color:#238d57}
+.field{margin-bottom:12px}.field label{display:block;font-size:10px;color:#b8c9be;margin-bottom:7px;font-weight:800;letter-spacing:.4px}
+.field input{width:100%;background:#080f0b;color:var(--text);border:1px solid #304538;border-radius:9px;padding:12px;font-size:12px}
+.password-wrap{display:flex;gap:7px}.password-wrap input{flex:1;min-width:0}
+.show-password{border:1px solid #304538;background:#14251a;color:#9af0bc;border-radius:9px;padding:0 11px;font-size:10px}
 .auth-submit{width:100%;margin-top:5px}
-.auth-links{
- display:flex;
- justify-content:space-between;
- gap:10px;
- margin-top:16px;
- font-size:10px;
- color:#9af0bc
-}
-.auth-links button{
- border:0;
- background:none;
- color:inherit;
- font-size:inherit;
- padding:0
-}
+.auth-links{display:flex;justify-content:space-between;gap:10px;margin-top:15px;font-size:10px;color:#9af0bc}
+.auth-links button{border:0;background:none;color:inherit;font-size:inherit;padding:0}
 .auth-message{min-height:18px;margin:10px 0 0;text-align:center}
-.auth-foot{
- text-align:center;
- color:#748379;
- font-size:9px;
- margin-top:17px;
- line-height:1.6
-}
+.auth-foot{text-align:center;color:#748379;font-size:9px;margin-top:16px;line-height:1.6}
 
-/* PROFILE */
-.profile{
- display:flex;
- align-items:center;
- gap:13px;
- background:linear-gradient(110deg,#14271d,#101915);
- border:1px solid #31513b;
- border-radius:var(--radius);
- padding:16px;
- margin-bottom:17px;
- box-shadow:0 12px 30px #0003
-}
+/* MEMBER PROFILE */
+.profile{display:flex;align-items:center;gap:12px;background:linear-gradient(110deg,#14271d,#101915);border:1px solid #31513b;border-radius:14px;padding:12px 14px;margin-bottom:16px;box-shadow:0 9px 25px #0003}
 .avatar-wrap{position:relative;flex-shrink:0}
-.avatar{
- width:53px;
- height:53px;
- border-radius:50%;
- background:#fff;
- color:#77837b;
- display:grid;
- place-items:center;
- border:2px solid #9be8b9;
- overflow:hidden
-}
-.avatar svg{width:28px;height:28px;stroke:#8c9990}
-.avatar img{width:100%;height:100%;object-fit:cover;display:block}
-.online-dot{
- position:absolute;
- right:0;
- bottom:0;
- width:13px;
- height:13px;
- border-radius:50%;
- background:#19c779;
- border:2px solid #14271d
-}
-.profile h2{font-size:15px;margin:0 0 4px;font-weight:900}
-.profile p{font-size:10px;color:var(--muted);margin:0}
-.tier{
- margin-left:auto;
- font-size:9px;
- letter-spacing:.8px;
- color:#aaf1ca;
- border:1px solid #28784f;
- background:#123321;
- padding:7px 10px;
- border-radius:20px;
- font-weight:900;
- white-space:nowrap
-}
+.avatar{width:49px;height:49px;border-radius:50%;background:#fff;color:#77837b;display:grid;place-items:center;border:2px solid #9be8b9;overflow:hidden}
+.avatar svg{width:26px;height:26px;stroke:#8c9990}.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.online-dot{position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;background:#19c779;border:2px solid #14271d}
+.profile-info{min-width:0;display:flex;flex-direction:column;gap:4px}
+.profile h2{font-size:12px;margin:0;font-weight:700;color:#e9f5ed;overflow-wrap:anywhere}
+.profile p{font-size:10px;color:#a6f0c2;margin:0;font-weight:900;letter-spacing:.7px}
+.tier{display:none}
 
-/* PREMIUM SPORTS NEWS */
-.news-carousel{
- position:relative;
- overflow:hidden;
- padding:0;
- background:#0b1510;
- min-height:390px;
- border:1px solid #31513b;
- box-shadow:0 14px 35px #0006
-}
-.news-slide{
- position:relative;
- min-height:390px;
- display:flex;
- flex-direction:column;
- justify-content:flex-end;
- overflow:hidden;
- background:#102016;
- cursor:pointer;
- isolation:isolate
-}
-.news-image{
- position:absolute;
- inset:0;
- width:100%;
- height:100%;
- object-fit:cover;
- opacity:.98;
- transition:transform .5s ease,opacity .35s ease;
- z-index:0
-}
+/* SPORTS NEWS */
+.news-carousel{position:relative;overflow:hidden;padding:0;background:#0b1510;min-height:340px;border:1px solid #31513b;box-shadow:0 14px 35px #0006}
+.news-slide{position:relative;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:#102016;cursor:pointer;isolation:isolate}
+.news-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;filter:brightness(1.13) contrast(1.12) saturate(1.22);transition:transform .5s ease;z-index:0}
 .news-carousel:hover .news-image{transform:scale(1.025)}
-.news-image-shade{
- position:absolute;
- inset:0;
- z-index:1;
- background:
-  linear-gradient(0deg,rgba(2,8,5,.98) 0%,rgba(3,10,6,.82) 36%,rgba(3,10,6,.24) 75%,rgba(3,10,6,.04) 100%),
-  linear-gradient(90deg,rgba(2,8,5,.20),transparent 75%)
-}
-.news-content{
- position:relative;
- z-index:2;
- padding:28px 21px 25px;
- pointer-events:none
-}
-.news-source{
- display:inline-block;
- background:rgba(17,75,45,.94);
- color:#b9f5d0;
- border:1px solid #39a96c;
- border-radius:5px;
- padding:7px 11px;
- font-size:9px;
- font-weight:900;
- letter-spacing:1.2px;
- text-transform:uppercase
-}
-.news-slide h2{
- max-width:690px;
- font-size:clamp(23px,4.9vw,36px);
- line-height:1.12;
- letter-spacing:-1px;
- font-weight:900;
- margin:16px 0 10px;
- color:#fff;
- text-shadow:0 3px 18px rgba(0,0,0,.95)
-}
-.news-slide p{
- max-width:620px;
- font-size:12px;
- line-height:1.65;
- color:#e0e9e2;
- margin:0;
- text-shadow:0 2px 9px #000
-}
-.news-controls{
- display:flex;
- justify-content:space-between;
- align-items:center;
- padding:7px 14px;
- background:#0d1711;
- border-top:1px solid #294333
-}
-.news-controls button{
- width:36px;
- height:33px;
- border:0;
- border-radius:7px;
- background:transparent;
- color:#a6f0c2;
- font-size:30px;
- line-height:1;
- display:grid;
- place-items:center;
- transition:color .2s,background .2s
-}
-.news-controls button:hover{background:#173c27;color:#fff}
+.news-image-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(2,8,5,.96) 0%,rgba(3,10,6,.70) 36%,rgba(3,10,6,.16) 78%,rgba(3,10,6,.02) 100%)}
+.news-content{position:relative;z-index:2;padding:23px 19px 22px;pointer-events:none}
+.news-source{display:inline-flex;align-items:center;justify-content:center;background:rgba(17,75,45,.94);border:1px solid #39a96c;border-radius:6px;padding:6px 9px;min-height:31px}
+.news-source img{display:block;max-width:105px;max-height:22px;width:auto;height:auto;object-fit:contain}
+.news-slide h2{max-width:690px;font-size:clamp(21px,4.5vw,32px);line-height:1.14;letter-spacing:-.7px;font-weight:900;margin:13px 0 0;color:#fff;text-shadow:0 3px 18px rgba(0,0,0,.95)}
+.news-controls{display:none!important}
 
 /* MATCH CENTRE */
-.match-head{
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:10px;
- margin-bottom:12px
-}
-.match-head strong{font-size:13px;font-weight:900;letter-spacing:.8px}
-.date-controls{
- display:flex;
- align-items:center;
- justify-content:center;
- gap:9px;
- padding:10px;
- background:linear-gradient(120deg,#0a130d,#101d14);
- border:1px solid #2b4132;
- border-radius:12px;
- margin-bottom:12px;
- touch-action:pan-y;
- user-select:none
-}
-.date-controls button{
- width:35px;
- height:34px;
- border:1px solid #31523e;
- background:#153522;
- color:#9af0bc;
- border-radius:8px;
- font-size:23px;
- line-height:1;
- display:grid;
- place-items:center;
- flex-shrink:0;
- transition:background .2s,border-color .2s
-}
-.date-controls button:hover{
- background:#1a4930;
- border-color:#35a96b
-}
-.date-current{
- min-width:190px;
- min-height:43px;
- padding:6px 12px;
- display:flex;
- flex-direction:column;
- align-items:center;
- justify-content:center;
- gap:3px;
- background:linear-gradient(135deg,#142d1d,#102319);
- border:1px solid #34734c;
- border-radius:7px;
- color:#b9f5d0;
- font-size:10px;
- font-weight:900;
- letter-spacing:.7px;
- text-align:center;
- line-height:1.35
-}
-.date-current .date-name{
- font-size:12px;
- color:#f2fff6;
- letter-spacing:.3px
-}
-.date-current .date-detail{
- font-size:9px;
- color:#9fe6b9;
- font-weight:800;
- letter-spacing:1px;
- text-transform:uppercase
-}
-.sport-tabs,.score-tabs{
- display:flex;
- gap:7px;
- overflow-x:auto;
- padding:2px 0 10px;
- scrollbar-width:none
-}
+.match-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+.match-head strong{font-size:12px;font-weight:900;letter-spacing:.8px}
+.date-controls{display:flex;align-items:center;justify-content:center;gap:12px;padding:3px 0;background:transparent;border:0;border-radius:0;margin-bottom:10px;touch-action:pan-y;user-select:none}
+.date-controls button{width:30px;height:30px;border:1px solid #31523e;background:#153522;color:#9af0bc;border-radius:8px;font-size:21px;line-height:1;display:grid;place-items:center;flex-shrink:0;transition:background .2s,border-color .2s}
+.date-controls button:hover{background:#1a4930;border-color:#35a96b}
+.date-current{min-width:170px;min-height:37px;padding:4px 9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:transparent;border:0;border-radius:0;color:#b9f5d0;font-size:9px;font-weight:900;letter-spacing:.5px;text-align:center;line-height:1.3}
+.date-current .date-name{font-size:12px;color:#f2fff6;letter-spacing:.2px}
+.date-current .date-detail{font-size:8px;color:#9fe6b9;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
+.sport-tabs,.score-tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 9px;scrollbar-width:none}
 .sport-tabs::-webkit-scrollbar,.score-tabs::-webkit-scrollbar{display:none}
-.sport-tabs button,.score-tabs button{
- white-space:nowrap;
- border:1px solid var(--line);
- border-radius:20px;
- background:#0d1510;
- color:var(--muted);
- padding:8px 12px;
- font-size:10px;
- font-weight:800
-}
-.sport-tabs button.active,.score-tabs button.active{
- background:#16472e;
- border-color:#238d57;
- color:#c4f8d9
-}
-.score-list{display:grid;gap:12px}
-.league-group{
- overflow:hidden;
- border:1px solid #263d2e;
- border-radius:12px;
- background:#0a120d
-}
-.league-heading{
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:10px;
- padding:11px 12px;
- background:linear-gradient(100deg,#173a25,#10251a);
- border-bottom:1px solid #31523c;
- color:#c8f5d8;
- font-size:10px;
- font-weight:900;
- letter-spacing:.8px;
- text-transform:uppercase
-}
-.league-heading span:last-child{
- color:#8fbea0;
- font-size:9px;
- letter-spacing:.4px
-}
-.score-row{
- display:grid;
- grid-template-columns:minmax(0,1fr) 65px minmax(0,1fr);
- gap:8px;
- align-items:center;
- padding:12px 10px;
- background:#0c1410;
- border-bottom:1px solid #1e3025;
- font-size:11px
-}
+.sport-tabs button,.score-tabs button{white-space:nowrap;border:1px solid var(--line);border-radius:20px;background:#0d1510;color:var(--muted);padding:7px 11px;font-size:9px;font-weight:800}
+.sport-tabs button.active,.score-tabs button.active{background:#16472e;border-color:#238d57;color:#c4f8d9}
+.score-list{display:grid;gap:9px}
+.league-group{overflow:hidden;border:1px solid #263d2e;border-radius:10px;background:#0a120d}
+.league-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:linear-gradient(100deg,#173a25,#10251a);border-bottom:1px solid #31523c;color:#c8f5d8;font-size:9px;font-weight:900;letter-spacing:.6px;text-transform:uppercase}
+.league-heading span:last-child{color:#8fbea0;font-size:8px;letter-spacing:.3px}
+.score-row{display:grid;grid-template-columns:minmax(0,1fr) 60px minmax(0,1fr);gap:7px;align-items:center;padding:10px 9px;background:#0c1410;border-bottom:1px solid #1e3025;font-size:10px}
 .score-row:last-child{border-bottom:0}
-.team{
- display:flex;
- align-items:center;
- gap:7px;
- min-width:0;
- font-weight:700
-}
-.team span:last-child{overflow-wrap:anywhere}
-.team:last-child{justify-content:flex-end;text-align:right}
-.crest{
- width:23px;
- height:23px;
- border-radius:50%;
- display:grid;
- place-items:center;
- background:#1c3326;
- color:#9de7bb;
- font-size:9px;
- font-weight:900;
- flex-shrink:0;
- border:1px solid #31513b
-}
-.score{font-size:16px;font-weight:900;white-space:nowrap;text-align:center}
-.score-meta{
- text-align:center;
- font-size:9px;
- color:var(--muted);
- margin-top:4px;
- line-height:1.4
-}
-.score-status{
- display:inline-flex;
- align-items:center;
- justify-content:center;
- gap:5px;
- font-size:9px;
- font-weight:900;
- letter-spacing:.7px;
- text-transform:uppercase;
- margin-top:5px
-}
-.score-status.live{color:var(--yellow)}
-.score-status.pending{color:#aab8ae}
-.score-status.finished{color:#8ed9a9}
-.live-indicator{
- display:inline-block;
- width:7px;
- height:7px;
- border-radius:50%;
- background:var(--yellow);
- box-shadow:0 0 9px #ffd34e;
- animation:livePulse 1s infinite,liveVibrate .22s infinite
-}
-@keyframes livePulse{
- 0%,100%{opacity:1;box-shadow:0 0 8px #ffd34e}
- 50%{opacity:.45;box-shadow:0 0 15px #ffd34e}
-}
-@keyframes liveVibrate{
- 0%,100%{transform:translateX(0)}
- 25%{transform:translateX(-1px)}
- 75%{transform:translateX(1px)}
-}
-.empty{
- padding:20px;
- text-align:center;
- color:var(--muted);
- font-size:11px;
- line-height:1.6
-}
+.team{display:flex;align-items:center;min-width:0;font-weight:700}
+.team span{overflow-wrap:anywhere}.team:last-child{justify-content:flex-end;text-align:right}
+.score{font-size:14px;font-weight:900;white-space:nowrap;text-align:center}
+.score-meta{text-align:center;font-size:8px;color:var(--muted);margin-top:3px;line-height:1.4}
+.score-status{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:8px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;margin-top:4px}
+.score-status.live{color:var(--yellow)}.score-status.pending{color:#aab8ae}.score-status.finished{color:#8ed9a9}
+.live-indicator{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--yellow);box-shadow:0 0 8px #ffd34e;animation:livePulse 1s infinite}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.4}}
+.empty{padding:18px;text-align:center;color:var(--muted);font-size:10px;line-height:1.6}
 
-/* PREMIUM WINNING STREAK BOARD */
-.streak-board{
- position:relative;
- overflow:hidden;
- background:
-  radial-gradient(circle at 100% 0%,#1b5736 0%,transparent 40%),
-  linear-gradient(145deg,#102219,#0a120d 72%);
- border:1px solid #34764d;
- border-radius:17px;
- padding:16px;
- box-shadow:0 14px 32px #0005,inset 0 1px #ffffff0b
-}
-.streak-board:before{
- content:"";
- position:absolute;
- top:0;
- left:0;
- width:100%;
- height:2px;
- background:linear-gradient(90deg,transparent,#23d782,#a8f2c4,transparent)
-}
-.streak-heading{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:10px;
- margin-bottom:15px
-}
-.streak-heading strong{
- font-size:12px;
- letter-spacing:1px;
- font-weight:900
-}
-.streak-heading span{
- color:#9be8b9;
- font-size:9px;
- font-weight:900;
- letter-spacing:1px
-}
-.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
-.stat{
- background:linear-gradient(145deg,#14251a,#0b140e);
- border:1px solid #2a4532;
- border-radius:12px;
- padding:13px
-}
-.stat small{
- font-size:9px;
- color:#9eafa3;
- letter-spacing:.7px;
- text-transform:uppercase;
- font-weight:800
-}
-.stat strong{
- display:block;
- font-size:25px;
- margin-top:6px;
- font-weight:900;
- color:#f1f8f3
-}
-.stat.green strong{color:#6de7a3}
-.stat.red strong{color:#ff8791}
-.streak-note{
- font-size:10px;
- color:#9baea1;
- line-height:1.7;
- margin:13px 2px 0
-}
+/* WINNING STREAK */
+.streak-board{position:relative;overflow:hidden;background:radial-gradient(circle at 100% 0%,#1b5736 0%,transparent 40%),linear-gradient(145deg,#102219,#0a120d 72%);border:1px solid #34764d;border-radius:14px;padding:12px;box-shadow:0 10px 25px #0005}
+.streak-board:before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#23d782,#a8f2c4,transparent)}
+.streak-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.streak-heading strong{font-size:10px;letter-spacing:.8px;font-weight:900}.streak-heading span{color:#9be8b9;font-size:8px;font-weight:900;letter-spacing:.8px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.stat{min-width:0;background:linear-gradient(145deg,#14251a,#0b140e);border:1px solid #2a4532;border-radius:9px;padding:9px 7px}
+.stat small{font-size:8px;color:#9eafa3;letter-spacing:.3px;text-transform:uppercase;font-weight:800;display:block}
+.stat strong{display:block;font-size:19px;margin-top:5px;font-weight:900;color:#f1f8f3;overflow-wrap:anywhere}
+.stat.green strong{color:#6de7a3}.stat.red strong{color:#ff8791}
+.streak-note{font-size:9px;color:#9baea1;line-height:1.6;margin:9px 2px 0}
 
 /* RESPONSIBLE GAMBLING */
-.notice{
- position:relative;
- border:1px solid #554a2b;
- background:linear-gradient(135deg,#211e13,#15170f);
- color:#e7d8a8;
- border-radius:13px;
- padding:15px 15px 15px 42px;
- font-size:11px;
- line-height:1.8;
- box-shadow:0 8px 22px #0003
-}
-.notice:before{
- content:"!";
- position:absolute;
- left:14px;
- top:15px;
- width:18px;
- height:18px;
- display:grid;
- place-items:center;
- border:1px solid #b99a4d;
- border-radius:50%;
- color:#e8c76c;
- font-size:11px;
- font-weight:900
-}
-.notice-title{
- display:block;
- color:#f2d88d;
- font-size:10px;
- font-weight:900;
- letter-spacing:1.3px;
- margin-bottom:5px
-}
+.notice{position:relative;border:1px solid #554a2b;background:linear-gradient(135deg,#211e13,#15170f);color:#e7d8a8;border-radius:12px;padding:13px 13px 13px 39px;font-size:10px;line-height:1.8;box-shadow:0 8px 22px #0003}
+.notice:before{content:"!";position:absolute;left:13px;top:13px;width:17px;height:17px;display:grid;place-items:center;border:1px solid #b99a4d;border-radius:50%;color:#e8c76c;font-size:10px;font-weight:900}
+.notice-title{display:block;color:#f2d88d;font-size:9px;font-weight:900;letter-spacing:1.2px;margin-bottom:4px}
 
-/* COMPACT LEAGUE SELECTORS */
-.league-screen{display:flex;flex-direction:column;gap:9px}
-.league-grid{
- display:grid;
- grid-template-columns:repeat(4,minmax(0,1fr));
- gap:6px;
- width:100%;
- overflow:visible;
- padding:2px 0 5px
-}
-.league-button{
- width:100%;
- min-width:0;
- min-height:39px;
- display:flex;
- align-items:center;
- justify-content:center;
- text-align:center;
- padding:6px 4px;
- background:linear-gradient(145deg,#121e17,#0d1510);
- border:1px solid #263b2d;
- border-radius:8px;
- color:#dce9df;
- transition:background .15s,border-color .15s,transform .15s
-}
+/* LEAGUE SELECTORS */
+.league-screen{display:flex;flex-direction:column;gap:8px}
+.league-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:100%;overflow:visible;padding:2px 0 5px}
+.league-button{width:100%;min-width:0;min-height:35px;display:flex;align-items:center;justify-content:center;text-align:center;padding:5px 3px;background:linear-gradient(145deg,#121e17,#0d1510);border:1px solid #263b2d;border-radius:8px;color:#dce9df;transition:background .15s,border-color .15s,transform .15s}
 .league-button:active{transform:scale(.98)}
-.league-button.active{
- background:linear-gradient(145deg,#17452d,#10281b);
- border-color:#20a965;
- box-shadow:inset 0 0 0 1px #20a96533
-}
-.league-button strong{
- display:block;
- font-size:9px;
- line-height:1.2;
- font-weight:900;
- white-space:normal;
- overflow-wrap:anywhere
-}
+.league-button.active{background:linear-gradient(145deg,#17452d,#10281b);border-color:#20a965;box-shadow:inset 0 0 0 1px #20a96533}
+.league-button strong{display:block;font-size:8px;line-height:1.2;font-weight:900;white-space:normal;overflow-wrap:anywhere}
 
-/* PREDICTION CARDS */
-.prediction-card{
- background:linear-gradient(145deg,#111d15,#0a130e);
- border:1px solid #293d30;
- border-radius:13px;
- padding:14px;
- margin-bottom:10px;
- box-shadow:0 7px 19px #0002
-}
-.prediction-top{
- display:flex;
- justify-content:space-between;
- gap:8px;
- font-size:10px;
- color:#a4b4a9;
- font-weight:700
-}
-.prediction-card h3{
- font-size:13px;
- line-height:1.5;
- margin:12px 0;
- font-weight:900;
- color:#f0f7f2
-}
-.prediction-bottom{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:9px;
- font-size:10px;
- color:var(--muted)
-}
-.prediction-pick{
- color:#b9f5d0;
- font-weight:800
-}
-.status{
- display:inline-flex;
- align-items:center;
- justify-content:center;
- gap:5px;
- border-radius:30px;
- padding:6px 10px;
- font-size:9px;
- font-weight:900;
- letter-spacing:.5px;
- white-space:nowrap;
- border:1px solid transparent
-}
-.status-icon{
- width:17px;
- height:17px;
- border-radius:50%;
- display:inline-grid;
- place-items:center;
- font-size:10px;
- font-weight:900;
- border:1px solid currentColor
-}
-.status.pending{
- background:#302a17;
- color:#e8c76c;
- border-color:#6b5728
-}
-.status.won{
- background:#123b28;
- color:#75e5a5;
- border-color:#28784f
-}
-.status.lost{
- background:#401c22;
- color:#ff8992;
- border-color:#873c47
-}
-.status.void{
- background:#292d30;
- color:#c4cdd1;
- border-color:#59656a
-}
+/* PREDICTIONS */
+.prediction-card{background:linear-gradient(145deg,#111d15,#0a130e);border:1px solid #293d30;border-radius:11px;padding:11px 12px;margin-bottom:8px;box-shadow:0 6px 16px #0002}
+.prediction-top{display:flex;justify-content:space-between;gap:8px;font-size:9px;color:#a4b4a9;font-weight:700}
+.prediction-card h3{font-size:12px;line-height:1.4;margin:9px 0;font-weight:900;color:#f0f7f2}
+.prediction-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:9px;color:var(--muted)}
+.prediction-pick{color:#b9f5d0;font-weight:800}
+.status{display:inline-flex;align-items:center;justify-content:center;gap:4px;border-radius:30px;padding:5px 8px;font-size:8px;font-weight:900;letter-spacing:.4px;white-space:nowrap;border:1px solid transparent}
+.status-icon{width:15px;height:15px;border-radius:50%;display:inline-grid;place-items:center;font-size:9px;font-weight:900;border:1px solid currentColor}
+.status.pending{background:#302a17;color:#e8c76c;border-color:#6b5728}
+.status.won{background:#123b28;color:#75e5a5;border-color:#28784f}
+.status.lost{background:#401c22;color:#ff8992;border-color:#873c47}
+.status.void{background:#292d30;color:#c4cdd1;border-color:#59656a}
 
-/* MEMBERSHIP AND PAYMENTS */
-.gate{text-align:center;padding:27px 18px}
-.gate-icon{
- width:55px;
- height:55px;
- border-radius:18px;
- background:#183b29;
- color:#83e5ad;
- display:grid;
- place-items:center;
- margin:0 auto 15px;
- font-size:25px;
- border:1px solid #34764d
-}
-.gate h2{font-size:16px;margin:0 0 9px;font-weight:900}
-.gate p{
- font-size:11px;
- line-height:1.7;
- color:var(--muted);
- max-width:340px;
- margin:0 auto 17px
-}
-.payment-detail{
- background:#0c1510;
- border:1px solid #294333;
- border-radius:12px;
- padding:14px;
- margin:12px 0
-}
-.payment-detail p{font-size:11px;color:var(--muted);line-height:1.8}
-.payment-detail strong{color:#eaf5ed}
-.payment-amount{
- font-size:29px;
- font-weight:900;
- color:var(--green);
- letter-spacing:-.5px
-}
-.code-box{
- background:#0c1510;
- border:1px solid #294333;
- border-radius:12px;
- padding:15px;
- margin-bottom:10px
-}
-.code-box h3{font-size:12px;margin:0 0 7px}
-.code-box p{font-size:10px;color:var(--muted);line-height:1.5;margin:0}
-.logout{
- width:100%;
- border:1px solid #744047;
- color:#ffb0b6;
- background:linear-gradient(135deg,#29151a,#1b1013);
- padding:13px;
- border-radius:11px;
- font-weight:900;
- font-size:10px;
- letter-spacing:1.3px;
- margin-top:16px;
- box-shadow:0 7px 20px #0003
-}
+/* MEMBERSHIP */
+.gate{text-align:center;padding:25px 16px}
+.gate-icon{width:51px;height:51px;border-radius:16px;background:#183b29;color:#83e5ad;display:grid;place-items:center;margin:0 auto 13px;font-size:23px;border:1px solid #34764d}
+.gate h2{font-size:15px;margin:0 0 8px;font-weight:900}
+.gate p{font-size:10px;line-height:1.7;color:var(--muted);max-width:340px;margin:0 auto 15px}
+.payment-detail{background:#0c1510;border:1px solid #294333;border-radius:11px;padding:13px;margin:11px 0}
+.payment-detail p{font-size:10px;color:var(--muted);line-height:1.8}.payment-detail strong{color:#eaf5ed}
+.payment-amount{font-size:27px;font-weight:900;color:var(--green);letter-spacing:-.5px}
+.code-box{background:#0c1510;border:1px solid #294333;border-radius:11px;padding:13px;margin-bottom:9px}
+.code-box h3{font-size:11px;margin:0 0 6px}.code-box p{font-size:10px;color:var(--muted);line-height:1.5;margin:0}
+.logout{width:100%;border:1px solid #744047;color:#ffb0b6;background:linear-gradient(135deg,#29151a,#1b1013);padding:12px;border-radius:10px;font-weight:900;font-size:10px;letter-spacing:1.2px;margin-top:15px;box-shadow:0 7px 20px #0003}
 .logout:hover{background:#3a1c23;border-color:#b35b66}
-
-/* FOOTER */
-footer{
- text-align:center;
- color:#91a397;
- font-size:9px;
- letter-spacing:.8px;
- padding:24px 5px 20px;
- line-height:1.9;
- font-weight:800
-}
-footer .footer-brand{color:#a6f0c2;font-family:"Cinzel",serif}
-footer .footer-motto{color:#7ddda5;letter-spacing:1.5px}
-
-/* BOTTOM NAVIGATION */
-.bottom-nav{
- position:fixed;
- z-index:30;
- bottom:0;
- left:0;
- right:0;
- background:rgba(7,14,9,.97);
- border-top:1px solid #294333;
- display:grid;
- grid-template-columns:repeat(4,1fr);
- padding:8px 5px calc(8px + env(safe-area-inset-bottom));
- backdrop-filter:blur(17px);
- box-shadow:0 -8px 25px #0004
-}
-.nav-item{
- border:0;
- background:none;
- color:#77877d;
- display:flex;
- align-items:center;
- justify-content:center;
- flex-direction:column;
- gap:5px;
- font-size:9px;
- font-weight:900;
- letter-spacing:.4px;
- padding:5px 1px
-}
-.nav-item svg{
- width:21px;
- height:21px;
- stroke:currentColor;
- fill:none;
- stroke-width:1.8;
- stroke-linecap:round;
- stroke-linejoin:round
-}
-.nav-item.active{color:var(--green)}
-.nav-item.active svg{filter:drop-shadow(0 0 5px #19c77966)}
-
-@media(min-width:520px){
- .league-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
- .league-button{min-height:41px}
-}
-@media(min-width:760px){
- .league-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
-}
-@media(min-width:650px){
- .stats-grid{grid-template-columns:repeat(4,1fr)}
- .card{padding:18px}
- .news-slide,.news-carousel{min-height:440px}
- .score-row{padding:14px}
-}
-@media(max-width:380px){
- .news-slide,.news-carousel{min-height:350px}
- .news-content{padding:22px 16px 20px}
- .news-slide h2{font-size:22px}
- .date-controls{gap:7px;padding:8px}
- .date-current{min-width:165px}
- .league-grid{gap:5px}
- .league-button{min-height:36px;padding:6px 3px}
- .league-button strong{font-size:8px}
- .score-row{grid-template-columns:minmax(0,1fr) 58px minmax(0,1fr);gap:5px}
- .team{gap:4px;font-size:10px}
- .crest{width:20px;height:20px}
-}
-@media(prefers-reduced-motion:reduce){
- *,*::before,*::after{
-  animation-duration:.01ms!important;
-  animation-iteration-count:1!important;
-  scroll-behavior:auto!important;
-  transition-duration:.01ms!important
- }
-}
+footer{text-align:center;color:#91a397;font-size:9px;letter-spacing:.8px;padding:22px 5px 18px;line-height:1.9;font-weight:800}
+footer .footer-brand{color:#a6f0c2;font-family:"Cinzel",serif}footer .footer-motto{color:#7ddda5;letter-spacing:1.5px}
+.bottom-nav{position:fixed;z-index:30;bottom:0;left:0;right:0;background:rgba(7,14,9,.97);border-top:1px solid #294333;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 5px calc(7px + env(safe-area-inset-bottom));backdrop-filter:blur(17px);box-shadow:0 -8px 25px #0004}
+.nav-item{border:0;background:none;color:#77877d;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;font-size:8px;font-weight:900;letter-spacing:.4px;padding:5px 1px}
+.nav-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-item.active{color:var(--green)}.nav-item.active svg{filter:drop-shadow(0 0 5px #19c77966)}
+@media(min-width:520px){.league-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.league-button{min-height:38px}}
+@media(min-width:760px){.league-grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
+@media(min-width:650px){.stats-grid{grid-template-columns:repeat(4,1fr)}.card{padding:16px}.news-slide,.news-carousel{min-height:400px}.score-row{padding:12px}}
+@media(max-width:420px){.news-slide,.news-carousel{min-height:320px}.news-content{padding:20px 15px}.news-slide h2{font-size:21px}.date-controls{gap:8px}.date-current{min-width:150px}.league-grid{gap:5px}.league-button{min-height:34px;padding:5px 2px}.league-button strong{font-size:8px}.score-row{grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);gap:4px}.team{font-size:9px}.score{font-size:13px}.stats-grid{gap:5px}.stat{padding:8px 5px}.stat small{font-size:7px}.stat strong{font-size:17px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
 </head>
-
 <body>
-
 <header class="topbar">
  <div class="brand" onclick="navigate('home')">onlyboss<span>tips</span></div>
  <div class="online" id="headerStatus">MEMBER CENTER</div>
 </header>
-
 <main>
 
 <!-- AUTHENTICATION -->
 <section id="authSection" class="screen">
- <div class="auth-wrap">
-  <div class="auth-card">
-   <div class="auth-brand">onlyboss<span>tips</span></div>
-   <div class="auth-subtitle">YOUR PREMIUM SPORTS PREDICTION CENTER</div>
-
-   <div id="authWelcome">
-    <div class="auth-tabs">
-     <button id="loginTab" class="active" type="button" onclick="showAuthMode('login')">LOG IN</button>
-     <button id="signupTab" type="button" onclick="showAuthMode('signup')">CREATE ACCOUNT</button>
-    </div>
-
-    <form id="loginForm">
-     <div class="field">
-      <label for="loginEmail">EMAIL ADDRESS</label>
-      <input id="loginEmail" type="email" autocomplete="email" placeholder="Enter your email" required>
-     </div>
-     <div class="field">
-      <label for="loginPassword">PASSWORD</label>
-      <div class="password-wrap">
-       <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter your password" required>
-       <button class="show-password" type="button" onclick="togglePassword('loginPassword',this)">SHOW</button>
-      </div>
-     </div>
-     <button class="primary auth-submit" id="loginSubmit" type="submit">LOG IN TO YOUR ACCOUNT</button>
-    </form>
-
-    <form id="signupForm" class="hidden">
-     <div class="field">
-      <label for="signupName">FULL NAME</label>
-      <input id="signupName" type="text" autocomplete="name" placeholder="Enter your full name" required>
-     </div>
-     <div class="field">
-      <label for="signupEmail">EMAIL ADDRESS</label>
-      <input id="signupEmail" type="email" autocomplete="email" placeholder="Enter your email" required>
-     </div>
-     <div class="field">
-      <label for="signupPassword">CREATE PASSWORD</label>
-      <div class="password-wrap">
-       <input id="signupPassword" type="password" autocomplete="new-password" minlength="6" placeholder="At least 6 characters" required>
-       <button class="show-password" type="button" onclick="togglePassword('signupPassword',this)">SHOW</button>
-      </div>
-     </div>
-     <button class="primary auth-submit" id="signupSubmit" type="submit">CREATE MY ACCOUNT</button>
-    </form>
-
-    <div class="auth-links">
-     <button type="button" onclick="showForgotPassword()">Forgot password?</button>
-     <button type="button" onclick="showAuthMode('login')">Member login</button>
-    </div>
+ <div class="auth-wrap"><div class="auth-card">
+  <div class="auth-brand">onlyboss<span>tips</span></div>
+  <div class="auth-subtitle">YOUR PREMIUM SPORTS PREDICTION CENTER</div>
+  <div id="authWelcome">
+   <div class="auth-tabs">
+    <button id="loginTab" class="active" type="button" onclick="showAuthMode('login')">LOG IN</button>
+    <button id="signupTab" type="button" onclick="showAuthMode('signup')">CREATE ACCOUNT</button>
    </div>
-
-   <form id="forgotForm" class="hidden">
-    <h3 style="font-size:15px;margin:0 0 8px">RESET YOUR PASSWORD</h3>
-    <p class="muted" style="font-size:11px;line-height:1.6">Enter your registered email address. We'll send you a password recovery link.</p>
-    <div class="field">
-     <label for="forgotEmail">EMAIL ADDRESS</label>
-     <input id="forgotEmail" type="email" autocomplete="email" placeholder="Your registered email" required>
-    </div>
-    <button class="primary auth-submit" type="submit" id="forgotSubmit">SEND RECOVERY LINK</button>
-    <div class="auth-links"><button type="button" onclick="showAuthMode('login')">← Back to login</button></div>
+   <form id="loginForm">
+    <div class="field"><label for="loginEmail">EMAIL ADDRESS</label><input id="loginEmail" type="email" autocomplete="email" placeholder="Enter your email" required></div>
+    <div class="field"><label for="loginPassword">PASSWORD</label><div class="password-wrap"><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter your password" required><button class="show-password" type="button" onclick="togglePassword('loginPassword',this)">SHOW</button></div></div>
+    <button class="primary auth-submit" id="loginSubmit" type="submit">LOG IN TO YOUR ACCOUNT</button>
    </form>
-
-   <form id="recoveryForm" class="hidden">
-    <h3 style="font-size:15px;margin:0 0 8px">CREATE A NEW PASSWORD</h3>
-    <div class="field">
-     <label for="newPassword">NEW PASSWORD</label>
-     <div class="password-wrap">
-      <input id="newPassword" type="password" minlength="6" autocomplete="new-password" required>
-      <button class="show-password" type="button" onclick="togglePassword('newPassword',this)">SHOW</button>
-     </div>
-    </div>
-    <div class="field">
-     <label for="confirmPassword">CONFIRM PASSWORD</label>
-     <input id="confirmPassword" type="password" minlength="6" autocomplete="new-password" required>
-    </div>
-    <button class="primary auth-submit" type="submit">UPDATE PASSWORD</button>
+   <form id="signupForm" class="hidden">
+    <div class="field"><label for="signupName">FULL NAME</label><input id="signupName" type="text" autocomplete="name" placeholder="Enter your full name" required></div>
+    <div class="field"><label for="signupEmail">EMAIL ADDRESS</label><input id="signupEmail" type="email" autocomplete="email" placeholder="Enter your email" required></div>
+    <div class="field"><label for="signupPassword">CREATE PASSWORD</label><div class="password-wrap"><input id="signupPassword" type="password" autocomplete="new-password" minlength="6" placeholder="At least 6 characters" required><button class="show-password" type="button" onclick="togglePassword('signupPassword',this)">SHOW</button></div></div>
+    <button class="primary auth-submit" id="signupSubmit" type="submit">CREATE MY ACCOUNT</button>
    </form>
-
-   <div id="authMessage" class="auth-message" aria-live="polite"></div>
-   <div class="auth-foot">SECURE MEMBER ACCESS · onlybosstips © 2026</div>
+   <div class="auth-links"><button type="button" onclick="showForgotPassword()">Forgot password?</button><button type="button" onclick="showAuthMode('login')">Member login</button></div>
   </div>
- </div>
+  <form id="forgotForm" class="hidden">
+   <h3 style="font-size:15px;margin:0 0 8px">RESET YOUR PASSWORD</h3>
+   <p class="muted" style="font-size:11px;line-height:1.6">Enter your registered email address. We'll send you a password recovery link.</p>
+   <div class="field"><label for="forgotEmail">EMAIL ADDRESS</label><input id="forgotEmail" type="email" autocomplete="email" placeholder="Your registered email" required></div>
+   <button class="primary auth-submit" type="submit" id="forgotSubmit">SEND RECOVERY LINK</button>
+   <div class="auth-links"><button type="button" onclick="showAuthMode('login')">← Back to login</button></div>
+  </form>
+  <form id="recoveryForm" class="hidden">
+   <h3 style="font-size:15px;margin:0 0 8px">CREATE A NEW PASSWORD</h3>
+   <div class="field"><label for="newPassword">NEW PASSWORD</label><div class="password-wrap"><input id="newPassword" type="password" minlength="6" autocomplete="new-password" required><button class="show-password" type="button" onclick="togglePassword('newPassword',this)">SHOW</button></div></div>
+   <div class="field"><label for="confirmPassword">CONFIRM PASSWORD</label><input id="confirmPassword" type="password" minlength="6" autocomplete="new-password" required></div>
+   <button class="primary auth-submit" type="submit">UPDATE PASSWORD</button>
+  </form>
+  <div id="authMessage" class="auth-message" aria-live="polite"></div>
+  <div class="auth-foot">SECURE MEMBER ACCESS · onlybosstips © 2026</div>
+ </div></div>
 </section>
 
 <!-- HOME -->
 <section id="home" class="screen">
  <div class="profile">
   <div class="avatar-wrap">
-   <div class="avatar" id="avatar">
-    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7">
-     <circle cx="12" cy="8" r="4"/>
-     <path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/>
-    </svg>
-   </div>
+   <div class="avatar" id="avatar"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/></svg></div>
    <span class="online-dot"></span>
   </div>
-  <div>
-   <h2 id="memberName">Welcome, Member</h2>
-   <p id="memberEmail">Your prediction hub</p>
+  <div class="profile-info">
+   <h2 id="memberName">Member</h2>
+   <p id="memberEmail">Loading account...</p>
+   <p id="memberTier">FREE MEMBER</p>
   </div>
-  <span class="tier" id="memberTier">FREE MEMBER</span>
  </div>
 
  <div class="section-title">SPORTS NEWS</div>
  <div class="news-carousel card" id="sportsNewsCarousel">
   <div class="news-slide" id="newsSlide" role="link" tabindex="0" aria-label="Open sports news article">
-   <div class="news-content">
-    <div class="news-source">SPORTS NEWS</div>
-    <h2>Loading latest sports headlines...</h2>
-    <p>Preparing the latest sports stories.</p>
-   </div>
-  </div>
-  <div class="news-controls">
-   <button id="newsPrev" type="button" aria-label="Previous news">‹</button>
-   <button id="newsNext" type="button" aria-label="Next news">›</button>
+   <div class="news-content"><div class="news-source">SPORTS NEWS</div><h2>Loading latest sports headlines...</h2></div>
   </div>
  </div>
 
@@ -1149,315 +252,107 @@ footer .footer-motto{color:#7ddda5;letter-spacing:1.5px}
    <span class="date-current" id="calendarDateLabel">TODAY</span>
    <button id="nextDate" type="button" aria-label="Next date">›</button>
   </div>
-
   <div class="sport-tabs" id="sportTabs">
    <button class="active" data-sport="football">FOOTBALL</button>
    <button data-sport="basketball">BASKETBALL</button>
   </div>
-
   <div class="score-tabs" id="scoreTabs">
    <button class="active" data-state="live">LIVE</button>
    <button data-state="finished">FINISHED</button>
-   <button data-state="upcoming">PENDING</button>
   </div>
-
-  <div id="scoreList" class="score-list">
-   <div class="empty">Loading match scores...</div>
-  </div>
+  <div id="scoreList" class="score-list"><div class="empty">Loading match scores...</div></div>
  </div>
 
  <div class="section-title">WINNING STREAK DASHBOARD</div>
  <div class="streak-board">
-  <div class="streak-heading">
-   <strong>PERFORMANCE OVERVIEW</strong>
-   <span>ONLYBOSSTIPS</span>
-  </div>
+  <div class="streak-heading"><strong>PERFORMANCE OVERVIEW</strong><span>ONLYBOSSTIPS</span></div>
   <div class="stats-grid">
-   <div class="stat green">
-    <small>Total Won</small>
-    <strong id="statWon">0</strong>
-   </div>
-   <div class="stat red">
-    <small>Total Lost</small>
-    <strong id="statLost">0</strong>
-   </div>
-   <div class="stat">
-    <small>Win Rate</small>
-    <strong id="statRate">0%</strong>
-   </div>
-   <div class="stat">
-    <small>Current Streak</small>
-    <strong id="statStreak">0</strong>
-   </div>
+   <div class="stat green"><small>Total Won</small><strong id="statWon">0</strong></div>
+   <div class="stat red"><small>Total Lost</small><strong id="statLost">0</strong></div>
+   <div class="stat"><small>Win Rate</small><strong id="statRate">0%</strong></div>
+   <div class="stat"><small>Current Streak</small><strong id="statStreak">0</strong></div>
   </div>
   <p class="streak-note">Performance figures are calculated from settled WON and LOST predictions only. Pending, live and void selections are excluded.</p>
  </div>
 
  <div class="section-title">RESPONSIBLE GAMBLING</div>
- <div class="notice">
-  <span class="notice-title">PLAY SMART. STAY IN CONTROL.</span>
-  Predictions are for informational purposes only. Betting involves risk. Never stake money you cannot afford to lose. Be responsible and play within your limits.
- </div>
-
+ <div class="notice"><span class="notice-title">PLAY SMART. STAY IN CONTROL.</span>Predictions are for informational purposes only. Betting involves risk. Never stake money you cannot afford to lose. Be responsible and play within your limits.</div>
  <button class="logout" onclick="logout()">LOG OUT OF YOUR ACCOUNT</button>
-
- <footer>
-  <span class="footer-brand">onlybosstips</span><br>
-  © <span id="year"></span> onlybosstips
-  <br>
-  <span class="footer-motto">BET SMART. STAY RESPONSIBLE.</span>
- </footer>
+ <footer><span class="footer-brand">onlybosstips</span><br>© <span id="year"></span> onlybosstips<br><span class="footer-motto">BET SMART. STAY RESPONSIBLE.</span></footer>
 </section>
 
 <!-- FREE ODDS -->
 <section id="free" class="screen">
- <div class="page-heading">
-  <h1>FREE ODDS</h1>
-  <p>Free predictions and match selections</p>
- </div>
-
- <button class="back-home" onclick="navigate('home')">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-   <path d="m3 10 9-7 9 7"/>
-   <path d="M5 9v11h14V9M9 20v-7h6v7"/>
-  </svg>
-  HOME
- </button>
-
- <div class="card">
-  <div class="match-head"><strong>MATCH CENTER</strong></div>
-  <div class="date-controls" data-date-controls>
-   <button type="button" data-date-step="-1" aria-label="Previous date">‹</button>
-   <span class="date-current" id="freeDateLabel">TODAY</span>
-   <button type="button" data-date-step="1" aria-label="Next date">›</button>
-  </div>
- </div>
-
+ <div class="page-heading"><h1>FREE ODDS</h1><p>Free predictions and match selections</p></div>
+ <button class="back-home" onclick="navigate('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-7h6v7"/></svg>HOME</button>
+ <div class="card"><div class="match-head"><strong>MATCH CENTER</strong></div><div class="date-controls" data-date-controls><button type="button" data-date-step="-1" aria-label="Previous date">‹</button><span class="date-current" id="freeDateLabel">TODAY</span><button type="button" data-date-step="1" aria-label="Next date">›</button></div></div>
  <div class="section-title">SELECT A LEAGUE</div>
- <div class="league-screen">
-  <div class="league-grid" id="freeLeagueGrid"></div>
- </div>
-
- <div class="section-title">
-  <span id="freeSelectedLeague">ALL PREDICTIONS</span>
-  <small id="freePredictionCount">0 selections</small>
- </div>
-
- <div id="freePredictions">
-  <div class="empty card">Loading predictions...</div>
- </div>
+ <div class="league-screen"><div class="league-grid" id="freeLeagueGrid"></div></div>
+ <div class="section-title"><span id="freeSelectedLeague">ALL PREDICTIONS</span><small id="freePredictionCount">0 selections</small></div>
+ <div id="freePredictions"><div class="empty card">Loading predictions...</div></div>
 </section>
 
 <!-- VIP ODDS -->
 <section id="vip" class="screen">
- <div class="page-heading">
-  <h1>VIP ODDS</h1>
-  <p>Premium members prediction center</p>
- </div>
-
- <button class="back-home" onclick="navigate('home')">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-   <path d="m3 10 9-7 9 7"/>
-   <path d="M5 9v11h14V9M9 20v-7h6v7"/>
-  </svg>
-  HOME
- </button>
-
- <div class="card">
-  <div class="match-head"><strong>MATCH CENTER</strong></div>
-  <div class="date-controls" data-date-controls>
-   <button type="button" data-date-step="-1" aria-label="Previous date">‹</button>
-   <span class="date-current" id="vipDateLabel">TODAY</span>
-   <button type="button" data-date-step="1" aria-label="Next date">›</button>
-  </div>
- </div>
-
- <div id="vipGate" class="card gate">
-  <div class="gate-icon">✦</div>
-  <h2>VIP MEMBERSHIP REQUIRED</h2>
-  <p>VIP odds are available to approved VIP members. Tap below to view VIP membership details.</p>
-  <button class="primary" onclick="showPlans('VIP')">VIEW MEMBERSHIP PLANS</button>
- </div>
-
- <div id="vipMemberContent" class="hidden">
-  <div class="section-title">SELECT A LEAGUE</div>
-  <div class="league-grid" id="vipLeagueGrid"></div>
-  <div class="section-title"><span id="vipSelectedLeague">ALL PREDICTIONS</span></div>
-  <div id="vipPredictions"></div>
- </div>
+ <div class="page-heading"><h1>VIP ODDS</h1><p>Premium members prediction center</p></div>
+ <button class="back-home" onclick="navigate('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-7h6v7"/></svg>HOME</button>
+ <div class="card"><div class="match-head"><strong>MATCH CENTER</strong></div><div class="date-controls" data-date-controls><button type="button" data-date-step="-1" aria-label="Previous date">‹</button><span class="date-current" id="vipDateLabel">TODAY</span><button type="button" data-date-step="1" aria-label="Next date">›</button></div></div>
+ <div id="vipGate" class="card gate"><div class="gate-icon">✦</div><h2>VIP MEMBERSHIP REQUIRED</h2><p>VIP odds are available to approved VIP members. Tap below to view VIP membership details.</p><button class="primary" onclick="showPlans('VIP')">VIEW MEMBERSHIP PLANS</button></div>
+ <div id="vipMemberContent" class="hidden"><div class="section-title">SELECT A LEAGUE</div><div class="league-grid" id="vipLeagueGrid"></div><div class="section-title"><span id="vipSelectedLeague">ALL PREDICTIONS</span></div><div id="vipPredictions"></div></div>
 </section>
 
 <!-- ROLLOVER -->
 <section id="rollover" class="screen">
- <div class="page-heading">
-  <h1>ROLLOVER</h1>
-  <p>Rollover membership prediction center</p>
- </div>
-
- <button class="back-home" onclick="navigate('home')">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-   <path d="m3 10 9-7 9 7"/>
-   <path d="M5 9v11h14V9M9 20v-7h6v7"/>
-  </svg>
-  HOME
- </button>
-
- <div class="card">
-  <div class="match-head"><strong>MATCH CENTER</strong></div>
-  <div class="date-controls" data-date-controls>
-   <button type="button" data-date-step="-1" aria-label="Previous date">‹</button>
-   <span class="date-current" id="rollDateLabel">TODAY</span>
-   <button type="button" data-date-step="1" aria-label="Next date">›</button>
-  </div>
- </div>
-
- <div id="rollGate" class="card gate">
-  <div class="gate-icon">↻</div>
-  <h2>ROLLOVER MEMBERSHIP REQUIRED</h2>
-  <p>Rollover predictions are available only to approved Rollover members.</p>
-  <button class="primary" onclick="showPlans('ROLLOVER')">VIEW ROLLOVER MEMBERSHIP</button>
- </div>
-
- <div id="rollMemberContent" class="hidden">
-  <div class="section-title">SELECT A LEAGUE</div>
-  <div class="league-grid" id="rolloverLeagueGrid"></div>
-  <div class="section-title"><span id="rollSelectedLeague">ALL PREDICTIONS</span></div>
-  <div id="rolloverPredictions"></div>
- </div>
+ <div class="page-heading"><h1>ROLLOVER</h1><p>Rollover membership prediction center</p></div>
+ <button class="back-home" onclick="navigate('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-7h6v7"/></svg>HOME</button>
+ <div class="card"><div class="match-head"><strong>MATCH CENTER</strong></div><div class="date-controls" data-date-controls><button type="button" data-date-step="-1" aria-label="Previous date">‹</button><span class="date-current" id="rollDateLabel">TODAY</span><button type="button" data-date-step="1" aria-label="Next date">›</button></div></div>
+ <div id="rollGate" class="card gate"><div class="gate-icon">↻</div><h2>ROLLOVER MEMBERSHIP REQUIRED</h2><p>Rollover predictions are available only to approved Rollover members.</p><button class="primary" onclick="showPlans('ROLLOVER')">VIEW ROLLOVER MEMBERSHIP</button></div>
+ <div id="rollMemberContent" class="hidden"><div class="section-title">SELECT A LEAGUE</div><div class="league-grid" id="rolloverLeagueGrid"></div><div class="section-title"><span id="rollSelectedLeague">ALL PREDICTIONS</span></div><div id="rolloverPredictions"></div></div>
 </section>
 
 <!-- NEVER MISS -->
 <section id="never" class="screen">
- <div class="page-heading">
-  <h1>NEVER MISS</h1>
-  <p>Booking codes from your betting platforms</p>
- </div>
-
- <button class="back-home" onclick="navigate('home')">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-   <path d="m3 10 9-7 9 7"/>
-   <path d="M5 9v11h14V9M9 20v-7h6v7"/>
-  </svg>
-  HOME
- </button>
-
+ <div class="page-heading"><h1>NEVER MISS</h1><p>Booking codes from your betting platforms</p></div>
+ <button class="back-home" onclick="navigate('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-7h6v7"/></svg>HOME</button>
  <div id="bookingCodes">
-  <div class="code-box">
-   <h3>SPORTYBET BOOKING CODES</h3>
-   <p>Your SportyBet codes will be published here.</p>
-  </div>
-  <div class="code-box">
-   <h3>MSPORT BOOKING CODES</h3>
-   <p>Your MSport codes will be published here.</p>
-  </div>
-  <div class="code-box">
-   <h3>OTHER PLATFORMS</h3>
-   <p>Additional booking codes and verified links will appear here.</p>
-  </div>
+  <div class="code-box"><h3>SPORTYBET BOOKING CODES</h3><p>Your SportyBet codes will be published here.</p></div>
+  <div class="code-box"><h3>MSPORT BOOKING CODES</h3><p>Your MSport codes will be published here.</p></div>
+  <div class="code-box"><h3>OTHER PLATFORMS</h3><p>Additional booking codes and verified links will appear here.</p></div>
  </div>
-
- <div class="notice">
-  <span class="notice-title">PLATFORM INFORMATION</span>
-  Only trusted booking codes and normal web links should be added here. Third-party scripts and unverified embeds are not executed.
- </div>
+ <div class="notice"><span class="notice-title">PLATFORM INFORMATION</span>Only trusted booking codes and normal web links should be added here. Third-party scripts and unverified embeds are not executed.</div>
 </section>
 
 <!-- VIP PAYMENT -->
 <section id="vipPayment" class="screen">
- <div class="page-heading">
-  <h1>VIP MEMBERSHIP PAYMENT</h1>
-  <p>VIP payment information only</p>
- </div>
-
- <button class="back-home" onclick="navigate('vip')">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-   <path d="m3 10 9-7 9 7"/>
-   <path d="M5 9v11h14V9M9 20v-7h6v7"/>
-  </svg>
-  BACK TO VIP ODDS
- </button>
-
- <div class="card">
-  <div class="payment-amount">₦5,500</div>
-  <p style="font-size:11px;color:var(--muted)">VIP membership · Monthly</p>
-  <div class="payment-detail">
-   <p>
-    <strong>Bank:</strong> Sterling Bank<br>
-    <strong>Account Number:</strong> 0121973273<br>
-    <strong>Account Name:</strong> Use the account name shown by your bank transfer screen.
-   </p>
-  </div>
-  <button class="primary" onclick="receiptWhatsApp('VIP')">SEND VIP PAYMENT RECEIPT</button>
-  <p style="font-size:10px;color:var(--muted);line-height:1.6;margin-top:14px">VIP access is activated manually after payment confirmation.</p>
- </div>
+ <div class="page-heading"><h1>VIP MEMBERSHIP PAYMENT</h1><p>VIP payment information only</p></div>
+ <button class="back-home" onclick="navigate('vip')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-7h6v7"/></svg>BACK TO VIP ODDS</button>
+ <div class="card"><div class="payment-amount">₦5,500</div><p style="font-size:11px;color:var(--muted)">VIP membership · Monthly</p><div class="payment-detail"><p><strong>Bank:</strong> Sterling Bank<br><strong>Account Number:</strong> 0121973273<br><strong>Account Name:</strong> Use the account name shown by your bank transfer screen.</p></div><button class="primary" onclick="receiptWhatsApp('VIP')">SEND VIP PAYMENT RECEIPT</button><p style="font-size:10px;color:var(--muted);line-height:1.6;margin-top:13px">VIP access is activated manually after payment confirmation.</p></div>
 </section>
 
 <!-- ROLLOVER PAYMENT -->
 <section id="rollPayment" class="screen">
- <div class="page-heading">
-  <h1>ROLLOVER MEMBERSHIP PAYMENT</h1>
-  <p>Rollover payment information only</p>
- </div>
-
- <button class="back-home" onclick="navigate('rollover')">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-   <path d="m3 10 9-7 9 7"/>
-   <path d="M5 9v11h14V9M9 20v-7h6v7"/>
-  </svg>
-  BACK TO ROLLOVER
- </button>
-
- <div class="card">
-  <div class="payment-amount">₦4,000</div>
-  <p style="font-size:11px;color:var(--muted)">Rollover membership · Weekly</p>
-  <div class="payment-detail">
-   <p>
-    <strong>Bank:</strong> Sterling Bank<br>
-    <strong>Account Number:</strong> 0121973273<br>
-    <strong>Account Name:</strong> Use the account name shown by your bank transfer screen.
-   </p>
-  </div>
-  <button class="primary" onclick="receiptWhatsApp('ROLLOVER')">SEND ROLLOVER PAYMENT RECEIPT</button>
-  <p style="font-size:10px;color:var(--muted);line-height:1.6;margin-top:14px">Rollover access is activated manually after payment confirmation.</p>
- </div>
+ <div class="page-heading"><h1>ROLLOVER MEMBERSHIP PAYMENT</h1><p>Rollover payment information only</p></div>
+ <button class="back-home" onclick="navigate('rollover')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-7h6v7"/></svg>BACK TO ROLLOVER</button>
+ <div class="card"><div class="payment-amount">₦4,000</div><p style="font-size:11px;color:var(--muted)">Rollover membership · Weekly</p><div class="payment-detail"><p><strong>Bank:</strong> Sterling Bank<br><strong>Account Number:</strong> 0121973273<br><strong>Account Name:</strong> Use the account name shown by your bank transfer screen.</p></div><button class="primary" onclick="receiptWhatsApp('ROLLOVER')">SEND ROLLOVER PAYMENT RECEIPT</button><p style="font-size:10px;color:var(--muted);line-height:1.6;margin-top:13px">Rollover access is activated manually after payment confirmation.</p></div>
 </section>
-
 </main>
 
 <nav class="bottom-nav hidden" id="bottomNav" aria-label="Main navigation">
- <button class="nav-item" data-page="free">
-  <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg>
-  <span>FREE ODDS</span>
- </button>
-
- <button class="nav-item" data-page="vip">
-  <svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>
-  <span>VIP ODDS</span>
- </button>
-
- <button class="nav-item" data-page="rollover">
-  <svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"/></svg>
-  <span>ROLLOVER</span>
- </button>
-
- <button class="nav-item" data-page="never">
-  <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h4M16 16h.01"/></svg>
-  <span>NEVER MISS</span>
- </button>
+ <button class="nav-item" data-page="free"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg><span>FREE ODDS</span></button>
+ <button class="nav-item" data-page="vip"><svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><span>VIP ODDS</span></button>
+ <button class="nav-item" data-page="rollover"><svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"/></svg><span>ROLLOVER</span></button>
+ <button class="nav-item" data-page="never"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h4M16 16h.01"/></svg><span>NEVER MISS</span></button>
 </nav>
 
 <script>
- "use strict";
 
-/* ==========================================
-   SUPABASE CONFIGURATION
-========================================== */
+"use strict";
 
+/* SUPABASE CONFIGURATION */
 const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
 const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 const WAT="Africa/Lagos";
 const LIVE_SCORES_URL="https://onlybosstips-api.onrender.com/live-scores";
-
 const $=id=>document.getElementById(id);
 
 let supabaseClient=null;
@@ -1467,83 +362,49 @@ let selectedSport="football";
 let selectedScoreState="live";
 let selectedCalendarDate=new Date();
 let scoreRequestNumber=0;
-
 let scoreData={
  football:{live:[],finished:[],upcoming:[]},
  basketball:{live:[],finished:[],upcoming:[]}
 };
-
 let sportsNews=[];
 let newsIndex=0;
 let newsTimer=null;
-let newsTouchStart=0;
 let dateTouchStart=0;
+let predictionRecords={free:[],vip:[],rollover:[]};
 
-let predictionRecords={
- free:[],
- vip:[],
- rollover:[]
-};
+/* VIP and ROLLOVER permissions are independent. */
+let memberAccess={vip:false,rollover:false};
 
-let memberAccess={
- vip:false,
- rollover:false
-};
-
-let selectedLeagues={
- free:"All",
- vip:"All",
- rollover:"All"
-};
+let selectedLeagues={free:"All",vip:"All",rollover:"All"};
 
 const leagueOptions=[
- {name:"All"},
- {name:"Premier League"},
- {name:"Bundesliga"},
- {name:"La Liga"},
- {name:"Ligue 1"},
- {name:"World Cup"},
- {name:"UEFA"},
- {name:"AFCON"},
- {name:"Champions League"},
- {name:"Europa League"},
- {name:"Conference League"},
- {name:"Other Leagues"},
- {name:"Tennis"},
- {name:"Basketball"}
+ {name:"All"},{name:"Premier League"},{name:"Bundesliga"},
+ {name:"La Liga"},{name:"Ligue 1"},{name:"World Cup"},
+ {name:"UEFA"},{name:"AFCON"},{name:"Champions League"},
+ {name:"Europa League"},{name:"Conference League"},
+ {name:"Other Leagues"},{name:"Tennis"},{name:"Basketball"}
 ];
 
 function setAuthMessage(message,type="error"){
  const box=$("authMessage");
  if(!box)return;
-
  box.textContent=message;
- box.className="auth-message "+(
-  type==="success"?"success-text":"error-text"
- );
+ box.className="auth-message "+(type==="success"?"success-text":"error-text");
 }
 
 function setButtonLoading(buttonId,loading,label){
  const button=$(buttonId);
  if(!button)return;
-
  button.disabled=loading;
  button.style.opacity=loading?".65":"1";
  button.textContent=loading?"PLEASE WAIT...":label;
 }
 
-/* ==========================================
-   INITIALIZE SUPABASE
-========================================== */
-
+/* INITIALIZE SUPABASE */
 function initializeSupabase(){
- if(!window.supabase||
-    typeof window.supabase.createClient!=="function"){
-  throw new Error(
-   "Supabase could not be loaded. Please refresh the page."
-  );
+ if(!window.supabase||typeof window.supabase.createClient!=="function"){
+  throw new Error("Supabase could not be loaded. Please refresh the page.");
  }
-
  supabaseClient=window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY,
@@ -1555,26 +416,19 @@ function initializeSupabase(){
    }
   }
  );
-
  window.supabaseClient=supabaseClient;
  return supabaseClient;
 }
 
-/* ==========================================
-   AUTHENTICATION SCREEN
-========================================== */
-
+/* AUTHENTICATION SCREEN */
 function showAuthMode(mode){
  $("authWelcome").classList.remove("hidden");
  $("forgotForm").classList.add("hidden");
  $("recoveryForm").classList.add("hidden");
-
  $("loginForm").classList.toggle("hidden",mode!=="login");
  $("signupForm").classList.toggle("hidden",mode!=="signup");
-
  $("loginTab").classList.toggle("active",mode==="login");
  $("signupTab").classList.toggle("active",mode==="signup");
-
  setAuthMessage("");
 }
 
@@ -1582,7 +436,6 @@ function showForgotPassword(){
  $("authWelcome").classList.add("hidden");
  $("forgotForm").classList.remove("hidden");
  $("recoveryForm").classList.add("hidden");
-
  $("forgotEmail").value=$("loginEmail").value||"";
  setAuthMessage("");
 }
@@ -1591,14 +444,12 @@ function showRecoveryForm(){
  $("authWelcome").classList.add("hidden");
  $("forgotForm").classList.add("hidden");
  $("recoveryForm").classList.remove("hidden");
-
  setAuthMessage("Enter your new password below.","success");
 }
 
 function togglePassword(id,button){
  const field=$(id);
  if(!field)return;
-
  const visible=field.type==="password";
  field.type=visible?"text":"password";
  button.textContent=visible?"HIDE":"SHOW";
@@ -1607,47 +458,31 @@ function togglePassword(id,button){
 function showWelcome(){
  $("authSection").classList.remove("active");
  $("bottomNav").classList.remove("hidden");
-
- $("headerStatus").textContent="MEMBER CENTER";
  navigate("home");
 }
 
 function showLoginScreen(){
  $("bottomNav").classList.add("hidden");
-
- document.querySelectorAll(".screen").forEach(screen=>{
-  screen.classList.remove("active");
- });
-
+ document.querySelectorAll(".screen").forEach(screen=>screen.classList.remove("active"));
  $("authSection").classList.add("active");
  $("headerStatus").textContent="MEMBER LOGIN";
-
  showAuthMode("login");
  window.scrollTo({top:0,behavior:"smooth"});
 }
 
-/* ==========================================
-   SIGN UP
-========================================== */
-
+/* SIGN UP */
 $("signupForm").addEventListener("submit",async event=>{
  event.preventDefault();
-
  if(!supabaseClient){
-  setAuthMessage(
-   "Authentication is not ready. Refresh and try again."
-  );
+  setAuthMessage("Authentication is not ready. Refresh and try again.");
   return;
  }
-
  const name=$("signupName").value.trim();
  const email=$("signupEmail").value.trim().toLowerCase();
  const password=$("signupPassword").value;
 
  if(!name||!email||password.length<6){
-  setAuthMessage(
-   "Enter your name, a valid email and a password of at least 6 characters."
-  );
+  setAuthMessage("Enter your name, a valid email and a password of at least 6 characters.");
   return;
  }
 
@@ -1663,276 +498,142 @@ $("signupForm").addEventListener("submit",async event=>{
     emailRedirectTo:window.location.origin+"/?auth=signup"
    }
   });
-
   if(error)throw error;
 
   if(data.session){
    currentUser=data.user;
    await loadMemberData(data.user);
    showWelcome();
-
-   setAuthMessage(
-    "Your account has been created.",
-    "success"
-   );
+   setAuthMessage("Your account has been created.","success");
   }else{
    $("signupForm").classList.add("hidden");
    $("loginForm").classList.remove("hidden");
-
    $("loginTab").classList.add("active");
    $("signupTab").classList.remove("active");
-
    $("loginEmail").value=email;
    $("loginPassword").value="";
-
-   setAuthMessage(
-    "Registration successful. Check your email and confirm your account, then log in.",
-    "success"
-   );
+   setAuthMessage("Registration successful. Check your email and confirm your account, then log in.","success");
   }
-
  }catch(error){
   console.error("Registration error:",error);
-  setAuthMessage(
-   error.message||"Registration failed. Please try again."
-  );
+  setAuthMessage(error.message||"Registration failed. Please try again.");
  }finally{
-  setButtonLoading(
-   "signupSubmit",
-   false,
-   "CREATE MY ACCOUNT"
-  );
+  setButtonLoading("signupSubmit",false,"CREATE MY ACCOUNT");
  }
 });
 
-/* ==========================================
-   LOG IN
-========================================== */
-
+/* LOG IN */
 $("loginForm").addEventListener("submit",async event=>{
  event.preventDefault();
-
  if(!supabaseClient){
-  setAuthMessage(
-   "Authentication is not ready. Refresh and try again."
-  );
+  setAuthMessage("Authentication is not ready. Refresh and try again.");
   return;
  }
-
  const email=$("loginEmail").value.trim().toLowerCase();
  const password=$("loginPassword").value;
 
- setButtonLoading(
-  "loginSubmit",
-  true,
-  "LOG IN TO YOUR ACCOUNT"
- );
-
+ setButtonLoading("loginSubmit",true,"LOG IN TO YOUR ACCOUNT");
  setAuthMessage("");
 
  try{
-  const {data,error}=await supabaseClient.auth.signInWithPassword({
-   email,
-   password
-  });
-
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
   if(error)throw error;
-
   currentUser=data.user;
   await loadMemberData(data.user);
   showWelcome();
-
  }catch(error){
   console.error("Login error:",error);
-
-  setAuthMessage(
-   error.message||"Login failed. Check your email and password."
-  );
+  setAuthMessage(error.message||"Login failed. Check your email and password.");
  }finally{
-  setButtonLoading(
-   "loginSubmit",
-   false,
-   "LOG IN TO YOUR ACCOUNT"
-  );
+  setButtonLoading("loginSubmit",false,"LOG IN TO YOUR ACCOUNT");
  }
 });
 
-/* ==========================================
-   FORGOT PASSWORD
-========================================== */
-
+/* FORGOT PASSWORD */
 $("forgotForm").addEventListener("submit",async event=>{
  event.preventDefault();
-
  const email=$("forgotEmail").value.trim().toLowerCase();
-
  if(!email){
   setAuthMessage("Enter your registered email address.");
   return;
  }
-
- setButtonLoading(
-  "forgotSubmit",
-  true,
-  "SEND RECOVERY LINK"
- );
-
+ setButtonLoading("forgotSubmit",true,"SEND RECOVERY LINK");
  try{
-  const {error}=await supabaseClient.auth.resetPasswordForEmail(
-   email,
-   {
-    redirectTo:window.location.origin+"/?auth=recovery"
-   }
-  );
-
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{
+   redirectTo:window.location.origin+"/?auth=recovery"
+  });
   if(error)throw error;
-
-  setAuthMessage(
-   "Password recovery email sent. Check your inbox.",
-   "success"
-  );
-
+  setAuthMessage("Password recovery email sent. Check your inbox.","success");
  }catch(error){
   console.error("Password recovery error:",error);
-
-  setAuthMessage(
-   error.message||"Could not send the recovery email."
-  );
+  setAuthMessage(error.message||"Could not send the recovery email.");
  }finally{
-  setButtonLoading(
-   "forgotSubmit",
-   false,
-   "SEND RECOVERY LINK"
-  );
+  setButtonLoading("forgotSubmit",false,"SEND RECOVERY LINK");
  }
 });
 
-/* ==========================================
-   SAVE NEW PASSWORD
-========================================== */
-
+/* SAVE NEW PASSWORD */
 $("recoveryForm").addEventListener("submit",async event=>{
  event.preventDefault();
-
  const password=$("newPassword").value;
  const confirmation=$("confirmPassword").value;
 
  if(password.length<6){
-  setAuthMessage(
-   "Your password must contain at least 6 characters."
-  );
+  setAuthMessage("Your password must contain at least 6 characters.");
   return;
  }
-
  if(password!==confirmation){
   setAuthMessage("The passwords do not match.");
   return;
  }
 
  try{
-  const {error}=await supabaseClient.auth.updateUser({
-   password:password
-  });
-
+  const {error}=await supabaseClient.auth.updateUser({password});
   if(error)throw error;
-
   await supabaseClient.auth.signOut();
-
   $("newPassword").value="";
   $("confirmPassword").value="";
   $("loginPassword").value="";
-
   showLoginScreen();
-
-  setAuthMessage(
-   "Your password has been updated. Please log in.",
-   "success"
-  );
-
+  setAuthMessage("Your password has been updated. Please log in.","success");
  }catch(error){
   console.error("Password update error:",error);
-
-  setAuthMessage(
-   error.message||"Password update failed."
-  );
+  setAuthMessage(error.message||"Password update failed.");
  }
 });
 
-/* ==========================================
-   DATE SELECTOR — NIGERIA TIME
-   FULL DATE: WEEKDAY, MONTH, YEAR
-========================================== */
-
+/* DATE SELECTOR — NIGERIA TIME */
 function nigeriaDate(date=new Date()){
  const parts=new Intl.DateTimeFormat("en-GB",{
-  timeZone:WAT,
-  year:"numeric",
-  month:"2-digit",
-  day:"2-digit"
+  timeZone:WAT,year:"numeric",month:"2-digit",day:"2-digit"
  }).formatToParts(date);
-
  const values={};
-
- parts.forEach(part=>{
-  values[part.type]=part.value;
- });
-
- return (
-  values.year+"-"+
-  values.month+"-"+
-  values.day
- );
+ parts.forEach(part=>values[part.type]=part.value);
+ return values.year+"-"+values.month+"-"+values.day;
 }
 
 function dateFromKey(key){
  const parts=key.split("-").map(Number);
-
- return new Date(Date.UTC(
-  parts[0],
-  parts[1]-1,
-  parts[2],
-  12
- ));
+ return new Date(Date.UTC(parts[0],parts[1]-1,parts[2],12));
 }
 
 function shiftDate(date,amount){
- const key=nigeriaDate(date);
- const shifted=dateFromKey(key);
-
- shifted.setUTCDate(
-  shifted.getUTCDate()+amount
- );
-
+ const shifted=dateFromKey(nigeriaDate(date));
+ shifted.setUTCDate(shifted.getUTCDate()+amount);
  return shifted;
 }
 
 function dateDifferenceFromToday(selectedKey){
- const todayKey=nigeriaDate(new Date());
- const today=dateFromKey(todayKey);
+ const today=dateFromKey(nigeriaDate(new Date()));
  const selected=dateFromKey(selectedKey);
-
- return Math.round(
-  (selected.getTime()-today.getTime())/86400000
- );
+ return Math.round((selected.getTime()-today.getTime())/86400000);
 }
 
 function fullDateParts(key){
  const date=dateFromKey(key);
-
- const weekday=new Intl.DateTimeFormat("en-GB",{
-  timeZone:"UTC",
-  weekday:"long"
- }).format(date);
-
- const monthYear=new Intl.DateTimeFormat("en-GB",{
-  timeZone:"UTC",
-  month:"long",
-  year:"numeric"
- }).format(date);
-
  return {
-  weekday,
-  monthYear
+  weekday:new Intl.DateTimeFormat("en-GB",{timeZone:"UTC",weekday:"long"}).format(date),
+  monthYear:new Intl.DateTimeFormat("en-GB",{timeZone:"UTC",month:"long",year:"numeric"}).format(date)
  };
 }
 
@@ -1940,110 +641,58 @@ function getDateLabel(){
  const selected=nigeriaDate(selectedCalendarDate);
  const difference=dateDifferenceFromToday(selected);
  const parts=fullDateParts(selected);
-
- let heading="";
-
- if(difference===0){
-  heading="TODAY";
- }else if(difference===1){
-  heading="TOMORROW";
- }else if(difference===-1){
-  heading="YESTERDAY";
- }else{
-  heading="SELECTED DATE";
- }
-
- return {
-  heading,
-  weekday:parts.weekday,
-  monthYear:parts.monthYear
- };
+ let heading="SELECTED DATE";
+ if(difference===0)heading="TODAY";
+ else if(difference===1)heading="TOMORROW";
+ else if(difference===-1)heading="YESTERDAY";
+ return {heading,weekday:parts.weekday,monthYear:parts.monthYear};
 }
 
 function refreshDateLabels(){
  const label=getDateLabel();
-
- const ids=[
-  "calendarDateLabel",
-  "freeDateLabel",
-  "vipDateLabel",
-  "rollDateLabel"
- ];
-
- ids.forEach(id=>{
+ ["calendarDateLabel","freeDateLabel","vipDateLabel","rollDateLabel"].forEach(id=>{
   const element=$(id);
   if(!element)return;
-
   element.innerHTML="";
-
   const heading=document.createElement("span");
   heading.className="date-detail";
   heading.textContent=label.heading;
-
   const weekday=document.createElement("span");
   weekday.className="date-name";
   weekday.textContent=label.weekday;
-
   const monthYear=document.createElement("span");
   monthYear.className="date-detail";
   monthYear.textContent=label.monthYear;
-
   element.append(heading,weekday,monthYear);
  });
 }
 
 function changeDate(amount){
- selectedCalendarDate=shiftDate(
-  selectedCalendarDate,
-  amount
- );
-
+ selectedCalendarDate=shiftDate(selectedCalendarDate,amount);
  refreshDateLabels();
-
  clearScoreDisplay();
  loadLiveScores();
-
- /* All prediction categories use the same selected date. */
  renderPredictions("free");
-
- if(memberAccess.vip){
-  renderPredictions("vip");
- }
-
- if(memberAccess.rollover){
-  renderPredictions("rollover");
- }
+ if(memberAccess.vip)renderPredictions("vip");
+ if(memberAccess.rollover)renderPredictions("rollover");
 }
 
-$("previousDate").addEventListener("click",()=>{
- changeDate(-1);
-});
+$("previousDate").addEventListener("click",()=>changeDate(-1));
+$("nextDate").addEventListener("click",()=>changeDate(1));
 
-$("nextDate").addEventListener("click",()=>{
- changeDate(1);
-});
-
-/* Swipe and arrow controls for all prediction date selectors. */
-document.querySelectorAll(
- "[data-date-controls],#homeDateControls"
-).forEach(control=>{
+/* Swipe and arrow controls for prediction date selectors. */
+document.querySelectorAll("[data-date-controls],#homeDateControls").forEach(control=>{
  control.addEventListener("touchstart",event=>{
   dateTouchStart=event.changedTouches[0].clientX;
  },{passive:true});
 
  control.addEventListener("touchend",event=>{
-  const difference=
-   event.changedTouches[0].clientX-dateTouchStart;
-
-  if(Math.abs(difference)>45){
-   changeDate(difference<0?1:-1);
-  }
+  const difference=event.changedTouches[0].clientX-dateTouchStart;
+  if(Math.abs(difference)>55)changeDate(difference<0?1:-1);
  },{passive:true});
 
  control.querySelectorAll("[data-date-step]").forEach(button=>{
-  button.addEventListener("click",()=>{
-   changeDate(Number(button.dataset.dateStep));
-  });
+  button.addEventListener("click",()=>changeDate(Number(button.dataset.dateStep)));
  });
 });
 
@@ -2052,65 +701,40 @@ refreshDateLabels();
 function updateYear(){
  if($("year")){
   $("year").textContent=new Intl.DateTimeFormat("en",{
-   timeZone:WAT,
-   year:"numeric"
+   timeZone:WAT,year:"numeric"
   }).format(new Date());
  }
 }
 
-/* ==========================================
-   MAIN NAVIGATION
-========================================== */
-
+/* MAIN NAVIGATION */
 function navigate(page){
  if(!currentUser){
   showLoginScreen();
   return;
  }
-
  const target=$(page);
  if(!target)return;
 
  document.querySelectorAll(".screen").forEach(screen=>{
-  screen.classList.toggle(
-   "active",
-   screen.id===page
-  );
+  screen.classList.toggle("active",screen.id===page);
  });
-
  document.querySelectorAll(".nav-item").forEach(button=>{
-  button.classList.toggle(
-   "active",
-   button.dataset.page===page
-  );
+  button.classList.toggle("active",button.dataset.page===page);
  });
 
  selectedPage=page;
-
- window.scrollTo({
-  top:0,
-  behavior:"smooth"
- });
+ window.scrollTo({top:0,behavior:"smooth"});
 }
 
 document.querySelectorAll(".nav-item").forEach(button=>{
- button.addEventListener("click",()=>{
-  navigate(button.dataset.page);
- });
+ button.addEventListener("click",()=>navigate(button.dataset.page));
 });
 
-/* ==========================================
-   SPORTS AND SCORE TABS
-========================================== */
-
+/* SPORTS AND SCORE TABS */
 document.querySelectorAll("#sportTabs button").forEach(button=>{
  button.addEventListener("click",()=>{
-  document.querySelectorAll("#sportTabs button").forEach(item=>{
-   item.classList.remove("active");
-  });
-
+  document.querySelectorAll("#sportTabs button").forEach(item=>item.classList.remove("active"));
   button.classList.add("active");
-
   selectedSport=button.dataset.sport;
   renderScores();
  });
@@ -2118,110 +742,62 @@ document.querySelectorAll("#sportTabs button").forEach(button=>{
 
 document.querySelectorAll("#scoreTabs button").forEach(button=>{
  button.addEventListener("click",()=>{
-  document.querySelectorAll("#scoreTabs button").forEach(item=>{
-   item.classList.remove("active");
-  });
-
+  document.querySelectorAll("#scoreTabs button").forEach(item=>item.classList.remove("active"));
   button.classList.add("active");
-
   selectedScoreState=button.dataset.state;
   renderScores();
  });
 });
 
-/* ==========================================
-   MATCH CENTRE API
-========================================== */
-
+/* MATCH CENTRE API */
 function clearScoreDisplay(){
  scoreData={
   football:{live:[],finished:[],upcoming:[]},
   basketball:{live:[],finished:[],upcoming:[]}
  };
-
- $("scoreList").innerHTML=
-  '<div class="empty">Loading matches for selected date...</div>';
+ $("scoreList").innerHTML='<div class="empty">Loading matches for selected date...</div>';
 }
 
 function getFirst(object,keys,fallback=""){
  for(const key of keys){
-  if(object&&object[key]!==undefined&&object[key]!==null){
-   return object[key];
-  }
+  if(object&&object[key]!==undefined&&object[key]!==null)return object[key];
  }
-
  return fallback;
 }
 
 function teamName(value,fallback){
  if(typeof value==="object"&&value!==null){
-  return getFirst(
-   value,
-   ["name","title","team"],
-   fallback
-  );
+  return getFirst(value,["name","title","team"],fallback);
  }
-
  return value||fallback;
 }
 
 function leagueName(value){
  if(typeof value==="object"&&value!==null){
-  return getFirst(
-   value,
-   ["name","title","league","competition"],
-   "Other Leagues"
-  );
+  return getFirst(value,["name","title","league","competition"],"Other Leagues");
  }
-
  return value||"Other Leagues";
 }
 
 function normalizeGame(game){
  const fixtureDate=getFirst(game,[
-  "date",
-  "matchDate",
-  "match_date",
-  "fixtureDate",
-  "kickoff"
+  "date","matchDate","match_date","fixtureDate","kickoff"
  ],"");
-
- const dateText=fixtureDate
-  ?String(fixtureDate).slice(0,16).replace("T"," ")
-  :"";
-
+ const dateText=fixtureDate?String(fixtureDate).slice(0,16).replace("T"," "):"";
  const rawStatus=String(getFirst(game,[
-  "status",
-  "time",
-  "elapsed",
-  "minute"
+  "status","time","elapsed","minute"
  ],"")).trim();
-
  const rawLeague=getFirst(game,[
-  "league",
-  "competition",
-  "tournament",
-  "category"
+  "league","competition","tournament","category"
  ],"");
-
  const rawHomeScore=getFirst(game,[
-  "homeScore",
-  "home_score",
-  "homeGoals",
-  "home_goals",
-  "scoreHome"
+  "homeScore","home_score","homeGoals","home_goals","scoreHome"
  ],"-");
-
  const rawAwayScore=getFirst(game,[
-  "awayScore",
-  "away_score",
-  "awayGoals",
-  "away_goals",
-  "scoreAway"
+  "awayScore","away_score","awayGoals","away_goals","scoreAway"
  ],"-");
 
  const normalizedStatus=rawStatus.toLowerCase();
-
  const explicitLive=
   normalizedStatus.includes("live")||
   normalizedStatus.includes("1st")||
@@ -2246,29 +822,13 @@ function normalizeGame(game){
   normalizedStatus.includes("timed");
 
  return {
-  home:teamName(getFirst(game,[
-   "home",
-   "homeTeam",
-   "home_team",
-   "team1",
-   "participant1"
-  ]),"Home"),
-
-  away:teamName(getFirst(game,[
-   "away",
-   "awayTeam",
-   "away_team",
-   "team2",
-   "participant2"
-  ]),"Away"),
-
+  home:teamName(getFirst(game,["home","homeTeam","home_team","team1","participant1"]),"Home"),
+  away:teamName(getFirst(game,["away","awayTeam","away_team","team2","participant2"]),"Away"),
   homeScore:rawHomeScore,
   awayScore:rawAwayScore,
-
   status:rawStatus,
   league:leagueName(rawLeague),
   date:dateText,
-
   live:explicitLive,
   finished:explicitFinished,
   pending:explicitPending
@@ -2276,150 +836,97 @@ function normalizeGame(game){
 }
 
 function extractResponseDate(source){
- return getFirst(source,[
-  "date",
-  "requestedDate",
-  "requested_date",
-  "matchDate",
-  "match_date"
- ],null);
+ return getFirst(source,["date","requestedDate","requested_date","matchDate","match_date"],null);
 }
 
 function normalizeSportData(source){
- const output={
-  live:[],
-  finished:[],
-  upcoming:[]
- };
-
+ const output={live:[],finished:[],upcoming:[]};
  ["live","finished","upcoming"].forEach(state=>{
-  if(Array.isArray(source[state])){
-   output[state]=source[state].map(normalizeGame);
-  }
+  if(Array.isArray(source[state]))output[state]=source[state].map(normalizeGame);
  });
-
  if(!output.upcoming.length&&Array.isArray(source.fixtures)){
   output.upcoming=source.fixtures.map(normalizeGame);
  }
-
  if(!output.finished.length&&Array.isArray(source.results)){
   output.finished=source.results.map(normalizeGame);
  }
-
  return output;
 }
 
 async function loadLiveScores(){
  if(!currentUser)return;
-
  const requestId=++scoreRequestNumber;
  const requestedDate=nigeriaDate(selectedCalendarDate);
  const today=nigeriaDate(new Date());
 
- $("scoreList").innerHTML=
-  '<div class="empty">Loading '+requestedDate+' matches...</div>';
+ $("scoreList").innerHTML='<div class="empty">Loading '+requestedDate+' matches...</div>';
 
  try{
   const response=await fetch(
    LIVE_SCORES_URL+"?date="+encodeURIComponent(requestedDate),
-   {
-    method:"GET",
-    headers:{"Accept":"application/json"},
-    cache:"no-store"
-   }
+   {method:"GET",headers:{"Accept":"application/json"},cache:"no-store"}
   );
-
-  if(!response.ok){
-   throw new Error(
-    "Scores API returned "+response.status
-   );
-  }
+  if(!response.ok)throw new Error("Scores API returned "+response.status);
 
   const source=await response.json();
-
   if(requestId!==scoreRequestNumber)return;
 
   const returnedDate=extractResponseDate(source);
 
   if(requestedDate!==today){
-   if(
-    !returnedDate||
-    String(returnedDate).slice(0,10)!==requestedDate
-   ){
+   if(!returnedDate||String(returnedDate).slice(0,10)!==requestedDate){
     scoreData={
      football:{live:[],finished:[],upcoming:[]},
      basketball:{live:[],finished:[],upcoming:[]}
     };
-
-    renderScores(
-     "The server has not confirmed date-specific matches for "+
-     requestedDate+"."
-    );
-
+    renderScores("The server has not confirmed date-specific matches for "+requestedDate+".");
     return;
    }
   }
 
-  if(
-   returnedDate&&
-   String(returnedDate).slice(0,10)!==requestedDate
-  ){
-   throw new Error(
-    "The server returned a different date."
-   );
+  if(returnedDate&&String(returnedDate).slice(0,10)!==requestedDate){
+   throw new Error("The server returned a different date.");
   }
 
   scoreData={
    football:normalizeSportData(source.football||{}),
    basketball:normalizeSportData(source.basketball||{})
   };
-
   renderScores();
-
  }catch(error){
   if(requestId!==scoreRequestNumber)return;
-
   console.error("Match centre error:",error);
-
-  $("scoreList").innerHTML=
-   '<div class="empty">Unable to load verified match data. Please try again later.</div>';
+  $("scoreList").innerHTML='<div class="empty">Unable to load verified match data. Please try again later.</div>';
  }
 }
 
-/* ==========================================
-   LEAGUE-GROUPED SCORE DISPLAY
-========================================== */
-
+/* LEAGUE-GROUPED SCORE DISPLAY */
 function createScoreStatus(game,state){
  const wrapper=document.createElement("div");
  wrapper.className="score-status";
 
  if(state==="live"){
   wrapper.classList.add("live");
-
   const indicator=document.createElement("span");
   indicator.className="live-indicator";
-
   const text=document.createElement("span");
   text.textContent="LIVE";
-
   wrapper.append(indicator,text);
 
-  if(game.status){
+  /* Avoid repeating LIVE when the API status itself says LIVE. */
+  const statusText=String(game.status||"").trim();
+  if(statusText&&!/^live$/i.test(statusText)){
    const time=document.createElement("span");
-   time.textContent=game.status;
+   time.textContent=statusText;
    wrapper.appendChild(time);
   }
-
  }else if(state==="finished"){
   wrapper.classList.add("finished");
   wrapper.textContent="FINISHED";
-
  }else{
   wrapper.classList.add("pending");
   wrapper.textContent="PENDING";
  }
-
  return wrapper;
 }
 
@@ -2429,58 +936,30 @@ function createScoreRow(game,state){
 
  const home=document.createElement("div");
  home.className="team";
-
- const homeCrest=document.createElement("span");
- homeCrest.className="crest";
- homeCrest.textContent=
-  String(game.home).charAt(0).toUpperCase();
-
  const homeName=document.createElement("span");
  homeName.textContent=game.home;
-
- home.append(homeCrest,homeName);
+ home.appendChild(homeName);
 
  const center=document.createElement("div");
-
  const score=document.createElement("div");
  score.className="score";
-
- if(state==="upcoming"){
-  score.textContent="VS";
- }else{
-  score.textContent=
-   game.homeScore+" : "+game.awayScore;
- }
+ score.textContent=state==="upcoming"?"VS":game.homeScore+" : "+game.awayScore;
 
  const meta=document.createElement("div");
  meta.className="score-meta";
+ if(state==="upcoming")meta.textContent=game.date||"Scheduled";
+ else if(state==="finished")meta.textContent="Final score";
+ else meta.textContent="Match in progress";
 
- if(state==="upcoming"){
-  meta.textContent=game.date||"Scheduled";
- }else if(state==="finished"){
-  meta.textContent="Final score";
- }else{
-  meta.textContent="Match in progress";
- }
-
- center.append(score,meta);
- center.appendChild(createScoreStatus(game,state));
+ center.append(score,meta,createScoreStatus(game,state));
 
  const away=document.createElement("div");
  away.className="team";
-
  const awayName=document.createElement("span");
  awayName.textContent=game.away;
-
- const awayCrest=document.createElement("span");
- awayCrest.className="crest";
- awayCrest.textContent=
-  String(game.away).charAt(0).toUpperCase();
-
- away.append(awayName,awayCrest);
+ away.appendChild(awayName);
 
  row.append(home,center,away);
-
  return row;
 }
 
@@ -2488,37 +967,20 @@ function renderScores(message=""){
  const list=$("scoreList");
  if(!list)return;
 
- const games=
-  scoreData[selectedSport]?.[selectedScoreState]||[];
-
+ const games=scoreData[selectedSport]?.[selectedScoreState]||[];
  if(!games.length){
-  list.innerHTML=
-   '<div class="empty">'+
-   (message||
-    "No "+selectedScoreState+
-    " matches returned for this selected date.")+
+  list.innerHTML='<div class="empty">'+
+   (message||"No "+selectedScoreState+" matches returned for this selected date.")+
    '</div>';
-
   return;
  }
 
  list.innerHTML="";
-
- /*
-  Group matches by league first.
-  The league heading is displayed above its fixtures.
- */
  const groups=new Map();
 
  games.forEach(game=>{
-  const name=String(
-   game.league||"Other Leagues"
-  ).trim()||"Other Leagues";
-
-  if(!groups.has(name)){
-   groups.set(name,[]);
-  }
-
+  const name=String(game.league||"Other Leagues").trim()||"Other Leagues";
+  if(!groups.has(name))groups.set(name,[]);
   groups.get(name).push(game);
  });
 
@@ -2533,62 +995,33 @@ function renderScores(message=""){
   leagueTitle.textContent=league;
 
   const count=document.createElement("span");
-  count.textContent=
-   leagueGames.length+
-   (leagueGames.length===1?" MATCH":" MATCHES");
+  count.textContent=leagueGames.length+(leagueGames.length===1?" MATCH":" MATCHES");
 
   heading.append(leagueTitle,count);
   group.appendChild(heading);
 
-  leagueGames.forEach(game=>{
-   group.appendChild(
-    createScoreRow(game,selectedScoreState)
-   );
-  });
-
+  leagueGames.forEach(game=>group.appendChild(createScoreRow(game,selectedScoreState)));
   list.appendChild(group);
  });
 }
 
 setInterval(()=>{
- if(currentUser){
-  loadLiveScores();
- }
+ if(currentUser)loadLiveScores();
 },60000);
 
-/* ==========================================
-   SPORTS NEWS
-========================================== */
-
+/* SPORTS NEWS */
 const NEWS_FEEDS=[
- {
-  name:"SKY SPORTS",
-  url:"https://www.skysports.com/rss/12040"
- },
- {
-  name:"BBC SPORT",
-  url:"https://feeds.bbci.co.uk/sport/rss.xml"
- },
- {
-  name:"SUPERSPORT",
-  url:"https://supersport.com/rss"
- }
+ {name:"SKY SPORTS",url:"https://www.skysports.com/rss/12040",logo:"https://www.google.com/s2/favicons?domain=www.skysports.com&sz=128"},
+ {name:"BBC SPORT",url:"https://feeds.bbci.co.uk/sport/rss.xml",logo:"https://www.google.com/s2/favicons?domain=www.bbc.com&sz=128"},
+ {name:"SUPERSPORT",url:"https://supersport.com/rss",logo:"https://www.google.com/s2/favicons?domain=www.supersport.com&sz=128"}
 ];
 
 function extractNewsImage(item){
  if(item.thumbnail)return item.thumbnail;
-
  if(item.enclosure?.link)return item.enclosure.link;
  if(item.enclosure?.url)return item.enclosure.url;
-
- const content=
-  String(item.content||"")+" "+
-  String(item.description||"");
-
- const match=content.match(
-  /<img[^>]+src=["']([^"']+)["']/i
- );
-
+ const content=String(item.content||"")+" "+String(item.description||"");
+ const match=content.match(/<img[^>]+src=["']([^"']+)["']/i);
  return match?match[1]:"";
 }
 
@@ -2605,30 +1038,17 @@ function cleanNewsText(value){
 }
 
 async function fetchNewsFeed(feed){
- const url=
-  "https://api.rss2json.com/v1/api.json?rss_url="+
-  encodeURIComponent(feed.url);
-
+ const url="https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed.url);
  const response=await fetch(url);
-
- if(!response.ok){
-  throw new Error(feed.name+" unavailable");
- }
-
+ if(!response.ok)throw new Error(feed.name+" unavailable");
  const data=await response.json();
-
- if(data.status==="error"){
-  throw new Error(
-   data.message||"News error"
-  );
- }
+ if(data.status==="error")throw new Error(data.message||"News error");
 
  return (data.items||[]).map(item=>({
   source:feed.name,
+  logo:feed.logo,
   title:cleanNewsText(item.title)||"Sports update",
-  description:cleanNewsText(
-   item.description||item.content
-  ).slice(0,240),
+  description:cleanNewsText(item.description||item.content).slice(0,240),
   image:extractNewsImage(item),
   link:item.link||""
  }));
@@ -2637,31 +1057,16 @@ async function fetchNewsFeed(feed){
 function safeHttpUrl(value){
  try{
   const url=new URL(value);
-
-  if(
-   url.protocol==="https:"||
-   url.protocol==="http:"
-  ){
-   return url.href;
-  }
+  if(url.protocol==="https:"||url.protocol==="http:")return url.href;
  }catch(error){}
-
  return "";
 }
 
 function openCurrentNews(){
  const item=sportsNews[newsIndex];
  if(!item)return;
-
  const url=safeHttpUrl(item.link);
-
- if(url){
-  window.open(
-   url,
-   "_blank",
-   "noopener,noreferrer"
-  );
- }
+ if(url)window.open(url,"_blank","noopener,noreferrer");
 }
 
 function renderNewsSlide(){
@@ -2669,25 +1074,17 @@ function renderNewsSlide(){
  if(!slide||!sportsNews.length)return;
 
  const item=sportsNews[newsIndex];
-
  slide.innerHTML="";
- slide.setAttribute(
-  "aria-label",
-  "Open article: "+item.title
- );
+ slide.setAttribute("aria-label","Open article: "+item.title);
 
  const imageUrl=safeHttpUrl(item.image);
-
  if(imageUrl){
   const image=document.createElement("img");
-
   image.className="news-image";
   image.src=imageUrl;
   image.alt="Sports news photograph";
   image.loading="eager";
-
   image.onerror=()=>image.remove();
-
   slide.appendChild(image);
  }
 
@@ -2699,94 +1096,66 @@ function renderNewsSlide(){
 
  const source=document.createElement("div");
  source.className="news-source";
- source.textContent=item.source;
+
+ const logoUrl=safeHttpUrl(item.logo);
+ if(logoUrl){
+  const logo=document.createElement("img");
+  logo.src=logoUrl;
+  logo.alt=item.source+" logo";
+  logo.onerror=()=>{
+   source.textContent=item.source;
+  };
+  source.appendChild(logo);
+ }else{
+  source.textContent=item.source;
+ }
 
  const heading=document.createElement("h2");
  heading.textContent=item.title;
 
- const description=document.createElement("p");
- description.textContent=
-  item.description||"Tap to read the full sports story.";
-
- content.append(source,heading,description);
-
+ /* No small description text under the headline. */
+ content.append(source,heading);
  slide.append(shade,content);
 }
 
 function nextNews(){
  if(!sportsNews.length)return;
-
  newsIndex=(newsIndex+1)%sportsNews.length;
- renderNewsSlide();
-}
-
-function previousNews(){
- if(!sportsNews.length)return;
-
- newsIndex=(
-  newsIndex-1+sportsNews.length
- )%sportsNews.length;
-
  renderNewsSlide();
 }
 
 function restartNewsTimer(){
  clearInterval(newsTimer);
-
  newsTimer=setInterval(nextNews,7000);
 }
 
 async function loadSportsNews(){
  const slide=$("newsSlide");
-
  try{
-  const results=await Promise.allSettled(
-   NEWS_FEEDS.map(fetchNewsFeed)
-  );
-
+  const results=await Promise.allSettled(NEWS_FEEDS.map(fetchNewsFeed));
   sportsNews=results
    .filter(result=>result.status==="fulfilled")
    .flatMap(result=>result.value)
    .filter(item=>item.title)
    .slice(0,30);
 
-  if(!sportsNews.length){
-   throw new Error("No news articles returned.");
-  }
+  if(!sportsNews.length)throw new Error("No news articles returned.");
 
   newsIndex=0;
-
   renderNewsSlide();
   restartNewsTimer();
-
  }catch(error){
   console.error("News loading error:",error);
-
   slide.innerHTML=
    '<div class="news-content">'+
    '<div class="news-source">SPORTS NEWS</div>'+
    '<h2>Sports headlines temporarily unavailable</h2>'+
-   '<p>The news providers could not be reached. Please try again later.</p>'+
    '</div>';
  }
 }
 
-$("newsNext").addEventListener("click",()=>{
- nextNews();
- restartNewsTimer();
-});
-
-$("newsPrev").addEventListener("click",()=>{
- previousNews();
- restartNewsTimer();
-});
-
-/* Only the news card opens its article. */
-$("newsSlide").addEventListener(
- "click",
- openCurrentNews
-);
-
+/* News card remains clickable. No manual arrows or swipe controls. */
+$("newsSlide").addEventListener("click",openCurrentNews);
 $("newsSlide").addEventListener("keydown",event=>{
  if(event.key==="Enter"||event.key===" "){
   event.preventDefault();
@@ -2794,66 +1163,27 @@ $("newsSlide").addEventListener("keydown",event=>{
  }
 });
 
-/* Swipe left/right to change news stories. */
-$("sportsNewsCarousel").addEventListener(
- "touchstart",
- event=>{
-  newsTouchStart=event.changedTouches[0].clientX;
- },
- {passive:true}
-);
-
-$("sportsNewsCarousel").addEventListener(
- "touchend",
- event=>{
-  const difference=
-   event.changedTouches[0].clientX-newsTouchStart;
-
-  if(Math.abs(difference)>45){
-   if(difference<0){
-    nextNews();
-   }else{
-    previousNews();
-   }
-
-   restartNewsTimer();
-  }
- },
- {passive:true}
-);
-
 loadSportsNews();
 setInterval(loadSportsNews,15*60*1000);
 
-/* ==========================================
-   LEAGUE SELECTORS
-========================================== */
-
+/* LEAGUE SELECTORS */
 function buildLeagueSelector(type){
  const grid=$(type+"LeagueGrid");
  if(!grid)return;
-
  grid.innerHTML="";
 
  leagueOptions.forEach(league=>{
   const button=document.createElement("button");
-
   button.type="button";
   button.className="league-button";
-
-  button.classList.toggle(
-   "active",
-   selectedLeagues[type]===league.name
-  );
+  button.classList.toggle("active",selectedLeagues[type]===league.name);
 
   const title=document.createElement("strong");
   title.textContent=league.name;
-
   button.append(title);
 
   button.addEventListener("click",()=>{
    selectedLeagues[type]=league.name;
-
    buildLeagueSelector(type);
    renderPredictions(type);
   });
@@ -2862,19 +1192,12 @@ function buildLeagueSelector(type){
  });
 }
 
-/* ==========================================
-   PREDICTIONS — DATABASE LOADING
-========================================== */
+/* PREDICTIONS — DATABASE LOADING */
 
 /*
- The predictions table is read without changing
- its columns or records.
-
- FREE, VIP and ROLLOVER are classified separately.
- Membership access does not move prediction records
- from one category into another.
+ Prediction records stay in their own database category.
+ A member's permission never changes the category of a prediction.
 */
-
 function recordTier(record){
  return String(
   record.membership_tier||
@@ -2883,6 +1206,7 @@ function recordTier(record){
   record.access_level||
   record.member_type||
   record.package||
+  record.prediction_type||
   record.type||
   "FREE"
  ).trim().toLowerCase();
@@ -2891,28 +1215,9 @@ function recordTier(record){
 function classifyPrediction(record){
  const tier=recordTier(record);
 
- if(
-  tier==="rollover"||
-  tier.includes("rollover")
- ){
-  return "rollover";
- }
-
- if(
-  tier==="vip"||
-  tier.includes("vip")||
-  tier.includes("premium")
- ){
-  return "vip";
- }
-
- if(
-  tier==="free"||
-  tier==="free odds"||
-  tier===""
- ){
-  return "free";
- }
+ if(tier==="rollover"||tier.includes("rollover"))return "rollover";
+ if(tier==="vip"||tier.includes("vip")||tier.includes("premium"))return "vip";
+ if(tier==="free"||tier==="free odds"||tier==="")return "free";
 
  return null;
 }
@@ -2921,68 +1226,38 @@ async function loadPredictions(){
  if(!supabaseClient||!currentUser)return;
 
  try{
-  const {data,error}=await supabaseClient
-   .from("predictions")
-   .select("*");
-
+  const {data,error}=await supabaseClient.from("predictions").select("*");
   if(error)throw error;
 
   const rows=Array.isArray(data)?data:[];
 
   predictionRecords={
-   free:rows.filter(
-    record=>classifyPrediction(record)==="free"
-   ),
-
-   vip:rows.filter(
-    record=>classifyPrediction(record)==="vip"
-   ),
-
-   rollover:rows.filter(
-    record=>classifyPrediction(record)==="rollover"
-   )
+   free:rows.filter(record=>classifyPrediction(record)==="free"),
+   vip:rows.filter(record=>classifyPrediction(record)==="vip"),
+   rollover:rows.filter(record=>classifyPrediction(record)==="rollover")
   };
 
   renderPredictions("free");
-
-  if(memberAccess.vip){
-   renderPredictions("vip");
-  }
-
-  if(memberAccess.rollover){
-   renderPredictions("rollover");
-  }
+  if(memberAccess.vip)renderPredictions("vip");
+  if(memberAccess.rollover)renderPredictions("rollover");
 
   updateWinningStats(rows);
-
  }catch(error){
   console.error("Prediction loading error:",error);
-
-  $("freePredictions").innerHTML=
-   '<div class="empty card">Unable to load predictions. Please refresh and try again.</div>';
-
-  $("vipPredictions").innerHTML=
-   '<div class="empty card">Unable to load VIP predictions.</div>';
-
-  $("rolloverPredictions").innerHTML=
-   '<div class="empty card">Unable to load Rollover predictions.</div>';
+  $("freePredictions").innerHTML='<div class="empty card">Unable to load predictions. Please refresh and try again.</div>';
+  $("vipPredictions").innerHTML='<div class="empty card">Unable to load VIP predictions.</div>';
+  $("rolloverPredictions").innerHTML='<div class="empty card">Unable to load Rollover predictions.</div>';
  }
 }
 
 function predictionLeague(record){
- return String(
-  record.league||
-  record.competition||
-  record.category||
-  "Other Leagues"
- ).toLowerCase();
+ return String(record.league||record.competition||record.category||"Other Leagues").toLowerCase();
 }
 
 function leagueMatches(record,selected){
  if(selected==="All")return true;
 
  const league=predictionLeague(record);
-
  const aliases={
   "premier league":["premier league","epl"],
   "bundesliga":["bundesliga"],
@@ -2999,96 +1274,44 @@ function leagueMatches(record,selected){
   "basketball":["basketball"]
  };
 
- const accepted=
-  aliases[selected.toLowerCase()]||
-  [selected.toLowerCase()];
-
+ const accepted=aliases[selected.toLowerCase()]||[selected.toLowerCase()];
  return accepted.some(name=>league.includes(name));
 }
 
 function predictionDateKey(record){
- const raw=
-  record.date||
-  record.match_date||
-  record.fixture_date||
-  "";
-
+ const raw=record.date||record.match_date||record.fixture_date||"";
  if(!raw)return "";
 
  const value=String(raw).trim();
+ const iso=value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+ if(iso)return iso[1]+"-"+iso[2]+"-"+iso[3];
 
- const iso=value.match(
-  /^(\d{4})-(\d{2})-(\d{2})/
- );
-
- if(iso){
-  return (
-   iso[1]+"-"+iso[2]+"-"+iso[3]
-  );
- }
-
- const local=value.match(
-  /^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/
- );
-
+ const local=value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
  if(local){
-  return (
-   local[3]+"-"+
-   String(local[2]).padStart(2,"0")+"-"+
-   String(local[1]).padStart(2,"0")
-  );
+  return local[3]+"-"+String(local[2]).padStart(2,"0")+"-"+String(local[1]).padStart(2,"0");
  }
-
  return "";
 }
 
 function formatPredictionDate(record){
- const raw=
-  record.date||
-  record.match_date||
-  record.fixture_date||
-  "";
-
+ const raw=record.date||record.match_date||record.fixture_date||"";
  const key=predictionDateKey(record);
 
  if(key){
   const date=dateFromKey(key);
-
   return new Intl.DateTimeFormat("en-GB",{
-   timeZone:"UTC",
-   weekday:"short",
-   day:"2-digit",
-   month:"short",
-   year:"numeric"
+   timeZone:"UTC",weekday:"short",day:"2-digit",month:"short",year:"numeric"
   }).format(date);
  }
-
  return raw?String(raw):"";
 }
 
 function getPredictionStatus(record){
- const raw=String(
-  record.status||
-  record.result||
-  "PENDING"
- ).trim().toUpperCase();
-
- if(raw==="WON"||raw==="WIN"){
-  return "WON";
- }
-
- if(raw==="LOST"||raw==="LOSS"){
-  return "LOST";
- }
-
- if(raw==="VOID"||raw==="CANCELLED"){
-  return "VOID";
- }
-
- if(raw==="LIVE"||raw==="IN PLAY"){
-  return "LIVE";
- }
-
+ const raw=String(record.status||record.result||"PENDING").trim().toUpperCase();
+ if(raw==="WON"||raw==="WIN")return "WON";
+ if(raw==="LOST"||raw==="LOSS")return "LOST";
+ if(raw==="VOID"||raw==="CANCELLED")return "VOID";
+ if(raw==="LIVE"||raw==="IN PLAY")return "LIVE";
  return "PENDING";
 }
 
@@ -3105,22 +1328,18 @@ function createPredictionStatus(statusValue){
   status.classList.add("won");
   icon.textContent="✓";
   label.textContent="WON";
-
  }else if(statusValue==="LOST"){
   status.classList.add("lost");
   icon.textContent="×";
   label.textContent="LOST";
-
  }else if(statusValue==="VOID"){
   status.classList.add("void");
   icon.textContent="–";
   label.textContent="VOID";
-
  }else if(statusValue==="LIVE"){
   status.classList.add("pending");
   icon.textContent="•";
   label.textContent="LIVE";
-
  }else{
   status.classList.add("pending");
   icon.textContent="…";
@@ -3128,7 +1347,6 @@ function createPredictionStatus(statusValue){
  }
 
  status.append(icon,label);
-
  return status;
 }
 
@@ -3145,22 +1363,12 @@ function renderPredictions(type){
  const selected=selectedLeagues[type];
  const selectedDate=nigeriaDate(selectedCalendarDate);
 
- /*
-  Strict category separation:
-  only records classified into this section are rendered here.
- */
- const records=predictionRecords[type].filter(record=>{
-  if(classifyPrediction(record)!==type){
-   return false;
-  }
-
-  if(!leagueMatches(record,selected)){
-   return false;
-  }
+ /* Strict category and date filtering. */
+ const records=(predictionRecords[type]||[]).filter(record=>{
+  if(classifyPrediction(record)!==type)return false;
+  if(!leagueMatches(record,selected))return false;
 
   const recordDate=predictionDateKey(record);
-
-  /* Undated legacy records remain visible. */
   return !recordDate||recordDate===selectedDate;
  });
 
@@ -3171,23 +1379,17 @@ function renderPredictions(type){
  }[type];
 
  if($(labelId)){
-  $(labelId).textContent=
-   selected==="All"
-    ?"ALL PREDICTIONS"
-    :selected.toUpperCase();
+  $(labelId).textContent=selected==="All"?"ALL PREDICTIONS":selected.toUpperCase();
  }
 
  if(type==="free"&&$("freePredictionCount")){
-  $("freePredictionCount").textContent=
-   records.length+" selections";
+  $("freePredictionCount").textContent=records.length+" selections";
  }
 
  container.innerHTML="";
 
  if(!records.length){
-  container.innerHTML=
-   '<div class="empty card">No predictions available in this category for the selected date.</div>';
-
+  container.innerHTML='<div class="empty card">No predictions available in this category for the selected date.</div>';
   return;
  }
 
@@ -3199,10 +1401,7 @@ function renderPredictions(type){
   top.className="prediction-top";
 
   const league=document.createElement("span");
-  league.textContent=
-   record.league||
-   record.competition||
-   "Football";
+  league.textContent=record.league||record.competition||"Football";
 
   const date=document.createElement("span");
   date.textContent=formatPredictionDate(record);
@@ -3210,34 +1409,20 @@ function renderPredictions(type){
   top.append(league,date);
 
   const title=document.createElement("h3");
-
   title.textContent=
    record.match||
    record.fixture||
    record.match_name||
-   (
-    (record.home_team||"Home")+
-    " vs "+
-    (record.away_team||"Away")
-   );
+   ((record.home_team||"Home")+" vs "+(record.away_team||"Away"));
 
   const bottom=document.createElement("div");
   bottom.className="prediction-bottom";
 
   const pick=document.createElement("span");
   pick.className="prediction-pick";
+  pick.textContent="PICK: "+(record.prediction||record.selection||record.pick||"");
 
-  pick.textContent="PICK: "+(
-   record.prediction||
-   record.selection||
-   record.pick||
-   ""
-  );
-
-  const status=createPredictionStatus(
-   getPredictionStatus(record)
-  );
-
+  const status=createPredictionStatus(getPredictionStatus(record));
   bottom.append(pick,status);
 
   card.append(top,title,bottom);
@@ -3245,87 +1430,65 @@ function renderPredictions(type){
  });
 }
 
-/*
- This function remains available for existing
- integrations that pass prediction records directly.
-*/
-
+/* Compatibility for integrations that pass prediction records directly. */
 function setPredictionRecords(type,records){
- if(!["free","vip","rollover"].includes(type)){
-  return;
- }
-
+ if(!["free","vip","rollover"].includes(type))return;
  predictionRecords[type]=Array.isArray(records)
   ?records.filter(record=>classifyPrediction(record)===type)
   :[];
-
  renderPredictions(type);
 }
 
-/* ==========================================
-   MEMBER PROFILE AND MEMBERSHIP
-========================================== */
+/* MEMBER PROFILE AND MEMBERSHIP */
+function membershipLabel(tier){
+ const value=String(tier||"FREE").trim().toLowerCase();
+ if(value.includes("rollover"))return "ROLLOVER MEMBER";
+ if(value.includes("vip")||value.includes("premium"))return "VIP MEMBER";
+ return "FREE MEMBER";
+}
 
 function setMemberProfile(profile){
  if(!profile)return;
 
- const name=
-  profile.full_name||
-  profile.name||
-  profile.display_name||
-  currentUser?.user_metadata?.full_name;
+ const email=profile.email||currentUser?.email||"";
+ $("memberEmail").textContent=email;
 
- if(name){
-  $("memberName").textContent="Welcome, "+name;
- }
+ const tier=membershipLabel(profile.membership_tier||profile.tier||"FREE");
+ $("memberTier").textContent=tier;
 
- if(profile.email||currentUser?.email){
-  $("memberEmail").textContent=
-   profile.email||currentUser.email;
- }
+ const avatarUrl=
+  profile.avatar_url||
+  profile.profile_image||
+  profile.photo_url||
+  currentUser?.user_metadata?.avatar_url||
+  currentUser?.user_metadata?.picture||
+  "";
 
- if(profile.avatar_url){
-  const imageUrl=safeHttpUrl(profile.avatar_url);
+ const safeAvatar=safeHttpUrl(avatarUrl);
 
-  if(imageUrl){
-   const image=document.createElement("img");
-
-   image.src=imageUrl;
-   image.alt="Member profile picture";
-   image.onerror=()=>image.remove();
-
-   $("avatar").innerHTML="";
-   $("avatar").appendChild(image);
-  }
- }
-
- if(profile.membership_tier){
-  $("memberTier").textContent=
-   String(profile.membership_tier).toUpperCase()+
-   " MEMBER";
+ if(safeAvatar){
+  const image=document.createElement("img");
+  image.src=safeAvatar;
+  image.alt="Member profile picture";
+  image.onerror=()=>{
+   $("avatar").innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/></svg>';
+  };
+  $("avatar").innerHTML="";
+  $("avatar").appendChild(image);
+ }else{
+  $("avatar").innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/></svg>';
  }
 }
 
 async function loadMemberData(user){
  if(!user)return;
-
  currentUser=user;
 
- $("memberName").textContent=
-  "Welcome, "+
-  (
-   user.user_metadata?.full_name||
-   user.user_metadata?.name||
-   "Member"
-  );
+ $("memberEmail").textContent=user.email||"";
+ $("memberName").textContent="Member";
+ $("memberTier").textContent="FREE MEMBER";
 
- $("memberEmail").textContent=
-  user.email||"Your prediction hub";
-
- memberAccess={
-  vip:false,
-  rollover:false
- };
+ memberAccess={vip:false,rollover:false};
 
  try{
   const {data,error}=await supabaseClient
@@ -3339,133 +1502,85 @@ async function loadMemberData(user){
   if(data){
    setMemberProfile(data);
 
-   const tier=String(
-    data.membership_tier||"Free"
-   ).toLowerCase();
+   const tier=String(data.membership_tier||data.tier||"Free").trim().toLowerCase();
 
+   /* VIP members get VIP access. Rollover members do not get VIP access. */
    memberAccess.vip=
     tier==="vip"||
-    tier==="rollover"||
-    tier==="rollover member";
+    tier==="vip member"||
+    tier==="premium";
 
    memberAccess.rollover=
     tier==="rollover"||
     tier==="rollover member";
-
   }else{
-   $("memberTier").textContent="FREE MEMBER";
+   setMemberProfile({email:user.email,membership_tier:"FREE"});
   }
-
  }catch(error){
-  console.error(
-   "Member profile loading error:",
-   error
-  );
-
-  $("memberTier").textContent="MEMBER";
+  console.error("Member profile loading error:",error);
+  $("memberTier").textContent="FREE MEMBER";
+  memberAccess={vip:false,rollover:false};
  }
 
  renderMembershipAccess();
-
  await loadPredictions();
-
  loadLiveScores();
 }
 
 function setMembershipAccess(type,approved){
- if(type==="VIP"){
-  memberAccess.vip=Boolean(approved);
- }
-
- if(type==="ROLLOVER"){
-  memberAccess.rollover=Boolean(approved);
- }
-
+ if(type==="VIP")memberAccess.vip=Boolean(approved);
+ if(type==="ROLLOVER")memberAccess.rollover=Boolean(approved);
  renderMembershipAccess();
 }
 
 function renderMembershipAccess(){
- $("vipGate").classList.toggle(
-  "hidden",
-  memberAccess.vip
- );
+ $("vipGate").classList.toggle("hidden",memberAccess.vip);
+ $("vipMemberContent").classList.toggle("hidden",!memberAccess.vip);
 
- $("vipMemberContent").classList.toggle(
-  "hidden",
-  !memberAccess.vip
- );
+ $("rollGate").classList.toggle("hidden",memberAccess.rollover);
+ $("rollMemberContent").classList.toggle("hidden",!memberAccess.rollover);
 
- $("rollGate").classList.toggle(
-  "hidden",
-  memberAccess.rollover
- );
-
- $("rollMemberContent").classList.toggle(
-  "hidden",
-  !memberAccess.rollover
- );
-
- if(memberAccess.vip){
-  renderPredictions("vip");
- }
-
- if(memberAccess.rollover){
-  renderPredictions("rollover");
- }
+ if(memberAccess.vip)renderPredictions("vip");
+ if(memberAccess.rollover)renderPredictions("rollover");
 }
 
 function showPlans(type){
- if(type==="VIP"){
-  navigate("vipPayment");
- }
-
- if(type==="ROLLOVER"){
-  navigate("rollPayment");
- }
+ if(type==="VIP")navigate("vipPayment");
+ if(type==="ROLLOVER")navigate("rollPayment");
 }
 
-/* ==========================================
-   WINNING STREAK STATISTICS
-========================================== */
-
+/* WINNING STREAK STATISTICS */
 function updateWinningStats(records){
  const settled=(records||[]).filter(record=>{
-  const status=String(
-   record.status||record.result||""
-  ).toUpperCase();
-
+  const status=String(record.status||record.result||"").toUpperCase();
   return status==="WON"||status==="LOST";
  });
 
  const won=settled.filter(record=>
-  String(
-   record.status||record.result
-  ).toUpperCase()==="WON"
+  String(record.status||record.result).toUpperCase()==="WON"
  ).length;
 
  const lost=settled.length-won;
  const total=won+lost;
+ const rate=total?Math.round((won/total)*100):0;
 
- const rate=total
-  ?Math.round((won/total)*100)
-  :0;
+ /* Sort by creation time when available before calculating the latest streak. */
+ const ordered=[...settled].sort((a,b)=>{
+  const aTime=new Date(a.created_at||a.updated_at||0).getTime();
+  const bTime=new Date(b.created_at||b.updated_at||0).getTime();
+  return aTime-bTime;
+ });
 
  let streak=0;
+ for(let i=ordered.length-1;i>=0;i--){
+  const status=String(ordered[i].status||ordered[i].result).toUpperCase();
 
- for(let i=settled.length-1;i>=0;i--){
-  const status=String(
-   settled[i].status||settled[i].result
-  ).toUpperCase();
-
-  if(i===settled.length-1){
+  if(i===ordered.length-1){
    streak=status==="WON"?1:-1;
    continue;
   }
 
-  if(
-   (streak>0&&status==="WON")||
-   (streak<0&&status==="LOST")
-  ){
+  if((streak>0&&status==="WON")||(streak<0&&status==="LOST")){
    streak+=streak>0?1:-1;
   }else{
    break;
@@ -3475,46 +1590,18 @@ function updateWinningStats(records){
  $("statWon").textContent=won;
  $("statLost").textContent=lost;
  $("statRate").textContent=rate+"%";
-
- $("statStreak").textContent=
-  streak>0
-   ?streak+"W"
-   :streak<0
-    ?Math.abs(streak)+"L"
-    :"0";
+ $("statStreak").textContent=streak>0?streak+"W":streak<0?Math.abs(streak)+"L":"0";
 }
 
-/* ==========================================
-   PAYMENT RECEIPT WHATSAPP
-========================================== */
-
+/* PAYMENT RECEIPT WHATSAPP */
 function receiptWhatsApp(type){
- const message=
-  "Hello, I have made payment for "+
-  type+
-  " membership on onlybosstips. Please find my payment receipt attached.";
-
- const url=
-  "https://wa.me/2348032413495?text="+
-  encodeURIComponent(message);
-
- window.open(
-  url,
-  "_blank",
-  "noopener,noreferrer"
- );
+ const message="Hello, I have made payment for "+type+" membership on onlybosstips. Please find my payment receipt attached.";
+ const url="https://wa.me/2348032413495?text="+encodeURIComponent(message);
+ window.open(url,"_blank","noopener,noreferrer");
 }
 
-/* ==========================================
-   NEVER MISS BOOKING CODES
-========================================== */
-
-function addBookingCode(
- containerId,
- title,
- code,
- platformLink
-){
+/* NEVER MISS BOOKING CODES */
+function addBookingCode(containerId,title,code,platformLink){
  const container=$(containerId);
  if(!container)return;
 
@@ -3530,171 +1617,109 @@ function addBookingCode(
  card.append(heading,content);
 
  const url=safeHttpUrl(platformLink);
-
  if(url){
   const link=document.createElement("a");
-
   link.href=url;
   link.target="_blank";
   link.rel="noopener noreferrer";
   link.textContent="OPEN BOOKING PLATFORM";
-
-  link.style.cssText=
-   "display:inline-block;margin-top:12px;color:#75e5a5;font-size:10px;font-weight:800";
-
+  link.style.cssText="display:inline-block;margin-top:12px;color:#75e5a5;font-size:10px;font-weight:800";
   card.appendChild(link);
  }
 
  container.appendChild(card);
 }
 
-/* ==========================================
-   LOG OUT
-========================================== */
-
+/* LOG OUT */
 async function logout(){
  if(!currentUser||!supabaseClient){
   showLoginScreen();
   return;
  }
 
- const confirmed=window.confirm(
-  "Are you sure you want to log out?"
- );
-
+ const confirmed=window.confirm("Are you sure you want to log out?");
  if(!confirmed)return;
 
  try{
   const {error}=await supabaseClient.auth.signOut();
-
   if(error)throw error;
 
   currentUser=null;
-
-  memberAccess={
-   vip:false,
-   rollover:false
-  };
-
-  predictionRecords={
-   free:[],
-   vip:[],
-   rollover:[]
-  };
+  memberAccess={vip:false,rollover:false};
+  predictionRecords={free:[],vip:[],rollover:[]};
 
   showLoginScreen();
-
  }catch(error){
   console.error("Logout error:",error);
-
   alert("Logout failed. Please try again.");
  }
 }
 
-/* ==========================================
-   AUTH SESSION AND PASSWORD RECOVERY
-========================================== */
-
+/* AUTH SESSION AND PASSWORD RECOVERY */
 async function startApp(){
  try{
   initializeSupabase();
 
-  const params=new URLSearchParams(
-   window.location.search
-  );
-
+  const params=new URLSearchParams(window.location.search);
   const authMode=params.get("auth");
 
   if(params.has("code")){
-   const {error}=await supabaseClient.auth.exchangeCodeForSession(
-    params.get("code")
-   );
-
+   const {error}=await supabaseClient.auth.exchangeCodeForSession(params.get("code"));
    if(error)throw error;
   }
 
   if(authMode==="recovery"){
    const {data}=await supabaseClient.auth.getSession();
-
-   if(data.session){
-    showRecoveryForm();
-   }
+   if(data.session)showRecoveryForm();
   }
 
   const {data,error}=await supabaseClient.auth.getSession();
-
   if(error)throw error;
 
   if(data.session){
    currentUser=data.session.user;
-
    await loadMemberData(currentUser);
 
-   if(authMode==="recovery"){
-    showRecoveryForm();
-   }else{
-    showWelcome();
-   }
-
+   if(authMode==="recovery")showRecoveryForm();
+   else showWelcome();
   }else{
    showLoginScreen();
   }
 
-  supabaseClient.auth.onAuthStateChange(
-   async(event,session)=>{
-    if(event==="PASSWORD_RECOVERY"){
-     currentUser=session?.user||null;
-     showRecoveryForm();
-     return;
-    }
-
-    if(event==="SIGNED_OUT"){
-     currentUser=null;
-
-     memberAccess={
-      vip:false,
-      rollover:false
-     };
-
-     showLoginScreen();
-     return;
-    }
-
-    if(event==="SIGNED_IN"&&session?.user){
-     currentUser=session.user;
-
-     await loadMemberData(session.user);
-     showWelcome();
-    }
+  supabaseClient.auth.onAuthStateChange(async(event,session)=>{
+   if(event==="PASSWORD_RECOVERY"){
+    currentUser=session?.user||null;
+    showRecoveryForm();
+    return;
    }
-  );
+
+   if(event==="SIGNED_OUT"){
+    currentUser=null;
+    memberAccess={vip:false,rollover:false};
+    showLoginScreen();
+    return;
+   }
+
+   if(event==="SIGNED_IN"&&session?.user){
+    currentUser=session.user;
+    await loadMemberData(session.user);
+    showWelcome();
+   }
+  });
 
  }catch(error){
-  console.error(
-   "Application initialization error:",
-   error
-  );
-
+  console.error("Application initialization error:",error);
   showLoginScreen();
-
-  setAuthMessage(
-   error.message||
-   "Unable to connect to the member service. Please refresh."
-  );
+  setAuthMessage(error.message||"Unable to connect to the member service. Please refresh.");
  }
 }
 
-/* ==========================================
-   INITIALIZE WEBSITE
-========================================== */
-
+/* INITIALIZE WEBSITE */
 buildLeagueSelector("free");
 buildLeagueSelector("vip");
 buildLeagueSelector("rollover");
-
 refreshDateLabels();
 updateYear();
-
 startApp();
 
 </script>
