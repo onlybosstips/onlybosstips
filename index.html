@@ -145,67 +145,89 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
  border:1px solid #28784f;padding:6px 9px;border-radius:20px
 }
 
-/* SPORTS NEWS */
+/* PREMIUM SPORTS NEWS */
 .news-carousel{
  position:relative;overflow:hidden;padding:0;
- background:#0b1510;min-height:365px
+ background:#0b1510;min-height:390px;
+ border:1px solid #294333;
+ box-shadow:0 14px 35px #0005
 }
 .news-slide{
- position:relative;min-height:365px;display:flex;
+ position:relative;min-height:390px;display:flex;
  flex-direction:column;justify-content:flex-end;overflow:hidden;
- background:#102016
+ background:#102016;cursor:pointer;isolation:isolate
 }
 .news-image{
  position:absolute;inset:0;width:100%;height:100%;
- object-fit:cover;opacity:.78;transition:opacity .35s ease
+ object-fit:cover;opacity:.98;transition:transform .5s ease,opacity .35s ease;
+ z-index:0
 }
+.news-carousel:hover .news-image{transform:scale(1.025)}
 .news-image-shade{
- position:absolute;inset:0;
- background:linear-gradient(0deg,rgba(3,10,6,.98),rgba(3,10,6,.72) 48%,rgba(3,10,6,.1))
+ position:absolute;inset:0;z-index:1;
+ background:
+  linear-gradient(0deg,rgba(2,8,5,.97) 0%,rgba(3,10,6,.82) 34%,rgba(3,10,6,.24) 72%,rgba(3,10,6,.04) 100%),
+  linear-gradient(90deg,rgba(2,8,5,.20),transparent 75%)
 }
-.news-content{position:relative;z-index:2;padding:24px 20px 22px}
+.news-content{
+ position:relative;z-index:2;padding:28px 21px 25px;
+ pointer-events:none
+}
 .news-source{
- display:inline-block;background:#174e32;color:#a8f0c5;
- border:1px solid #27784b;border-radius:20px;padding:7px 11px;
- font-size:9px;font-weight:800;letter-spacing:1px
+ display:inline-block;background:rgba(17,75,45,.94);color:#b9f5d0;
+ border:1px solid #39a96c;border-radius:5px;padding:7px 11px;
+ font-size:9px;font-weight:800;letter-spacing:1.2px;
+ text-transform:uppercase
 }
-.news-slide h2{max-width:650px;font-size:clamp(20px,4vw,30px);line-height:1.3;margin:15px 0 8px}
-.news-slide p{max-width:600px;font-size:12px;line-height:1.6;color:#d0ddd4;margin:0}
-.news-read{display:inline-block;color:#8af0b5;text-decoration:none;font-size:11px;font-weight:800;margin-top:13px}
-.news-controls{display:flex;justify-content:space-between;align-items:center;padding:10px 15px}
+.news-slide h2{
+ max-width:690px;font-size:clamp(23px,4.9vw,36px);
+ line-height:1.12;letter-spacing:-1px;font-weight:800;
+ margin:16px 0 10px;color:#fff;
+ text-shadow:0 3px 18px rgba(0,0,0,.9)
+}
+.news-slide p{
+ max-width:620px;font-size:12px;line-height:1.65;
+ color:#e0e9e2;margin:0;text-shadow:0 2px 9px #000
+}
+.news-controls{
+ display:flex;justify-content:space-between;align-items:center;
+ padding:7px 14px;background:#0d1711;border-top:1px solid #24372b
+}
 .news-controls button{
- width:35px;height:35px;border:1px solid #31523e;
- border-radius:50%;background:#13271b;color:#8af0b5;font-size:22px
+ width:34px;height:32px;border:0;
+ border-radius:6px;background:transparent;color:#a6f0c2;
+ font-size:29px;line-height:1;display:grid;place-items:center;
+ transition:color .2s,background .2s
 }
-#newsDots{display:flex;gap:6px}
-.news-dot{width:6px;height:6px;border-radius:10px;background:#526459;border:0;padding:0}
-.news-dot.active{width:19px;background:#19c779}
+.news-controls button:hover{
+ background:#173c27;color:#fff
+}
 
-/* MATCH CENTRE AND CALENDAR */
+/* MATCH CENTRE AND COMPACT DATE SELECTOR */
 .match-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
 .match-head strong{font-size:14px}
-.date-label{font-size:11px;color:var(--muted);margin-top:3px}
-.clock{font-size:11px;color:var(--green);font-variant-numeric:tabular-nums}
 .date-controls{
- display:flex;align-items:center;justify-content:center;gap:13px;
- padding:10px;background:#0c1510;border:1px solid var(--line);
- border-radius:12px;margin-bottom:12px
+ display:flex;align-items:center;justify-content:center;gap:9px;
+ padding:9px 10px;background:#0c1510;border:1px solid var(--line);
+ border-radius:11px;margin-bottom:12px;
+ touch-action:pan-y;user-select:none
 }
 .date-controls button{
- width:36px;height:34px;border:1px solid #31523e;
- background:#153522;color:#9af0bc;border-radius:9px;font-size:23px
+ width:34px;height:31px;border:1px solid #31523e;
+ background:#153522;color:#9af0bc;border-radius:7px;
+ font-size:22px;line-height:1;display:grid;place-items:center;
+ flex-shrink:0;transition:background .2s,border-color .2s
 }
-.date-controls .calendar-icon{font-size:17px;color:#9af0bc}
-.date-controls span{font-size:11px;font-weight:800;letter-spacing:.7px;text-align:center}
-.date-picker-input{
- width:35px;height:34px;opacity:0;position:absolute;
- cursor:pointer
+.date-controls button:hover{
+ background:#1a4930;border-color:#35a96b
 }
-.calendar-picker-wrap{position:relative;width:36px;height:34px}
-.calendar-picker-wrap .calendar-icon{
- position:absolute;inset:0;display:grid;place-items:center;
- border:1px solid #31523e;background:#153522;border-radius:9px;
- pointer-events:none
+.date-controls .date-current{
+ min-width:112px;height:31px;padding:0 13px;
+ display:grid;place-items:center;
+ background:#14251a;border:1px solid #34734c;
+ border-radius:5px;color:#b9f5d0;
+ font-size:10px;font-weight:900;letter-spacing:1px;
+ text-align:center
 }
 .sport-tabs,.score-tabs{
  display:flex;gap:7px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none
@@ -248,30 +270,30 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
  border-radius:13px;padding:13px;font-size:10px;line-height:1.6
 }
 
-/* HORIZONTAL LEAGUE SELECTOR */
+/* COMPACT LEAGUE SELECTORS — NO HORIZONTAL SCROLL */
 .league-screen{display:flex;flex-direction:column;gap:9px}
 .league-grid{
- display:flex;gap:8px;overflow-x:auto;padding:3px 1px 12px;
- scrollbar-width:thin;scrollbar-color:#31523e transparent;
- -webkit-overflow-scrolling:touch
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ gap:6px;width:100%;overflow:visible;padding:2px 0 5px
 }
 .league-button{
- flex:0 0 auto;min-width:105px;max-width:125px;
- min-height:67px;display:flex;flex-direction:column;
- align-items:center;justify-content:center;gap:6px;
- text-align:center;padding:9px 10px;background:#101a14;
- border:1px solid #263b2d;border-radius:12px;color:#eaf4ed;
- transition:.15s
+ width:100%;min-width:0;min-height:38px;
+ display:flex;align-items:center;justify-content:center;
+ text-align:center;padding:6px 4px;
+ background:linear-gradient(145deg,#121e17,#0d1510);
+ border:1px solid #263b2d;border-radius:8px;color:#dce9df;
+ transition:background .15s,border-color .15s,transform .15s
 }
-.league-button:active{transform:scale(.97)}
-.league-button.active{background:#153b27;border-color:#20a965;box-shadow:inset 0 0 0 1px #20a96544}
-.league-icon{
- width:27px;height:27px;flex-shrink:0;display:grid;
- place-items:center;background:#1b3022;border-radius:50%;
- border:1px solid #31523e;color:#9af0bc;font-size:9px;font-weight:900
+.league-button:active{transform:scale(.98)}
+.league-button.active{
+ background:linear-gradient(145deg,#17452d,#10281b);
+ border-color:#20a965;box-shadow:inset 0 0 0 1px #20a96533
 }
-.league-button strong{display:block;font-size:10px;white-space:nowrap}
-.league-button small{display:none}
+.league-button strong{
+ display:block;font-size:9px;line-height:1.2;
+ font-weight:800;white-space:normal;overflow-wrap:anywhere
+}
 .prediction-card{
  background:#0c1510;border:1px solid var(--line);
  border-radius:12px;padding:13px;margin-bottom:9px
@@ -311,14 +333,28 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
 .nav-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .nav-item.active{color:var(--green)}
 footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
+
+@media(min-width:520px){
+ .league-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+ .league-button{min-height:40px}
+}
+@media(min-width:760px){
+ .league-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+}
 @media(min-width:650px){
  .stats-grid{grid-template-columns:repeat(4,1fr)}
  .card{padding:17px}
- .news-slide,.news-carousel{min-height:420px}
+ .news-slide,.news-carousel{min-height:440px}
 }
 @media(max-width:380px){
- .news-slide{min-height:340px}
- .league-button{min-width:94px}
+ .news-slide,.news-carousel{min-height:350px}
+ .news-content{padding:22px 16px 20px}
+ .news-slide h2{font-size:22px}
+ .date-controls{gap:7px;padding:8px}
+ .date-controls .date-current{min-width:104px}
+ .league-grid{gap:5px}
+ .league-button{min-height:36px;padding:6px 3px}
+ .league-button strong{font-size:8px}
 }
 </style>
 </head>
@@ -437,9 +473,9 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
   <span class="tier" id="memberTier">FREE MEMBER</span>
  </div>
 
- <div class="section-title">SPORTS NEWS <small>SKY SPORTS · BBC · SUPERSPORT</small></div>
+ <div class="section-title">SPORTS NEWS</div>
  <div class="news-carousel card" id="sportsNewsCarousel">
-  <div class="news-slide" id="newsSlide">
+  <div class="news-slide" id="newsSlide" role="link" tabindex="0" aria-label="Open sports news article">
    <div class="news-content">
     <div class="news-source">SPORTS NEWS</div>
     <h2>Loading latest sports headlines...</h2>
@@ -447,29 +483,17 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
    </div>
   </div>
   <div class="news-controls">
-   <button id="newsPrev" aria-label="Previous news">‹</button>
-   <div id="newsDots"></div>
-   <button id="newsNext" aria-label="Next news">›</button>
+   <button id="newsPrev" type="button" aria-label="Previous news">‹</button>
+   <button id="newsNext" type="button" aria-label="Next news">›</button>
   </div>
  </div>
 
- <div class="section-title">DAILY MATCH CENTER <span class="clock" id="clock">--:-- WAT</span></div>
+ <div class="section-title">DAILY MATCH CENTER</div>
  <div class="card">
-  <div class="match-head">
-   <div>
-    <strong id="selectedDateText">Today</strong>
-    <div class="date-label">Matches for selected date</div>
-   </div>
-   <span class="clock">NIGERIA · WAT</span>
-  </div>
-  <div class="date-controls">
-   <button id="previousDate" aria-label="Previous date">‹</button>
-   <span id="calendarDateLabel">TODAY</span>
-   <div class="calendar-picker-wrap">
-    <span class="calendar-icon" aria-hidden="true">▦</span>
-    <input class="date-picker-input" type="date" id="calendarPicker" aria-label="Choose match date">
-   </div>
-   <button id="nextDate" aria-label="Next date">›</button>
+  <div class="date-controls" id="homeDateControls">
+   <button id="previousDate" type="button" aria-label="Previous date">‹</button>
+   <span class="date-current" id="calendarDateLabel">TODAY</span>
+   <button id="nextDate" type="button" aria-label="Next date">›</button>
   </div>
   <div class="sport-tabs" id="sportTabs">
    <button class="active" data-sport="football">FOOTBALL</button>
@@ -505,11 +529,11 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
  <div class="page-heading"><h1>FREE ODDS</h1><p>Free predictions and match selections</p></div>
  <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
  <div class="card">
-  <div class="match-head"><strong>MATCH CENTER</strong><span class="clock" id="freeClock">WAT</span></div>
-  <div class="date-controls">
-   <button onclick="changeDate(-1)">‹</button>
-   <span id="freeDateLabel">TODAY</span>
-   <button onclick="changeDate(1)">›</button>
+  <div class="match-head"><strong>MATCH CENTER</strong></div>
+  <div class="date-controls" data-date-controls>
+   <button type="button" data-date-step="-1" aria-label="Previous date">‹</button>
+   <span class="date-current" id="freeDateLabel">TODAY</span>
+   <button type="button" data-date-step="1" aria-label="Next date">›</button>
   </div>
  </div>
  <div class="section-title">SELECT A LEAGUE</div>
@@ -523,8 +547,12 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
  <div class="page-heading"><h1>VIP ODDS</h1><p>Premium members prediction center</p></div>
  <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
  <div class="card">
-  <div class="match-head"><strong>MATCH CENTER</strong><span class="clock" id="vipClock">WAT</span></div>
-  <div class="date-controls"><button onclick="changeDate(-1)">‹</button><span id="vipDateLabel">TODAY</span><button onclick="changeDate(1)">›</button></div>
+  <div class="match-head"><strong>MATCH CENTER</strong></div>
+  <div class="date-controls" data-date-controls>
+   <button type="button" data-date-step="-1" aria-label="Previous date">‹</button>
+   <span class="date-current" id="vipDateLabel">TODAY</span>
+   <button type="button" data-date-step="1" aria-label="Next date">›</button>
+  </div>
  </div>
  <div id="vipGate" class="card gate">
   <div class="gate-icon">✦</div><h2>VIP MEMBERSHIP REQUIRED</h2>
@@ -544,8 +572,12 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
  <div class="page-heading"><h1>ROLLOVER</h1><p>Rollover membership prediction center</p></div>
  <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
  <div class="card">
-  <div class="match-head"><strong>MATCH CENTER</strong><span class="clock" id="rollClock">WAT</span></div>
-  <div class="date-controls"><button onclick="changeDate(-1)">‹</button><span id="rollDateLabel">TODAY</span><button onclick="changeDate(1)">›</button></div>
+  <div class="match-head"><strong>MATCH CENTER</strong></div>
+  <div class="date-controls" data-date-controls>
+   <button type="button" data-date-step="-1" aria-label="Previous date">‹</button>
+   <span class="date-current" id="rollDateLabel">TODAY</span>
+   <button type="button" data-date-step="1" aria-label="Next date">›</button>
+  </div>
  </div>
  <div id="rollGate" class="card gate">
   <div class="gate-icon">↻</div><h2>ROLLOVER MEMBERSHIP REQUIRED</h2>
@@ -614,6 +646,7 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
   <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h4M16 16h.01"/></svg><span>NEVER MISS</span>
  </button>
 </nav>
+
 <script>
 "use strict";
 
@@ -645,6 +678,7 @@ let sportsNews=[];
 let newsIndex=0;
 let newsTimer=null;
 let newsTouchStart=0;
+let dateTouchStart=0;
 
 let predictionRecords={
  free:[],vip:[],rollover:[]
@@ -662,20 +696,20 @@ let selectedLeagues={
 };
 
 const leagueOptions=[
- {name:"All",short:"ALL"},
- {name:"Premier League",short:"EPL"},
- {name:"Bundesliga",short:"BL"},
- {name:"La Liga",short:"LL"},
- {name:"Ligue 1",short:"L1"},
- {name:"World Cup",short:"WC"},
- {name:"UEFA",short:"UEFA"},
- {name:"AFCON",short:"AFCON"},
- {name:"Champions League",short:"UCL"},
- {name:"Europa League",short:"UEL"},
- {name:"Conference League",short:"UECL"},
- {name:"Other Leagues",short:"OTHER"},
- {name:"Tennis",short:"TEN"},
- {name:"Basketball",short:"BASK"}
+ {name:"All"},
+ {name:"Premier League"},
+ {name:"Bundesliga"},
+ {name:"La Liga"},
+ {name:"Ligue 1"},
+ {name:"World Cup"},
+ {name:"UEFA"},
+ {name:"AFCON"},
+ {name:"Champions League"},
+ {name:"Europa League"},
+ {name:"Conference League"},
+ {name:"Other Leagues"},
+ {name:"Tennis"},
+ {name:"Basketball"}
 ];
 
 function setAuthMessage(message,type="error"){
@@ -955,7 +989,8 @@ $("recoveryForm").addEventListener("submit",async event=>{
 });
 
 /* ==========================================
-   DATE AND TIME — NIGERIA
+   DATE SELECTOR — NIGERIA TIME
+   TODAY / TOMORROW / YESTERDAY / DATE
 ========================================== */
 
 function nigeriaDate(date=new Date()){
@@ -974,16 +1009,6 @@ function nigeriaDate(date=new Date()){
  return values.year+"-"+values.month+"-"+values.day;
 }
 
-function nigeriaTime(){
- return new Intl.DateTimeFormat("en-GB",{
-  timeZone:WAT,
-  hour:"2-digit",
-  minute:"2-digit",
-  second:"2-digit",
-  hour12:false
- }).format(new Date());
-}
-
 function dateFromKey(key){
  const parts=key.split("-").map(Number);
  return new Date(Date.UTC(parts[0],parts[1]-1,parts[2],12));
@@ -996,49 +1021,44 @@ function shiftDate(date,amount){
  return shifted;
 }
 
-function formatSelectedDate(){
- return new Intl.DateTimeFormat("en-GB",{
-  timeZone:"UTC",
-  weekday:"long",
-  day:"2-digit",
-  month:"long",
-  year:"numeric"
- }).format(dateFromKey(nigeriaDate(selectedCalendarDate)));
+function dateDifferenceFromToday(selectedKey){
+ const todayKey=nigeriaDate(new Date());
+ const today=dateFromKey(todayKey);
+ const selected=dateFromKey(selectedKey);
+ return Math.round((selected.getTime()-today.getTime())/86400000);
 }
 
-function updateClock(){
- const value=nigeriaTime()+" WAT";
+function formatCompactDate(key){
+ return new Intl.DateTimeFormat("en-GB",{
+  timeZone:"UTC",
+  weekday:"short",
+  day:"2-digit",
+  month:"short"
+ }).format(dateFromKey(key)).toUpperCase();
+}
 
- ["clock","freeClock","vipClock","rollClock"].forEach(id=>{
-  if($(id))$(id).textContent=value;
- });
+function getDateLabel(){
+ const selected=nigeriaDate(selectedCalendarDate);
+ const difference=dateDifferenceFromToday(selected);
 
- if($("year")){
-  $("year").textContent=new Intl.DateTimeFormat("en",{
-   timeZone:WAT,year:"numeric"
-  }).format(new Date());
- }
+ if(difference===0)return "TODAY";
+ if(difference===1)return "TOMORROW";
+ if(difference===-1)return "YESTERDAY";
+
+ return formatCompactDate(selected);
 }
 
 function refreshDateLabels(){
- const today=nigeriaDate(new Date());
- const selected=nigeriaDate(selectedCalendarDate);
- const label=selected===today
-  ?"TODAY"
-  :new Intl.DateTimeFormat("en-GB",{
-    timeZone:"UTC",day:"2-digit",month:"short",year:"numeric"
-   }).format(dateFromKey(selected)).toUpperCase();
+ const label=getDateLabel();
 
- $("selectedDateText").textContent=
-  selected===today?"Today":formatSelectedDate();
-
- ["calendarDateLabel","freeDateLabel","vipDateLabel","rollDateLabel"].forEach(id=>{
+ [
+  "calendarDateLabel",
+  "freeDateLabel",
+  "vipDateLabel",
+  "rollDateLabel"
+ ].forEach(id=>{
   if($(id))$(id).textContent=label;
  });
-
- if($("calendarPicker")){
-  $("calendarPicker").value=selected;
- }
 }
 
 function changeDate(amount){
@@ -1046,22 +1066,46 @@ function changeDate(amount){
  refreshDateLabels();
  clearScoreDisplay();
  loadLiveScores();
+
+ /* Refresh all prediction sections using the newly selected date. */
+ renderPredictions("free");
+ if(memberAccess.vip)renderPredictions("vip");
+ if(memberAccess.rollover)renderPredictions("rollover");
 }
 
 $("previousDate").addEventListener("click",()=>changeDate(-1));
 $("nextDate").addEventListener("click",()=>changeDate(1));
 
-$("calendarPicker").addEventListener("change",event=>{
- if(!event.target.value)return;
- selectedCalendarDate=dateFromKey(event.target.value);
- refreshDateLabels();
- clearScoreDisplay();
- loadLiveScores();
+/* Swipe left/right on every date selector */
+document.querySelectorAll("[data-date-controls],#homeDateControls").forEach(control=>{
+ control.addEventListener("touchstart",event=>{
+  dateTouchStart=event.changedTouches[0].clientX;
+ },{passive:true});
+
+ control.addEventListener("touchend",event=>{
+  const difference=event.changedTouches[0].clientX-dateTouchStart;
+
+  if(Math.abs(difference)>45){
+   changeDate(difference<0?1:-1);
+  }
+ },{passive:true});
+
+ control.querySelectorAll("[data-date-step]").forEach(button=>{
+  button.addEventListener("click",()=>{
+   changeDate(Number(button.dataset.dateStep));
+  });
+ });
 });
 
-updateClock();
-setInterval(updateClock,1000);
 refreshDateLabels();
+
+function updateYear(){
+ if($("year")){
+  $("year").textContent=new Intl.DateTimeFormat("en",{
+   timeZone:WAT,year:"numeric"
+  }).format(new Date());
+ }
+}
 
 /* ==========================================
    MAIN NAVIGATION
@@ -1248,12 +1292,6 @@ async function loadLiveScores(){
 
   const returnedDate=extractResponseDate(source);
 
-  /*
-   A historical or future date must be explicitly
-   confirmed by the backend response. This prevents
-   today's fixtures being shown under another date.
-  */
-
   if(requestedDate!==today){
    if(!returnedDate||String(returnedDate).slice(0,10)!==requestedDate){
     scoreData={
@@ -1424,14 +1462,23 @@ function safeHttpUrl(value){
  return "";
 }
 
+function openCurrentNews(){
+ const item=sportsNews[newsIndex];
+ if(!item)return;
+
+ const url=safeHttpUrl(item.link);
+ if(url){
+  window.open(url,"_blank","noopener,noreferrer");
+ }
+}
+
 function renderNewsSlide(){
  const slide=$("newsSlide");
- const dots=$("newsDots");
-
  if(!slide||!sportsNews.length)return;
 
  const item=sportsNews[newsIndex];
  slide.innerHTML="";
+ slide.setAttribute("aria-label","Open article: "+item.title);
 
  const imageUrl=safeHttpUrl(item.image);
 
@@ -1459,38 +1506,10 @@ function renderNewsSlide(){
  heading.textContent=item.title;
 
  const description=document.createElement("p");
- description.textContent=item.description||"Read the latest sports update.";
+ description.textContent=item.description||"Tap to read the full sports story.";
 
  content.append(source,heading,description);
-
- const linkUrl=safeHttpUrl(item.link);
-
- if(linkUrl){
-  const link=document.createElement("a");
-  link.className="news-read";
-  link.href=linkUrl;
-  link.target="_blank";
-  link.rel="noopener noreferrer";
-  link.textContent="READ FULL STORY ↗";
-  content.appendChild(link);
- }
-
  slide.append(shade,content);
- dots.innerHTML="";
-
- sportsNews.forEach((_,index)=>{
-  const dot=document.createElement("button");
-  dot.className="news-dot"+(index===newsIndex?" active":"");
-  dot.setAttribute("aria-label","News "+(index+1));
-
-  dot.addEventListener("click",()=>{
-   newsIndex=index;
-   renderNewsSlide();
-   restartNewsTimer();
-  });
-
-  dots.appendChild(dot);
- });
 }
 
 function nextNews(){
@@ -1550,6 +1569,17 @@ $("newsPrev").addEventListener("click",()=>{
  restartNewsTimer();
 });
 
+/* Tapping the photograph or headline opens the article */
+$("newsSlide").addEventListener("click",openCurrentNews);
+
+$("newsSlide").addEventListener("keydown",event=>{
+ if(event.key==="Enter"||event.key===" "){
+  event.preventDefault();
+  openCurrentNews();
+ }
+});
+
+/* Swipe left/right to change news stories */
 $("sportsNewsCarousel").addEventListener("touchstart",event=>{
  newsTouchStart=event.changedTouches[0].clientX;
 },{passive:true});
@@ -1585,14 +1615,10 @@ function buildLeagueSelector(type){
   button.className="league-button";
   button.classList.toggle("active",selectedLeagues[type]===league.name);
 
-  const icon=document.createElement("span");
-  icon.className="league-icon";
-  icon.textContent=league.short;
-
   const title=document.createElement("strong");
   title.textContent=league.name;
 
-  button.append(icon,title);
+  button.append(title);
 
   button.addEventListener("click",()=>{
    selectedLeagues[type]=league.name;
@@ -1713,6 +1739,25 @@ function leagueMatches(record,selected){
  return accepted.some(name=>league.includes(name));
 }
 
+function predictionDateKey(record){
+ const raw=record.date||record.match_date||record.fixture_date||"";
+ if(!raw)return "";
+
+ const value=String(raw).trim();
+
+ /* Standard database date or timestamp: YYYY-MM-DD */
+ const iso=value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+ if(iso)return iso[1]+"-"+iso[2]+"-"+iso[3];
+
+ /* Also accept DD/MM/YYYY or DD-MM-YYYY */
+ const local=value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+ if(local){
+  return local[3]+"-"+String(local[2]).padStart(2,"0")+"-"+String(local[1]).padStart(2,"0");
+ }
+
+ return "";
+}
+
 function renderPredictions(type){
  const containerId={
   free:"freePredictions",
@@ -1724,10 +1769,16 @@ function renderPredictions(type){
  if(!container)return;
 
  const selected=selectedLeagues[type];
+ const selectedDate=nigeriaDate(selectedCalendarDate);
 
- const records=predictionRecords[type].filter(record=>
-  leagueMatches(record,selected)
- );
+ const records=predictionRecords[type].filter(record=>{
+  if(!leagueMatches(record,selected))return false;
+
+  const recordDate=predictionDateKey(record);
+
+  /* Keep undated legacy records visible rather than hiding them. */
+  return !recordDate||recordDate===selectedDate;
+ });
 
  const labelId={
   free:"freeSelectedLeague",
@@ -1749,7 +1800,7 @@ function renderPredictions(type){
 
  if(!records.length){
   container.innerHTML=
-   '<div class="empty card">No predictions available in this category yet.</div>';
+   '<div class="empty card">No predictions available in this category for the selected date.</div>';
   return;
  }
 
@@ -2125,7 +2176,7 @@ buildLeagueSelector("vip");
 buildLeagueSelector("rollover");
 
 refreshDateLabels();
-updateClock();
+updateYear();
 
 startApp();
 
