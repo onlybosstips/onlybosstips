@@ -415,7 +415,7 @@ function recordTier(record){
  return""
 }
 function classifyPrediction(record){return recordTier(record)}
-async function loadPredictions(){
+ async function loadPredictions(){
  if(!supabaseClient||!currentUser)return;
  try{
   const {data,error}=await supabaseClient.from("predictions").select("*");
@@ -523,7 +523,7 @@ function setPredictionRecords(type,records){if(!["free","vip","rollover"].includ
 /* MEMBER PROFILE AND MEMBERSHIP */
 function membershipLabel(tier){const value=String(tier||"FREE").trim().toLowerCase();if(value.includes("rollover"))return"ROLLOVER MEMBER";if(value.includes("vip")||value.includes("premium"))return"VIP MEMBER";return"FREE MEMBER"}
 function setMemberProfile(profile){if(!profile)return;$("memberName").textContent=profile.full_name||profile.name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||"Member";$("memberEmail").textContent=profile.email||currentUser?.email||"";const tier=membershipLabel(profile.membership_tier||profile.tier||"FREE");$("memberTier").textContent=tier;const avatarUrl=profile.avatar_url||profile.profile_image||profile.photo_url||currentUser?.user_metadata?.avatar_url||currentUser?.user_metadata?.picture||"";const safeAvatar=safeHttpUrl(avatarUrl);if(safeAvatar){const image=document.createElement("img");image.src=safeAvatar;image.alt="Member profile picture";image.onerror=()=>{$("avatar").innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/></svg>'};$("avatar").innerHTML="";$("avatar").append(image)}else{$("avatar").innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/></svg>'}}
- async function loadMemberData(user){if(!user)return;currentUser=user;$("memberEmail").textContent=user.email||"";$("memberName").textContent=user.user_metadata?.full_name||user.user_metadata?.name||"Member";$("memberTier").textContent="FREE MEMBER";memberAccess={vip:false,rollover:false};try{const {data,error}=await supabaseClient.from("member_profiles").select("*").eq("user_id",user.id).maybeSingle();if(error)throw error;if(data){setMemberProfile(data);const tier=String(data.membership_tier||data.tier||"Free").trim().toLowerCase();memberAccess.vip=tier==="vip"||tier==="vip member"||tier==="premium";memberAccess.rollover=tier==="rollover"||tier==="rollover member"}else setMemberProfile({email:user.email,membership_tier:"FREE",full_name:user.user_metadata?.full_name||user.user_metadata?.name||"Member"})}catch(error){console.error("Member profile loading error:",error);$("memberTier").textContent="FREE MEMBER";memberAccess={vip:false,rollover:false}}renderMembershipAccess();await loadPredictions();loadLiveScores()}
+async function loadMemberData(user){if(!user)return;currentUser=user;$("memberEmail").textContent=user.email||"";$("memberName").textContent=user.user_metadata?.full_name||user.user_metadata?.name||"Member";$("memberTier").textContent="FREE MEMBER";memberAccess={vip:false,rollover:false};try{const {data,error}=await supabaseClient.from("member_profiles").select("*").eq("user_id",user.id).maybeSingle();if(error)throw error;if(data){setMemberProfile(data);const tier=String(data.membership_tier||data.tier||"Free").trim().toLowerCase();memberAccess.vip=tier==="vip"||tier==="vip member"||tier==="premium";memberAccess.rollover=tier==="rollover"||tier==="rollover member"}else setMemberProfile({email:user.email,membership_tier:"FREE",full_name:user.user_metadata?.full_name||user.user_metadata?.name||"Member"})}catch(error){console.error("Member profile loading error:",error);$("memberTier").textContent="FREE MEMBER";memberAccess={vip:false,rollover:false}}renderMembershipAccess();await loadPredictions();loadLiveScores()}
 function setMembershipAccess(type,approved){if(type==="VIP")memberAccess.vip=Boolean(approved);if(type==="ROLLOVER")memberAccess.rollover=Boolean(approved);renderMembershipAccess()}
 function renderMembershipAccess(){$("vipGate").classList.toggle("hidden",memberAccess.vip);$("vipMemberContent").classList.toggle("hidden",!memberAccess.vip);$("rollGate").classList.toggle("hidden",memberAccess.rollover);$("rollMemberContent").classList.toggle("hidden",!memberAccess.rollover);if(memberAccess.vip)renderPredictions("vip");if(memberAccess.rollover)renderPredictions("rollover")}
 function showPlans(type){if(type==="VIP")navigate("vipPayment");if(type==="ROLLOVER")navigate("rollPayment")}
@@ -749,8 +749,112 @@ $("refreshBookingGroups").addEventListener("click",()=>{
 /* LOG OUT */
 async function logout(){if(!currentUser||!supabaseClient){showLoginScreen();return}if(!window.confirm("Are you sure you want to log out?"))return;try{const {error}=await supabaseClient.auth.signOut();if(error)throw error;currentUser=null;memberAccess={vip:false,rollover:false};predictionRecords={free:[],vip:[],rollover:[]};bookingRequestNumber++;$("bookingCodes").innerHTML='<div class="booking-message">Log in to view published booking codes.</div>';showLoginScreen()}catch(error){console.error("Logout error:",error);alert("Log out failed. Please try again.")}}
 
+/* SCREEN DISPLAY — FIX FOR THE BLANK WEBSITE */
+function showLoginScreen(){
+ document.body.classList.remove("member-mode");
+
+ document.querySelectorAll(".screen").forEach(screen=>{
+  screen.classList.toggle("active",screen.id==="authSection");
+ });
+
+ $("bottomNav").classList.add("hidden");
+ $("headerStatus").textContent="MEMBER CENTER";
+
+ document.querySelectorAll(".nav-item").forEach(button=>{
+  button.classList.remove("active");
+ });
+
+ selectedPage="authSection";
+
+ showAuthMode("login");
+
+ window.scrollTo({top:0,behavior:"auto"});
+}
+
+function showWelcome(){
+ document.body.classList.add("member-mode");
+
+ document.querySelectorAll(".screen").forEach(screen=>{
+  screen.classList.toggle("active",screen.id==="home");
+ });
+
+ $("bottomNav").classList.remove("hidden");
+ $("headerStatus").textContent="MEMBER CENTER";
+
+ document.querySelectorAll(".nav-item").forEach(button=>{
+  button.classList.remove("active");
+ });
+
+ selectedPage="home";
+
+ refreshDateLabels();
+ updateYear();
+
+ window.scrollTo({top:0,behavior:"auto"});
+}
+
 /* AUTH SESSION AND PASSWORD RECOVERY */
-async function startApp(){try{initializeSupabase();const params=new URLSearchParams(window.location.search),authMode=params.get("auth");if(params.has("code")){const {error}=await supabaseClient.auth.exchangeCodeForSession(params.get("code"));if(error)throw error}if(authMode==="recovery"){const {data}=await supabaseClient.auth.getSession();if(data.session)showRecoveryForm()}const {data,error}=await supabaseClient.auth.getSession();if(error)throw error;if(data.session){currentUser=data.session.user;await loadMemberData(currentUser);if(authMode==="recovery")showRecoveryForm();else showWelcome()}else showLoginScreen();supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="PASSWORD_RECOVERY"){currentUser=session?.user||null;showRecoveryForm();return}if(event==="SIGNED_OUT"){currentUser=null;memberAccess={vip:false,rollover:false};bookingRequestNumber++;showLoginScreen();return}if(event==="SIGNED_IN"&&session?.user){currentUser=session.user;await loadMemberData(session.user);showWelcome()}})}catch(error){console.error("Application initialization error:",error);showLoginScreen();setAuthMessage(error.message||"Unable to connect to the member service. Please refresh.")}}
+async function startApp(){
+ try{
+  initializeSupabase();
+
+  const params=new URLSearchParams(window.location.search);
+  const authMode=params.get("auth");
+
+  if(params.has("code")){
+   const {error}=await supabaseClient.auth.exchangeCodeForSession(params.get("code"));
+   if(error)throw error;
+  }
+
+  if(authMode==="recovery"){
+   const {data}=await supabaseClient.auth.getSession();
+   if(data.session)showRecoveryForm();
+  }
+
+  const {data,error}=await supabaseClient.auth.getSession();
+  if(error)throw error;
+
+  if(data.session){
+   currentUser=data.session.user;
+   await loadMemberData(currentUser);
+
+   if(authMode==="recovery"){
+    showRecoveryForm();
+   }else{
+    showWelcome();
+   }
+  }else{
+   showLoginScreen();
+  }
+
+  supabaseClient.auth.onAuthStateChange(async(event,session)=>{
+   if(event==="PASSWORD_RECOVERY"){
+    currentUser=session?.user||null;
+    showRecoveryForm();
+    return;
+   }
+
+   if(event==="SIGNED_OUT"){
+    currentUser=null;
+    memberAccess={vip:false,rollover:false};
+    bookingRequestNumber++;
+    showLoginScreen();
+    return;
+   }
+
+   if(event==="SIGNED_IN"&&session?.user){
+    currentUser=session.user;
+    await loadMemberData(session.user);
+    showWelcome();
+   }
+  });
+
+ }catch(error){
+  console.error("Application initialization error:",error);
+  showLoginScreen();
+  setAuthMessage(error.message||"Unable to connect to the member service. Please refresh.");
+ }
+}
 
 /* INITIALIZE WEBSITE */
 buildLeagueSelector("free");
