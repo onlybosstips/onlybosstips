@@ -10,14 +10,16 @@
 <style>
 :root{--bg:#070c09;--panel:#0e1711;--panel2:#14231a;--green:#19c779;--green2:#0e9f5d;--green3:#a6f0c2;--text:#f2f8f4;--muted:#91a198;--line:#26382c;--red:#f15c67;--gold:#e5bd65;--yellow:#ffd34e;--radius:15px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(ellipse at 50% -15%,#12301f 0%,transparent 42%),var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;padding-bottom:94px}
+body{margin:0;position:relative;isolation:isolate;background:radial-gradient(ellipse at 50% -15%,#12301f 0%,transparent 42%),var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;padding-bottom:94px}
+body.member-mode:before{content:"";position:fixed;inset:64px 0 0;z-index:-2;background:url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1800&q=85") center/cover no-repeat;opacity:.34;pointer-events:none}
+body.member-mode:after{content:"";position:fixed;inset:64px 0 0;z-index:-1;background:linear-gradient(135deg,rgba(3,12,7,.76),rgba(5,19,11,.70)),radial-gradient(ellipse at 50% 35%,rgba(25,199,121,.13),transparent 65%);pointer-events:none}
 button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--green);outline-offset:3px}a{color:inherit}.hidden{display:none!important}
 .topbar{height:64px;padding:0 17px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #294333;background:rgba(7,14,9,.96);position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);box-shadow:0 7px 25px #0004}
 .brand{font-family:"Cinzel",serif;font-size:19px;font-weight:800;letter-spacing:1px;color:#b7f2d2;cursor:pointer;text-shadow:0 0 20px #19c77930}.brand span{color:var(--green)}
 .online{font-size:9px;letter-spacing:1.2px;color:var(--green3);display:flex;align-items:center;gap:8px;font-weight:800}.online:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
-main{max-width:960px;margin:auto;padding:16px 13px 30px}.screen{display:none;animation:appear .22s ease}.screen.active{display:block}
+main{max-width:960px;margin:auto;padding:16px 13px 30px;position:relative;z-index:0}.screen{display:none;animation:appear .22s ease}.screen.active{display:block}
 @keyframes appear{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
-.card{background:linear-gradient(145deg,#111d15,#0c140f);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:13px;box-shadow:0 8px 24px #0002}
+.card{background:linear-gradient(145deg,rgba(17,29,21,.88),rgba(12,20,15,.89));border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:13px;box-shadow:0 8px 24px #0002;backdrop-filter:blur(5px)}
 .section-title{font-size:12px;font-weight:900;letter-spacing:1px;margin:20px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:9px}.section-title:before{content:"";width:3px;height:15px;border-radius:5px;background:var(--green);box-shadow:0 0 10px #19c77965;margin-right:1px;flex-shrink:0}.section-title small{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.2px}
 .page-heading{margin:4px 0 15px}.page-heading h1{font-size:21px;letter-spacing:.3px;margin:0 0 5px;font-weight:900}.page-heading p{font-size:11px;color:var(--muted);margin:0;line-height:1.6}
 .back-home{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#17452d,#0e2418);border:1px solid #34784e;color:#c4f8d9;border-radius:9px;padding:9px 13px;font-size:10px;font-weight:900;letter-spacing:1px;margin-bottom:13px;box-shadow:0 5px 16px #0004}
@@ -38,19 +40,19 @@ main{max-width:960px;margin:auto;padding:16px 13px 30px}.screen{display:none;ani
 .auth-submit{width:100%;margin-top:5px}.auth-links{display:flex;justify-content:space-between;gap:10px;margin-top:15px;font-size:10px;color:#9af0bc}.auth-links button{border:0;background:none;color:inherit;font-size:inherit;padding:0}.auth-message{min-height:18px;margin:10px 0 0;text-align:center}.auth-foot{text-align:center;color:#748379;font-size:9px;margin-top:16px;line-height:1.6}
 
 /* MEMBER PROFILE */
-.profile{display:flex;align-items:center;gap:12px;background:linear-gradient(110deg,#14271d,#101915);border:1px solid #31513b;border-radius:14px;padding:12px 14px;margin-bottom:16px;box-shadow:0 9px 25px #0003}
+.profile{display:flex;align-items:center;gap:12px;background:linear-gradient(110deg,rgba(20,39,29,.90),rgba(16,25,21,.90));border:1px solid #31513b;border-radius:14px;padding:12px 14px;margin-bottom:16px;box-shadow:0 9px 25px #0003;backdrop-filter:blur(5px)}
 .avatar-wrap{position:relative;flex-shrink:0}.avatar{width:49px;height:49px;border-radius:50%;background:#fff;color:#77837b;display:grid;place-items:center;border:2px solid #9be8b9;overflow:hidden}.avatar svg{width:26px;height:26px;stroke:#8c9990}.avatar img{width:100%;height:100%;object-fit:cover;display:block}.online-dot{position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;background:#19c779;border:2px solid #14271d}
 .profile-info{min-width:0;display:flex;flex-direction:column;gap:4px}.profile h2{font-size:12px;margin:0;font-weight:700;color:#e9f5ed;overflow-wrap:anywhere}.profile p{font-size:10px;color:#a6f0c2;margin:0;font-weight:900;letter-spacing:.7px}.tier{display:none}
 
-/* SPORTS NEWS */
+/* SPORTS NEWS — SKY SPORTS ONLY */
 .news-carousel{position:relative;overflow:hidden;padding:0;background:#0b1510;min-height:340px;border:1px solid #31513b;box-shadow:0 14px 35px #0006}
 .news-slide{position:relative;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:#102016;cursor:pointer;isolation:isolate}
 .news-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;filter:brightness(1.13) contrast(1.12) saturate(1.22);transition:transform .5s ease;z-index:0}.news-carousel:hover .news-image{transform:scale(1.025)}
 .news-image-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(2,8,5,.96) 0%,rgba(3,10,6,.70) 36%,rgba(3,10,6,.16) 78%,rgba(3,10,6,.02) 100%)}
 .news-content{position:relative;z-index:2;padding:23px 19px 22px;pointer-events:none}
-.news-source{display:inline-flex!important;align-items:center;gap:8px;margin-bottom:12px;padding:6px 9px;background:rgba(5,12,8,.76);border:1px solid rgba(255,255,255,.25);border-radius:7px;color:#fff;font-size:9px;font-weight:900;letter-spacing:.8px;text-shadow:0 1px 5px #000}
-.news-source img{display:block;width:94px;height:auto;max-height:22px;object-fit:contain;filter:drop-shadow(0 1px 3px #000)}
-.news-source-text{font-size:9px;font-weight:900;letter-spacing:1px}
+.news-source{display:inline-flex!important;align-items:center;gap:9px;margin-bottom:12px;padding:7px 11px;background:rgba(5,12,8,.86);border:1px solid rgba(255,255,255,.36);border-radius:7px;color:#fff;font-size:9px;font-weight:900;letter-spacing:.8px;text-shadow:0 1px 5px #000;box-shadow:0 3px 12px #0007}
+.news-source img{display:block;width:112px;height:auto;max-height:29px;object-fit:contain;filter:drop-shadow(0 2px 4px #000)}
+.news-source-text{font-size:10px;font-weight:900;letter-spacing:1px}
 .news-slide h2{max-width:690px;font-size:clamp(21px,4.5vw,32px);line-height:1.14;letter-spacing:-.7px;font-weight:900;margin:0;color:#fff;text-shadow:0 3px 18px rgba(0,0,0,.95)}
 .news-controls{display:none!important}
 
@@ -64,10 +66,10 @@ main{max-width:960px;margin:auto;padding:16px 13px 30px}.screen{display:none;ani
 .sport-tabs,.score-tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 9px;scrollbar-width:none}.sport-tabs::-webkit-scrollbar,.score-tabs::-webkit-scrollbar{display:none}
 .sport-tabs button,.score-tabs button{white-space:nowrap;border:1px solid var(--line);border-radius:20px;background:#0d1510;color:var(--muted);padding:7px 11px;font-size:9px;font-weight:800}
 .sport-tabs button.active,.score-tabs button.active{background:#16472e;border-color:#238d57;color:#c4f8d9}
-.score-list{display:grid;gap:9px}.league-group{overflow:hidden;border:1px solid #263d2e;border-radius:10px;background:#0a120d}
+.score-list{display:grid;gap:9px}.league-group{overflow:hidden;border:1px solid #263d2e;border-radius:10px;background:rgba(10,18,13,.91);backdrop-filter:blur(4px)}
 .league-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:linear-gradient(100deg,#173a25,#10251a);border-bottom:1px solid #31523c;color:#c8f5d8;font-size:9px;font-weight:900;letter-spacing:.6px;text-transform:uppercase}
 .league-heading span:last-child{color:#8fbea0;font-size:8px;letter-spacing:.3px}
-.score-row{display:grid;grid-template-columns:minmax(0,1fr) 60px minmax(0,1fr);gap:7px;align-items:center;padding:10px 9px;background:#0c1410;border-bottom:1px solid #1e3025;font-size:10px}.score-row:last-child{border-bottom:0}
+.score-row{display:grid;grid-template-columns:minmax(0,1fr) 60px minmax(0,1fr);gap:7px;align-items:center;padding:10px 9px;background:rgba(12,20,16,.90);border-bottom:1px solid #1e3025;font-size:10px}.score-row:last-child{border-bottom:0}
 .team{display:flex;align-items:center;min-width:0;font-weight:700}.team span{overflow-wrap:anywhere}.team:last-child{justify-content:flex-end;text-align:right}
 .score{font-size:14px;font-weight:900;white-space:nowrap;text-align:center}.score-meta{text-align:center;font-size:8px;color:var(--muted);margin-top:3px;line-height:1.4}
 .score-status{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:8px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;margin-top:4px}
@@ -75,7 +77,7 @@ main{max-width:960px;margin:auto;padding:16px 13px 30px}.screen{display:none;ani
 @keyframes livePulse{0%,100%{opacity:1}50%{opacity:.4}}.empty{padding:18px;text-align:center;color:var(--muted);font-size:10px;line-height:1.6}
 
 /* WINNING STREAK */
-.streak-board{position:relative;overflow:hidden;background:radial-gradient(circle at 100% 0%,#1b5736 0%,transparent 40%),linear-gradient(145deg,#102219,#0a120d 72%);border:1px solid #34764d;border-radius:14px;padding:12px;box-shadow:0 10px 25px #0005}
+.streak-board{position:relative;overflow:hidden;background:radial-gradient(circle at 100% 0%,#1b5736 0%,transparent 40%),linear-gradient(145deg,rgba(16,34,25,.91),rgba(10,18,13,.92) 72%);border:1px solid #34764d;border-radius:14px;padding:12px;box-shadow:0 10px 25px #0005;backdrop-filter:blur(5px)}
 .streak-board:before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#23d782,#a8f2c4,transparent)}
 .streak-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.streak-heading strong{font-size:10px;letter-spacing:.8px;font-weight:900}.streak-heading span{color:#9be8b9;font-size:8px;font-weight:900;letter-spacing:.8px}
 .stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.stat{min-width:0;background:linear-gradient(145deg,#14251a,#0b140e);border:1px solid #2a4532;border-radius:9px;padding:9px 7px}
@@ -83,16 +85,16 @@ main{max-width:960px;margin:auto;padding:16px 13px 30px}.screen{display:none;ani
 .stat.green strong{color:#6de7a3}.stat.red strong{color:#ff8791}.streak-note{font-size:9px;color:#9baea1;line-height:1.6;margin:9px 2px 0}
 
 /* RESPONSIBLE GAMBLING */
-.notice{position:relative;border:1px solid #554a2b;background:linear-gradient(135deg,#211e13,#15170f);color:#e7d8a8;border-radius:12px;padding:13px 13px 13px 39px;font-size:10px;line-height:1.8;box-shadow:0 8px 22px #0003}
+.notice{position:relative;border:1px solid #554a2b;background:linear-gradient(135deg,rgba(33,30,19,.94),rgba(21,23,15,.94));color:#e7d8a8;border-radius:12px;padding:13px 13px 13px 39px;font-size:10px;line-height:1.8;box-shadow:0 8px 22px #0003}
 .notice:before{content:"!";position:absolute;left:13px;top:13px;width:17px;height:17px;display:grid;place-items:center;border:1px solid #b99a4d;border-radius:50%;color:#e8c76c;font-size:10px;font-weight:900}.notice-title{display:block;color:#f2d88d;font-size:9px;font-weight:900;letter-spacing:1.2px;margin-bottom:4px}
 
 /* LEAGUE SELECTORS */
 .league-screen{display:flex;flex-direction:column;gap:8px}.league-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:100%;overflow:visible;padding:2px 0 5px}
-.league-button{width:100%;min-width:0;min-height:35px;display:flex;align-items:center;justify-content:center;text-align:center;padding:5px 3px;background:linear-gradient(145deg,#121e17,#0d1510);border:1px solid #263b2d;border-radius:8px;color:#dce9df;transition:background .15s,border-color .15s,transform .15s}
+.league-button{width:100%;min-width:0;min-height:35px;display:flex;align-items:center;justify-content:center;text-align:center;padding:5px 3px;background:linear-gradient(145deg,rgba(18,30,23,.94),rgba(13,21,16,.94));border:1px solid #263b2d;border-radius:8px;color:#dce9df;transition:background .15s,border-color .15s,transform .15s}
 .league-button:active{transform:scale(.98)}.league-button.active{background:linear-gradient(145deg,#17452d,#10281b);border-color:#20a965;box-shadow:inset 0 0 0 1px #20a96533}.league-button strong{display:block;font-size:8px;line-height:1.2;font-weight:900;white-space:normal;overflow-wrap:anywhere}
 
 /* PREDICTIONS */
-.prediction-card{background:linear-gradient(145deg,#111d15,#0a130e);border:1px solid #293d30;border-radius:11px;padding:11px 12px;margin-bottom:8px;box-shadow:0 6px 16px #0002}
+.prediction-card{background:linear-gradient(145deg,rgba(17,29,21,.92),rgba(10,19,14,.92));border:1px solid #293d30;border-radius:11px;padding:11px 12px;margin-bottom:8px;box-shadow:0 6px 16px #0002;backdrop-filter:blur(5px)}
 .prediction-top{display:flex;justify-content:space-between;gap:8px;font-size:9px;color:#a4b4a9;font-weight:700}.prediction-card h3{font-size:12px;line-height:1.4;margin:9px 0;font-weight:900;color:#f0f7f2}
 .prediction-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:9px;color:var(--muted)}.prediction-pick{color:#b9f5d0;font-weight:800}
 .status{display:inline-flex;align-items:center;justify-content:center;gap:4px;border-radius:30px;padding:5px 8px;font-size:8px;font-weight:900;letter-spacing:.4px;white-space:nowrap;border:1px solid transparent}.status-icon{width:15px;height:15px;border-radius:50%;display:inline-grid;place-items:center;font-size:9px;font-weight:900;border:1px solid currentColor}
@@ -101,8 +103,8 @@ main{max-width:960px;margin:auto;padding:16px 13px 30px}.screen{display:none;ani
 /* MEMBERSHIP */
 .gate{text-align:center;padding:25px 16px}.gate-icon{width:51px;height:51px;border-radius:16px;background:#183b29;color:#83e5ad;display:grid;place-items:center;margin:0 auto 13px;font-size:23px;border:1px solid #34764d}
 .gate h2{font-size:15px;margin:0 0 8px;font-weight:900}.gate p{font-size:10px;line-height:1.7;color:var(--muted);max-width:340px;margin:0 auto 15px}
-.payment-detail{background:#0c1510;border:1px solid #294333;border-radius:11px;padding:13px;margin:11px 0}.payment-detail p{font-size:10px;color:var(--muted);line-height:1.8}.payment-detail strong{color:#eaf5ed}
-.payment-amount{font-size:27px;font-weight:900;color:var(--green);letter-spacing:-.5px}.code-box{background:#0c1510;border:1px solid #294333;border-radius:11px;padding:13px;margin-bottom:9px}.code-box h3{font-size:11px;margin:0 0 6px}.code-box p{font-size:10px;color:var(--muted);line-height:1.5;margin:0}
+.payment-detail{background:rgba(12,21,16,.94);border:1px solid #294333;border-radius:11px;padding:13px;margin:11px 0}.payment-detail p{font-size:10px;color:var(--muted);line-height:1.8}.payment-detail strong{color:#eaf5ed}
+.payment-amount{font-size:27px;font-weight:900;color:var(--green);letter-spacing:-.5px}.code-box{background:rgba(12,21,16,.94);border:1px solid #294333;border-radius:11px;padding:13px;margin-bottom:9px}.code-box h3{font-size:11px;margin:0 0 6px}.code-box p{font-size:10px;color:var(--muted);line-height:1.5;margin:0}
 .logout{width:100%;border:1px solid #744047;color:#ffb0b6;background:linear-gradient(135deg,#29151a,#1b1013);padding:12px;border-radius:10px;font-weight:900;font-size:10px;letter-spacing:1.2px;margin-top:15px;box-shadow:0 7px 20px #0003}.logout:hover{background:#3a1c23;border-color:#b35b66}
 footer{text-align:center;color:#91a397;font-size:9px;letter-spacing:.8px;padding:22px 5px 18px;line-height:1.9;font-weight:800}footer .footer-brand{color:#a6f0c2;font-family:"Cinzel",serif}footer .footer-motto{color:#7ddda5;letter-spacing:1.5px}
 .bottom-nav{position:fixed;z-index:30;bottom:0;left:0;right:0;background:rgba(7,14,9,.97);border-top:1px solid #294333;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 5px calc(7px + env(safe-area-inset-bottom));backdrop-filter:blur(17px);box-shadow:0 -8px 25px #0004}
@@ -155,7 +157,7 @@ footer{text-align:center;color:#91a397;font-size:9px;letter-spacing:.8px;padding
 <section id="home" class="screen">
  <div class="profile"><div class="avatar-wrap"><div class="avatar" id="avatar"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/></svg></div><span class="online-dot"></span></div><div class="profile-info"><h2 id="memberName">Member</h2><p id="memberEmail">Loading account...</p><p id="memberTier">FREE MEMBER</p></div></div>
  <div class="section-title">SPORTS NEWS</div>
- <div class="news-carousel card" id="sportsNewsCarousel"><div class="news-slide" id="newsSlide" role="link" tabindex="0" aria-label="Open sports news article"><div class="news-content"><h2>Loading latest sports headlines...</h2></div></div></div>
+ <div class="news-carousel card" id="sportsNewsCarousel"><div class="news-slide" id="newsSlide" role="link" tabindex="0" aria-label="Open Sky Sports news article"><div class="news-content"><h2>Loading latest Sky Sports headlines...</h2></div></div></div>
  <div class="section-title">DAILY MATCH CENTER</div>
  <div class="card">
   <div class="date-controls" id="homeDateControls"><button id="previousDate" type="button" aria-label="Previous date">‹</button><span class="date-current" id="calendarDateLabel">TODAY</span><button id="nextDate" type="button" aria-label="Next date">›</button></div>
@@ -247,8 +249,8 @@ function showAuthMode(mode){$("authWelcome").classList.remove("hidden");$("forgo
 function showForgotPassword(){$("authWelcome").classList.add("hidden");$("forgotForm").classList.remove("hidden");$("recoveryForm").classList.add("hidden");$("forgotEmail").value=$("loginEmail").value||"";setAuthMessage("")}
 function showRecoveryForm(){$("authWelcome").classList.add("hidden");$("forgotForm").classList.add("hidden");$("recoveryForm").classList.remove("hidden");setAuthMessage("Enter your new password below.","success")}
 function togglePassword(id,button){const field=$(id);if(!field)return;const visible=field.type==="password";field.type=visible?"text":"password";button.textContent=visible?"HIDE":"SHOW"}
-function showWelcome(){$("authSection").classList.remove("active");$("bottomNav").classList.remove("hidden");navigate("home")}
-function showLoginScreen(){$("bottomNav").classList.add("hidden");document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$("authSection").classList.add("active");$("headerStatus").textContent="MEMBER LOGIN";showAuthMode("login");window.scrollTo({top:0,behavior:"smooth"})}
+function showWelcome(){document.body.classList.add("member-mode");$("authSection").classList.remove("active");$("bottomNav").classList.remove("hidden");navigate("home")}
+function showLoginScreen(){document.body.classList.remove("member-mode");$("bottomNav").classList.add("hidden");document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$("authSection").classList.add("active");$("headerStatus").textContent="MEMBER LOGIN";showAuthMode("login");window.scrollTo({top:0,behavior:"smooth"})}
 
 $("signupForm").addEventListener("submit",async event=>{event.preventDefault();if(!supabaseClient){setAuthMessage("Authentication is not ready. Refresh and try again.");return}const name=$("signupName").value.trim(),email=$("signupEmail").value.trim().toLowerCase(),password=$("signupPassword").value;if(!name||!email||password.length<6){setAuthMessage("Enter your name, a valid email and a password of at least 6 characters.");return}setButtonLoading("signupSubmit",true,"CREATE MY ACCOUNT");setAuthMessage("");try{const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{full_name:name},emailRedirectTo:window.location.origin+"/?auth=signup"}});if(error)throw error;if(data.session){currentUser=data.user;await loadMemberData(data.user);showWelcome();setAuthMessage("Your account has been created.","success")}else{$("signupForm").classList.add("hidden");$("loginForm").classList.remove("hidden");$("loginTab").classList.add("active");$("signupTab").classList.remove("active");$("loginEmail").value=email;$("loginPassword").value="";setAuthMessage("Registration successful. Check your email and confirm your account, then log in.","success")}}catch(error){console.error("Registration error:",error);setAuthMessage(error.message||"Registration failed. Please try again.")}finally{setButtonLoading("signupSubmit",false,"CREATE MY ACCOUNT")}});
 $("loginForm").addEventListener("submit",async event=>{event.preventDefault();if(!supabaseClient){setAuthMessage("Authentication is not ready. Refresh and try again.");return}const email=$("loginEmail").value.trim().toLowerCase(),password=$("loginPassword").value;setButtonLoading("loginSubmit",true,"LOG IN TO YOUR ACCOUNT");setAuthMessage("");try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw error;currentUser=data.user;await loadMemberData(data.user);showWelcome()}catch(error){console.error("Login error:",error);setAuthMessage(error.message||"Login failed. Check your email and password.")}finally{setButtonLoading("loginSubmit",false,"LOG IN TO YOUR ACCOUNT")}});
@@ -288,11 +290,9 @@ function createScoreRow(game,state){const row=document.createElement("div");row.
 function renderScores(message=""){const list=$("scoreList");if(!list)return;const games=scoreData[selectedSport]?.[selectedScoreState]||[];if(!games.length){list.innerHTML='<div class="empty">'+(message||"No "+selectedScoreState+" matches returned for this selected date.")+'</div>';return}list.innerHTML="";const groups=new Map();games.forEach(g=>{const name=String(g.league||"Other Leagues").trim()||"Other Leagues";if(!groups.has(name))groups.set(name,[]);groups.get(name).push(g)});groups.forEach((items,league)=>{const group=document.createElement("section");group.className="league-group";const heading=document.createElement("div");heading.className="league-heading";const title=document.createElement("span");title.textContent=league;const count=document.createElement("span");count.textContent=items.length+(items.length===1?" MATCH":" MATCHES");heading.append(title,count);group.append(heading);items.forEach(g=>group.append(createScoreRow(g,selectedScoreState)));list.append(group)})}
 setInterval(()=>{if(currentUser)loadLiveScores()},60000);
 
-/* SPORTS NEWS — SKY SPORTS, BBC SPORT AND SUPERSPORT */
+/* SPORTS NEWS — SKY SPORTS ONLY */
 const NEWS_FEEDS=[
- {name:"SKY SPORTS",url:"https://www.skysports.com/rss/12040",logo:SKY_SPORTS_LOGO},
- {name:"BBC SPORT",url:"https://feeds.bbci.co.uk/sport/rss.xml",logo:""},
- {name:"SUPERSPORT",url:"https://supersport.com/rss",logo:""}
+ {name:"SKY SPORTS",url:"https://www.skysports.com/rss/12040",logo:SKY_SPORTS_LOGO}
 ];
 function extractNewsImage(item){if(item.thumbnail)return item.thumbnail;if(item.enclosure?.link)return item.enclosure.link;if(item.enclosure?.url)return item.enclosure.url;const content=String(item.content||"")+" "+String(item.description||"");const match=content.match(/<img[^>]+src=["']([^"']+)["']/i);return match?match[1]:""}
 function cleanNewsText(value){return String(value||"").replace(/<[^>]*>/g," ").replace(/&nbsp;/gi," ").replace(/&amp;/gi,"&").replace(/&#39;/gi,"'").replace(/&quot;/gi,'"').replace(/\b0{4,}\b/g,"").replace(/\s+/g," ").trim()}
@@ -301,17 +301,13 @@ function safeHttpUrl(value){try{const url=new URL(value);if(url.protocol==="http
 function openCurrentNews(){const item=sportsNews[newsIndex];if(!item)return;const url=safeHttpUrl(item.link);if(url)window.open(url,"_blank","noopener,noreferrer")}
 function renderNewsSlide(){
  const slide=$("newsSlide");if(!slide||!sportsNews.length)return;
- const item=sportsNews[newsIndex];slide.innerHTML="";slide.setAttribute("aria-label","Open "+item.source+" article: "+item.title);
+ const item=sportsNews[newsIndex];slide.innerHTML="";slide.setAttribute("aria-label","Open Sky Sports article: "+item.title);
  const imageUrl=safeHttpUrl(item.image);
- if(imageUrl){const image=document.createElement("img");image.className="news-image";image.src=imageUrl;image.alt=item.source+" news photograph";image.loading="eager";image.onerror=()=>image.remove();slide.append(image)}
+ if(imageUrl){const image=document.createElement("img");image.className="news-image";image.src=imageUrl;image.alt="Sky Sports news photograph";image.loading="eager";image.onerror=()=>image.remove();slide.append(image)}
  const shade=document.createElement("div");shade.className="news-image-shade";
  const content=document.createElement("div");content.className="news-content";
  const sourceBadge=document.createElement("div");sourceBadge.className="news-source";
- if(item.source==="SKY SPORTS"){
-  const logo=document.createElement("img");logo.src=SKY_SPORTS_LOGO;logo.alt="Sky Sports";logo.onerror=()=>{logo.remove();const fallback=document.createElement("span");fallback.className="news-source-text";fallback.textContent="SKY SPORTS";sourceBadge.append(fallback)};sourceBadge.append(logo);
- }else{
-  const sourceText=document.createElement("span");sourceText.className="news-source-text";sourceText.textContent=item.source;sourceBadge.append(sourceText);
- }
+ const logo=document.createElement("img");logo.src=SKY_SPORTS_LOGO;logo.alt="Sky Sports logo";logo.onerror=()=>{logo.remove();const fallback=document.createElement("span");fallback.className="news-source-text";fallback.textContent="SKY SPORTS";sourceBadge.append(fallback)};sourceBadge.append(logo);
  const heading=document.createElement("h2");heading.textContent=item.title;
  content.append(sourceBadge,heading);slide.append(shade,content);
 }
@@ -325,17 +321,17 @@ async function loadSportsNews(){
   const unique=new Map();
   successful.forEach(item=>{const key=(item.link||item.source+item.title).toLowerCase();if(!unique.has(key))unique.set(key,item)});
   sportsNews=Array.from(unique.values()).filter(item=>item.title).slice(0,45);
-  if(!sportsNews.length)throw new Error("No sports articles returned from the news feeds.");
+  if(!sportsNews.length)throw new Error("No Sky Sports articles returned.");
   newsIndex=0;renderNewsSlide();restartNewsTimer();
- }catch(error){console.error("News loading error:",error);if(!sportsNews.length)slide.innerHTML='<div class="news-content"><div class="news-source"><span class="news-source-text">SPORTS NEWS</span></div><h2>Sports headlines are temporarily unavailable</h2></div>'}
+ }catch(error){console.error("Sky Sports news loading error:",error);if(!sportsNews.length)slide.innerHTML='<div class="news-content"><div class="news-source"><span class="news-source-text">SKY SPORTS</span></div><h2>Sky Sports headlines are temporarily unavailable</h2></div>'}
 }
 $("newsSlide").addEventListener("click",openCurrentNews);$("newsSlide").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openCurrentNews()}});
 loadSportsNews();setInterval(loadSportsNews,15*60*1000);
 
-/* LEAGUE SELECTORS */
+/* LEAGUE SELECTORS — EACH TIER HAS ITS OWN FILTER */
 function buildLeagueSelector(type){const grid=$(type+"LeagueGrid");if(!grid)return;grid.innerHTML="";leagueOptions.forEach(league=>{const button=document.createElement("button");button.type="button";button.className="league-button";button.classList.toggle("active",selectedLeagues[type]===league.name);const title=document.createElement("strong");title.textContent=league.name;button.append(title);button.addEventListener("click",()=>{selectedLeagues[type]=league.name;buildLeagueSelector(type);renderPredictions(type)});grid.append(button)})}
 
-/* PREDICTION CATEGORY DETECTION — never mix membership tiers */
+/* PREDICTION CATEGORY DETECTION — EXPLICIT ODDS CATEGORY TAKES PRIORITY */
 function normalizeTierValue(value){
  const v=String(value??"").trim().toLowerCase().replace(/[_-]+/g," ");
  if(!v)return"";
@@ -346,18 +342,28 @@ function normalizeTierValue(value){
 }
 function recordTier(record){
  if(!record||typeof record!=="object")return"";
- const fields=[
-  "prediction_tier","prediction_type","prediction_category","odds_type","odds_category",
-  "membership_tier","tier","plan","access_level","member_type","package","membership",
-  "category","type","subscription_type","plan_type"
+
+ /* First trust fields that describe the prediction's own odds category. */
+ const explicitFields=[
+  "prediction_tier","prediction_category","odds_type","odds_category",
+  "prediction_type","odds_plan","prediction_plan","category"
  ];
- for(const field of fields){
+ for(const field of explicitFields){
   const tier=normalizeTierValue(record[field]);
   if(tier)return tier;
  }
+
+ /* Then use explicit boolean flags when the row has no category label. */
  if(record.is_rollover===true||record.rollover===true)return"rollover";
  if(record.is_vip===true||record.vip===true||record.premium===true)return"vip";
  if(record.is_free===true||record.free_odds===true)return"free";
+
+ /* Membership fields are only a fallback, not the first choice. */
+ const membershipFields=["membership_tier","tier","plan","access_level","member_type","package","membership","subscription_type","plan_type","type"];
+ for(const field of membershipFields){
+  const tier=normalizeTierValue(record[field]);
+  if(tier)return tier;
+ }
  return"";
 }
 function classifyPrediction(record){return recordTier(record)}
@@ -377,7 +383,7 @@ async function loadPredictions(){
   if(memberAccess.rollover)renderPredictions("rollover");
   updateWinningStats(rows);
   const unclassified=rows.filter(r=>!classifyPrediction(r)).length;
-  if(unclassified)console.warn(unclassified+" prediction record(s) were not displayed because their membership tier could not be identified. Check the tier field on those Supabase records.");
+  if(unclassified)console.warn(unclassified+" prediction record(s) were not displayed because their prediction category could not be identified. Check the category/tier field on those Supabase records.");
  }catch(error){
   console.error("Prediction loading error:",error);
   $("freePredictions").innerHTML='<div class="empty card">Unable to load predictions. Please refresh and try again.</div>';
@@ -415,7 +421,7 @@ function leagueMatches(record,selected){
  return(aliases[selected.toLowerCase()]||[selected.toLowerCase()]).some(name=>league.includes(name));
 }
 
-/* STRICT MATCH-DATE HANDLING — undated records are not repeated on every day */
+/* STRICT DATE MATCHING — WAT MATCH DATE, WITH PUBLICATION DATE FALLBACK */
 function validDateKey(key){
  if(!/^\d{4}-\d{2}-\d{2}$/.test(String(key||"")))return"";
  const parts=key.split("-").map(Number);
@@ -423,26 +429,51 @@ function validDateKey(key){
  if(date.getUTCFullYear()!==parts[0]||date.getUTCMonth()!==parts[1]-1||date.getUTCDate()!==parts[2])return"";
  return key;
 }
-function predictionDateKey(record){
- if(!record||typeof record!=="object")return"";
- const fields=["match_date","fixture_date","matchDate","fixtureDate","event_date","eventDate","match_datetime","matchDateTime","kickoff_at","kickoff","starts_at","date"];
- let raw="";
- for(const field of fields){
-  const value=record[field];
-  if(value!==undefined&&value!==null&&String(value).trim()!==""){raw=value;break}
- }
- if(!raw)return"";
+function parsePredictionDateValue(raw){
+ if(raw===undefined||raw===null||String(raw).trim()==="")return"";
  if(typeof raw==="number"){
   const numericDate=new Date(raw<100000000000?raw*1000:raw);
   return Number.isNaN(numericDate.getTime())?"":nigeriaDate(numericDate);
  }
  const value=String(raw).trim();
- const iso=value.match(/^(\d{4})-(\d{2})-(\d{2})/);
- if(iso)return validDateKey(iso[1]+"-"+iso[2]+"-"+iso[3]);
+
+ /* A date-only database value is already a calendar date; do not shift it. */
+ const dateOnly=value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ if(dateOnly)return validDateKey(dateOnly[1]+"-"+dateOnly[2]+"-"+dateOnly[3]);
+
+ /* Datetime values are converted to the Nigerian calendar date. */
+ if(/^\d{4}-\d{2}-\d{2}[T ]/.test(value)){
+  const parsedDate=new Date(value);
+  return Number.isNaN(parsedDate.getTime())?"":nigeriaDate(parsedDate);
+ }
+
+ /* Support common day/month/year values saved by manual forms. */
  const local=value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
  if(local)return validDateKey(local[3]+"-"+String(local[2]).padStart(2,"0")+"-"+String(local[1]).padStart(2,"0"));
+
  const parsed=new Date(value);
  if(!Number.isNaN(parsed.getTime()))return nigeriaDate(parsed);
+ return"";
+}
+function predictionDateKey(record){
+ if(!record||typeof record!=="object")return"";
+
+ /* Prefer the fixture/match date when the admin supplied one. */
+ const matchDateFields=[
+  "match_date","fixture_date","matchDate","fixtureDate","event_date","eventDate",
+  "match_datetime","matchDateTime","kickoff_at","kickoff","starts_at","date"
+ ];
+ for(const field of matchDateFields){
+  const key=parsePredictionDateValue(record[field]);
+  if(key)return key;
+ }
+
+ /* If no match date exists, use when the prediction was actually published. */
+ const publicationFields=["published_at","posted_at","created_at","inserted_at","createdAt","publishedAt"];
+ for(const field of publicationFields){
+  const key=parsePredictionDateValue(record[field]);
+  if(key)return key;
+ }
  return"";
 }
 function formatPredictionDate(record){
@@ -473,18 +504,21 @@ function renderPredictions(type){
  const containerId={free:"freePredictions",vip:"vipPredictions",rollover:"rolloverPredictions"}[type];
  const container=$(containerId);if(!container)return;
  const selected=selectedLeagues[type],selectedDate=nigeriaDate(selectedCalendarDate);
- /* Tier and league are separate filters. A missing/invalid match date is excluded. */
+
+ /* Keep the tier check independent from the date and league checks. */
  const records=(predictionRecords[type]||[]).filter(record=>{
   if(classifyPrediction(record)!==type)return false;
   if(!leagueMatches(record,selected))return false;
   const recordDate=predictionDateKey(record);
   return Boolean(recordDate)&&recordDate===selectedDate;
  });
+
  const labelId={free:"freeSelectedLeague",vip:"vipSelectedLeague",rollover:"rollSelectedLeague"}[type];
  if($(labelId))$(labelId).textContent=selected==="All"?"ALL PREDICTIONS":selected.toUpperCase();
  if(type==="free"&&$("freePredictionCount"))$("freePredictionCount").textContent=records.length+" selections";
  container.innerHTML="";
  if(!records.length){container.innerHTML='<div class="empty card">No predictions available in this category for the selected date.</div>';return}
+
  records.forEach(record=>{
   const card=document.createElement("div");card.className="prediction-card";
   const top=document.createElement("div");top.className="prediction-top";
