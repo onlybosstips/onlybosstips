@@ -54,16 +54,31 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
  from{opacity:.4;transform:translateY(5px)}
  to{opacity:1;transform:none}
 }
+
+/* PROFILE */
 .profile{
  display:flex;align-items:center;gap:13px;
  background:linear-gradient(110deg,#14271d,#101915);
  border:1px solid #284533;border-radius:var(--radius);
  padding:15px;margin-bottom:16px
 }
+.avatar-wrap{position:relative;flex-shrink:0}
 .avatar{
- width:45px;height:45px;border-radius:50%;
- background:#1a754b;display:grid;place-items:center;
- font-weight:800;font-size:18px
+ width:52px;height:52px;border-radius:50%;
+ background:#fff;color:#77837b;
+ display:grid;place-items:center;
+ border:2px solid #e8f1eb;overflow:hidden
+}
+.avatar svg{width:28px;height:28px;stroke:#8c9990}
+.avatar img{
+ width:100%;height:100%;object-fit:cover;
+ display:block
+}
+.online-dot{
+ position:absolute;right:0;bottom:0;
+ width:13px;height:13px;border-radius:50%;
+ background:#19c779;border:2px solid #14271d;
+ box-shadow:0 0 8px #19c77988
 }
 .profile h2{font-size:15px;margin:0 0 4px}
 .profile p{font-size:11px;color:var(--muted);margin:0}
@@ -72,6 +87,7 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
  color:#aaf1ca;border:1px solid #28784f;
  padding:6px 9px;border-radius:20px
 }
+
 .section-title{
  font-size:14px;font-weight:800;letter-spacing:.5px;
  margin:20px 0 11px;display:flex;align-items:center;
@@ -82,7 +98,6 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
  background:var(--panel);border:1px solid var(--line);
  border-radius:var(--radius);padding:14px;margin-bottom:13px
 }
-.clock{font-size:11px;color:var(--green);font-variant-numeric:tabular-nums}
 .page-heading{margin:4px 0 15px}
 .page-heading h1{font-size:20px;margin:0 0 5px}
 .page-heading p{font-size:11px;color:var(--muted);margin:0}
@@ -92,20 +107,34 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
  color:#9af0bc;border-radius:9px;padding:9px 13px;
  font-size:10px;font-weight:800;margin-bottom:14px
 }
-.profile + .section-title{margin-top:18px}
 
-/* SPORTS NEWS CAROUSEL */
+/* NEWS WITH PHOTOGRAPHS */
 .news-carousel{
- position:relative;min-height:300px;padding:0;overflow:hidden;
- background:linear-gradient(135deg,#102b1d,#07100b 75%);
- touch-action:pan-y
+ position:relative;overflow:hidden;padding:0;
+ background:#0b1510;min-height:365px
 }
 .news-slide{
- min-height:255px;padding:28px 22px 20px;
+ position:relative;min-height:365px;
  display:flex;flex-direction:column;justify-content:flex-end;
- background:
- radial-gradient(circle at 85% 20%,#24653d55,transparent 45%),
- linear-gradient(135deg,#102b1d,#07100b)
+ overflow:hidden;background:#102016
+}
+.news-image{
+ position:absolute;inset:0;width:100%;height:100%;
+ object-fit:cover;opacity:.78;
+ transition:opacity .35s ease,transform 7s linear;
+ transform:scale(1.02)
+}
+.news-slide.image-loaded .news-image{transform:scale(1.08)}
+.news-image-shade{
+ position:absolute;inset:0;
+ background:linear-gradient(
+  0deg,rgba(3,10,6,.98) 0%,
+  rgba(3,10,6,.76) 42%,
+  rgba(3,10,6,.12) 100%
+ )
+}
+.news-content{
+ position:relative;z-index:2;padding:24px 20px 22px
 }
 .news-source{
  display:inline-block;width:max-content;
@@ -116,15 +145,16 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
 }
 .news-slide h2{
  max-width:650px;font-size:clamp(20px,4vw,30px);
- line-height:1.3;margin:18px 0 10px
+ line-height:1.3;margin:15px 0 8px
 }
 .news-slide p{
  max-width:600px;font-size:12px;
- line-height:1.7;color:#b5c7bb
+ line-height:1.6;color:#d0ddd4;margin:0
 }
 .news-read{
- width:max-content;color:#8af0b5;text-decoration:none;
- font-size:11px;font-weight:800;margin-top:12px
+ display:inline-block;color:#8af0b5;
+ text-decoration:none;font-size:11px;
+ font-weight:800;margin-top:13px
 }
 .news-controls{
  display:flex;justify-content:space-between;
@@ -153,6 +183,7 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
 }
 .match-head strong{font-size:14px}
 .date-label{font-size:11px;color:var(--muted);margin-top:3px}
+.clock{font-size:11px;color:var(--green);font-variant-numeric:tabular-nums}
 .date-controls{
  display:flex;align-items:center;justify-content:center;
  gap:24px;padding:10px;background:#0c1510;
@@ -163,17 +194,16 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
  background:#153522;color:#9af0bc;border-radius:9px;font-size:25px
 }
 .date-controls span{font-size:12px;font-weight:800;letter-spacing:1px}
-.sport-tabs,.score-tabs,.filter-row{
+.sport-tabs,.score-tabs{
  display:flex;gap:7px;overflow-x:auto;padding:2px 0 10px;
  scrollbar-width:none
 }
-.sport-tabs button,.score-tabs button,.filter-row button{
+.sport-tabs button,.score-tabs button{
  white-space:nowrap;border:1px solid var(--line);
  border-radius:20px;background:#0d1510;color:var(--muted);
  padding:8px 12px;font-size:10px;font-weight:700
 }
-.sport-tabs button.active,.score-tabs button.active,
-.filter-row button.active{
+.sport-tabs button.active,.score-tabs button.active{
  background:#16472e;border-color:#238d57;color:#c4f8d9
 }
 .score-list{display:grid;gap:8px}
@@ -210,7 +240,36 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
  font-size:10px;line-height:1.6
 }
 
-/* PREDICTIONS AND MEMBERSHIP */
+/* LEAGUE SELECTOR */
+.league-screen{
+ display:flex;flex-direction:column;gap:9px
+}
+.league-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:9px
+}
+.league-button{
+ min-height:67px;display:flex;align-items:center;
+ gap:11px;text-align:left;padding:12px;
+ background:#101a14;border:1px solid #263b2d;
+ border-radius:12px;color:#eaf4ed;
+ transition:.15s
+}
+.league-button:active{transform:scale(.98)}
+.league-button.active{
+ background:#153b27;border-color:#20a965;
+ box-shadow:inset 0 0 0 1px #20a96544
+}
+.league-icon{
+ width:34px;height:34px;flex-shrink:0;
+ display:grid;place-items:center;
+ background:#1b3022;border-radius:10px;
+ color:#9af0bc;font-size:10px;font-weight:900
+}
+.league-button strong{display:block;font-size:11px}
+.league-button small{
+ display:block;font-size:9px;color:var(--muted);margin-top:4px
+}
 .prediction-card{
  background:#0c1510;border:1px solid var(--line);
  border-radius:12px;padding:13px;margin-bottom:9px
@@ -229,6 +288,8 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
 .status.won{background:#123b28;color:#75e5a5}
 .status.lost{background:#401c22;color:#ff8992}
 .status.void{background:#292d30;color:#b7c0c4}
+
+/* MEMBERSHIP */
 .gate{text-align:center;padding:26px 18px}
 .gate-icon{
  width:55px;height:55px;border-radius:18px;
@@ -245,6 +306,13 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
  border-radius:10px;padding:12px 17px;
  font-size:11px;font-weight:800
 }
+.payment-detail{
+ background:#0c1510;border:1px solid #294333;
+ border-radius:12px;padding:14px;margin:12px 0
+}
+.payment-detail p{font-size:11px;color:var(--muted);line-height:1.8}
+.payment-detail strong{color:#eaf5ed}
+.payment-amount{font-size:27px;font-weight:800;color:var(--green)}
 .code-box{
  background:#0c1510;border:1px dashed #365540;
  border-radius:12px;padding:15px;margin-bottom:10px
@@ -257,7 +325,7 @@ main{max-width:920px;margin:auto;padding:17px 14px 30px}
  font-weight:700;margin-top:15px
 }
 
-/* BOTTOM NAVIGATION */
+/* BOTTOM NAV */
 .bottom-nav{
  position:fixed;z-index:30;bottom:0;left:0;right:0;
  background:rgba(9,16,12,.97);border-top:1px solid var(--line);
@@ -281,7 +349,13 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
 @media(min-width:650px){
  .stats-grid{grid-template-columns:repeat(4,1fr)}
  .card{padding:17px}
- .news-slide{min-height:300px;padding:35px}
+ .news-slide{min-height:420px}
+ .news-carousel{min-height:420px}
+ .league-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:380px){
+ .league-grid{grid-template-columns:1fr}
+ .news-slide{min-height:340px}
 }
 </style>
 </head>
@@ -295,11 +369,19 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
 
 <main>
 
-<!-- HOME DASHBOARD -->
+<!-- HOME -->
 <section id="home" class="screen active">
 
  <div class="profile">
-  <div class="avatar" id="avatar">M</div>
+  <div class="avatar-wrap">
+   <div class="avatar" id="avatar">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7">
+     <circle cx="12" cy="8" r="4"/>
+     <path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/>
+    </svg>
+   </div>
+   <span class="online-dot"></span>
+  </div>
   <div>
    <h2 id="memberName">Welcome, Member</h2>
    <p id="memberEmail">Your prediction hub</p>
@@ -314,9 +396,11 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
 
  <div class="news-carousel card" id="sportsNewsCarousel">
   <div class="news-slide" id="newsSlide">
-   <div class="news-source">SPORTS NEWS</div>
-   <h2>Loading latest sports headlines...</h2>
-   <p>Please wait while the latest headlines are collected.</p>
+   <div class="news-content">
+    <div class="news-source">SPORTS NEWS</div>
+    <h2>Loading latest sports headlines...</h2>
+    <p>Preparing the latest sports stories.</p>
+   </div>
   </div>
   <div class="news-controls">
    <button id="newsPrev" aria-label="Previous news">‹</button>
@@ -335,7 +419,7 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
   <div class="match-head">
    <div>
     <strong id="selectedDateText">Today</strong>
-    <div class="date-label">Match results for selected date</div>
+    <div class="date-label">Matches for selected date</div>
    </div>
    <span class="clock">NIGERIA · WAT</span>
   </div>
@@ -354,6 +438,7 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
   <div class="score-tabs" id="scoreTabs">
    <button class="active" data-state="live">LIVE</button>
    <button data-state="finished">FINISHED</button>
+   <button data-state="upcoming">UPCOMING</button>
   </div>
 
   <div id="scoreList" class="score-list">
@@ -393,39 +478,29 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
   <h1>FREE ODDS</h1>
   <p>Free predictions and match selections</p>
  </div>
-
  <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
 
  <div class="card">
   <div class="match-head">
-   <strong>MATCH CENTER</strong>
-   <span class="clock" id="freeClock">WAT</span>
+   <strong>MATCH CENTER</strong><span class="clock" id="freeClock">WAT</span>
   </div>
   <div class="date-controls">
-   <button onclick="changeDate(-1)" aria-label="Previous date">‹</button>
+   <button onclick="changeDate(-1)">‹</button>
    <span id="freeDateLabel">TODAY</span>
-   <button onclick="changeDate(1)" aria-label="Next date">›</button>
+   <button onclick="changeDate(1)">›</button>
   </div>
  </div>
 
- <div class="section-title">FILTER PREDICTIONS</div>
- <div class="filter-row" id="freeFilters">
-  <button class="active">All</button>
-  <button>Premier League</button>
-  <button>Bundesliga</button>
-  <button>La Liga</button>
-  <button>Ligue 1</button>
-  <button>AFCON</button>
-  <button>UEFA</button>
-  <button>World Cup</button>
-  <button>Other Leagues</button>
-  <button>Tennis</button>
-  <button>Basketball</button>
+ <div class="section-title">SELECT A LEAGUE</div>
+ <div class="league-screen">
+  <div class="league-grid" id="freeLeagueGrid"></div>
  </div>
-
- <div class="section-title">FREE PREDICTIONS</div>
+ <div class="section-title">
+  <span id="freeSelectedLeague">ALL PREDICTIONS</span>
+  <small id="freePredictionCount">0 selections</small>
+ </div>
  <div id="freePredictions">
-  <div class="empty card">Your published FREE predictions will appear here when connected to your database.</div>
+  <div class="empty card">No FREE predictions available.</div>
  </div>
 </section>
 
@@ -435,13 +510,11 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
   <h1>VIP ODDS</h1>
   <p>Premium members prediction center</p>
  </div>
-
  <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
 
  <div class="card">
   <div class="match-head">
-   <strong>MATCH CENTER</strong>
-   <span class="clock" id="vipClock">WAT</span>
+   <strong>MATCH CENTER</strong><span class="clock" id="vipClock">WAT</span>
   </div>
   <div class="date-controls">
    <button onclick="changeDate(-1)">‹</button>
@@ -450,11 +523,20 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
   </div>
  </div>
 
- <div id="vipContent" class="card gate">
+ <div id="vipGate" class="card gate">
   <div class="gate-icon">✦</div>
   <h2>VIP MEMBERSHIP REQUIRED</h2>
   <p>VIP ODD are available to approved VIP members. Tap VIEW MEMBERSHIP PLANS to request VIP ODD access.</p>
   <button class="primary" onclick="showPlans('VIP')">VIEW MEMBERSHIP PLANS</button>
+ </div>
+
+ <div id="vipMemberContent" style="display:none">
+  <div class="section-title">SELECT A LEAGUE</div>
+  <div class="league-grid" id="vipLeagueGrid"></div>
+  <div class="section-title">
+   <span id="vipSelectedLeague">ALL PREDICTIONS</span>
+  </div>
+  <div id="vipPredictions"></div>
  </div>
 </section>
 
@@ -464,13 +546,11 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
   <h1>ROLLOVER</h1>
   <p>Rollover membership prediction center</p>
  </div>
-
  <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
 
  <div class="card">
   <div class="match-head">
-   <strong>MATCH CENTER</strong>
-   <span class="clock" id="rollClock">WAT</span>
+   <strong>MATCH CENTER</strong><span class="clock" id="rollClock">WAT</span>
   </div>
   <div class="date-controls">
    <button onclick="changeDate(-1)">‹</button>
@@ -479,11 +559,20 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
   </div>
  </div>
 
- <div id="rollContent" class="card gate">
+ <div id="rollGate" class="card gate">
   <div class="gate-icon">↻</div>
   <h2>ROLLOVER MEMBERSHIP REQUIRED</h2>
-  <p>Rollover predictions are available only to approved Rollover members. Tap below to request access.</p>
-  <button class="primary" onclick="showPlans('ROLLOVER')">VIEW MEMBERSHIP PLANS</button>
+  <p>Rollover predictions are available only to approved Rollover members.</p>
+  <button class="primary" onclick="showPlans('ROLLOVER')">VIEW ROLLOVER MEMBERSHIP</button>
+ </div>
+
+ <div id="rollMemberContent" style="display:none">
+  <div class="section-title">SELECT A LEAGUE</div>
+  <div class="league-grid" id="rollLeagueGrid"></div>
+  <div class="section-title">
+   <span id="rollSelectedLeague">ALL PREDICTIONS</span>
+  </div>
+  <div id="rolloverPredictions"></div>
  </div>
 </section>
 
@@ -491,24 +580,23 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
 <section id="never" class="screen">
  <div class="page-heading">
   <h1>NEVER MISS</h1>
-  <p>Booking codes and selections from your betting platforms</p>
+  <p>Booking codes from your betting platforms</p>
  </div>
-
  <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
 
- <div class="code-box">
-  <h3>SPORTYBET BOOKING CODES</h3>
-  <p>Your SportyBet codes will be published here.</p>
- </div>
-
- <div class="code-box">
-  <h3>MSPORT BOOKING CODES</h3>
-  <p>Your MSport codes will be published here.</p>
- </div>
-
- <div class="code-box">
-  <h3>OTHER PLATFORMS</h3>
-  <p>Additional booking codes and verified links will appear here.</p>
+ <div id="bookingCodes">
+  <div class="code-box">
+   <h3>SPORTYBET BOOKING CODES</h3>
+   <p>Your SportyBet codes will be published here.</p>
+  </div>
+  <div class="code-box">
+   <h3>MSPORT BOOKING CODES</h3>
+   <p>Your MSport codes will be published here.</p>
+  </div>
+  <div class="code-box">
+   <h3>OTHER PLATFORMS</h3>
+   <p>Additional booking codes and verified links will appear here.</p>
+  </div>
  </div>
 
  <div class="notice">
@@ -517,41 +605,54 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
  </div>
 </section>
 
-<!-- MEMBERSHIP PLANS -->
-<section id="plans" class="screen">
+<!-- VIP PAYMENT PAGE -->
+<section id="vipPayment" class="screen">
  <div class="page-heading">
-  <h1>MEMBERSHIP PLANS</h1>
-  <p>Request membership access</p>
+  <h1>VIP MEMBERSHIP PAYMENT</h1>
+  <p>VIP payment information only</p>
  </div>
-
- <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
+ <button class="back-home" onclick="navigate('vip')">← BACK TO VIP ODDS</button>
 
  <div class="card">
-  <h3 style="font-size:14px">VIP MEMBERSHIP</h3>
-  <p style="font-size:24px;font-weight:800;color:var(--green)">
-   ₦5,500 <small style="font-size:10px;color:var(--muted)">/ month</small>
+  <div class="payment-amount">₦5,500</div>
+  <p style="font-size:11px;color:var(--muted)">VIP membership · Monthly</p>
+  <div class="payment-detail">
+   <p>
+    <strong>Bank:</strong> Sterling Bank<br>
+    <strong>Account Number:</strong> 0121973273<br>
+    <strong>Account Name:</strong> Use the account name shown by your bank transfer screen.
+   </p>
+  </div>
+  <button class="primary" onclick="receiptWhatsApp('VIP')">SEND VIP PAYMENT RECEIPT</button>
+  <p style="font-size:10px;color:var(--muted);line-height:1.6;margin-top:14px">
+   VIP access is activated manually after payment confirmation.
   </p>
-  <p style="font-size:11px;color:var(--muted)">
-   Bank: Sterling Bank<br>Account Number: 0121973273
-  </p>
-  <button class="primary" onclick="receiptWhatsApp('VIP')">SEND PAYMENT RECEIPT</button>
  </div>
+</section>
+
+<!-- ROLLOVER PAYMENT PAGE -->
+<section id="rollPayment" class="screen">
+ <div class="page-heading">
+  <h1>ROLLOVER MEMBERSHIP PAYMENT</h1>
+  <p>Rollover payment information only</p>
+ </div>
+ <button class="back-home" onclick="navigate('rollover')">← BACK TO ROLLOVER</button>
 
  <div class="card">
-  <h3 style="font-size:14px">ROLLOVER MEMBERSHIP</h3>
-  <p style="font-size:24px;font-weight:800;color:var(--green)">
-   ₦4,000 <small style="font-size:10px;color:var(--muted)">/ week</small>
+  <div class="payment-amount">₦4,000</div>
+  <p style="font-size:11px;color:var(--muted)">Rollover membership · Weekly</p>
+  <div class="payment-detail">
+   <p>
+    <strong>Bank:</strong> Sterling Bank<br>
+    <strong>Account Number:</strong> 0121973273<br>
+    <strong>Account Name:</strong> Use the account name shown by your bank transfer screen.
+   </p>
+  </div>
+  <button class="primary" onclick="receiptWhatsApp('ROLLOVER')">SEND ROLLOVER PAYMENT RECEIPT</button>
+  <p style="font-size:10px;color:var(--muted);line-height:1.6;margin-top:14px">
+   Rollover access is activated manually after payment confirmation.
   </p>
-  <p style="font-size:11px;color:var(--muted)">
-   Bank: Sterling Bank<br>Account Number: 0121973273
-  </p>
-  <button class="primary" onclick="receiptWhatsApp('ROLLOVER')">SEND PAYMENT RECEIPT</button>
  </div>
-
- <p style="font-size:10px;color:var(--muted);line-height:1.6">
-  Access is activated manually after payment confirmation.
-  Sending a receipt does not automatically activate membership.
- </p>
 </section>
 
 </main>
@@ -578,14 +679,14 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
 "use strict";
 
 /* ==========================================
-   ONLYBOSSTIPS APPLICATION
+   APPLICATION CONFIGURATION
 ========================================== */
 
 const $ = id => document.getElementById(id);
 
 const WAT = "Africa/Lagos";
 const LIVE_SCORES_URL =
-  "https://onlybosstips-api.onrender.com/live-scores";
+ "https://onlybosstips-api.onrender.com/live-scores";
 
 let selectedPage = "home";
 let selectedSport = "football";
@@ -593,8 +694,8 @@ let selectedScoreState = "live";
 let selectedCalendarDate = new Date();
 
 let scoreData = {
-  football:{live:[],finished:[]},
-  basketball:{live:[],finished:[]}
+ football:{live:[],finished:[],upcoming:[]},
+ basketball:{live:[],finished:[],upcoming:[]}
 };
 
 let sportsNews = [];
@@ -602,600 +703,743 @@ let newsIndex = 0;
 let newsTimer = null;
 let newsTouchStart = 0;
 
-/* ==========================================
-   NIGERIA CLOCK
-========================================== */
+const leagueOptions = [
+ {name:"All",short:"ALL",description:"Every category"},
+ {name:"Premier League",short:"EPL",description:"English football"},
+ {name:"Bundesliga",short:"BL",description:"German football"},
+ {name:"La Liga",short:"LL",description:"Spanish football"},
+ {name:"Ligue 1",short:"L1",description:"French football"},
+ {name:"World Cup",short:"WC",description:"International football"},
+ {name:"UEFA",short:"UEFA",description:"European competitions"},
+ {name:"AFCON",short:"AFCON",description:"African football"},
+ {name:"Champions League",short:"UCL",description:"UEFA Champions League"},
+ {name:"Europa League",short:"UEL",description:"UEFA Europa League"},
+ {name:"Conference League",short:"UECL",description:"UEFA Conference League"},
+ {name:"Other Leagues",short:"OTHER",description:"Other football leagues"},
+ {name:"Tennis",short:"TEN",description:"Tennis selections"},
+ {name:"Basketball",short:"BASK",description:"Basketball selections"}
+];
 
-function nigeriaTime(){
-  return new Intl.DateTimeFormat("en-GB",{
-    timeZone:WAT,
-    hour:"2-digit",
-    minute:"2-digit",
-    second:"2-digit",
-    hour12:false
-  }).format(new Date());
-}
+let selectedLeagues = {
+ free:"All",
+ vip:"All",
+ rollover:"All"
+};
+
+/* ==========================================
+   DATE AND TIME
+========================================== */
 
 function nigeriaDate(date=new Date()){
-  return new Intl.DateTimeFormat("en-CA",{
-    timeZone:WAT,
-    year:"numeric",
-    month:"2-digit",
-    day:"2-digit"
-  }).format(date);
+ return new Intl.DateTimeFormat("en-CA",{
+  timeZone:WAT,
+  year:"numeric",
+  month:"2-digit",
+  day:"2-digit"
+ }).format(date);
 }
 
-function updateClock(){
-  const value=nigeriaTime()+" WAT";
-
-  ["clock","freeClock","vipClock","rollClock"].forEach(id=>{
-    if($(id))$(id).textContent=value;
-  });
-
-  if($("year")){
-    $("year").textContent=new Intl.DateTimeFormat("en",{
-      timeZone:WAT,
-      year:"numeric"
-    }).format(new Date());
-  }
-}
-
-updateClock();
-setInterval(updateClock,1000);
-
-
-/* ==========================================
-   NAVIGATION
-========================================== */
-
-function navigate(page){
-  const target=$(page);
-  if(!target)return;
-
-  document.querySelectorAll(".screen").forEach(screen=>{
-    screen.classList.toggle("active",screen.id===page);
-  });
-
-  document.querySelectorAll(".nav-item").forEach(item=>{
-    item.classList.toggle("active",item.dataset.page===page);
-  });
-
-  selectedPage=page;
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-}
-
-document.querySelectorAll(".nav-item").forEach(button=>{
-  button.addEventListener("click",()=>{
-    navigate(button.dataset.page);
-  });
-});
-
-document.querySelector(".brand").addEventListener("click",()=>{
-  navigate("home");
-});
-
-
-/* ==========================================
-   DATE NAVIGATION
-========================================== */
-
-function shiftDate(date,amount){
-  const copy=new Date(date);
-  copy.setDate(copy.getDate()+amount);
-  return copy;
+function nigeriaTime(){
+ return new Intl.DateTimeFormat("en-GB",{
+  timeZone:WAT,
+  hour:"2-digit",
+  minute:"2-digit",
+  second:"2-digit",
+  hour12:false
+ }).format(new Date());
 }
 
 function formatDate(date,options){
-  return new Intl.DateTimeFormat("en-GB",{
-    timeZone:WAT,
-    ...options
-  }).format(date);
+ return new Intl.DateTimeFormat("en-GB",{
+  timeZone:WAT,
+  ...options
+ }).format(date);
 }
 
-function changeDate(amount){
-  selectedCalendarDate=shiftDate(selectedCalendarDate,amount);
-  refreshDateLabels();
-  loadLiveScores();
+function shiftDate(date,amount){
+ const copy=new Date(date);
+ copy.setDate(copy.getDate()+amount);
+ return copy;
+}
+
+function updateClock(){
+ const value=nigeriaTime()+" WAT";
+
+ ["clock","freeClock","vipClock","rollClock"].forEach(id=>{
+  if($(id))$(id).textContent=value;
+ });
+
+ if($("year")){
+  $("year").textContent=new Intl.DateTimeFormat("en",{
+   timeZone:WAT,
+   year:"numeric"
+  }).format(new Date());
+ }
 }
 
 function refreshDateLabels(){
-  const today=nigeriaDate(new Date());
-  const selected=nigeriaDate(selectedCalendarDate);
+ const today=nigeriaDate(new Date());
+ const selected=nigeriaDate(selectedCalendarDate);
 
-  let label;
+ const label=selected===today
+  ?"TODAY"
+  :formatDate(selectedCalendarDate,{
+    weekday:"short",
+    day:"2-digit",
+    month:"short",
+    year:"numeric"
+   }).toUpperCase();
 
-  if(selected===today){
-    label="TODAY";
-  }else{
-    label=formatDate(selectedCalendarDate,{
-      weekday:"short",
-      day:"2-digit",
-      month:"short",
-      year:"numeric"
-    }).toUpperCase();
-  }
+ if($("selectedDateText")){
+  $("selectedDateText").textContent=
+   selected===today
+   ?"Today"
+   :formatDate(selectedCalendarDate,{
+     weekday:"long",
+     day:"2-digit",
+     month:"long",
+     year:"numeric"
+    });
+ }
 
-  if($("selectedDateText")){
-    $("selectedDateText").textContent=
-      selected===today
-      ?"Today"
-      :formatDate(selectedCalendarDate,{
-        weekday:"long",
-        day:"2-digit",
-        month:"long",
-        year:"numeric"
-      });
-  }
-
-  [
-    "calendarDateLabel",
-    "freeDateLabel",
-    "vipDateLabel",
-    "rollDateLabel"
-  ].forEach(id=>{
-    if($(id))$(id).textContent=label;
-  });
+ [
+  "calendarDateLabel",
+  "freeDateLabel",
+  "vipDateLabel",
+  "rollDateLabel"
+ ].forEach(id=>{
+  if($(id))$(id).textContent=label;
+ });
 }
 
-$("previousDate").addEventListener("click",()=>{
-  changeDate(-1);
-});
+function changeDate(amount){
+ selectedCalendarDate=shiftDate(selectedCalendarDate,amount);
+ refreshDateLabels();
 
-$("nextDate").addEventListener("click",()=>{
-  changeDate(1);
-});
+ // Remove previous date's scores immediately.
+ clearScoreDisplay();
+ loadLiveScores();
+}
 
+$("previousDate").addEventListener("click",()=>changeDate(-1));
+$("nextDate").addEventListener("click",()=>changeDate(1));
+
+updateClock();
+setInterval(updateClock,1000);
 refreshDateLabels();
 
 
 /* ==========================================
-   SPORT AND SCORE TABS
+   MAIN NAVIGATION
 ========================================== */
 
-document.querySelectorAll("#sportTabs button").forEach(button=>{
-  button.addEventListener("click",()=>{
-    document.querySelectorAll("#sportTabs button").forEach(item=>{
-      item.classList.remove("active");
-    });
+function navigate(page){
+ const target=$(page);
+ if(!target)return;
 
-    button.classList.add("active");
-    selectedSport=button.dataset.sport;
-    renderScores();
-  });
-});
+ document.querySelectorAll(".screen").forEach(screen=>{
+  screen.classList.toggle("active",screen.id===page);
+ });
 
-document.querySelectorAll("#scoreTabs button").forEach(button=>{
-  button.addEventListener("click",()=>{
-    document.querySelectorAll("#scoreTabs button").forEach(item=>{
-      item.classList.remove("active");
-    });
+ document.querySelectorAll(".nav-item").forEach(button=>{
+  button.classList.toggle(
+   "active",
+   button.dataset.page===page
+  );
+ });
 
-    button.classList.add("active");
-    selectedScoreState=button.dataset.state;
-    renderScores();
-  });
+ selectedPage=page;
+
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+
+document.querySelectorAll(".nav-item").forEach(button=>{
+ button.addEventListener("click",()=>{
+  navigate(button.dataset.page);
+ });
 });
 
 
 /* ==========================================
-   LIVE AND FINISHED SCORE API
+   SPORTS AND SCORE TABS
 ========================================== */
 
-function getFirst(object,keys,fallback=""){
-  for(const key of keys){
-    if(
-      object &&
-      object[key]!==undefined &&
-      object[key]!==null
-    ){
-      return object[key];
-    }
-  }
+document.querySelectorAll("#sportTabs button").forEach(button=>{
+ button.addEventListener("click",()=>{
+  document.querySelectorAll("#sportTabs button").forEach(item=>{
+   item.classList.remove("active");
+  });
 
-  return fallback;
+  button.classList.add("active");
+  selectedSport=button.dataset.sport;
+  renderScores();
+ });
+});
+
+document.querySelectorAll("#scoreTabs button").forEach(button=>{
+ button.addEventListener("click",()=>{
+  document.querySelectorAll("#scoreTabs button").forEach(item=>{
+   item.classList.remove("active");
+  });
+
+  button.classList.add("active");
+  selectedScoreState=button.dataset.state;
+  renderScores();
+ });
+});
+
+
+/* ==========================================
+   DATE-SPECIFIC SCORES
+========================================== */
+
+function clearScoreDisplay(){
+ scoreData={
+  football:{live:[],finished:[],upcoming:[]},
+  basketball:{live:[],finished:[],upcoming:[]}
+ };
+
+ if($("scoreList")){
+  $("scoreList").innerHTML=
+   '<div class="empty">Loading matches for selected date...</div>';
+ }
+}
+
+function getFirst(object,keys,fallback=""){
+ for(const key of keys){
+  if(
+   object &&
+   object[key]!==undefined &&
+   object[key]!==null
+  ){
+   return object[key];
+  }
+ }
+
+ return fallback;
 }
 
 function teamName(value,fallback){
-  if(typeof value==="object"&&value!==null){
-    return getFirst(value,["name","title","team"],fallback);
-  }
+ if(typeof value==="object"&&value!==null){
+  return getFirst(value,["name","title","team"],fallback);
+ }
 
-  return value||fallback;
+ return value||fallback;
 }
 
 function normalizeGame(game){
-  return {
-    home:teamName(
-      getFirst(game,[
-        "home","homeTeam","home_team","team1","participant1"
-      ]),
-      "Home"
-    ),
+ return {
+  home:teamName(
+   getFirst(game,[
+    "home","homeTeam","home_team","team1","participant1"
+   ]),
+   "Home"
+  ),
 
-    away:teamName(
-      getFirst(game,[
-        "away","awayTeam","away_team","team2","participant2"
-      ]),
-      "Away"
-    ),
+  away:teamName(
+   getFirst(game,[
+    "away","awayTeam","away_team","team2","participant2"
+   ]),
+   "Away"
+  ),
 
-    homeScore:getFirst(game,[
-      "homeScore","home_score","homeGoals",
-      "home_goals","scoreHome"
-    ],"-"),
+  homeScore:getFirst(game,[
+   "homeScore","home_score","homeGoals","home_goals","scoreHome"
+  ],"-"),
 
-    awayScore:getFirst(game,[
-      "awayScore","away_score","awayGoals",
-      "away_goals","scoreAway"
-    ],"-"),
+  awayScore:getFirst(game,[
+   "awayScore","away_score","awayGoals","away_goals","scoreAway"
+  ],"-"),
 
-    status:getFirst(game,[
-      "status","time","elapsed","minute"
-    ],"")
-  };
+  status:getFirst(game,[
+   "status","time","elapsed","minute","date"
+  ],""),
+
+  league:getFirst(game,[
+   "league","competition","tournament","category"
+  ],"")
+ };
+}
+
+function extractResponseDate(source){
+ return getFirst(source,[
+  "date",
+  "requestedDate",
+  "requested_date",
+  "matchDate",
+  "match_date"
+ ],null);
 }
 
 async function loadLiveScores(){
-  const list=$("scoreList");
+ const list=$("scoreList");
+ if(!list)return;
 
-  if(!list)return;
+ const requestedDate=nigeriaDate(selectedCalendarDate);
+ const today=nigeriaDate(new Date());
 
-  list.innerHTML=
-    '<div class="empty">Loading match scores...</div>';
+ list.innerHTML=
+  '<div class="empty">Loading '+requestedDate+' matches...</div>';
 
-  try{
-    const selectedDate=nigeriaDate(selectedCalendarDate);
-    const today=nigeriaDate(new Date());
+ const requestUrl=
+  LIVE_SCORES_URL+
+  "?date="+encodeURIComponent(requestedDate);
 
-    let url=LIVE_SCORES_URL;
+ try{
+  const response=await fetch(requestUrl,{
+   method:"GET",
+   headers:{"Accept":"application/json"},
+   cache:"no-store"
+  });
 
-    if(selectedDate!==today){
-      url+="?date="+encodeURIComponent(selectedDate);
-    }
+  if(!response.ok){
+   throw new Error("Scores API returned "+response.status);
+  }
 
-    const response=await fetch(url,{
-      method:"GET",
-      headers:{"Accept":"application/json"},
-      cache:"no-store"
-    });
+  const source=await response.json();
 
-    if(!response.ok){
-      throw new Error("Scores API error: "+response.status);
-    }
+  /*
+   The server must identify the date returned.
+   This prevents a current-day response from being
+   incorrectly displayed for a different selected date.
+  */
 
-    const source=await response.json();
+  const returnedDate=extractResponseDate(source);
 
-    const football=source.football||{};
-    const basketball=source.basketball||{};
-
+  if(requestedDate!==today){
+   if(!returnedDate||String(returnedDate).slice(0,10)!==requestedDate){
     scoreData={
-      football:{
-        live:Array.isArray(football.live)
-          ?football.live.map(normalizeGame):[],
-
-        finished:Array.isArray(football.finished)
-          ?football.finished.map(normalizeGame):[]
-      },
-
-      basketball:{
-        live:Array.isArray(basketball.live)
-          ?basketball.live.map(normalizeGame):[],
-
-        finished:Array.isArray(basketball.finished)
-          ?basketball.finished.map(normalizeGame):[]
-      }
+     football:{live:[],finished:[],upcoming:[]},
+     basketball:{live:[],finished:[],upcoming:[]}
     };
 
-    renderScores();
-
-  }catch(error){
-    console.error("Scores loading failed:",error);
-
     list.innerHTML=
-      '<div class="empty">'+
-      'Scores are temporarily unavailable. Please refresh and try again.'+
-      '</div>';
+     '<div class="empty">'+
+     'The scores server has not returned verified matches for '+
+     requestedDate+
+     '. Historical results and future fixtures require date-specific backend support.'+
+     '</div>';
+
+    return;
+   }
   }
+
+  if(returnedDate&&String(returnedDate).slice(0,10)!==requestedDate){
+   throw new Error("The server returned a different date.");
+  }
+
+  const football=source.football||{};
+  const basketball=source.basketball||{};
+
+  scoreData={
+   football:{
+    live:Array.isArray(football.live)
+     ?football.live.map(normalizeGame):[],
+
+    finished:Array.isArray(football.finished)
+     ?football.finished.map(normalizeGame):[],
+
+    upcoming:Array.isArray(football.upcoming)
+     ?football.upcoming.map(normalizeGame)
+     :Array.isArray(football.fixtures)
+      ?football.fixtures.map(normalizeGame):[]
+   },
+
+   basketball:{
+    live:Array.isArray(basketball.live)
+     ?basketball.live.map(normalizeGame):[],
+
+    finished:Array.isArray(basketball.finished)
+     ?basketball.finished.map(normalizeGame):[],
+
+    upcoming:Array.isArray(basketball.upcoming)
+     ?basketball.upcoming.map(normalizeGame)
+     :Array.isArray(basketball.fixtures)
+      ?basketball.fixtures.map(normalizeGame):[]
+   }
+  };
+
+  renderScores();
+
+ }catch(error){
+  console.error("Date-specific score loading error:",error);
+
+  list.innerHTML=
+   '<div class="empty">'+
+   'Unable to load verified scores for this date. Please try again later.'+
+   '</div>';
+ }
 }
 
 function renderScores(){
-  const list=$("scoreList");
-  if(!list)return;
+ const list=$("scoreList");
+ if(!list)return;
 
-  const games=
-    scoreData[selectedSport]?.[selectedScoreState]||[];
+ const games=
+  scoreData[selectedSport]?.[selectedScoreState]||[];
 
-  if(!games.length){
-    list.innerHTML=
-      '<div class="empty">No '+
-      selectedScoreState+
-      ' '+
-      selectedSport+
-      ' matches were returned for this date.</div>';
+ if(!games.length){
+  const label=selectedScoreState==="upcoming"
+   ?"scheduled fixtures"
+   :selectedScoreState+" matches";
 
-    return;
-  }
+  list.innerHTML=
+   '<div class="empty">No '+label+
+   ' returned for this selected date.</div>';
 
-  list.innerHTML="";
+  return;
+ }
 
-  games.forEach(game=>{
-    const row=document.createElement("div");
-    row.className="score-row";
+ list.innerHTML="";
 
-    const home=document.createElement("div");
-    home.className="team";
+ games.forEach(game=>{
+  const row=document.createElement("div");
+  row.className="score-row";
 
-    const homeCrest=document.createElement("span");
-    homeCrest.className="crest";
-    homeCrest.textContent=
-      String(game.home).charAt(0).toUpperCase();
+  const home=document.createElement("div");
+  home.className="team";
 
-    const homeName=document.createElement("span");
-    homeName.textContent=game.home;
+  const homeCrest=document.createElement("span");
+  homeCrest.className="crest";
+  homeCrest.textContent=
+   String(game.home).charAt(0).toUpperCase();
 
-    home.append(homeCrest,homeName);
+  const homeName=document.createElement("span");
+  homeName.textContent=game.home;
 
-    const center=document.createElement("div");
+  home.append(homeCrest,homeName);
 
-    const score=document.createElement("div");
-    score.className="score";
-    score.textContent=
-      game.homeScore+" : "+game.awayScore;
+  const center=document.createElement("div");
 
-    const meta=document.createElement("div");
-    meta.className="score-meta";
-    meta.textContent=game.status;
+  const score=document.createElement("div");
+  score.className="score";
 
-    center.append(score,meta);
+  score.textContent=
+   selectedScoreState==="upcoming"
+   ?"VS"
+   :game.homeScore+" : "+game.awayScore;
 
-    const away=document.createElement("div");
-    away.className="team";
+  const meta=document.createElement("div");
+  meta.className="score-meta";
+  meta.textContent=game.status;
 
-    const awayName=document.createElement("span");
-    awayName.textContent=game.away;
+  center.append(score,meta);
 
-    const awayCrest=document.createElement("span");
-    awayCrest.className="crest";
-    awayCrest.textContent=
-      String(game.away).charAt(0).toUpperCase();
+  const away=document.createElement("div");
+  away.className="team";
 
-    away.append(awayName,awayCrest);
+  const awayName=document.createElement("span");
+  awayName.textContent=game.away;
 
-    row.append(home,center,away);
-    list.appendChild(row);
-  });
+  const awayCrest=document.createElement("span");
+  awayCrest.className="crest";
+  awayCrest.textContent=
+   String(game.away).charAt(0).toUpperCase();
+
+  away.append(awayName,awayCrest);
+
+  row.append(home,center,away);
+  list.appendChild(row);
+ });
 }
 
 loadLiveScores();
-
-/* Refresh current scores every minute */
 setInterval(loadLiveScores,60000);
 
 
 /* ==========================================
-   SPORTS NEWS FEEDS
+   SPORTS NEWS WITH PHOTOGRAPHS
 ========================================== */
 
 const NEWS_FEEDS=[
-  {
-    name:"SKY SPORTS",
-    url:"https://www.skysports.com/rss/12040"
-  },
-  {
-    name:"SUPERSPORT",
-    url:"https://supersport.com/rss"
-  },
-  {
-    name:"BBC SPORT",
-    url:"https://feeds.bbci.co.uk/sport/rss.xml"
-  }
+ {
+  name:"SKY SPORTS",
+  url:"https://www.skysports.com/rss/12040"
+ },
+ {
+  name:"BBC SPORT",
+  url:"https://feeds.bbci.co.uk/sport/rss.xml"
+ },
+ {
+  name:"SUPERSPORT",
+  url:"https://supersport.com/rss"
+ }
 ];
 
+function extractNewsImage(item){
+ if(item.thumbnail)return item.thumbnail;
+
+ if(item.enclosure&&item.enclosure.link){
+  return item.enclosure.link;
+ }
+
+ if(item.enclosure&&item.enclosure.url){
+  return item.enclosure.url;
+ }
+
+ if(item.content){
+  const match=item.content.match(
+   /<img[^>]+src=["']([^"']+)["']/i
+  );
+
+  if(match)return match[1];
+ }
+
+ if(item.description){
+  const match=item.description.match(
+   /<img[^>]+src=["']([^"']+)["']/i
+  );
+
+  if(match)return match[1];
+ }
+
+ return "";
+}
+
 async function fetchNewsFeed(feed){
-  const url=
-    "https://api.rss2json.com/v1/api.json?rss_url="+
-    encodeURIComponent(feed.url);
+ const url=
+  "https://api.rss2json.com/v1/api.json?rss_url="+
+  encodeURIComponent(feed.url);
 
-  const response=await fetch(url);
+ const response=await fetch(url);
 
-  if(!response.ok){
-    throw new Error(feed.name+" feed unavailable");
+ if(!response.ok){
+  throw new Error(feed.name+" news feed unavailable");
+ }
+
+ const data=await response.json();
+
+ if(data.status==="error"){
+  throw new Error(data.message||"News feed error");
+ }
+
+ return (data.items||[]).map(item=>({
+  source:feed.name,
+  title:item.title||"Sports update",
+  description:String(
+   item.description||item.content||""
+  ).replace(/<[^>]*>/g,"").trim().slice(0,240),
+  image:extractNewsImage(item),
+  link:item.link||"",
+  date:item.pubDate||""
+ }));
+}
+
+function safeHttpUrl(value){
+ try{
+  const url=new URL(value);
+
+  if(url.protocol==="https:"||url.protocol==="http:"){
+   return url.href;
   }
+ }catch(error){}
 
-  const data=await response.json();
-
-  if(data.status==="error"){
-    throw new Error(data.message||feed.name+" feed error");
-  }
-
-  return (data.items||[]).map(item=>({
-    source:feed.name,
-    title:item.title||"Sports update",
-    description:String(
-      item.description||item.content||""
-    ).replace(/<[^>]*>/g,"").trim().slice(0,250),
-    link:item.link||"",
-    date:item.pubDate||""
-  }));
+ return "";
 }
 
 function renderNewsSlide(){
-  const slide=$("newsSlide");
-  const dots=$("newsDots");
+ const slide=$("newsSlide");
+ const dots=$("newsDots");
 
-  if(!slide||!sportsNews.length)return;
+ if(!slide||!sportsNews.length)return;
 
-  const item=sportsNews[newsIndex];
+ const item=sportsNews[newsIndex];
 
-  slide.innerHTML="";
+ slide.innerHTML="";
+ slide.classList.remove("image-loaded");
 
-  const source=document.createElement("div");
-  source.className="news-source";
-  source.textContent=item.source;
+ const imageUrl=safeHttpUrl(item.image);
 
-  const heading=document.createElement("h2");
-  heading.textContent=item.title;
+ if(imageUrl){
+  const image=document.createElement("img");
 
-  const description=document.createElement("p");
-  description.textContent=
-    item.description||"Read the latest sports update.";
+  image.className="news-image";
+  image.src=imageUrl;
+  image.alt="Sports news photograph";
+  image.loading="eager";
 
-  slide.append(source,heading,description);
-
-  if(item.link){
-    try{
-      const url=new URL(item.link);
-
-      if(url.protocol==="https:"||url.protocol==="http:"){
-        const link=document.createElement("a");
-
-        link.className="news-read";
-        link.href=url.href;
-        link.target="_blank";
-        link.rel="noopener noreferrer";
-        link.textContent="READ FULL STORY ↗";
-
-        slide.appendChild(link);
-      }
-    }catch(error){
-      console.warn("Invalid news link");
-    }
-  }
-
-  dots.innerHTML="";
-
-  sportsNews.forEach((_,index)=>{
-    const dot=document.createElement("button");
-
-    dot.className=
-      "news-dot"+(index===newsIndex?" active":"");
-
-    dot.setAttribute("aria-label","News "+(index+1));
-
-    dot.addEventListener("click",()=>{
-      newsIndex=index;
-      renderNewsSlide();
-      restartNewsTimer();
-    });
-
-    dots.appendChild(dot);
+  image.addEventListener("load",()=>{
+   slide.classList.add("image-loaded");
   });
 
-  const progress=$("newsProgress");
+  image.addEventListener("error",()=>{
+   image.remove();
+  });
 
-  if(progress){
-    progress.style.transition="none";
-    progress.style.width="0%";
+  slide.appendChild(image);
+ }
 
-    requestAnimationFrame(()=>{
-      progress.style.transition="width 7s linear";
-      progress.style.width="100%";
-    });
-  }
+ const shade=document.createElement("div");
+ shade.className="news-image-shade";
+
+ const content=document.createElement("div");
+ content.className="news-content";
+
+ const source=document.createElement("div");
+ source.className="news-source";
+ source.textContent=item.source;
+
+ const heading=document.createElement("h2");
+ heading.textContent=item.title;
+
+ const description=document.createElement("p");
+ description.textContent=
+  item.description||"Read the latest sports update.";
+
+ content.append(source,heading,description);
+
+ const linkUrl=safeHttpUrl(item.link);
+
+ if(linkUrl){
+  const link=document.createElement("a");
+
+  link.className="news-read";
+  link.href=linkUrl;
+  link.target="_blank";
+  link.rel="noopener noreferrer";
+  link.textContent="READ FULL STORY ↗";
+
+  content.appendChild(link);
+ }
+
+ slide.append(shade,content);
+
+ dots.innerHTML="";
+
+ sportsNews.forEach((_,index)=>{
+  const dot=document.createElement("button");
+
+  dot.className=
+   "news-dot"+(index===newsIndex?" active":"");
+
+  dot.setAttribute("aria-label","News "+(index+1));
+
+  dot.addEventListener("click",()=>{
+   newsIndex=index;
+   renderNewsSlide();
+   restartNewsTimer();
+  });
+
+  dots.appendChild(dot);
+ });
+
+ const progress=$("newsProgress");
+
+ if(progress){
+  progress.style.transition="none";
+  progress.style.width="0%";
+
+  requestAnimationFrame(()=>{
+   progress.style.transition="width 7s linear";
+   progress.style.width="100%";
+  });
+ }
 }
 
 function nextNews(){
-  if(!sportsNews.length)return;
+ if(!sportsNews.length)return;
 
-  newsIndex=(newsIndex+1)%sportsNews.length;
-  renderNewsSlide();
+ newsIndex=(newsIndex+1)%sportsNews.length;
+ renderNewsSlide();
 }
 
 function previousNews(){
-  if(!sportsNews.length)return;
+ if(!sportsNews.length)return;
 
-  newsIndex=
-    (newsIndex-1+sportsNews.length)%sportsNews.length;
+ newsIndex=
+  (newsIndex-1+sportsNews.length)%sportsNews.length;
 
-  renderNewsSlide();
+ renderNewsSlide();
 }
 
 function restartNewsTimer(){
-  clearInterval(newsTimer);
-  newsTimer=setInterval(nextNews,7000);
+ clearInterval(newsTimer);
+ newsTimer=setInterval(nextNews,7000);
 }
 
 async function loadSportsNews(){
-  const slide=$("newsSlide");
+ const slide=$("newsSlide");
 
-  try{
-    const results=await Promise.allSettled(
-      NEWS_FEEDS.map(fetchNewsFeed)
-    );
+ try{
+  const results=await Promise.allSettled(
+   NEWS_FEEDS.map(fetchNewsFeed)
+  );
 
-    sportsNews=results
-      .filter(result=>result.status==="fulfilled")
-      .flatMap(result=>result.value)
-      .filter(item=>item.title)
-      .slice(0,30);
+  sportsNews=results
+   .filter(result=>result.status==="fulfilled")
+   .flatMap(result=>result.value)
+   .filter(item=>item.title)
+   .slice(0,30);
 
-    if(!sportsNews.length){
-      throw new Error("No sports news available");
-    }
-
-    newsIndex=0;
-    renderNewsSlide();
-    restartNewsTimer();
-
-  }catch(error){
-    console.error("Sports news error:",error);
-
-    if(slide){
-      slide.innerHTML="";
-
-      const source=document.createElement("div");
-      source.className="news-source";
-      source.textContent="SPORTS NEWS";
-
-      const heading=document.createElement("h2");
-      heading.textContent="Sports headlines temporarily unavailable";
-
-      const message=document.createElement("p");
-      message.textContent=
-        "The news providers could not be reached. Please try again later.";
-
-      slide.append(source,heading,message);
-    }
+  if(!sportsNews.length){
+   throw new Error("No news articles were returned.");
   }
+
+  newsIndex=0;
+  renderNewsSlide();
+  restartNewsTimer();
+
+ }catch(error){
+  console.error("News loading error:",error);
+
+  if(slide){
+   slide.innerHTML="";
+
+   const shade=document.createElement("div");
+   shade.className="news-image-shade";
+
+   const content=document.createElement("div");
+   content.className="news-content";
+
+   const source=document.createElement("div");
+   source.className="news-source";
+   source.textContent="SPORTS NEWS";
+
+   const heading=document.createElement("h2");
+   heading.textContent="Sports headlines temporarily unavailable";
+
+   const message=document.createElement("p");
+   message.textContent=
+    "The news providers could not be reached. Please try again later.";
+
+   content.append(source,heading,message);
+   slide.append(shade,content);
+  }
+ }
 }
 
 $("newsNext").addEventListener("click",()=>{
-  nextNews();
-  restartNewsTimer();
+ nextNews();
+ restartNewsTimer();
 });
 
 $("newsPrev").addEventListener("click",()=>{
-  previousNews();
-  restartNewsTimer();
+ previousNews();
+ restartNewsTimer();
 });
 
-/* Swipe left and right on the news carousel */
 $("sportsNewsCarousel").addEventListener(
-  "touchstart",
-  event=>{
-    newsTouchStart=event.changedTouches[0].clientX;
-  },
-  {passive:true}
+ "touchstart",
+ event=>{
+  newsTouchStart=event.changedTouches[0].clientX;
+ },
+ {passive:true}
 );
 
 $("sportsNewsCarousel").addEventListener(
-  "touchend",
-  event=>{
-    const difference=
-      event.changedTouches[0].clientX-newsTouchStart;
+ "touchend",
+ event=>{
+  const difference=
+   event.changedTouches[0].clientX-newsTouchStart;
 
-    if(Math.abs(difference)>45){
-      if(difference<0)nextNews();
-      else previousNews();
+  if(Math.abs(difference)>45){
+   if(difference<0)nextNews();
+   else previousNews();
 
-      restartNewsTimer();
-    }
-  },
-  {passive:true}
+   restartNewsTimer();
+  }
+ },
+ {passive:true}
 );
 
 loadSportsNews();
@@ -1203,145 +1447,275 @@ setInterval(loadSportsNews,15*60*1000);
 
 
 /* ==========================================
-   FREE ODDS FILTERS
+   FULL-SCREEN LEAGUE SELECTORS
 ========================================== */
 
-document.querySelectorAll("#freeFilters button").forEach(button=>{
+function buildLeagueSelector(type){
+ const grid=$(type+"LeagueGrid");
+ if(!grid)return;
+
+ grid.innerHTML="";
+
+ leagueOptions.forEach(league=>{
+  const button=document.createElement("button");
+
+  button.className="league-button";
+  button.classList.toggle(
+   "active",
+   selectedLeagues[type]===league.name
+  );
+
+  const icon=document.createElement("span");
+  icon.className="league-icon";
+  icon.textContent=league.short;
+
+  const details=document.createElement("span");
+
+  const title=document.createElement("strong");
+  title.textContent=league.name;
+
+  const description=document.createElement("small");
+  description.textContent=league.description;
+
+  details.append(title,description);
+  button.append(icon,details);
+
   button.addEventListener("click",()=>{
-    document.querySelectorAll("#freeFilters button").forEach(item=>{
-      item.classList.remove("active");
-    });
+   selectedLeagues[type]=league.name;
 
-    button.classList.add("active");
-
-    const category=button.textContent.trim();
-
-    document.querySelectorAll(
-      "#freePredictions .prediction-card"
-    ).forEach(card=>{
-      const league=card.dataset.league||"";
-
-      card.style.display=
-        category==="All"||
-        league.toLowerCase()===category.toLowerCase()
-        ?"block":"none";
-    });
+   buildLeagueSelector(type);
+   renderPredictions(type);
   });
-});
+
+  grid.appendChild(button);
+ });
+}
+
+["free","vip","rollover"].forEach(buildLeagueSelector);
 
 
 /* ==========================================
-   MEMBERSHIP ACCESS DISPLAY
+   PREDICTION DATA DISPLAY
+========================================== */
+
+/*
+  These arrays are ready to receive your existing
+  database prediction records.
+
+  Do not replace the original Supabase prediction
+  loading, publishing or membership-approval logic
+  with these empty arrays when merging into your
+  existing production website.
+*/
+
+let predictionRecords={
+ free:[],
+ vip:[],
+ rollover:[]
+};
+
+function predictionLeague(record){
+ return String(
+  record.league||
+  record.competition||
+  record.category||
+  "Other Leagues"
+ ).toLowerCase();
+}
+
+function leagueMatches(record,selected){
+ if(selected==="All")return true;
+
+ const league=predictionLeague(record);
+
+ const aliases={
+  "premier league":["premier league","epl"],
+  "bundesliga":["bundesliga"],
+  "la liga":["la liga","laliga"],
+  "ligue 1":["ligue 1","ligue one"],
+  "world cup":["world cup"],
+  "uefa":["uefa"],
+  "afcon":["afcon","africa cup of nations"],
+  "champions league":["champions league","ucl"],
+  "europa league":["europa league","uel"],
+  "conference league":["conference league","uecl"],
+  "other leagues":["other leagues","other"]
+ };
+
+ const accepted=aliases[selected.toLowerCase()]||[
+  selected.toLowerCase()
+ ];
+
+ return accepted.some(name=>league.includes(name));
+}
+
+function renderPredictions(type){
+ const containerId={
+  free:"freePredictions",
+  vip:"vipPredictions",
+  rollover:"rolloverPredictions"
+ }[type];
+
+ const container=$(containerId);
+ if(!container)return;
+
+ const selected=selectedLeagues[type];
+
+ const records=predictionRecords[type].filter(record=>
+  leagueMatches(record,selected)
+ );
+
+ const labelId={
+  free:"freeSelectedLeague",
+  vip:"vipSelectedLeague",
+  rollover:"rollSelectedLeague"
+ }[type];
+
+ if($(labelId)){
+  $(labelId).textContent=
+   selected==="All"?"ALL PREDICTIONS":selected.toUpperCase();
+ }
+
+ if(type==="free"&&$("freePredictionCount")){
+  $("freePredictionCount").textContent=
+   records.length+" selections";
+ }
+
+ container.innerHTML="";
+
+ if(!records.length){
+  container.innerHTML=
+   '<div class="empty card">No predictions available in this category yet.</div>';
+
+  return;
+ }
+
+ records.forEach(record=>{
+  const card=document.createElement("div");
+  card.className="prediction-card";
+
+  const top=document.createElement("div");
+  top.className="prediction-top";
+
+  const league=document.createElement("span");
+  league.textContent=record.league||record.competition||"Football";
+
+  const date=document.createElement("span");
+  date.textContent=record.date||record.match_date||"";
+
+  top.append(league,date);
+
+  const title=document.createElement("h3");
+  title.textContent=
+   record.match||
+   record.fixture||
+   ((record.home_team||"Home")+" vs "+(record.away_team||"Away"));
+
+  const bottom=document.createElement("div");
+  bottom.className="prediction-bottom";
+
+  const pick=document.createElement("span");
+  pick.textContent=
+   "PICK: "+(record.prediction||record.selection||"");
+
+  const status=document.createElement("span");
+  const result=String(
+   record.status||record.result||"PENDING"
+  ).toLowerCase();
+
+  status.className="status "+
+   (["won","lost","void"].includes(result)?result:"pending");
+
+  status.textContent=result.toUpperCase();
+
+  bottom.append(pick,status);
+  card.append(top,title,bottom);
+
+  container.appendChild(card);
+ });
+}
+
+
+/* ==========================================
+   CONNECT EXISTING PREDICTION RECORDS
+========================================== */
+
+function setPredictionRecords(type,records){
+ if(!["free","vip","rollover"].includes(type))return;
+
+ predictionRecords[type]=Array.isArray(records)?records:[];
+
+ renderPredictions(type);
+}
+
+
+/* ==========================================
+   SEPARATE MEMBERSHIP ACCESS
 ========================================== */
 
 let memberAccess={
-  vip:false,
-  rollover:false
+ vip:false,
+ rollover:false
 };
 
 function setMembershipAccess(type,approved){
-  if(type==="VIP"){
-    memberAccess.vip=Boolean(approved);
-  }
+ if(type==="VIP"){
+  memberAccess.vip=Boolean(approved);
+ }
 
-  if(type==="ROLLOVER"){
-    memberAccess.rollover=Boolean(approved);
-  }
+ if(type==="ROLLOVER"){
+  memberAccess.rollover=Boolean(approved);
+ }
 
-  renderMembershipAccess();
+ renderMembershipAccess();
 }
 
 function renderMembershipAccess(){
-  if(memberAccess.vip){
-    $("vipContent").className="card";
+ $("vipGate").style.display=
+  memberAccess.vip?"none":"block";
 
-    $("vipContent").innerHTML=
-      '<div class="section-title">VIP PREDICTIONS</div>'+
-      '<div id="vipPredictions" class="empty">'+
-      'Connect your approved VIP prediction feed here.'+
-      '</div>';
-  }
+ $("vipMemberContent").style.display=
+  memberAccess.vip?"block":"none";
 
-  if(memberAccess.rollover){
-    $("rollContent").className="card";
+ $("rollGate").style.display=
+  memberAccess.rollover?"none":"block";
 
-    $("rollContent").innerHTML=
-      '<div class="section-title">ROLLOVER PREDICTIONS</div>'+
-      '<div id="rolloverPredictions" class="empty">'+
-      'Connect your approved Rollover prediction feed here.'+
-      '</div>';
-  }
+ $("rollMemberContent").style.display=
+  memberAccess.rollover?"block":"none";
+
+ if(memberAccess.vip){
+  renderPredictions("vip");
+ }
+
+ if(memberAccess.rollover){
+  renderPredictions("rollover");
+ }
 }
 
 function showPlans(type){
-  window.currentRequestedPlan=type;
-  navigate("plans");
-}
-
-function receiptWhatsApp(type){
-  const message=
-    "Hello, I have made payment for "+type+
-    " membership on onlybosstips. Please find my payment receipt attached.";
-
-  const url=
-    "https://wa.me/2348032413495?text="+
-    encodeURIComponent(message);
-
-  window.open(url,"_blank","noopener,noreferrer");
+ if(type==="VIP"){
+  navigate("vipPayment");
+ }else if(type==="ROLLOVER"){
+  navigate("rollPayment");
+ }
 }
 
 
 /* ==========================================
-   WINNING STREAK STATISTICS
+   PAYMENT RECEIPT WHATSAPP
 ========================================== */
 
-function updateWinningStats(records){
-  const settled=(records||[]).filter(record=>{
-    const status=String(
-      record.status||record.result||""
-    ).toUpperCase();
+function receiptWhatsApp(type){
+ const message=
+  "Hello, I have made payment for "+
+  type+
+  " membership on onlybosstips. Please find my payment receipt attached.";
 
-    return status==="WON"||status==="LOST";
-  });
+ const url=
+  "https://wa.me/2348032413495?text="+
+  encodeURIComponent(message);
 
-  const won=settled.filter(record=>
-    String(record.status||record.result).toUpperCase()==="WON"
-  ).length;
-
-  const lost=settled.filter(record=>
-    String(record.status||record.result).toUpperCase()==="LOST"
-  ).length;
-
-  const total=won+lost;
-  const rate=total?Math.round((won/total)*100):0;
-
-  let streak=0;
-
-  for(let i=settled.length-1;i>=0;i--){
-    const status=String(
-      settled[i].status||settled[i].result
-    ).toUpperCase();
-
-    if(i===settled.length-1){
-      streak=status==="WON"?1:-1;
-      continue;
-    }
-
-    if((streak>0&&status==="WON")||
-       (streak<0&&status==="LOST")){
-      streak+=streak>0?1:-1;
-    }else{
-      break;
-    }
-  }
-
-  $("statWon").textContent=won;
-  $("statLost").textContent=lost;
-  $("statRate").textContent=rate+"%";
-
-  $("statStreak").textContent=
-    streak>0?streak+"W":
-    streak<0?Math.abs(streak)+"L":"0";
+ window.open(url,"_blank","noopener,noreferrer");
 }
 
 
@@ -1350,75 +1724,143 @@ function updateWinningStats(records){
 ========================================== */
 
 function setMemberProfile(profile){
-  if(!profile)return;
+ if(!profile)return;
 
-  if(profile.name){
-    $("memberName").textContent=
-      "Welcome, "+profile.name;
+ if(profile.name){
+  $("memberName").textContent=
+   "Welcome, "+profile.name;
 
-    $("avatar").textContent=
-      profile.name.trim().charAt(0).toUpperCase();
+  if(!profile.avatar_url){
+   const avatar=$("avatar");
+
+   avatar.innerHTML=
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#8c9990" stroke-width="1.7">'+
+    '<circle cx="12" cy="8" r="4"/>'+
+    '<path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/>'+
+    '</svg>';
   }
+ }
 
-  if(profile.email){
-    $("memberEmail").textContent=profile.email;
-  }
+ if(profile.email){
+  $("memberEmail").textContent=profile.email;
+ }
 
-  if(profile.membership_tier){
-    $("memberTier").textContent=
-      String(profile.membership_tier).toUpperCase()+" MEMBER";
+ if(profile.avatar_url){
+  const imageUrl=safeHttpUrl(profile.avatar_url);
+
+  if(imageUrl){
+   const image=document.createElement("img");
+
+   image.src=imageUrl;
+   image.alt="Member profile picture";
+
+   image.onerror=()=>{
+    image.remove();
+   };
+
+   $("avatar").innerHTML="";
+   $("avatar").appendChild(image);
   }
+ }
+
+ if(profile.membership_tier){
+  $("memberTier").textContent=
+   String(profile.membership_tier).toUpperCase()+" MEMBER";
+ }
 }
 
 
 /* ==========================================
-   SAFE BOOKING CODE DISPLAY
+   WINNING STREAK STATISTICS
 ========================================== */
 
-function addBookingCode(
-  containerId,
-  title,
-  code,
-  platformLink
-){
-  const container=$(containerId);
-  if(!container)return;
+function updateWinningStats(records){
+ const settled=(records||[]).filter(record=>{
+  const status=String(
+   record.status||record.result||""
+  ).toUpperCase();
 
-  const card=document.createElement("div");
-  card.className="code-box";
+  return status==="WON"||status==="LOST";
+ });
 
-  const heading=document.createElement("h3");
-  heading.textContent=title;
+ const won=settled.filter(record=>
+  String(record.status||record.result).toUpperCase()==="WON"
+ ).length;
 
-  const content=document.createElement("p");
-  content.textContent=code;
+ const lost=settled.filter(record=>
+  String(record.status||record.result).toUpperCase()==="LOST"
+ ).length;
 
-  card.append(heading,content);
+ const total=won+lost;
+ const rate=total?Math.round((won/total)*100):0;
 
-  if(platformLink){
-    try{
-      const url=new URL(platformLink);
+ let streak=0;
 
-      if(url.protocol==="https:"||url.protocol==="http:"){
-        const link=document.createElement("a");
+ for(let i=settled.length-1;i>=0;i--){
+  const status=String(
+   settled[i].status||settled[i].result
+  ).toUpperCase();
 
-        link.href=url.href;
-        link.target="_blank";
-        link.rel="noopener noreferrer";
-        link.textContent="OPEN BOOKING PLATFORM";
-
-        link.style.cssText=
-          "display:inline-block;margin-top:12px;"+
-          "color:#75e5a5;font-size:10px;font-weight:800";
-
-        card.appendChild(link);
-      }
-    }catch(error){
-      console.warn("Invalid platform link");
-    }
+  if(i===settled.length-1){
+   streak=status==="WON"?1:-1;
+   continue;
   }
 
-  container.appendChild(card);
+  if((streak>0&&status==="WON")||
+     (streak<0&&status==="LOST")){
+   streak+=streak>0?1:-1;
+  }else{
+   break;
+  }
+ }
+
+ $("statWon").textContent=won;
+ $("statLost").textContent=lost;
+ $("statRate").textContent=rate+"%";
+
+ $("statStreak").textContent=
+  streak>0?streak+"W":
+  streak<0?Math.abs(streak)+"L":"0";
+}
+
+
+/* ==========================================
+   NEVER MISS BOOKING CODES
+========================================== */
+
+function addBookingCode(containerId,title,code,platformLink){
+ const container=$(containerId);
+ if(!container)return;
+
+ const card=document.createElement("div");
+ card.className="code-box";
+
+ const heading=document.createElement("h3");
+ heading.textContent=title;
+
+ const content=document.createElement("p");
+ content.textContent=code;
+
+ card.append(heading,content);
+
+ const url=safeHttpUrl(platformLink);
+
+ if(url){
+  const link=document.createElement("a");
+
+  link.href=url;
+  link.target="_blank";
+  link.rel="noopener noreferrer";
+  link.textContent="OPEN BOOKING PLATFORM";
+
+  link.style.cssText=
+   "display:inline-block;margin-top:12px;"+
+   "color:#75e5a5;font-size:10px;font-weight:800";
+
+  card.appendChild(link);
+ }
+
+ container.appendChild(card);
 }
 
 
@@ -1426,101 +1868,92 @@ function addBookingCode(
    LOGOUT
 ========================================== */
 
-/*
-  IMPORTANT:
-  When connecting this layout to your original website,
-  retain your original Supabase client and authentication
-  configuration.
-
-  The function below supports a client exposed as
-  window.supabaseClient or window.supabase.
-*/
-
 async function logout(){
-  const confirmed=window.confirm(
-    "Are you sure you want to log out?"
-  );
+ const confirmed=window.confirm(
+  "Are you sure you want to log out?"
+ );
 
-  if(!confirmed)return;
+ if(!confirmed)return;
 
-  try{
-    let client=null;
+ try{
+  let client=null;
 
-    if(window.supabaseClient?.auth){
-      client=window.supabaseClient;
-    }else if(
-      window.supabase?.auth&&
-      typeof window.supabase.auth.signOut==="function"
-    ){
-      client=window.supabase;
-    }
-
-    if(client){
-      const {error}=await client.auth.signOut();
-
-      if(error)throw error;
-    }else{
-      /*
-        Fallback for the standalone version.
-        A production Supabase site should use the real client.
-      */
-
-      Object.keys(localStorage).forEach(key=>{
-        if(
-          key.startsWith("sb-")&&
-          key.endsWith("-auth-token")
-        ){
-          localStorage.removeItem(key);
-        }
-      });
-
-      sessionStorage.clear();
-    }
-
-    /*
-      Return to the existing authentication section
-      if this code is merged into the original site.
-    */
-
-    const dashboard=$("memberDashboard");
-    const auth=$("authSection");
-    const welcome=$("welcome");
-
-    if(auth){
-      if(dashboard)dashboard.style.display="none";
-
-      auth.style.display="block";
-
-      if(welcome)welcome.style.display="none";
-
-      window.scrollTo(0,0);
-      return;
-    }
-
-    /*
-      If the original login page is not included,
-      reload the current page after sign-out.
-    */
-
-    window.location.reload();
-
-  }catch(error){
-    console.error("Logout error:",error);
-
-    alert(
-      "Logout failed. Please try again."
-    );
+  if(window.supabaseClient?.auth){
+   client=window.supabaseClient;
+  }else if(
+   window.supabase?.auth&&
+   typeof window.supabase.auth.signOut==="function"
+  ){
+   client=window.supabase;
   }
+
+  if(client){
+   const {error}=await client.auth.signOut();
+
+   if(error)throw error;
+  }else{
+   /*
+    Standalone fallback only.
+    Your production website should use the
+    original configured Supabase client.
+   */
+
+   Object.keys(localStorage).forEach(key=>{
+    if(
+     key.startsWith("sb-")&&
+     key.endsWith("-auth-token")
+    ){
+     localStorage.removeItem(key);
+    }
+   });
+
+   sessionStorage.clear();
+  }
+
+  /*
+   Return to the existing login page if this
+   layout is merged into the original website.
+  */
+
+  const dashboard=$("memberDashboard");
+  const auth=$("authSection");
+  const welcome=$("welcome");
+
+  if(auth){
+   if(dashboard)dashboard.style.display="none";
+
+   auth.style.display="block";
+
+   if(welcome)welcome.style.display="none";
+
+   window.scrollTo(0,0);
+   return;
+  }
+
+  window.location.reload();
+
+ }catch(error){
+  console.error("Logout error:",error);
+
+  alert("Logout failed. Please try again.");
+ }
 }
 
 
 /* ==========================================
-   START APPLICATION
+   INITIALIZE
 ========================================== */
+
+buildLeagueSelector("free");
+buildLeagueSelector("vip");
+buildLeagueSelector("rollover");
+
+renderMembershipAccess();
+
+renderPredictions("free");
 
 refreshDateLabels();
 updateClock();
-renderScores();
 navigate("home");
 
 </script>
