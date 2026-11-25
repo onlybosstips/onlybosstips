@@ -1,4 +1,3 @@
-
 const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
 
@@ -51,7 +50,7 @@ if (supabaseUrl && supabaseSecretKey) {
 
 const DB_COLUMNS = {
   kickoff: "Kickoff",
-  api_fixture_id: "API fixture id",
+  api_fixture_id: "api_fixture_id",
   market_category: "Market caregory",
   market_type: "Market type",
   market_selection: "Market selection",
@@ -59,14 +58,14 @@ const DB_COLUMNS = {
   market_team: "Market team",
   player_name: "Player name",
   player_id: "Player id",
-  fixture_status: "Fixture status",
+  fixture_status: "fixture_status",
   home_score: "Home score",
   away_score: "Away score",
   halftime_home_score: "Halftime home score",
   halftime_away_score: "Halftime away score",
   statistics: "Statistics",
   tracking_updated_at: "Tracking updated at",
-  api_basketball_game_id: "Api basketball game id"
+  api_basketball_game_id: "api_basketball_game_id"
 };
 
 function normalizeDatabaseRow(row) {
@@ -1665,7 +1664,6 @@ app.get("/basketball/games/search", async (req, res) => {
     });
   }
 });
-
 // =====================================
 // SECURE ADMIN FOOTBALL FIXTURE LINKING
 // =====================================
