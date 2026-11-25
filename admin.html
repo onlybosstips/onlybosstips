@@ -9,254 +9,108 @@
 
 <style>
 :root{
- --bg:#050b08;
- --surface:#0b1510;
- --surface2:#101e16;
- --surface3:#14271b;
- --green:#22e879;
- --green2:#16bd60;
- --text:#f2fff6;
- --muted:#9bb6a4;
- --border:rgba(55,231,126,.19);
- --red:#ff5265;
- --gold:#f5c65d;
+ --bg:#050b08;--surface:#0b1510;--surface2:#101e16;--surface3:#14271b;
+ --green:#22e879;--green2:#16bd60;--text:#f2fff6;--muted:#9bb6a4;
+ --border:rgba(55,231,126,.19);--red:#ff5265;--gold:#f5c65d;
  --shadow:0 15px 45px rgba(0,0,0,.28);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
- margin:0;
- min-height:100vh;
- background:
- radial-gradient(ellipse at 15% 0%,rgba(34,232,121,.09),transparent 38%),
- radial-gradient(ellipse at 90% 35%,rgba(34,232,121,.045),transparent 35%),
- var(--bg);
- color:var(--text);
- font-family:Arial,Helvetica,sans-serif;
+ margin:0;min-height:100vh;
+ background:radial-gradient(ellipse at 15% 0%,rgba(34,232,121,.09),transparent 38%),radial-gradient(ellipse at 90% 35%,rgba(34,232,121,.045),transparent 35%),var(--bg);
+ color:var(--text);font-family:Arial,Helvetica,sans-serif;
 }
 header{
- position:relative;
- overflow:hidden;
- padding:25px 20px 23px;
+ position:relative;overflow:hidden;padding:25px 20px 23px;
  background:linear-gradient(120deg,#0b1c12,#102b1a 55%,#08150d);
- border-bottom:1px solid var(--green);
- box-shadow:0 8px 30px rgba(0,0,0,.25);
+ border-bottom:1px solid var(--green);box-shadow:0 8px 30px rgba(0,0,0,.25);
 }
 header:after{
- content:"";
- position:absolute;
- width:230px;height:230px;
- right:-70px;top:-130px;
- border:1px solid rgba(34,232,121,.16);
- border-radius:50%;
+ content:"";position:absolute;width:230px;height:230px;right:-70px;top:-130px;
+ border:1px solid rgba(34,232,121,.16);border-radius:50%;
  box-shadow:0 0 0 25px rgba(34,232,121,.025),0 0 0 55px rgba(34,232,121,.02);
  pointer-events:none;
 }
-.brand{
- max-width:1100px;
- margin:auto;
- position:relative;
- z-index:1;
-}
+.brand{max-width:1100px;margin:auto;position:relative;z-index:1}
 .brand-mark{
- display:inline-flex;
- align-items:center;
- justify-content:center;
- width:38px;height:38px;
- border:1px solid rgba(34,232,121,.5);
- border-radius:12px;
- color:var(--green);
- font-size:22px;
- margin-right:10px;
- vertical-align:middle;
- background:rgba(34,232,121,.07);
+ display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;
+ border:1px solid rgba(34,232,121,.5);border-radius:12px;color:var(--green);
+ font-size:22px;margin-right:10px;vertical-align:middle;background:rgba(34,232,121,.07);
 }
-h1{
- display:inline-block;
- margin:0;
- color:#fff;
- font-size:27px;
- letter-spacing:2px;
- font-weight:900;
- vertical-align:middle;
-}
+h1{display:inline-block;margin:0;color:#fff;font-size:27px;letter-spacing:2px;font-weight:900;vertical-align:middle}
 h1 span{color:var(--green)}
-.header-subtitle{
- display:block;
- margin:10px 0 0 49px;
- color:#a9cbb5;
- font-size:11px;
- font-weight:bold;
- letter-spacing:3px;
-}
+.header-subtitle{display:block;margin:10px 0 0 49px;color:#a9cbb5;font-size:11px;font-weight:bold;letter-spacing:3px}
 main{max-width:1050px;margin:28px auto;padding:0 16px 45px}
 .panel{
- position:relative;
- background:linear-gradient(145deg,rgba(15,30,21,.98),rgba(8,19,13,.98));
- padding:23px;
- border-radius:16px;
- margin-bottom:20px;
- border:1px solid var(--border);
- box-shadow:var(--shadow);
+ position:relative;background:linear-gradient(145deg,rgba(15,30,21,.98),rgba(8,19,13,.98));
+ padding:23px;border-radius:16px;margin-bottom:20px;border:1px solid var(--border);box-shadow:var(--shadow);
 }
 .panel:before{
- content:"";
- position:absolute;
- top:0;left:22px;right:22px;
- height:1px;
+ content:"";position:absolute;top:0;left:22px;right:22px;height:1px;
  background:linear-gradient(90deg,transparent,rgba(34,232,121,.35),transparent);
 }
-h2{
- color:var(--green);
- font-size:20px;
- margin:0 0 14px;
- letter-spacing:.2px;
-}
+h2{color:var(--green);font-size:20px;margin:0 0 14px;letter-spacing:.2px}
 h3{color:#d8f7e2;font-size:16px}
 p{line-height:1.6}
 input,select,textarea,button{
- width:100%;
- padding:14px;
- margin:8px 0;
- border-radius:9px;
- border:1px solid #244a32;
- font-size:15px;
- font-family:inherit;
+ width:100%;padding:14px;margin:8px 0;border-radius:9px;border:1px solid #244a32;
+ font-size:15px;font-family:inherit;
 }
-input,select,textarea{
- background:#07110b;
- color:#f5fff8;
-}
+input,select,textarea{background:#07110b;color:#f5fff8}
 input::placeholder,textarea::placeholder{color:#718b79}
 textarea{min-height:110px;resize:vertical}
-input:focus,select:focus,textarea:focus{
- outline:none;
- border-color:var(--green);
- box-shadow:0 0 0 3px rgba(34,232,121,.09);
-}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(34,232,121,.09)}
 button{
- background:linear-gradient(135deg,#29ef83,#13bd60);
- color:#041009;
- font-weight:900;
- border:0;
- cursor:pointer;
- letter-spacing:.35px;
- transition:transform .15s,filter .15s,box-shadow .15s;
+ background:linear-gradient(135deg,#29ef83,#13bd60);color:#041009;font-weight:900;
+ border:0;cursor:pointer;letter-spacing:.35px;transition:transform .15s,filter .15s,box-shadow .15s;
  box-shadow:0 5px 16px rgba(20,200,99,.12);
 }
 button:hover{filter:brightness(1.08);transform:translateY(-1px)}
 button:active{transform:scale(.99)}
 button:disabled{opacity:.55;cursor:not-allowed;transform:none}
-button.secondary{
- background:#183b27;color:#dffff0;
- border:1px solid #34734a;box-shadow:none;
-}
-button.danger{
- background:linear-gradient(135deg,#d94355,#a91f36);
- color:white;box-shadow:none;
-}
+button.secondary{background:#183b27;color:#dffff0;border:1px solid #34734a;box-shadow:none}
+button.danger{background:linear-gradient(135deg,#d94355,#a91f36);color:white;box-shadow:none}
 .hidden{display:none!important}
 .notice{
- padding:14px;
- background:rgba(24,68,42,.38);
- border:1px solid rgba(53,232,121,.2);
- border-radius:10px;
- margin:12px 0;
- line-height:1.6;
- white-space:pre-wrap;
- color:#d9f6e2;
+ padding:14px;background:rgba(24,68,42,.38);border:1px solid rgba(53,232,121,.2);
+ border-radius:10px;margin:12px 0;line-height:1.6;white-space:pre-wrap;color:#d9f6e2;
 }
-.item{
- background:linear-gradient(145deg,#10271a,#0a1810);
- border:1px solid #244b32;
- padding:17px;
- border-radius:12px;
- margin:13px 0;
- overflow-wrap:anywhere;
-}
+.item{background:linear-gradient(145deg,#10271a,#0a1810);border:1px solid #244b32;padding:17px;border-radius:12px;margin:13px 0;overflow-wrap:anywhere}
 .item button{width:auto;min-width:145px;margin:7px 7px 0 0}
 small{color:var(--muted)}
 .member-tier{color:var(--green);font-weight:bold}
-.membership-option{
- display:flex;align-items:center;gap:12px;
- margin:12px 0;padding:13px;
- background:#07120b;border:1px solid #244b32;border-radius:9px;
-}
-.membership-option input{
- width:20px;height:20px;margin:0;accent-color:var(--green);
-}
+.membership-option{display:flex;align-items:center;gap:12px;margin:12px 0;padding:13px;background:#07120b;border:1px solid #244b32;border-radius:9px}
+.membership-option input{width:20px;height:20px;margin:0;accent-color:var(--green)}
 .membership-option label{font-weight:bold;flex:1;color:#dfffea}
 .announcement-date{color:#9bb6a4;font-size:12px}
-.category-tag{
- display:inline-block;
- background:rgba(34,232,121,.12);
- color:var(--green);
- border:1px solid rgba(34,232,121,.2);
- padding:6px 10px;border-radius:6px;
- font-size:11px;font-weight:900;margin-top:8px;
- letter-spacing:.5px;
-}
+.category-tag{display:inline-block;background:rgba(34,232,121,.12);color:var(--green);border:1px solid rgba(34,232,121,.2);padding:6px 10px;border-radius:6px;font-size:11px;font-weight:900;margin-top:8px;letter-spacing:.5px}
 .empty-state{color:var(--muted);padding:12px}
-.field-label{
- display:block;margin-top:14px;color:#b8d6c2;
- font-size:13px;font-weight:bold;
-}
+.field-label{display:block;margin-top:14px;color:#b8d6c2;font-size:13px;font-weight:bold}
 .field-help{font-size:12px;color:#9bb6a4;line-height:1.6}
 .form-section{border-top:1px solid var(--border);margin-top:20px;padding-top:13px}
-.market-preview{
- background:#102c1c;padding:14px;border-radius:9px;
- border:1px solid rgba(34,232,121,.2);
- color:#d8f7e2;margin:12px 0;line-height:1.6;
-}
-.fixture-choice{
- display:block;width:100%;text-align:left;
- background:#173b27;color:#e9fff0;
- border:1px solid #35e879;padding:13px;margin:8px 0;
-}
+.market-preview{background:#102c1c;padding:14px;border-radius:9px;border:1px solid rgba(34,232,121,.2);color:#d8f7e2;margin:12px 0;line-height:1.6}
+.fixture-choice{display:block;width:100%;text-align:left;background:#173b27;color:#e9fff0;border:1px solid #35e879;padding:13px;margin:8px 0}
 .fixture-choice:hover{background:#225b38}
-.refresh-indicator{
- position:fixed;top:0;left:50%;transform:translateX(-50%);
- z-index:9999;background:var(--green);color:#06140d;
- padding:10px 20px;border-radius:0 0 12px 12px;
- font-size:12px;font-weight:900;display:none;
- box-shadow:0 5px 20px rgba(0,0,0,.3);
-}
-.login-panel{
- max-width:520px;margin:35px auto;
-}
-.login-icon{
- width:58px;height:58px;display:flex;align-items:center;
- justify-content:center;border-radius:17px;
- background:rgba(34,232,121,.1);
- border:1px solid rgba(34,232,121,.35);
- color:var(--green);font-size:27px;margin-bottom:17px;
-}
-.dashboard-intro{
- display:flex;align-items:center;justify-content:space-between;
- gap:15px;flex-wrap:wrap;
-}
-.status-dot{
- display:inline-block;width:8px;height:8px;
- background:var(--green);border-radius:50%;
- box-shadow:0 0 10px var(--green);margin-right:7px;
-}
+.refresh-indicator{position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:9999;background:var(--green);color:#06140d;padding:10px 20px;border-radius:0 0 12px 12px;font-size:12px;font-weight:900;display:none;box-shadow:0 5px 20px rgba(0,0,0,.3)}
+.login-panel{max-width:520px;margin:35px auto}
+.login-icon{width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:17px;background:rgba(34,232,121,.1);border:1px solid rgba(34,232,121,.35);color:var(--green);font-size:27px;margin-bottom:17px}
+.dashboard-intro{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.status-dot{display:inline-block;width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 10px var(--green);margin-right:7px}
+.booking-status{display:inline-block;padding:6px 10px;border-radius:6px;font-size:11px;font-weight:900;letter-spacing:.5px;border:1px solid rgba(34,232,121,.25);background:rgba(34,232,121,.1);color:var(--green)}
+.booking-code-field{font-family:monospace;letter-spacing:.3px}
 @media(max-width:600px){
- header{padding:21px 16px}
- h1{font-size:23px}
+ header{padding:21px 16px}h1{font-size:23px}
  .header-subtitle{font-size:9px;letter-spacing:2px}
  main{padding:0 11px 35px;margin:18px auto}
- .panel{padding:17px;border-radius:13px}
- .item{padding:14px}
+ .panel{padding:17px;border-radius:13px}.item{padding:14px}
  .item button{width:100%;margin:6px 0}
 }
 </style>
 </head>
 
 <body>
-
-<div id="refreshIndicator" class="refresh-indicator">
-Refreshing dashboard...
-</div>
+<div id="refreshIndicator" class="refresh-indicator">Refreshing dashboard...</div>
 
 <header>
  <div class="brand">
@@ -267,7 +121,6 @@ Refreshing dashboard...
 </header>
 
 <main>
-
 <section class="panel login-panel" id="loginPanel">
  <div class="login-icon">✦</div>
  <h2>Administrator Login</h2>
@@ -279,13 +132,9 @@ Refreshing dashboard...
 </section>
 
 <section id="dashboard" class="hidden">
-
 <div class="panel">
  <div class="dashboard-intro">
-  <div>
-   <h2>Welcome, Administrator</h2>
-   <p class="field-help"><span class="status-dot"></span>Your private dashboard is active.</p>
-  </div>
+  <div><h2>Welcome, Administrator</h2><p class="field-help"><span class="status-dot"></span>Your private dashboard is active.</p></div>
   <span class="category-tag">ADMIN ACCESS</span>
  </div>
  <div class="notice">
@@ -296,7 +145,6 @@ Refreshing dashboard...
 </div>
 
 <!-- POST PREDICTIONS -->
-
 <div class="panel">
 <h2>Post New Prediction</h2>
 <p class="field-help">Choose the match, select a prediction category and market, then enter your selection and odds.</p>
@@ -317,55 +165,30 @@ Refreshing dashboard...
 <h3>2. Prediction Market</h3>
 <label class="field-label" for="marketCategory">Prediction Category</label>
 <select id="marketCategory">
-<option>Match Result</option>
-<option>Double Chance</option>
-<option>Goals</option>
-<option>Both Teams to Score</option>
-<option>Half Time</option>
-<option>Correct Score</option>
-<option>Handicap</option>
-<option>Corners</option>
-<option>Fouls</option>
-<option>Cards</option>
-<option>Shots</option>
-<option>Player Goals</option>
-<option>Player Shots</option>
-<option>Player Assists</option>
-<option>Player Cards</option>
-<option>Player Fouls</option>
-<option>Substitutions</option>
-<option>Goalkeeper</option>
-<option>Offsides</option>
-<option>Special Markets</option>
-<option>1UP / 2UP</option>
-<option>Custom Market</option>
+<option>Match Result</option><option>Double Chance</option><option>Goals</option>
+<option>Both Teams to Score</option><option>Half Time</option><option>Correct Score</option>
+<option>Handicap</option><option>Corners</option><option>Fouls</option><option>Cards</option>
+<option>Shots</option><option>Player Goals</option><option>Player Shots</option>
+<option>Player Assists</option><option>Player Cards</option><option>Player Fouls</option>
+<option>Substitutions</option><option>Goalkeeper</option><option>Offsides</option>
+<option>Special Markets</option><option>1UP / 2UP</option><option>Custom Market</option>
 </select>
-
 <label class="field-label" for="marketType">Select Market</label>
 <select id="marketType"></select>
-
 <div id="customMarketWrap" class="hidden">
  <label class="field-label" for="customMarketName">Custom Market Name</label>
  <input id="customMarketName" placeholder="Enter your custom market">
 </div>
-
 <label class="field-label" for="marketSelection">Prediction Selection</label>
 <input id="marketSelection" placeholder="e.g. Over, Home, Yes, Player name">
 <label class="field-label" for="marketLine">Market Line / Handicap (Optional)</label>
 <input id="marketLine" placeholder="e.g. 2.5, +1.5, 8.5">
 <label class="field-label" for="marketTeam">Team (Optional)</label>
-<select id="marketTeam">
- <option value="">Not applicable</option>
- <option value="home">Home Team</option>
- <option value="away">Away Team</option>
-</select>
+<select id="marketTeam"><option value="">Not applicable</option><option value="home">Home Team</option><option value="away">Away Team</option></select>
 <label class="field-label" for="playerName">Player Name (Optional)</label>
 <input id="playerName" placeholder="Enter player name where applicable">
-
 <div class="market-preview" id="predictionPreview">Your prediction preview will appear here.</div>
-<p class="field-help" id="oneUpTwoUpHelp">
- For 1UP/2UP markets, the selected team must lead by the required number of goals at any point during the match. The SportAPI automation checks goal events before settling these markets.
-</p>
+<p class="field-help" id="oneUpTwoUpHelp">For 1UP/2UP markets, the selected team must lead by the required number of goals at any point during the match. The SportAPI automation checks goal events before settling these markets.</p>
 </div>
 
 <div class="form-section">
@@ -373,20 +196,48 @@ Refreshing dashboard...
 <label class="field-label" for="odds">Odds</label>
 <input id="odds" type="text" inputmode="decimal" placeholder="e.g. 1.85">
 <label class="field-label" for="visibility">Prediction Access</label>
-<select id="visibility">
- <option value="free">FREE ODDS</option>
- <option value="vip">VIP ODDS</option>
- <option value="rollover">ROLLOVER ODDS</option>
-</select>
+<select id="visibility"><option value="free">FREE ODDS</option><option value="vip">VIP ODDS</option><option value="rollover">ROLLOVER ODDS</option></select>
 <p class="field-help">New predictions are published with PENDING status. The backend automatically searches for matching SportAPI fixtures and links a prediction when there is one safe match. It also checks linked fixtures and automatically settles supported WON, LOST and VOID results. Ambiguous fixture matches remain unlinked for manual selection.</p>
 </div>
-
 <button id="publishButton" onclick="savePrediction()">PUBLISH PREDICTION</button>
 <div id="postMessage" class="notice">Complete the fields to publish a prediction.</div>
 </div>
 
-<!-- ANNOUNCEMENTS -->
+<!-- NEVER MISS BOOKING CODE MANAGEMENT -->
+<div class="panel" id="neverMissAdmin">
+<h2>NEVER MISS — Booking Code Management</h2>
+<p class="field-help">Create one booking group for the same games across SportyBet, Bet9ja and M-Sport. Enter one shared total odds value and the separate booking code for each platform. Members will choose which platform's code to copy.</p>
 
+<div class="notice">
+ <strong>Important:</strong> Each group has one shared outcome. Updating its status here updates the result shown for all three platform codes. This feature is separate from predictions and SportAPI automatic settlement.
+</div>
+
+<div class="form-section">
+<h3>Create New Booking Group</h3>
+<label class="field-label" for="bookingTotalOdds">Shared Total Odds</label>
+<input id="bookingTotalOdds" type="number" min="1.01" step="0.01" inputmode="decimal" placeholder="e.g. 12.50">
+
+<label class="field-label" for="bookingSportybet">SportyBet Booking Code</label>
+<input id="bookingSportybet" class="booking-code-field" type="text" placeholder="Enter SportyBet code (optional)">
+
+<label class="field-label" for="bookingBet9ja">Bet9ja Booking Code</label>
+<input id="bookingBet9ja" class="booking-code-field" type="text" placeholder="Enter Bet9ja code (optional)">
+
+<label class="field-label" for="bookingMsport">M-Sport Booking Code</label>
+<input id="bookingMsport" class="booking-code-field" type="text" placeholder="Enter M-Sport code (optional)">
+
+<p class="field-help">At least one platform code is required. Leave any unavailable platform code blank.</p>
+<button id="createBookingButton" onclick="createBookingGroup()">PUBLISH BOOKING GROUP</button>
+<div id="bookingAdminMessage" class="notice">Enter the shared odds and at least one booking code.</div>
+</div>
+
+<div class="form-section">
+<h3>Published Booking Groups</h3>
+<div id="bookingGroupsList">Booking groups will appear here.</div>
+</div>
+</div>
+
+<!-- ANNOUNCEMENTS -->
 <div class="panel">
 <h2>Member Announcements</h2>
 <p class="notice">Publish messages for members on the website. Active announcements appear when members log in. They remain active until you remove them. Members can close the announcement themselves without removing it.</p>
@@ -398,14 +249,11 @@ Refreshing dashboard...
 </div>
 
 <!-- MANAGE PREDICTIONS -->
-
 <div class="panel">
 <h2>Manage Predictions and Results</h2>
 <div id="predictionsList">Loading predictions...</div>
 </div>
-
 <!-- MANAGE MEMBERSHIPS -->
-
 <div class="panel">
 <h2>Manage Memberships</h2>
 <p class="notice">
@@ -418,7 +266,6 @@ After confirming a member's payment, select the membership or memberships you wa
 </div>
 
 <!-- LOGOUT -->
-
 <div class="panel" style="text-align:center">
 <h3>Administrator Account</h3>
 <p class="field-help">Log out securely when you have finished managing ONLYBOSSTIPS.</p>
@@ -438,16 +285,13 @@ let currentUser=null;
 let refreshing=false;
 
 /* MARKET CATALOGUE */
-
 const marketOptions={
 "Match Result":[
 "Full Time Result - Home Win","Full Time Result - Draw","Full Time Result - Away Win",
 "Draw No Bet - Home","Draw No Bet - Away","Winning Margin - Home","Winning Margin - Away",
 "Home Win to Nil","Away Win to Nil"
 ],
-"Double Chance":[
-"Home or Draw (1X)","Draw or Away (X2)","Home or Away (12)"
-],
+"Double Chance":["Home or Draw (1X)","Draw or Away (X2)","Home or Away (12)"],
 "Goals":[
 "Total Goals Over/Under","Home Team Goals Over/Under","Away Team Goals Over/Under",
 "First Team to Score","Last Team to Score","Exact Total Goals","Goal in Both Halves",
@@ -545,17 +389,11 @@ const marketOptions={
 "Win by 1 Goal","Win by 2 Goals","Win by 3+ Goals",
 "Home Team to Win Either Half","Away Team to Win Either Half","Match to Have No Goals"
 ],
-"1UP / 2UP":[
-"1UP - Home Team",
-"1UP - Away Team",
-"2UP - Home Team",
-"2UP - Away Team"
-],
+"1UP / 2UP":["1UP - Home Team","1UP - Away Team","2UP - Home Team","2UP - Away Team"],
 "Custom Market":["Custom market"]
 };
 
 /* GENERAL HELPERS */
-
 function message(id,text){
  const el=document.getElementById(id);
  if(el)el.textContent=text;
@@ -571,25 +409,15 @@ function initializeSupabase(){
 }
 
 /* NIGERIA DATE HELPERS */
-
 function nigeriaDateKey(value){
  if(!value)return null;
-
  const raw=String(value).trim();
-
- // Preserve an existing date-only database value.
  if(/^\d{4}-\d{2}-\d{2}$/.test(raw))return raw;
-
  const parsed=new Date(raw);
  if(Number.isNaN(parsed.getTime()))return null;
-
  const parts=new Intl.DateTimeFormat("en-CA",{
-  timeZone:"Africa/Lagos",
-  year:"numeric",
-  month:"2-digit",
-  day:"2-digit"
+  timeZone:"Africa/Lagos",year:"numeric",month:"2-digit",day:"2-digit"
  }).formatToParts(parsed);
-
  const get=type=>parts.find(p=>p.type===type)?.value;
  return get("year")+"-"+get("month")+"-"+get("day");
 }
@@ -611,46 +439,29 @@ function nigeriaYesterday(){
   String(date.getUTCDate()).padStart(2,"0");
 }
 
-/*
-  KEEP PREDICTIONS BY THEIR POSTING DATE.
-
-  Yesterday, today and tomorrow are retained.
-  Predictions posted before yesterday are deleted.
-  Kickoff dates are deliberately not used for cleanup.
-  Records without a valid created_at date are preserved safely.
-*/
-
+/* AUTOMATIC PREDICTION CLEANUP */
 async function cleanupExpiredPredictions(){
  const{data,error}=await db.from("predictions").select("id,created_at");
  if(error)throw error;
-
  const yesterday=nigeriaYesterday();
-
  const expired=(data||[])
   .filter(prediction=>{
    const postedDate=nigeriaDateKey(prediction.created_at);
    return postedDate&&postedDate<yesterday;
   })
   .map(prediction=>prediction.id);
-
  if(!expired.length)return 0;
-
- const{error:deleteError}=await db.from("predictions")
-  .delete().in("id",expired);
-
+ const{error:deleteError}=await db.from("predictions").delete().in("id",expired);
  if(deleteError)throw deleteError;
-
  console.log(expired.length+" prediction(s) older than yesterday automatically deleted.");
  return expired.length;
 }
 
 /* MARKET FORM */
-
 function isOneUpTwoUpMarket(){
  const category=document.getElementById("marketCategory").value;
  const market=document.getElementById("marketType").value;
- return category==="1UP / 2UP"||
-  /^([12])UP\s*-\s*(HOME|AWAY)\s*TEAM$/i.test(market);
+ return category==="1UP / 2UP"||/^([12])UP\s*-\s*(HOME|AWAY)\s*TEAM$/i.test(market);
 }
 
 function applyOneUpTwoUpSelection(){
@@ -658,7 +469,6 @@ function applyOneUpTwoUpSelection(){
  const selection=document.getElementById("marketSelection");
  const team=document.getElementById("marketTeam");
  const isSpecial=isOneUpTwoUpMarket();
-
  if(isSpecial){
   const isHome=/HOME\s*TEAM/i.test(market);
   const isAway=/AWAY\s*TEAM/i.test(market);
@@ -683,14 +493,10 @@ function updateMarketOptions(){
  const select=document.getElementById("marketType");
  const customWrap=document.getElementById("customMarketWrap");
  select.replaceChildren();
-
  (marketOptions[category]||[]).forEach(name=>{
   const option=document.createElement("option");
-  option.value=name;
-  option.textContent=name;
-  select.appendChild(option);
+  option.value=name;option.textContent=name;select.appendChild(option);
  });
-
  customWrap.classList.toggle("hidden",category!=="Custom Market");
  applyOneUpTwoUpSelection();
  updatePredictionPreview();
@@ -704,21 +510,17 @@ function updatePredictionPreview(){
  const line=document.getElementById("marketLine").value.trim();
  const team=document.getElementById("marketTeam").value;
  const player=document.getElementById("playerName").value.trim();
-
  const parts=[category==="Custom Market"?(customName||"Custom Market"):market];
  if(selection)parts.push(selection);
  if(line)parts.push(line);
  if(team)parts.push(team==="home"?"Home Team":"Away Team");
  if(player)parts.push(player);
-
- document.getElementById("predictionPreview").textContent=
-  "Prediction preview: "+parts.join(" - ");
+ document.getElementById("predictionPreview").textContent="Prediction preview: "+parts.join(" - ");
 }
 
 document.getElementById("marketCategory").addEventListener("change",updateMarketOptions);
 document.getElementById("marketType").addEventListener("change",()=>{
- applyOneUpTwoUpSelection();
- updatePredictionPreview();
+ applyOneUpTwoUpSelection();updatePredictionPreview();
 });
 ["customMarketName","marketSelection","marketLine","marketTeam","playerName"].forEach(id=>{
  document.getElementById(id).addEventListener("input",updatePredictionPreview);
@@ -727,12 +529,10 @@ document.getElementById("marketType").addEventListener("change",()=>{
 updateMarketOptions();
 
 /* MEMBERSHIP HELPERS */
-
 function parseMemberships(value){
  const parts=String(value||"free").toLowerCase().split(",").map(x=>x.trim());
  return{vip:parts.includes("vip"),rollover:parts.includes("rollover")};
 }
-
 function membershipText(value){
  const m=parseMemberships(value);
  if(m.vip&&m.rollover)return"VIP + ROLLOVER";
@@ -742,14 +542,11 @@ function membershipText(value){
 }
 
 /* ADMIN LOGIN */
-
 async function adminLogin(){
  if(!initializeSupabase())return;
  const email=document.getElementById("email").value.trim();
  const password=document.getElementById("password").value;
- if(!email||!password){
-  message("loginMessage","Please enter your email and password.");return;
- }
+ if(!email||!password){message("loginMessage","Please enter your email and password.");return;}
  message("loginMessage","Logging in...");
  try{
   const{data,error}=await db.auth.signInWithPassword({email,password});
@@ -766,9 +563,7 @@ async function adminLogin(){
   document.getElementById("loginPanel").classList.add("hidden");
   document.getElementById("dashboard").classList.remove("hidden");
   await loadAll();
- }catch(error){
-  message("loginMessage","Login error: "+error.message);
- }
+ }catch(error){message("loginMessage","Login error: "+error.message);}
 }
 
 async function logout(){
@@ -780,21 +575,19 @@ async function logout(){
  message("loginMessage","You have logged out.");
 }
 
-/* LOAD DASHBOARD AND CLEAN EXPIRED PREDICTIONS */
-
+/* LOAD DASHBOARD */
 async function loadAll(){
  if(!db||!currentUser)return;
  try{
   const removed=await cleanupExpiredPredictions();
   if(removed>0)console.log(removed+" old prediction(s) automatically removed.");
- }catch(error){
-  console.error("Automatic prediction cleanup failed:",error);
- }
- await Promise.all([loadPredictions(),loadMembers(),loadAnnouncements()]);
+ }catch(error){console.error("Automatic prediction cleanup failed:",error);}
+ await Promise.all([
+  loadPredictions(),loadMembers(),loadAnnouncements(),loadBookingGroups()
+ ]);
 }
 
 /* SWIPE-DOWN REFRESH */
-
 let touchStartY=0;
 window.addEventListener("touchstart",event=>{
  if(window.scrollY<=0&&event.touches.length===1)touchStartY=event.touches[0].clientY;
@@ -808,34 +601,208 @@ window.addEventListener("touchend",async event=>{
  if(window.scrollY<=0&&distance>100){
   refreshing=true;
   const indicator=document.getElementById("refreshIndicator");
-  indicator.style.display="block";
-  indicator.textContent="Refreshing dashboard...";
-  try{
-   await loadAll();
-   indicator.textContent="Dashboard updated";
-  }catch(error){
-   indicator.textContent="Refresh failed";
-   console.error(error);
-  }
-  setTimeout(()=>{
-   indicator.style.display="none";refreshing=false;
-  },900);
+  indicator.style.display="block";indicator.textContent="Refreshing dashboard...";
+  try{await loadAll();indicator.textContent="Dashboard updated";}
+  catch(error){indicator.textContent="Refresh failed";console.error(error);}
+  setTimeout(()=>{indicator.style.display="none";refreshing=false;},900);
  }
 },{passive:true});
 
-/* SPORTAPI FIXTURE SEARCH AND LINKING */
+/* NEVER MISS — BOOKING CODE MANAGEMENT */
+function bookingCodeValue(value){
+ return typeof value==="string"?value.trim():"";
+}
 
+async function createBookingGroup(){
+ if(!db||!currentUser)return;
+ const oddsText=document.getElementById("bookingTotalOdds").value.trim();
+ const totalOdds=Number(oddsText);
+ const sportybet=bookingCodeValue(document.getElementById("bookingSportybet").value);
+ const bet9ja=bookingCodeValue(document.getElementById("bookingBet9ja").value);
+ const msport=bookingCodeValue(document.getElementById("bookingMsport").value);
+
+ if(!oddsText||!Number.isFinite(totalOdds)||totalOdds<=1){
+  message("bookingAdminMessage","Enter valid shared total odds greater than 1.00.");
+  return;
+ }
+ if(!sportybet&&!bet9ja&&!msport){
+  message("bookingAdminMessage","Enter at least one booking code before publishing.");
+  return;
+ }
+
+ const button=document.getElementById("createBookingButton");
+ button.disabled=true;button.textContent="PUBLISHING...";
+ try{
+  const{error}=await db.from("booking_code_groups").insert({
+   total_odds:totalOdds,
+   sportybet_code:sportybet||null,
+   bet9ja_code:bet9ja||null,
+   msport_code:msport||null,
+   status:"pending"
+  });
+  if(error)throw error;
+
+  document.getElementById("bookingTotalOdds").value="";
+  document.getElementById("bookingSportybet").value="";
+  document.getElementById("bookingBet9ja").value="";
+  document.getElementById("bookingMsport").value="";
+  message("bookingAdminMessage","Booking group published successfully. Members can now see the available platform codes.");
+  await loadBookingGroups();
+ }catch(error){
+  message("bookingAdminMessage","Could not publish booking group: "+error.message);
+ }finally{
+  button.disabled=false;button.textContent="PUBLISH BOOKING GROUP";
+ }
+}
+
+async function loadBookingGroups(){
+ const box=document.getElementById("bookingGroupsList");
+ if(!box)return;
+ const{data,error}=await db.from("booking_code_groups")
+  .select("*").order("created_at",{ascending:false});
+ if(error){
+  box.textContent="Could not load booking groups: "+error.message;
+  return;
+ }
+ if(!data||!data.length){
+  box.textContent="No booking groups have been published yet.";
+  return;
+ }
+ box.replaceChildren();
+
+ data.forEach(group=>{
+  const item=document.createElement("div");
+  item.className="item";
+
+  const heading=document.createElement("strong");
+  heading.textContent="NEVER MISS BOOKING GROUP";
+  item.appendChild(heading);
+
+  const odds=document.createElement("p");
+  odds.textContent="Shared Total Odds: "+Number(group.total_odds).toFixed(2);
+  item.appendChild(odds);
+
+  const statusLabel=document.createElement("p");
+  statusLabel.textContent="Shared Outcome: "+String(group.status||"pending").toUpperCase();
+  statusLabel.className="booking-status";
+  item.appendChild(statusLabel);
+
+  [
+   ["SportyBet",group.sportybet_code],
+   ["Bet9ja",group.bet9ja_code],
+   ["M-Sport",group.msport_code]
+  ].forEach(([platform,code])=>{
+   const row=document.createElement("p");
+   row.textContent=platform+": "+(code||"No code added");
+   item.appendChild(row);
+  });
+
+  const created=document.createElement("small");
+  const createdDate=group.created_at?new Date(group.created_at):null;
+  created.textContent=createdDate&&!Number.isNaN(createdDate.getTime())?
+   "Published: "+createdDate.toLocaleString("en-GB",{timeZone:"Africa/Lagos"})+" WAT":
+   "Publication date unavailable";
+  item.appendChild(created);
+
+  const editHeading=document.createElement("h3");
+  editHeading.textContent="Update Booking Group";
+  item.appendChild(editHeading);
+
+  const oddsInput=document.createElement("input");
+  oddsInput.type="number";oddsInput.min="1.01";oddsInput.step="0.01";
+  oddsInput.value=group.total_odds;oddsInput.placeholder="Shared total odds";
+  item.appendChild(oddsInput);
+
+  const codeInputs={};
+  [
+   ["SportyBet","sportybet_code"],
+   ["Bet9ja","bet9ja_code"],
+   ["M-Sport","msport_code"]
+  ].forEach(([label,key])=>{
+   const input=document.createElement("input");
+   input.type="text";input.className="booking-code-field";
+   input.placeholder=label+" code (optional)";
+   input.value=group[key]||"";
+   item.appendChild(input);
+   codeInputs[key]=input;
+  });
+
+  const statusSelect=document.createElement("select");
+  ["pending","won","lost","void"].forEach(value=>{
+   const option=document.createElement("option");
+   option.value=value;option.textContent=value.toUpperCase();
+   if(String(group.status||"pending").toLowerCase()===value)option.selected=true;
+   statusSelect.appendChild(option);
+  });
+  item.appendChild(statusSelect);
+
+  const saveButton=document.createElement("button");
+  saveButton.textContent="SAVE BOOKING GROUP";
+  saveButton.onclick=async()=>{
+   const newOdds=Number(oddsInput.value);
+   const newSportybet=bookingCodeValue(codeInputs.sportybet_code.value);
+   const newBet9ja=bookingCodeValue(codeInputs.bet9ja_code.value);
+   const newMsport=bookingCodeValue(codeInputs.msport_code.value);
+
+   if(!Number.isFinite(newOdds)||newOdds<=1){
+    alert("Enter valid shared total odds greater than 1.00.");return;
+   }
+   if(!newSportybet&&!newBet9ja&&!newMsport){
+    alert("At least one platform booking code must remain available.");return;
+   }
+
+   saveButton.disabled=true;saveButton.textContent="SAVING...";
+   try{
+    const{error:updateError}=await db.from("booking_code_groups")
+     .update({
+      total_odds:newOdds,
+      sportybet_code:newSportybet||null,
+      bet9ja_code:newBet9ja||null,
+      msport_code:newMsport||null,
+      status:statusSelect.value
+     }).eq("id",group.id);
+    if(updateError)throw updateError;
+    alert("Booking group updated successfully.");
+    await loadBookingGroups();
+   }catch(error){
+    alert("Could not update booking group: "+error.message);
+    saveButton.disabled=false;saveButton.textContent="SAVE BOOKING GROUP";
+   }
+  };
+  item.appendChild(saveButton);
+
+  const deleteButton=document.createElement("button");
+  deleteButton.className="danger";
+  deleteButton.textContent="DELETE BOOKING GROUP";
+  deleteButton.onclick=async()=>{
+   if(!confirm("Delete this entire booking group? All three platform codes in this group will be removed."))return;
+   deleteButton.disabled=true;deleteButton.textContent="DELETING...";
+   try{
+    const{error:deleteError}=await db.from("booking_code_groups")
+     .delete().eq("id",group.id);
+    if(deleteError)throw deleteError;
+    alert("Booking group deleted.");
+    await loadBookingGroups();
+   }catch(error){
+    alert("Could not delete booking group: "+error.message);
+    deleteButton.disabled=false;deleteButton.textContent="DELETE BOOKING GROUP";
+   }
+  };
+  item.appendChild(deleteButton);
+  box.appendChild(item);
+ });
+}
+
+/* SPORTAPI FIXTURE SEARCH AND LINKING */
 function getFixtureId(f){
  return f?.fixture_id??f?.id??f?.fixture?.id??null;
 }
-
 function getFixtureLabel(f){
  const home=f.home_team||f.homeTeam?.name||f.home?.name||"Home team";
  const away=f.away_team||f.awayTeam?.name||f.away?.name||"Away team";
  const date=f.date||f.kickoff||f.kickoff_utc||"Date unavailable";
  return home+" vs "+away+" — "+date;
 }
-
 async function getAdminAccessToken(){
  const{data,error}=await db.auth.getSession();
  if(error)throw error;
@@ -843,14 +810,11 @@ async function getAdminAccessToken(){
  if(!token)throw new Error("Your admin session has expired. Please log out and log in again.");
  return token;
 }
-
 async function findFixturesForPrediction(prediction){
  const kickoff=String(prediction.kickoff||"");
  const date=kickoff.slice(0,10);
  if(!date)throw new Error("This prediction has no valid kickoff date.");
- const params=new URLSearchParams({
-  home:prediction.home_team,away:prediction.away_team,date
- });
+ const params=new URLSearchParams({home:prediction.home_team,away:prediction.away_team,date});
  const response=await fetch(BACKEND_URL+"/fixtures/search?"+params.toString());
  let result;
  try{result=await response.json();}
@@ -859,15 +823,11 @@ async function findFixturesForPrediction(prediction){
  return Array.isArray(result.fixtures)?result.fixtures:
   Array.isArray(result.data?.fixtures)?result.data.fixtures:[];
 }
-
 async function linkFixture(predictionId,fixtureId){
  const token=await getAdminAccessToken();
  const response=await fetch(BACKEND_URL+"/predictions/link-fixture",{
   method:"POST",
-  headers:{
-   "Content-Type":"application/json",
-   "Authorization":"Bearer "+token
-  },
+  headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},
   body:JSON.stringify({prediction_id:predictionId,fixture_id:fixtureId})
  });
  let result;
@@ -876,28 +836,23 @@ async function linkFixture(predictionId,fixtureId){
  if(!response.ok||result.success===false)throw new Error(result.message||"Could not link this fixture.");
  return result;
 }
-
 async function searchAndLinkPrediction(prediction,showMessages=true){
  try{
   if(showMessages)message("postMessage","Prediction saved. Searching SportAPI for the correct fixture...");
   const fixtures=await findFixturesForPrediction(prediction);
-
   if(!fixtures.length){
    if(showMessages)message("postMessage","Prediction published, but no matching SportAPI fixture was found. It remains unlinked. The backend will also retry automatic matching. You can use FIND / LINK FIXTURE if needed.");
    return{linked:false,count:0};
   }
-
   if(fixtures.length===1){
    const fixtureId=getFixtureId(fixtures[0]);
    if(fixtureId===null||fixtureId===undefined)
     throw new Error("A matching fixture was found, but its fixture ID was missing. The prediction remains unlinked.");
-
    await linkFixture(prediction.id,fixtureId);
    if(showMessages)message("postMessage","Prediction published and successfully linked to SportAPI: "+getFixtureLabel(fixtures[0]));
    await loadPredictions();
    return{linked:true,count:1};
   }
-
   if(showMessages)message("postMessage","Prediction published. SportAPI found "+fixtures.length+" possible matches. The backend will retry automatic matching if it can identify one safely. You can also open Manage Predictions and tap FIND / LINK FIXTURE to choose the correct one.");
   await loadPredictions();
   return{linked:false,count:fixtures.length};
@@ -906,11 +861,10 @@ async function searchAndLinkPrediction(prediction,showMessages=true){
   return{linked:false,error:error.message};
  }
 }
- /* PUBLISH PREDICTION */
 
+/* PUBLISH PREDICTION */
 async function savePrediction(){
  if(!db||!currentUser)return;
-
  const category=document.getElementById("marketCategory").value;
  const selectedMarket=document.getElementById("marketType").value;
  const customName=document.getElementById("customMarketName").value.trim();
@@ -918,22 +872,16 @@ async function savePrediction(){
  const isSpecial=category==="1UP / 2UP";
  const selectionInput=document.getElementById("marketSelection");
  const teamInput=document.getElementById("marketTeam");
-
- if(isSpecial){
-  applyOneUpTwoUpSelection();
- }
-
+ if(isSpecial)applyOneUpTwoUpSelection();
  const selection=selectionInput.value.trim();
  const line=document.getElementById("marketLine").value.trim();
  const team=teamInput.value;
  const player=document.getElementById("playerName").value.trim();
-
  const parts=[marketType];
  if(selection)parts.push(selection);
  if(line)parts.push(line);
  if(team)parts.push(team==="home"?"Home Team":"Away Team");
  if(player)parts.push(player);
-
  const predictionText=parts.join(" - ");
 
  const data={
@@ -944,511 +892,293 @@ async function savePrediction(){
   odds:document.getElementById("odds").value.trim(),
   kickoff:document.getElementById("kickoff").value,
   visibility:document.getElementById("visibility").value,
-  status:"pending",
-  market_category:category,
-  market_type:marketType,
-  market_selection:selection||null,
-  market_line:line||null,
-  market_team:team||null,
-  player_name:player||null,
-
-  // Record the actual publishing time, not the match kickoff time.
+  status:"pending",market_category:category,market_type:marketType,
+  market_selection:selection||null,market_line:line||null,
+  market_team:team||null,player_name:player||null,
   created_at:new Date().toISOString()
  };
 
  const selectionRequired=!isSpecial;
-
- if(!data.league||!data.home_team||!data.away_team||
-    !data.odds||!data.kickoff||!marketType||
-    (selectionRequired&&!selection)){
+ if(!data.league||!data.home_team||!data.away_team||!data.odds||
+    !data.kickoff||!marketType||(selectionRequired&&!selection)){
   message("postMessage","Please complete the match details, market, selection, odds and kickoff time.");
   return;
  }
-
  if(isSpecial&&(!selection||!team)){
   message("postMessage","Please select a valid 1UP/2UP market so the correct team can be assigned.");
   return;
  }
-
  const oddsNumber=Number(data.odds);
  if(!Number.isFinite(oddsNumber)||oddsNumber<=1){
-  message("postMessage","Please enter valid decimal odds greater than 1.00.");
-  return;
+  message("postMessage","Please enter valid decimal odds greater than 1.00.");return;
  }
 
  const button=document.getElementById("publishButton");
- button.disabled=true;
- button.textContent="PUBLISHING...";
-
+ button.disabled=true;button.textContent="PUBLISHING...";
  try{
   const{data:saved,error}=await db.from("predictions").insert(data).select("*").single();
   if(error)throw error;
-
-  [
-   "league","home","away","odds","kickoff",
-   "marketSelection","marketLine","playerName","customMarketName"
-  ].forEach(id=>{
-   document.getElementById(id).value="";
-  });
-
+  ["league","home","away","odds","kickoff","marketSelection","marketLine","playerName","customMarketName"]
+   .forEach(id=>{document.getElementById(id).value="";});
   document.getElementById("marketTeam").value="";
   document.getElementById("marketCategory").value="Match Result";
   updateMarketOptions();
-
   await loadPredictions();
   message("postMessage","Prediction published. Now checking SportAPI...");
   await searchAndLinkPrediction(saved,true);
-
  }catch(error){
   message("postMessage","Could not publish: "+error.message);
  }finally{
-  button.disabled=false;
-  button.textContent="PUBLISH PREDICTION";
+  button.disabled=false;button.textContent="PUBLISH PREDICTION";
  }
 }
 
 /* LOAD PREDICTIONS */
-
 async function loadPredictions(){
  const box=document.getElementById("predictionsList");
  const{data,error}=await db.from("predictions").select("*").order("created_at",{ascending:false});
-
- if(error){
-  box.textContent="Could not load predictions: "+error.message;
-  return;
- }
-
- if(!data||!data.length){
-  box.textContent="No predictions have been posted yet.";
-  return;
- }
-
+ if(error){box.textContent="Could not load predictions: "+error.message;return;}
+ if(!data||!data.length){box.textContent="No predictions have been posted yet.";return;}
  box.replaceChildren();
 
  data.forEach(p=>{
-  const item=document.createElement("div");
-  item.className="item";
-
+  const item=document.createElement("div");item.className="item";
   const heading=document.createElement("strong");
   heading.textContent=(p.home_team||"Home")+" vs "+(p.away_team||"Away");
   item.appendChild(heading);
-
   const details=document.createElement("p");
   details.textContent=(p.league||"")+" | "+(p.prediction||"")+" | Odds: "+(p.odds||"");
   item.appendChild(details);
-
-  const date=document.createElement("p");
-  date.textContent="Kickoff: "+(p.kickoff||"Not available");
-  item.appendChild(date);
+  const date=document.createElement("p");date.textContent="Kickoff: "+(p.kickoff||"Not available");item.appendChild(date);
 
   if(p.created_at){
    const posted=document.createElement("p");
    const postedDate=new Date(p.created_at);
-   posted.textContent="Posted: "+(
-    Number.isNaN(postedDate.getTime())?
-    "Date unavailable":
-    postedDate.toLocaleString("en-GB",{timeZone:"Africa/Lagos"})
-   )+" WAT";
+   posted.textContent="Posted: "+(Number.isNaN(postedDate.getTime())?"Date unavailable":
+    postedDate.toLocaleString("en-GB",{timeZone:"Africa/Lagos"}))+" WAT";
    item.appendChild(posted);
   }
-
   if(p.market_category){
    const market=document.createElement("p");
    market.textContent="Market: "+p.market_category+(p.market_type?" / "+p.market_type:"");
    item.appendChild(market);
   }
-
   if(p.fixture_status){
    const fixture=document.createElement("p");
    fixture.textContent="Fixture status: "+p.fixture_status+
-    (p.home_score!==null&&p.home_score!==undefined?
-     " | Score: "+p.home_score+" - "+p.away_score:"");
+    (p.home_score!==null&&p.home_score!==undefined?" | Score: "+p.home_score+" - "+p.away_score:"");
    item.appendChild(fixture);
   }
-
   const linkInfo=document.createElement("p");
-  linkInfo.textContent=p.api_fixture_id?
-   "SportAPI fixture ID: "+p.api_fixture_id:
-   "SportAPI fixture: Not linked";
+  linkInfo.textContent=p.api_fixture_id?"SportAPI fixture ID: "+p.api_fixture_id:"SportAPI fixture: Not linked";
   item.appendChild(linkInfo);
 
   const category=document.createElement("span");
-  category.className="category-tag";
-  category.textContent=(p.visibility||"free").toUpperCase()+" ODDS";
+  category.className="category-tag";category.textContent=(p.visibility||"free").toUpperCase()+" ODDS";
   item.appendChild(category);
 
   if(!p.api_fixture_id){
    const findButton=document.createElement("button");
-   findButton.className="secondary";
-   findButton.textContent="FIND / LINK FIXTURE";
-   findButton.onclick=()=>manuallyFindFixture(p);
-   item.appendChild(findButton);
-
-   const status=document.createElement("p");
-   status.id="fixture-status-"+p.id;
-   status.className="field-help";
-   item.appendChild(status);
-
-   const choices=document.createElement("div");
-   choices.id="fixture-choices-"+p.id;
-   item.appendChild(choices);
+   findButton.className="secondary";findButton.textContent="FIND / LINK FIXTURE";
+   findButton.onclick=()=>manuallyFindFixture(p);item.appendChild(findButton);
+   const status=document.createElement("p");status.id="fixture-status-"+p.id;status.className="field-help";item.appendChild(status);
+   const choices=document.createElement("div");choices.id="fixture-choices-"+p.id;item.appendChild(choices);
   }
 
   const resultInput=document.createElement("input");
-  resultInput.placeholder="Enter result";
-  resultInput.value=p.result||"";
-  item.appendChild(resultInput);
-
+  resultInput.placeholder="Enter result";resultInput.value=p.result||"";item.appendChild(resultInput);
   const status=document.createElement("select");
   ["pending","won","lost","void"].forEach(s=>{
    const option=document.createElement("option");
-   option.value=s;
-   option.textContent=s.toUpperCase();
+   option.value=s;option.textContent=s.toUpperCase();
    if(String(p.status||"pending").toLowerCase()===s)option.selected=true;
    status.appendChild(option);
   });
   item.appendChild(status);
-
   const updateButton=document.createElement("button");
   updateButton.textContent="UPDATE RESULT";
   updateButton.onclick=()=>updatePrediction(p.id,resultInput.value,status.value);
   item.appendChild(updateButton);
-
   const deleteButton=document.createElement("button");
-  deleteButton.textContent="DELETE";
-  deleteButton.className="danger";
-  deleteButton.onclick=()=>deletePrediction(p.id);
-  item.appendChild(deleteButton);
-
+  deleteButton.textContent="DELETE";deleteButton.className="danger";
+  deleteButton.onclick=()=>deletePrediction(p.id);item.appendChild(deleteButton);
   box.appendChild(item);
  });
 }
 
 /* UPDATE PREDICTION RESULT */
-
 async function updatePrediction(id,result,status){
- const{error}=await db.from("predictions")
-  .update({result:result,status:status}).eq("id",id);
-
- if(error){
-  alert("Could not update: "+error.message);
-  return;
- }
-
+ const{error}=await db.from("predictions").update({result:result,status:status}).eq("id",id);
+ if(error){alert("Could not update: "+error.message);return;}
  alert("Prediction updated successfully.");
  await loadPredictions();
 }
 
 /* MANUAL DELETE PREDICTION */
-
 async function deletePrediction(id){
  if(!confirm("Are you sure you want to delete this prediction?"))return;
-
  const{error}=await db.from("predictions").delete().eq("id",id);
-
- if(error){
-  alert("Could not delete: "+error.message);
-  return;
- }
-
+ if(error){alert("Could not delete: "+error.message);return;}
  alert("Prediction deleted.");
  await loadPredictions();
 }
 
 /* MANUAL SPORTAPI FIXTURE SEARCH */
-
 async function manuallyFindFixture(prediction){
  const statusEl=document.getElementById("fixture-status-"+prediction.id);
-
  if(statusEl)statusEl.textContent="Searching SportAPI...";
-
  try{
   const fixtures=await findFixturesForPrediction(prediction);
-
   if(!fixtures.length){
    if(statusEl)statusEl.textContent="No matching fixture found. Check the team names and kickoff date.";
    return;
   }
-
   const choices=document.getElementById("fixture-choices-"+prediction.id);
   choices.replaceChildren();
-
   const heading=document.createElement("p");
   heading.textContent="Select the correct fixture. Do not choose unless the teams and date match.";
   choices.appendChild(heading);
-
   fixtures.forEach(f=>{
    const id=getFixtureId(f);
    const button=document.createElement("button");
-
-   button.className="fixture-choice";
-   button.textContent=getFixtureLabel(f);
+   button.className="fixture-choice";button.textContent=getFixtureLabel(f);
    button.disabled=id===null||id===undefined;
-
    button.onclick=async()=>{
-    button.disabled=true;
-    button.textContent="LINKING...";
-
+    button.disabled=true;button.textContent="LINKING...";
     try{
      await linkFixture(prediction.id,id);
-
      if(statusEl)statusEl.textContent="Fixture linked successfully.";
-
-     choices.replaceChildren();
-     await loadPredictions();
-
+     choices.replaceChildren();await loadPredictions();
     }catch(error){
-     button.disabled=false;
-     button.textContent=getFixtureLabel(f);
-
+     button.disabled=false;button.textContent=getFixtureLabel(f);
      if(statusEl)statusEl.textContent="Could not link: "+error.message;
     }
    };
-
    choices.appendChild(button);
   });
-
-  if(statusEl){
-   statusEl.textContent=fixtures.length+
-    " possible fixture(s) found. Choose the correct match below.";
-  }
-
+  if(statusEl)statusEl.textContent=fixtures.length+" possible fixture(s) found. Choose the correct match below.";
  }catch(error){
   if(statusEl)statusEl.textContent="Fixture search failed: "+error.message;
  }
 }
 
 /* PUBLISH ANNOUNCEMENT */
-
 async function publishAnnouncement(){
  if(!db||!currentUser)return;
-
  const input=document.getElementById("announcementMessage");
  const textValue=input.value.trim();
-
- if(!textValue){
-  message("announcementMessageStatus","Please write an announcement first.");
-  return;
- }
-
- const{error}=await db.from("member_announcements")
-  .insert({message:textValue,active:true});
-
- if(error){
-  message("announcementMessageStatus","Could not publish announcement: "+error.message);
-  return;
- }
-
+ if(!textValue){message("announcementMessageStatus","Please write an announcement first.");return;}
+ const{error}=await db.from("member_announcements").insert({message:textValue,active:true});
+ if(error){message("announcementMessageStatus","Could not publish announcement: "+error.message);return;}
  input.value="";
  message("announcementMessageStatus","Announcement published successfully. Members will see it when they log in.");
  await loadAnnouncements();
 }
 
 /* LOAD ANNOUNCEMENTS */
-
 async function loadAnnouncements(){
  const box=document.getElementById("announcementsList");
-
- const{data,error}=await db.from("member_announcements")
-  .select("*").order("created_at",{ascending:false});
-
- if(error){
-  box.textContent="Could not load announcements: "+error.message;
-  return;
- }
-
- if(!data||!data.length){
-  box.textContent="No announcements have been published.";
-  return;
- }
-
+ const{data,error}=await db.from("member_announcements").select("*").order("created_at",{ascending:false});
+ if(error){box.textContent="Could not load announcements: "+error.message;return;}
+ if(!data||!data.length){box.textContent="No announcements have been published.";return;}
  box.replaceChildren();
-
  data.forEach(a=>{
-  const item=document.createElement("div");
-  item.className="item";
-
+  const item=document.createElement("div");item.className="item";
   const heading=document.createElement("strong");
   heading.textContent=a.active?"ACTIVE ANNOUNCEMENT":"INACTIVE ANNOUNCEMENT";
-  heading.style.color=a.active?"#35e879":"#ffad42";
-  item.appendChild(heading);
-
-  const content=document.createElement("p");
-  content.textContent=a.message;
-  item.appendChild(content);
-
-  const date=document.createElement("p");
-  date.className="announcement-date";
-
+  heading.style.color=a.active?"#35e879":"#ffad42";item.appendChild(heading);
+  const content=document.createElement("p");content.textContent=a.message;item.appendChild(content);
+  const date=document.createElement("p");date.className="announcement-date";
   const created=a.created_at?new Date(a.created_at):null;
-
-  date.textContent=created&&!Number.isNaN(created.getTime())?
-   "Published: "+created.toLocaleString():
-   "Publication date unavailable";
-
+  date.textContent=created&&!Number.isNaN(created.getTime())?"Published: "+created.toLocaleString():"Publication date unavailable";
   item.appendChild(date);
-
   if(a.active){
    const removeButton=document.createElement("button");
-   removeButton.textContent="REMOVE ANNOUNCEMENT";
-   removeButton.className="danger";
-   removeButton.onclick=()=>removeAnnouncement(a.id);
-   item.appendChild(removeButton);
+   removeButton.textContent="REMOVE ANNOUNCEMENT";removeButton.className="danger";
+   removeButton.onclick=()=>removeAnnouncement(a.id);item.appendChild(removeButton);
   }
-
   box.appendChild(item);
  });
 }
 
 /* REMOVE ANNOUNCEMENT */
-
 async function removeAnnouncement(id){
  if(!confirm("Remove this announcement? Members will no longer see it on future logins."))return;
-
  const{error}=await db.from("member_announcements").delete().eq("id",id);
-
- if(error){
-  alert("Could not remove announcement: "+error.message);
-  return;
- }
-
+ if(error){alert("Could not remove announcement: "+error.message);return;}
  alert("Announcement removed successfully.");
  await loadAnnouncements();
 }
 
 /* LOAD MEMBERS */
-
 async function loadMembers(){
  const box=document.getElementById("membersList");
-
  const{data,error}=await db.from("member_profiles")
-  .select("user_id,membership_tier,created_at")
-  .order("created_at",{ascending:false});
-
- if(error){
-  box.textContent="Could not load members: "+error.message;
-  return;
- }
-
- if(!data||!data.length){
-  box.textContent="No members found.";
-  return;
- }
-
+  .select("user_id,membership_tier,created_at").order("created_at",{ascending:false});
+ if(error){box.textContent="Could not load members: "+error.message;return;}
+ if(!data||!data.length){box.textContent="No members found.";return;}
  box.replaceChildren();
-
  data.forEach(member=>{
-  const item=document.createElement("div");
-  item.className="item";
-
-  const memberId=document.createElement("p");
-  memberId.textContent="Member ID: "+member.user_id;
-  item.appendChild(memberId);
-
+  const item=document.createElement("div");item.className="item";
+  const memberId=document.createElement("p");memberId.textContent="Member ID: "+member.user_id;item.appendChild(memberId);
   const memberships=parseMemberships(member.membership_tier);
+  const tier=document.createElement("p");tier.className="member-tier";
+  tier.textContent="Current Membership: "+membershipText(member.membership_tier);item.appendChild(tier);
 
-  const tier=document.createElement("p");
-  tier.className="member-tier";
-  tier.textContent="Current Membership: "+membershipText(member.membership_tier);
-  item.appendChild(tier);
-
-  const vipRow=document.createElement("div");
-  vipRow.className="membership-option";
-
+  const vipRow=document.createElement("div");vipRow.className="membership-option";
   const vipCheckbox=document.createElement("input");
-  vipCheckbox.type="checkbox";
-  vipCheckbox.checked=memberships.vip;
-  vipCheckbox.id="vip-"+member.user_id;
+  vipCheckbox.type="checkbox";vipCheckbox.checked=memberships.vip;vipCheckbox.id="vip-"+member.user_id;
+  const vipLabel=document.createElement("label");vipLabel.htmlFor=vipCheckbox.id;vipLabel.textContent="VIP MEMBERSHIP";
+  vipRow.append(vipCheckbox,vipLabel);item.appendChild(vipRow);
 
-  const vipLabel=document.createElement("label");
-  vipLabel.htmlFor=vipCheckbox.id;
-  vipLabel.textContent="VIP MEMBERSHIP";
-
-  vipRow.append(vipCheckbox,vipLabel);
-  item.appendChild(vipRow);
-
-  const rolloverRow=document.createElement("div");
-  rolloverRow.className="membership-option";
-
+  const rolloverRow=document.createElement("div");rolloverRow.className="membership-option";
   const rolloverCheckbox=document.createElement("input");
-  rolloverCheckbox.type="checkbox";
-  rolloverCheckbox.checked=memberships.rollover;
-  rolloverCheckbox.id="rollover-"+member.user_id;
-
-  const rolloverLabel=document.createElement("label");
-  rolloverLabel.htmlFor=rolloverCheckbox.id;
-  rolloverLabel.textContent="ROLLOVER MEMBERSHIP";
-
-  rolloverRow.append(rolloverCheckbox,rolloverLabel);
-  item.appendChild(rolloverRow);
+  rolloverCheckbox.type="checkbox";rolloverCheckbox.checked=memberships.rollover;rolloverCheckbox.id="rollover-"+member.user_id;
+  const rolloverLabel=document.createElement("label");rolloverLabel.htmlFor=rolloverCheckbox.id;rolloverLabel.textContent="ROLLOVER MEMBERSHIP";
+  rolloverRow.append(rolloverCheckbox,rolloverLabel);item.appendChild(rolloverRow);
 
   const updateButton=document.createElement("button");
   updateButton.textContent="UPDATE MEMBERSHIP";
-  updateButton.onclick=()=>updateMember(
-   member.user_id,
-   vipCheckbox.checked,
-   rolloverCheckbox.checked
-  );
-
-  item.appendChild(updateButton);
-  box.appendChild(item);
+  updateButton.onclick=()=>updateMember(member.user_id,vipCheckbox.checked,rolloverCheckbox.checked);
+  item.appendChild(updateButton);box.appendChild(item);
  });
 }
 
 /* UPDATE MEMBERSHIP */
-
 async function updateMember(userId,vipActive,rolloverActive){
  let tier="free";
-
  if(vipActive&&rolloverActive)tier="vip,rollover";
  else if(vipActive)tier="vip";
  else if(rolloverActive)tier="rollover";
-
  const display=membershipText(tier);
-
  if(!confirm("Confirm changing this member's membership to "+display+"?"))return;
-
- const{error}=await db.from("member_profiles")
-  .update({membership_tier:tier}).eq("user_id",userId);
-
+ const{error}=await db.from("member_profiles").update({membership_tier:tier}).eq("user_id",userId);
  if(error){
   alert("Could not update membership: "+error.message+
    "\n\nIf you selected both memberships, your database may need a small update to allow the combined value.");
   return;
  }
-
  alert("Membership successfully updated to "+display+".");
  await loadMembers();
 }
 
 /* RESTORE EXISTING ADMIN SESSION */
-
 async function checkExistingSession(){
  if(!initializeSupabase())return;
-
  const{data,error}=await db.auth.getSession();
-
  if(error||!data.session)return;
-
  currentUser=data.session.user;
-
  const{data:admin,error:adminError}=await db.from("admins")
   .select("user_id").eq("user_id",currentUser.id).maybeSingle();
-
  if(adminError||!admin){
-  await db.auth.signOut();
-  currentUser=null;
-  return;
+  await db.auth.signOut();currentUser=null;return;
  }
-
  document.getElementById("loginPanel").classList.add("hidden");
  document.getElementById("dashboard").classList.remove("hidden");
-
  await loadAll();
 }
 
 checkExistingSession();
 </script>
-
 </body>
 </html>
