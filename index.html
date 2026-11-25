@@ -4,136 +4,364 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>onlybosstips | Member Center</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root{
- --bg:#080d0b;--panel:#101915;--panel2:#14211a;--green:#19c779;
- --green2:#0e9f5d;--text:#f1f7f3;--muted:#91a198;--line:#24352b;
- --red:#f15c67;--gold:#e5bd65;--radius:16px;
+ --bg:#080d0b;
+ --panel:#101915;
+ --panel2:#14211a;
+ --green:#19c779;
+ --green2:#0e9f5d;
+ --text:#f1f7f3;
+ --muted:#91a198;
+ --line:#24352b;
+ --red:#f15c67;
+ --gold:#e5bd65;
+ --radius:16px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;padding-bottom:90px}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:"DM Sans",sans-serif;padding-bottom:90px
+}
 button{font:inherit;cursor:pointer}
 button:focus-visible{outline:2px solid var(--green);outline-offset:3px}
-.topbar{height:65px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:#0b120e;position:sticky;top:0;z-index:20}
-.brand{font-family:"Cinzel",serif;font-size:19px;font-weight:800;letter-spacing:1px;color:#b7f2d2}
+a{color:inherit}
+.topbar{
+ height:65px;padding:0 18px;display:flex;align-items:center;
+ justify-content:space-between;border-bottom:1px solid var(--line);
+ background:#0b120e;position:sticky;top:0;z-index:20
+}
+.brand{
+ font-family:"Cinzel",serif;font-size:19px;font-weight:800;
+ letter-spacing:1px;color:#b7f2d2;cursor:pointer
+}
 .brand span{color:var(--green)}
-.online{font-size:11px;color:var(--green);display:flex;align-items:center;gap:7px}
-.online:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 9px var(--green)}
+.online{
+ font-size:10px;color:var(--green);display:flex;
+ align-items:center;gap:7px
+}
+.online:before{
+ content:"";width:7px;height:7px;border-radius:50%;
+ background:var(--green);box-shadow:0 0 9px var(--green)
+}
 main{max-width:920px;margin:auto;padding:17px 14px 30px}
 .screen{display:none;animation:appear .2s ease}
 .screen.active{display:block}
-@keyframes appear{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
-.profile{display:flex;align-items:center;gap:13px;background:linear-gradient(110deg,#14271d,#101915);border:1px solid #284533;border-radius:var(--radius);padding:15px;margin-bottom:16px}
-.avatar{width:45px;height:45px;border-radius:50%;background:#1a754b;display:grid;place-items:center;font-weight:800;font-size:18px}
+@keyframes appear{
+ from{opacity:.4;transform:translateY(5px)}
+ to{opacity:1;transform:none}
+}
+.profile{
+ display:flex;align-items:center;gap:13px;
+ background:linear-gradient(110deg,#14271d,#101915);
+ border:1px solid #284533;border-radius:var(--radius);
+ padding:15px;margin-bottom:16px
+}
+.avatar{
+ width:45px;height:45px;border-radius:50%;
+ background:#1a754b;display:grid;place-items:center;
+ font-weight:800;font-size:18px
+}
 .profile h2{font-size:15px;margin:0 0 4px}
 .profile p{font-size:11px;color:var(--muted);margin:0}
-.tier{margin-left:auto;font-size:10px;letter-spacing:.7px;color:#aaf1ca;border:1px solid #28784f;padding:6px 9px;border-radius:20px}
-.section-title{font-size:14px;font-weight:800;letter-spacing:.5px;margin:20px 0 11px;display:flex;align-items:center;justify-content:space-between}
+.tier{
+ margin-left:auto;font-size:10px;letter-spacing:.7px;
+ color:#aaf1ca;border:1px solid #28784f;
+ padding:6px 9px;border-radius:20px
+}
+.section-title{
+ font-size:14px;font-weight:800;letter-spacing:.5px;
+ margin:20px 0 11px;display:flex;align-items:center;
+ justify-content:space-between;gap:10px
+}
 .section-title small{font-size:10px;color:var(--muted);font-weight:500}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:13px}
-.news-card{display:flex;gap:12px;align-items:center}
-.news-mark{width:43px;height:43px;border-radius:12px;background:#183a29;color:#77e5ad;display:grid;place-items:center;font-size:18px;flex-shrink:0}
-.news-card strong{font-size:12px;display:block;margin-bottom:4px}
-.news-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
-.news-list{display:grid;gap:9px}
+.card{
+ background:var(--panel);border:1px solid var(--line);
+ border-radius:var(--radius);padding:14px;margin-bottom:13px
+}
 .clock{font-size:11px;color:var(--green);font-variant-numeric:tabular-nums}
-.match-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.page-heading{margin:4px 0 15px}
+.page-heading h1{font-size:20px;margin:0 0 5px}
+.page-heading p{font-size:11px;color:var(--muted);margin:0}
+.back-home{
+ display:inline-flex;align-items:center;gap:7px;
+ background:#14251a;border:1px solid #31523e;
+ color:#9af0bc;border-radius:9px;padding:9px 13px;
+ font-size:10px;font-weight:800;margin-bottom:14px
+}
+.profile + .section-title{margin-top:18px}
+
+/* SPORTS NEWS CAROUSEL */
+.news-carousel{
+ position:relative;min-height:300px;padding:0;overflow:hidden;
+ background:linear-gradient(135deg,#102b1d,#07100b 75%);
+ touch-action:pan-y
+}
+.news-slide{
+ min-height:255px;padding:28px 22px 20px;
+ display:flex;flex-direction:column;justify-content:flex-end;
+ background:
+ radial-gradient(circle at 85% 20%,#24653d55,transparent 45%),
+ linear-gradient(135deg,#102b1d,#07100b)
+}
+.news-source{
+ display:inline-block;width:max-content;
+ background:#174e32;color:#a8f0c5;
+ border:1px solid #27784b;border-radius:20px;
+ padding:7px 11px;font-size:9px;font-weight:800;
+ letter-spacing:1px
+}
+.news-slide h2{
+ max-width:650px;font-size:clamp(20px,4vw,30px);
+ line-height:1.3;margin:18px 0 10px
+}
+.news-slide p{
+ max-width:600px;font-size:12px;
+ line-height:1.7;color:#b5c7bb
+}
+.news-read{
+ width:max-content;color:#8af0b5;text-decoration:none;
+ font-size:11px;font-weight:800;margin-top:12px
+}
+.news-controls{
+ display:flex;justify-content:space-between;
+ align-items:center;padding:10px 15px
+}
+.news-controls button{
+ width:35px;height:35px;border:1px solid #31523e;
+ border-radius:50%;background:#13271b;
+ color:#8af0b5;font-size:22px
+}
+#newsDots{display:flex;gap:6px}
+.news-dot{
+ width:6px;height:6px;border-radius:10px;
+ background:#526459;border:0;padding:0
+}
+.news-dot.active{width:19px;background:#19c779}
+.news-progress{height:3px;background:#1c3024}
+.news-progress span{
+ display:block;width:0;height:100%;background:#19c779
+}
+
+/* MATCH CENTER */
+.match-head{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:10px;margin-bottom:12px
+}
 .match-head strong{font-size:14px}
 .date-label{font-size:11px;color:var(--muted);margin-top:3px}
-.calendar{display:flex;gap:7px;overflow-x:auto;padding:3px 1px 10px;scrollbar-width:thin;scrollbar-color:#31523e transparent}
-.day{border:1px solid var(--line);background:#0c1510;color:var(--muted);border-radius:11px;min-width:54px;padding:9px 5px;text-align:center}
-.day b{display:block;font-size:14px;color:var(--text)}
-.day small{display:block;font-size:9px;margin-top:4px}
-.day.selected{background:#16472e;border-color:var(--green);color:#b4f4d1}
-.day.selected b{color:#fff}
-.sport-tabs,.score-tabs,.filter-row{display:flex;gap:7px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
-.sport-tabs button,.score-tabs button,.filter-row button{white-space:nowrap;border:1px solid var(--line);border-radius:20px;background:#0d1510;color:var(--muted);padding:8px 12px;font-size:10px;font-weight:700}
-.sport-tabs button.active,.score-tabs button.active,.filter-row button.active{background:#16472e;border-color:#238d57;color:#c4f8d9}
+.date-controls{
+ display:flex;align-items:center;justify-content:center;
+ gap:24px;padding:10px;background:#0c1510;
+ border:1px solid var(--line);border-radius:12px;margin-bottom:12px
+}
+.date-controls button{
+ width:36px;height:34px;border:1px solid #31523e;
+ background:#153522;color:#9af0bc;border-radius:9px;font-size:25px
+}
+.date-controls span{font-size:12px;font-weight:800;letter-spacing:1px}
+.sport-tabs,.score-tabs,.filter-row{
+ display:flex;gap:7px;overflow-x:auto;padding:2px 0 10px;
+ scrollbar-width:none
+}
+.sport-tabs button,.score-tabs button,.filter-row button{
+ white-space:nowrap;border:1px solid var(--line);
+ border-radius:20px;background:#0d1510;color:var(--muted);
+ padding:8px 12px;font-size:10px;font-weight:700
+}
+.sport-tabs button.active,.score-tabs button.active,
+.filter-row button.active{
+ background:#16472e;border-color:#238d57;color:#c4f8d9
+}
 .score-list{display:grid;gap:8px}
-.score-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;padding:12px 10px;background:#0c1410;border:1px solid #1e3025;border-radius:11px;font-size:11px}
-.team{display:flex;align-items:center;gap:6px}
+.score-row{
+ display:grid;grid-template-columns:1fr auto 1fr;gap:8px;
+ align-items:center;padding:12px 10px;background:#0c1410;
+ border:1px solid #1e3025;border-radius:11px;font-size:11px
+}
+.team{display:flex;align-items:center;gap:6px;min-width:0}
+.team span:last-child{overflow-wrap:anywhere}
 .team:last-child{justify-content:flex-end;text-align:right}
-.crest{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:#1c3326;color:#9de7bb;font-size:9px;font-weight:800;flex-shrink:0}
-.score{font-size:15px;font-weight:800;white-space:nowrap}
+.crest{
+ width:22px;height:22px;border-radius:50%;
+ display:grid;place-items:center;background:#1c3326;
+ color:#9de7bb;font-size:9px;font-weight:800;flex-shrink:0
+}
+.score{font-size:15px;font-weight:800;white-space:nowrap;text-align:center}
 .score-meta{text-align:center;font-size:9px;color:var(--muted);margin-top:3px}
-.live{color:var(--red);font-size:9px;font-weight:800}
-.finished{color:var(--green);font-size:9px;font-weight:800}
 .empty{padding:20px;text-align:center;color:var(--muted);font-size:11px}
+
+/* STATISTICS */
 .stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
-.stat{background:#0c1510;border:1px solid var(--line);border-radius:12px;padding:13px}
+.stat{
+ background:#0c1510;border:1px solid var(--line);
+ border-radius:12px;padding:13px
+}
 .stat small{font-size:10px;color:var(--muted)}
 .stat strong{display:block;font-size:23px;margin-top:5px}
 .stat.green strong{color:var(--green)}
 .stat.red strong{color:var(--red)}
-.notice{border:1px solid #554a2b;background:#201c11;color:#e7d8a8;border-radius:13px;padding:13px;font-size:10px;line-height:1.6}
-.logout{width:100%;border:1px solid #63343a;color:#ff9ca4;background:#211216;padding:12px;border-radius:12px;font-weight:700;margin-top:15px}
-.bottom-nav{position:fixed;z-index:30;bottom:0;left:0;right:0;background:rgba(9,16,12,.97);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:8px 5px calc(8px + env(safe-area-inset-bottom));backdrop-filter:blur(15px)}
-.nav-item{border:0;background:none;color:#77877d;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;font-size:9px;font-weight:800;letter-spacing:.3px;padding:5px 1px}
-.nav-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.nav-item.active{color:var(--green)}
-.page-heading{margin:4px 0 15px}
-.page-heading h1{font-size:20px;margin:0 0 5px}
-.page-heading p{font-size:11px;color:var(--muted);margin:0}
-.gate{text-align:center;padding:26px 18px}
-.gate-icon{width:55px;height:55px;border-radius:18px;background:#183b29;color:#83e5ad;display:grid;place-items:center;margin:0 auto 15px}
-.gate h2{font-size:16px;margin:0 0 9px}
-.gate p{font-size:11px;line-height:1.7;color:var(--muted);max-width:340px;margin:0 auto 17px}
-.primary{background:var(--green);color:#062113;border:0;border-radius:10px;padding:12px 17px;font-size:11px;font-weight:800}
-.prediction-card{background:#0c1510;border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:9px}
-.prediction-top{display:flex;justify-content:space-between;gap:8px;font-size:10px;color:var(--muted)}
+.notice{
+ border:1px solid #554a2b;background:#201c11;
+ color:#e7d8a8;border-radius:13px;padding:13px;
+ font-size:10px;line-height:1.6
+}
+
+/* PREDICTIONS AND MEMBERSHIP */
+.prediction-card{
+ background:#0c1510;border:1px solid var(--line);
+ border-radius:12px;padding:13px;margin-bottom:9px
+}
+.prediction-top{
+ display:flex;justify-content:space-between;gap:8px;
+ font-size:10px;color:var(--muted)
+}
 .prediction-card h3{font-size:13px;margin:10px 0}
-.prediction-bottom{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:var(--muted)}
+.prediction-bottom{
+ display:flex;justify-content:space-between;
+ align-items:center;font-size:10px;color:var(--muted)
+}
 .status{border-radius:20px;padding:5px 9px;font-size:9px;font-weight:800}
 .status.pending{background:#302a17;color:#e8c76c}
 .status.won{background:#123b28;color:#75e5a5}
 .status.lost{background:#401c22;color:#ff8992}
 .status.void{background:#292d30;color:#b7c0c4}
-.code-box{background:#0c1510;border:1px dashed #365540;border-radius:12px;padding:15px;margin-bottom:10px}
+.gate{text-align:center;padding:26px 18px}
+.gate-icon{
+ width:55px;height:55px;border-radius:18px;
+ background:#183b29;color:#83e5ad;
+ display:grid;place-items:center;margin:0 auto 15px;font-size:25px
+}
+.gate h2{font-size:16px;margin:0 0 9px}
+.gate p{
+ font-size:11px;line-height:1.7;color:var(--muted);
+ max-width:340px;margin:0 auto 17px
+}
+.primary{
+ background:var(--green);color:#062113;border:0;
+ border-radius:10px;padding:12px 17px;
+ font-size:11px;font-weight:800
+}
+.code-box{
+ background:#0c1510;border:1px dashed #365540;
+ border-radius:12px;padding:15px;margin-bottom:10px
+}
 .code-box h3{font-size:12px;margin:0 0 7px}
 .code-box p{font-size:10px;color:var(--muted);line-height:1.5;margin:0}
+.logout{
+ width:100%;border:1px solid #63343a;color:#ff9ca4;
+ background:#211216;padding:12px;border-radius:12px;
+ font-weight:700;margin-top:15px
+}
+
+/* BOTTOM NAVIGATION */
+.bottom-nav{
+ position:fixed;z-index:30;bottom:0;left:0;right:0;
+ background:rgba(9,16,12,.97);border-top:1px solid var(--line);
+ display:grid;grid-template-columns:repeat(4,1fr);
+ padding:8px 5px calc(8px + env(safe-area-inset-bottom));
+ backdrop-filter:blur(15px)
+}
+.nav-item{
+ border:0;background:none;color:#77877d;
+ display:flex;align-items:center;justify-content:center;
+ flex-direction:column;gap:5px;font-size:9px;
+ font-weight:800;letter-spacing:.3px;padding:5px 1px
+}
+.nav-item svg{
+ width:20px;height:20px;stroke:currentColor;fill:none;
+ stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round
+}
+.nav-item.active{color:var(--green)}
 footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
-@media(min-width:650px){.stats-grid{grid-template-columns:repeat(4,1fr)}.news-list{grid-template-columns:1fr 1fr}.card{padding:17px}}
+
+@media(min-width:650px){
+ .stats-grid{grid-template-columns:repeat(4,1fr)}
+ .card{padding:17px}
+ .news-slide{min-height:300px;padding:35px}
+}
 </style>
 </head>
+
 <body>
+
 <header class="topbar">
- <div class="brand">onlyboss<span>tips</span></div>
+ <div class="brand" onclick="navigate('home')">onlyboss<span>tips</span></div>
  <div class="online">MEMBER CENTER</div>
 </header>
 
 <main>
+
+<!-- HOME DASHBOARD -->
 <section id="home" class="screen active">
+
  <div class="profile">
   <div class="avatar" id="avatar">M</div>
-  <div><h2 id="memberName">Welcome, Member</h2><p id="memberEmail">Your prediction hub</p></div>
+  <div>
+   <h2 id="memberName">Welcome, Member</h2>
+   <p id="memberEmail">Your prediction hub</p>
+  </div>
   <span class="tier" id="memberTier">FREE MEMBER</span>
  </div>
 
- <div class="section-title">SPORTS NEWS <small>Latest headlines</small></div>
- <div class="news-list">
-  <article class="card news-card"><div class="news-mark">N</div><div><strong>Sports News</strong><p>Latest football and basketball headlines will appear here.</p></div></article>
-  <article class="card news-card"><div class="news-mark">⚽</div><div><strong>Match Updates</strong><p>Follow important fixtures, results and sports updates.</p></div></article>
+ <div class="section-title">
+  SPORTS NEWS
+  <small>SKY SPORTS · SUPERSPORT · BBC</small>
  </div>
 
- <div class="section-title">DAILY MATCH CENTER <span class="clock" id="clock">--:--:-- WAT</span></div>
+ <div class="news-carousel card" id="sportsNewsCarousel">
+  <div class="news-slide" id="newsSlide">
+   <div class="news-source">SPORTS NEWS</div>
+   <h2>Loading latest sports headlines...</h2>
+   <p>Please wait while the latest headlines are collected.</p>
+  </div>
+  <div class="news-controls">
+   <button id="newsPrev" aria-label="Previous news">‹</button>
+   <div id="newsDots"></div>
+   <button id="newsNext" aria-label="Next news">›</button>
+  </div>
+  <div class="news-progress"><span id="newsProgress"></span></div>
+ </div>
+
+ <div class="section-title">
+  DAILY MATCH CENTER
+  <span class="clock" id="clock">--:--:-- WAT</span>
+ </div>
+
  <div class="card">
-  <div class="match-head"><div><strong id="selectedDateText">Today</strong><div class="date-label">Select a date to view the match center</div></div><span class="clock">NIGERIA · WAT</span></div>
-  <div class="calendar" id="calendar"></div>
+  <div class="match-head">
+   <div>
+    <strong id="selectedDateText">Today</strong>
+    <div class="date-label">Match results for selected date</div>
+   </div>
+   <span class="clock">NIGERIA · WAT</span>
+  </div>
+
+  <div class="date-controls">
+   <button id="previousDate" aria-label="Previous date">‹</button>
+   <span id="calendarDateLabel">TODAY</span>
+   <button id="nextDate" aria-label="Next date">›</button>
+  </div>
+
   <div class="sport-tabs" id="sportTabs">
    <button class="active" data-sport="football">FOOTBALL</button>
    <button data-sport="basketball">BASKETBALL</button>
   </div>
+
   <div class="score-tabs" id="scoreTabs">
    <button class="active" data-state="live">LIVE</button>
    <button data-state="finished">FINISHED</button>
   </div>
-  <div id="scoreList" class="score-list"><div class="empty">Live scores will appear here when connected to a scores API.</div></div>
+
+  <div id="scoreList" class="score-list">
+   <div class="empty">Loading match scores...</div>
+  </div>
  </div>
 
- <div class="section-title">WINNING STREAK DASHBOARD <small>All prediction categories</small></div>
+ <div class="section-title">WINNING STREAK DASHBOARD</div>
  <div class="card">
   <div class="stats-grid">
    <div class="stat green"><small>Total Won</small><strong id="statWon">0</strong></div>
@@ -141,35 +369,87 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
    <div class="stat"><small>Win Rate</small><strong id="statRate">0%</strong></div>
    <div class="stat"><small>Current Streak</small><strong id="statStreak">0</strong></div>
   </div>
-  <p style="font-size:10px;color:var(--muted);line-height:1.6;margin:13px 2px 0">Statistics count WON and LOST predictions only. Pending, live and void predictions are excluded.</p>
+  <p style="font-size:10px;color:var(--muted);line-height:1.6;margin:13px 2px 0">
+   Statistics count WON and LOST predictions only. Pending, live and void predictions are excluded.
+  </p>
  </div>
 
  <div class="section-title">RESPONSIBLE GAMBLING</div>
- <div class="notice">Predictions are for informational purposes only. Betting involves risk. Never stake money you cannot afford to lose. Be responsible and play within your limits.</div>
+ <div class="notice">
+  Predictions are for informational purposes only. Betting involves risk.
+  Never stake money you cannot afford to lose. Be responsible and play within your limits.
+ </div>
+
  <button class="logout" onclick="logout()">LOG OUT</button>
- <footer>© <span id="year"></span> onlybosstips · BET SMART. STAY RESPONSIBLE.</footer>
+
+ <footer>
+  © <span id="year"></span> onlybosstips · BET SMART. STAY RESPONSIBLE.
+ </footer>
 </section>
 
+<!-- FREE ODDS -->
 <section id="free" class="screen">
- <div class="page-heading"><h1>FREE ODDS</h1><p>Free predictions and match selections</p></div>
- <div class="card">
-  <div class="match-head"><strong>MATCH CENTER</strong><span class="clock" id="freeClock">WAT</span></div>
-  <div class="calendar" id="freeCalendar"></div>
+ <div class="page-heading">
+  <h1>FREE ODDS</h1>
+  <p>Free predictions and match selections</p>
  </div>
+
+ <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
+
+ <div class="card">
+  <div class="match-head">
+   <strong>MATCH CENTER</strong>
+   <span class="clock" id="freeClock">WAT</span>
+  </div>
+  <div class="date-controls">
+   <button onclick="changeDate(-1)" aria-label="Previous date">‹</button>
+   <span id="freeDateLabel">TODAY</span>
+   <button onclick="changeDate(1)" aria-label="Next date">›</button>
+  </div>
+ </div>
+
  <div class="section-title">FILTER PREDICTIONS</div>
  <div class="filter-row" id="freeFilters">
-  <button class="active">All</button><button>Premier League</button><button>Bundesliga</button><button>La Liga</button><button>Ligue 1</button><button>AFCON</button><button>UEFA</button><button>World Cup</button><button>Other Leagues</button><button>Tennis</button><button>Basketball</button>
+  <button class="active">All</button>
+  <button>Premier League</button>
+  <button>Bundesliga</button>
+  <button>La Liga</button>
+  <button>Ligue 1</button>
+  <button>AFCON</button>
+  <button>UEFA</button>
+  <button>World Cup</button>
+  <button>Other Leagues</button>
+  <button>Tennis</button>
+  <button>Basketball</button>
  </div>
+
  <div class="section-title">FREE PREDICTIONS</div>
- <div id="freePredictions"><div class="empty card">Your published FREE predictions will appear here when connected to your database.</div></div>
+ <div id="freePredictions">
+  <div class="empty card">Your published FREE predictions will appear here when connected to your database.</div>
+ </div>
 </section>
 
+<!-- VIP ODDS -->
 <section id="vip" class="screen">
- <div class="page-heading"><h1>VIP ODDS</h1><p>Premium members prediction center</p></div>
- <div class="card">
-  <div class="match-head"><strong>MATCH CENTER</strong><span class="clock" id="vipClock">WAT</span></div>
-  <div class="calendar" id="vipCalendar"></div>
+ <div class="page-heading">
+  <h1>VIP ODDS</h1>
+  <p>Premium members prediction center</p>
  </div>
+
+ <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
+
+ <div class="card">
+  <div class="match-head">
+   <strong>MATCH CENTER</strong>
+   <span class="clock" id="vipClock">WAT</span>
+  </div>
+  <div class="date-controls">
+   <button onclick="changeDate(-1)">‹</button>
+   <span id="vipDateLabel">TODAY</span>
+   <button onclick="changeDate(1)">›</button>
+  </div>
+ </div>
+
  <div id="vipContent" class="card gate">
   <div class="gate-icon">✦</div>
   <h2>VIP MEMBERSHIP REQUIRED</h2>
@@ -178,12 +458,27 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
  </div>
 </section>
 
+<!-- ROLLOVER -->
 <section id="rollover" class="screen">
- <div class="page-heading"><h1>ROLLOVER</h1><p>Rollover membership prediction center</p></div>
- <div class="card">
-  <div class="match-head"><strong>MATCH CENTER</strong><span class="clock" id="rollClock">WAT</span></div>
-  <div class="calendar" id="rollCalendar"></div>
+ <div class="page-heading">
+  <h1>ROLLOVER</h1>
+  <p>Rollover membership prediction center</p>
  </div>
+
+ <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
+
+ <div class="card">
+  <div class="match-head">
+   <strong>MATCH CENTER</strong>
+   <span class="clock" id="rollClock">WAT</span>
+  </div>
+  <div class="date-controls">
+   <button onclick="changeDate(-1)">‹</button>
+   <span id="rollDateLabel">TODAY</span>
+   <button onclick="changeDate(1)">›</button>
+  </div>
+ </div>
+
  <div id="rollContent" class="card gate">
   <div class="gate-icon">↻</div>
   <h2>ROLLOVER MEMBERSHIP REQUIRED</h2>
@@ -192,94 +487,171 @@ footer{text-align:center;color:#68776d;font-size:9px;padding:22px 0}
  </div>
 </section>
 
+<!-- NEVER MISS -->
 <section id="never" class="screen">
- <div class="page-heading"><h1>NEVER MISS</h1><p>Booking codes and selections from your betting platforms</p></div>
- <div class="code-box"><h3>SPORTYBET BOOKING CODES</h3><p>Your SportyBet codes will be published here.</p></div>
- <div class="code-box"><h3>MSPORT BOOKING CODES</h3><p>Your MSport codes will be published here.</p></div>
- <div class="code-box"><h3>OTHER PLATFORMS</h3><p>Additional booking codes and verified links will appear here.</p></div>
- <div class="notice">Only trusted booking codes and normal web links should be added here. Third-party scripts and unverified embeds are not executed.</div>
+ <div class="page-heading">
+  <h1>NEVER MISS</h1>
+  <p>Booking codes and selections from your betting platforms</p>
+ </div>
+
+ <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
+
+ <div class="code-box">
+  <h3>SPORTYBET BOOKING CODES</h3>
+  <p>Your SportyBet codes will be published here.</p>
+ </div>
+
+ <div class="code-box">
+  <h3>MSPORT BOOKING CODES</h3>
+  <p>Your MSport codes will be published here.</p>
+ </div>
+
+ <div class="code-box">
+  <h3>OTHER PLATFORMS</h3>
+  <p>Additional booking codes and verified links will appear here.</p>
+ </div>
+
+ <div class="notice">
+  Only trusted booking codes and normal web links should be added here.
+  Third-party scripts and unverified embeds are not executed.
+ </div>
 </section>
 
+<!-- MEMBERSHIP PLANS -->
 <section id="plans" class="screen">
- <div class="page-heading"><h1>MEMBERSHIP PLANS</h1><p>Request membership access</p></div>
+ <div class="page-heading">
+  <h1>MEMBERSHIP PLANS</h1>
+  <p>Request membership access</p>
+ </div>
+
+ <button class="back-home" onclick="navigate('home')">← BACK HOME</button>
+
  <div class="card">
   <h3 style="font-size:14px">VIP MEMBERSHIP</h3>
-  <p style="font-size:24px;font-weight:800;color:var(--green)">₦5,500 <small style="font-size:10px;color:var(--muted)">/ month</small></p>
-  <p style="font-size:11px;color:var(--muted)">Bank: Sterling Bank<br>Account Number: 0121973273</p>
+  <p style="font-size:24px;font-weight:800;color:var(--green)">
+   ₦5,500 <small style="font-size:10px;color:var(--muted)">/ month</small>
+  </p>
+  <p style="font-size:11px;color:var(--muted)">
+   Bank: Sterling Bank<br>Account Number: 0121973273
+  </p>
   <button class="primary" onclick="receiptWhatsApp('VIP')">SEND PAYMENT RECEIPT</button>
  </div>
+
  <div class="card">
   <h3 style="font-size:14px">ROLLOVER MEMBERSHIP</h3>
-  <p style="font-size:24px;font-weight:800;color:var(--green)">₦4,000 <small style="font-size:10px;color:var(--muted)">/ week</small></p>
-  <p style="font-size:11px;color:var(--muted)">Bank: Sterling Bank<br>Account Number: 0121973273</p>
+  <p style="font-size:24px;font-weight:800;color:var(--green)">
+   ₦4,000 <small style="font-size:10px;color:var(--muted)">/ week</small>
+  </p>
+  <p style="font-size:11px;color:var(--muted)">
+   Bank: Sterling Bank<br>Account Number: 0121973273
+  </p>
   <button class="primary" onclick="receiptWhatsApp('ROLLOVER')">SEND PAYMENT RECEIPT</button>
  </div>
- <p style="font-size:10px;color:var(--muted);line-height:1.6">Access is activated manually after payment confirmation. Sending a receipt does not automatically activate membership.</p>
- <button class="logout" onclick="navigate('home')">BACK TO DASHBOARD</button>
+
+ <p style="font-size:10px;color:var(--muted);line-height:1.6">
+  Access is activated manually after payment confirmation.
+  Sending a receipt does not automatically activate membership.
+ </p>
 </section>
+
 </main>
 
 <nav class="bottom-nav" aria-label="Main navigation">
- <button class="nav-item active" data-page="free">
-  <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg><span>FREE ODDS</span>
+ <button class="nav-item" data-page="free">
+  <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg>
+  <span>FREE ODDS</span>
  </button>
  <button class="nav-item" data-page="vip">
-  <svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><span>VIP ODDS</span>
+  <svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>
+  <span>VIP ODDS</span>
  </button>
  <button class="nav-item" data-page="rollover">
-  <svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"/></svg><span>ROLLOVER</span>
+  <svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"/></svg>
+  <span>ROLLOVER</span>
  </button>
  <button class="nav-item" data-page="never">
-  <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h4M16 16h.01"/></svg><span>NEVER MISS</span>
+  <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h4M16 16h.01"/></svg>
+  <span>NEVER MISS</span>
  </button>
 </nav>
 <script>
 "use strict";
 
 /* ==========================================
-   ONLYBOSSTIPS MEMBER DASHBOARD
-   ========================================== */
+   ONLYBOSSTIPS APPLICATION
+========================================== */
 
 const $ = id => document.getElementById(id);
+
+const WAT = "Africa/Lagos";
+const LIVE_SCORES_URL =
+  "https://onlybosstips-api.onrender.com/live-scores";
 
 let selectedPage = "home";
 let selectedSport = "football";
 let selectedScoreState = "live";
 let selectedCalendarDate = new Date();
 
-const WAT = "Africa/Lagos";
+let scoreData = {
+  football:{live:[],finished:[]},
+  basketball:{live:[],finished:[]}
+};
 
-function nigeriaDate(date = new Date()){
-  return new Intl.DateTimeFormat("en-CA",{
-    timeZone:WAT,year:"numeric",month:"2-digit",day:"2-digit"
-  }).format(date);
-}
+let sportsNews = [];
+let newsIndex = 0;
+let newsTimer = null;
+let newsTouchStart = 0;
+
+/* ==========================================
+   NIGERIA CLOCK
+========================================== */
 
 function nigeriaTime(){
   return new Intl.DateTimeFormat("en-GB",{
-    timeZone:WAT,hour:"2-digit",minute:"2-digit",second:"2-digit",
+    timeZone:WAT,
+    hour:"2-digit",
+    minute:"2-digit",
+    second:"2-digit",
     hour12:false
   }).format(new Date());
 }
 
-function updateClock(){
-  const time = nigeriaTime() + " WAT";
-  ["clock","freeClock","vipClock","rollClock"].forEach(id=>{
-    if($(id)) $(id).textContent=time;
-  });
-  $("year").textContent=new Intl.DateTimeFormat("en",{
-    timeZone:WAT,year:"numeric"
-  }).format(new Date());
+function nigeriaDate(date=new Date()){
+  return new Intl.DateTimeFormat("en-CA",{
+    timeZone:WAT,
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit"
+  }).format(date);
 }
 
-setInterval(updateClock,1000);
+function updateClock(){
+  const value=nigeriaTime()+" WAT";
+
+  ["clock","freeClock","vipClock","rollClock"].forEach(id=>{
+    if($(id))$(id).textContent=value;
+  });
+
+  if($("year")){
+    $("year").textContent=new Intl.DateTimeFormat("en",{
+      timeZone:WAT,
+      year:"numeric"
+    }).format(new Date());
+  }
+}
+
 updateClock();
+setInterval(updateClock,1000);
+
 
 /* ==========================================
    NAVIGATION
-   ========================================== */
+========================================== */
 
 function navigate(page){
+  const target=$(page);
+  if(!target)return;
+
   document.querySelectorAll(".screen").forEach(screen=>{
     screen.classList.toggle("active",screen.id===page);
   });
@@ -289,7 +661,11 @@ function navigate(page){
   });
 
   selectedPage=page;
-  window.scrollTo({top:0,behavior:"smooth"});
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
 
 document.querySelectorAll(".nav-item").forEach(button=>{
@@ -298,24 +674,14 @@ document.querySelectorAll(".nav-item").forEach(button=>{
   });
 });
 
-/* Brand tap returns to the member dashboard */
 document.querySelector(".brand").addEventListener("click",()=>{
   navigate("home");
 });
 
+
 /* ==========================================
-   DATE CALENDAR
-   ========================================== */
-
-function dateKey(date){
-  return nigeriaDate(date);
-}
-
-function formatDate(date,options){
-  return new Intl.DateTimeFormat("en-GB",{
-    timeZone:WAT,...options
-  }).format(date);
-}
+   DATE NAVIGATION
+========================================== */
 
 function shiftDate(date,amount){
   const copy=new Date(date);
@@ -323,79 +689,79 @@ function shiftDate(date,amount){
   return copy;
 }
 
-function buildCalendar(containerId){
-  const container=$(containerId);
-  if(!container)return;
-
-  container.innerHTML="";
-
-  const today=new Date();
-
-  // A rolling calendar with 30 days before and 30 days ahead.
-  for(let offset=-30;offset<=30;offset++){
-    const date=shiftDate(today,offset);
-    const button=document.createElement("button");
-    button.className="day";
-
-    if(dateKey(date)===dateKey(selectedCalendarDate)){
-      button.classList.add("selected");
-    }
-
-    const weekday=offset===0?"TODAY":
-      formatDate(date,{weekday:"short"}).toUpperCase();
-
-    button.innerHTML=
-      "<small>"+weekday+"</small>"+
-      "<b>"+formatDate(date,{day:"2-digit"})+"</b>"+
-      "<small>"+formatDate(date,{month:"short"}).toUpperCase()+"</small>";
-
-    button.addEventListener("click",()=>{
-      selectedCalendarDate=date;
-      refreshCalendars();
-      updateSelectedDateLabel();
-      renderScores();
-    });
-
-    container.appendChild(button);
-  }
-
-  // Keep selected date visible.
-  const selected=container.querySelector(".day.selected");
-  if(selected){
-    selected.scrollIntoView({block:"nearest",inline:"center",behavior:"smooth"});
-  }
+function formatDate(date,options){
+  return new Intl.DateTimeFormat("en-GB",{
+    timeZone:WAT,
+    ...options
+  }).format(date);
 }
 
-function refreshCalendars(){
-  ["calendar","freeCalendar","vipCalendar","rollCalendar"]
-    .forEach(buildCalendar);
+function changeDate(amount){
+  selectedCalendarDate=shiftDate(selectedCalendarDate,amount);
+  refreshDateLabels();
+  loadLiveScores();
 }
 
-function updateSelectedDateLabel(){
-  const today=dateKey(new Date());
-  const selected=dateKey(selectedCalendarDate);
+function refreshDateLabels(){
+  const today=nigeriaDate(new Date());
+  const selected=nigeriaDate(selectedCalendarDate);
 
   let label;
-  if(selected===today)label="Today";
-  else if(selected===dateKey(shiftDate(new Date(),-1)))label="Yesterday";
-  else if(selected===dateKey(shiftDate(new Date(),1)))label="Tomorrow";
-  else label=formatDate(selectedCalendarDate,{
-    weekday:"long",day:"2-digit",month:"short",year:"numeric"
-  });
 
-  $("selectedDateText").textContent=label;
+  if(selected===today){
+    label="TODAY";
+  }else{
+    label=formatDate(selectedCalendarDate,{
+      weekday:"short",
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    }).toUpperCase();
+  }
+
+  if($("selectedDateText")){
+    $("selectedDateText").textContent=
+      selected===today
+      ?"Today"
+      :formatDate(selectedCalendarDate,{
+        weekday:"long",
+        day:"2-digit",
+        month:"long",
+        year:"numeric"
+      });
+  }
+
+  [
+    "calendarDateLabel",
+    "freeDateLabel",
+    "vipDateLabel",
+    "rollDateLabel"
+  ].forEach(id=>{
+    if($(id))$(id).textContent=label;
+  });
 }
 
-refreshCalendars();
-updateSelectedDateLabel();
+$("previousDate").addEventListener("click",()=>{
+  changeDate(-1);
+});
+
+$("nextDate").addEventListener("click",()=>{
+  changeDate(1);
+});
+
+refreshDateLabels();
+
 
 /* ==========================================
-   SPORTS AND SCORE FILTERS
-   ========================================== */
+   SPORT AND SCORE TABS
+========================================== */
 
 document.querySelectorAll("#sportTabs button").forEach(button=>{
   button.addEventListener("click",()=>{
-    document.querySelectorAll("#sportTabs button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll("#sportTabs button").forEach(item=>{
+      item.classList.remove("active");
+    });
+
     button.classList.add("active");
     selectedSport=button.dataset.sport;
     renderScores();
@@ -404,45 +770,153 @@ document.querySelectorAll("#sportTabs button").forEach(button=>{
 
 document.querySelectorAll("#scoreTabs button").forEach(button=>{
   button.addEventListener("click",()=>{
-    document.querySelectorAll("#scoreTabs button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll("#scoreTabs button").forEach(item=>{
+      item.classList.remove("active");
+    });
+
     button.classList.add("active");
     selectedScoreState=button.dataset.state;
     renderScores();
   });
 });
 
-/*
-  Connect your scores API here.
 
-  The previous API response format described in the earlier code
-  used:
-    football.live
-    football.finished
-    basketball.live
-    basketball.finished
+/* ==========================================
+   LIVE AND FINISHED SCORE API
+========================================== */
 
-  This front-end does not pretend that the current feed supports
-  historical date lookups. Historical scores need date support
-  from the backend API.
-*/
+function getFirst(object,keys,fallback=""){
+  for(const key of keys){
+    if(
+      object &&
+      object[key]!==undefined &&
+      object[key]!==null
+    ){
+      return object[key];
+    }
+  }
 
-let scoreData={
-  football:{live:[],finished:[]},
-  basketball:{live:[],finished:[]}
-};
+  return fallback;
+}
+
+function teamName(value,fallback){
+  if(typeof value==="object"&&value!==null){
+    return getFirst(value,["name","title","team"],fallback);
+  }
+
+  return value||fallback;
+}
+
+function normalizeGame(game){
+  return {
+    home:teamName(
+      getFirst(game,[
+        "home","homeTeam","home_team","team1","participant1"
+      ]),
+      "Home"
+    ),
+
+    away:teamName(
+      getFirst(game,[
+        "away","awayTeam","away_team","team2","participant2"
+      ]),
+      "Away"
+    ),
+
+    homeScore:getFirst(game,[
+      "homeScore","home_score","homeGoals",
+      "home_goals","scoreHome"
+    ],"-"),
+
+    awayScore:getFirst(game,[
+      "awayScore","away_score","awayGoals",
+      "away_goals","scoreAway"
+    ],"-"),
+
+    status:getFirst(game,[
+      "status","time","elapsed","minute"
+    ],"")
+  };
+}
+
+async function loadLiveScores(){
+  const list=$("scoreList");
+
+  if(!list)return;
+
+  list.innerHTML=
+    '<div class="empty">Loading match scores...</div>';
+
+  try{
+    const selectedDate=nigeriaDate(selectedCalendarDate);
+    const today=nigeriaDate(new Date());
+
+    let url=LIVE_SCORES_URL;
+
+    if(selectedDate!==today){
+      url+="?date="+encodeURIComponent(selectedDate);
+    }
+
+    const response=await fetch(url,{
+      method:"GET",
+      headers:{"Accept":"application/json"},
+      cache:"no-store"
+    });
+
+    if(!response.ok){
+      throw new Error("Scores API error: "+response.status);
+    }
+
+    const source=await response.json();
+
+    const football=source.football||{};
+    const basketball=source.basketball||{};
+
+    scoreData={
+      football:{
+        live:Array.isArray(football.live)
+          ?football.live.map(normalizeGame):[],
+
+        finished:Array.isArray(football.finished)
+          ?football.finished.map(normalizeGame):[]
+      },
+
+      basketball:{
+        live:Array.isArray(basketball.live)
+          ?basketball.live.map(normalizeGame):[],
+
+        finished:Array.isArray(basketball.finished)
+          ?basketball.finished.map(normalizeGame):[]
+      }
+    };
+
+    renderScores();
+
+  }catch(error){
+    console.error("Scores loading failed:",error);
+
+    list.innerHTML=
+      '<div class="empty">'+
+      'Scores are temporarily unavailable. Please refresh and try again.'+
+      '</div>';
+  }
+}
 
 function renderScores(){
   const list=$("scoreList");
   if(!list)return;
 
-  const games=scoreData[selectedSport]?.[selectedScoreState]||[];
+  const games=
+    scoreData[selectedSport]?.[selectedScoreState]||[];
 
   if(!games.length){
     list.innerHTML=
-      '<div class="empty">'+
-      'No '+selectedScoreState+' '+selectedSport+
-      ' scores are available in the connected feed for this selection.'+
-      '</div>';
+      '<div class="empty">No '+
+      selectedScoreState+
+      ' '+
+      selectedSport+
+      ' matches were returned for this date.</div>';
+
     return;
   }
 
@@ -454,73 +928,311 @@ function renderScores(){
 
     const home=document.createElement("div");
     home.className="team";
-    home.innerHTML='<span class="crest">H</span>';
+
+    const homeCrest=document.createElement("span");
+    homeCrest.className="crest";
+    homeCrest.textContent=
+      String(game.home).charAt(0).toUpperCase();
+
     const homeName=document.createElement("span");
-    homeName.textContent=game.home||"Home";
-    home.appendChild(homeName);
+    homeName.textContent=game.home;
+
+    home.append(homeCrest,homeName);
 
     const center=document.createElement("div");
+
     const score=document.createElement("div");
     score.className="score";
-    score.textContent=(game.homeScore??"-")+" : "+(game.awayScore??"-");
+    score.textContent=
+      game.homeScore+" : "+game.awayScore;
 
     const meta=document.createElement("div");
     meta.className="score-meta";
-    meta.textContent=game.status||"";
+    meta.textContent=game.status;
 
     center.append(score,meta);
 
     const away=document.createElement("div");
     away.className="team";
-    const awayName=document.createElement("span");
-    awayName.textContent=game.away||"Away";
-    away.append(awayName);
 
-    const crest=document.createElement("span");
-    crest.className="crest";
-    crest.textContent="A";
-    away.append(crest);
+    const awayName=document.createElement("span");
+    awayName.textContent=game.away;
+
+    const awayCrest=document.createElement("span");
+    awayCrest.className="crest";
+    awayCrest.textContent=
+      String(game.away).charAt(0).toUpperCase();
+
+    away.append(awayName,awayCrest);
 
     row.append(home,center,away);
     list.appendChild(row);
   });
 }
 
-renderScores();
+loadLiveScores();
+
+/* Refresh current scores every minute */
+setInterval(loadLiveScores,60000);
+
 
 /* ==========================================
-   FREE LEAGUE FILTERS
-   ========================================== */
+   SPORTS NEWS FEEDS
+========================================== */
+
+const NEWS_FEEDS=[
+  {
+    name:"SKY SPORTS",
+    url:"https://www.skysports.com/rss/12040"
+  },
+  {
+    name:"SUPERSPORT",
+    url:"https://supersport.com/rss"
+  },
+  {
+    name:"BBC SPORT",
+    url:"https://feeds.bbci.co.uk/sport/rss.xml"
+  }
+];
+
+async function fetchNewsFeed(feed){
+  const url=
+    "https://api.rss2json.com/v1/api.json?rss_url="+
+    encodeURIComponent(feed.url);
+
+  const response=await fetch(url);
+
+  if(!response.ok){
+    throw new Error(feed.name+" feed unavailable");
+  }
+
+  const data=await response.json();
+
+  if(data.status==="error"){
+    throw new Error(data.message||feed.name+" feed error");
+  }
+
+  return (data.items||[]).map(item=>({
+    source:feed.name,
+    title:item.title||"Sports update",
+    description:String(
+      item.description||item.content||""
+    ).replace(/<[^>]*>/g,"").trim().slice(0,250),
+    link:item.link||"",
+    date:item.pubDate||""
+  }));
+}
+
+function renderNewsSlide(){
+  const slide=$("newsSlide");
+  const dots=$("newsDots");
+
+  if(!slide||!sportsNews.length)return;
+
+  const item=sportsNews[newsIndex];
+
+  slide.innerHTML="";
+
+  const source=document.createElement("div");
+  source.className="news-source";
+  source.textContent=item.source;
+
+  const heading=document.createElement("h2");
+  heading.textContent=item.title;
+
+  const description=document.createElement("p");
+  description.textContent=
+    item.description||"Read the latest sports update.";
+
+  slide.append(source,heading,description);
+
+  if(item.link){
+    try{
+      const url=new URL(item.link);
+
+      if(url.protocol==="https:"||url.protocol==="http:"){
+        const link=document.createElement("a");
+
+        link.className="news-read";
+        link.href=url.href;
+        link.target="_blank";
+        link.rel="noopener noreferrer";
+        link.textContent="READ FULL STORY ↗";
+
+        slide.appendChild(link);
+      }
+    }catch(error){
+      console.warn("Invalid news link");
+    }
+  }
+
+  dots.innerHTML="";
+
+  sportsNews.forEach((_,index)=>{
+    const dot=document.createElement("button");
+
+    dot.className=
+      "news-dot"+(index===newsIndex?" active":"");
+
+    dot.setAttribute("aria-label","News "+(index+1));
+
+    dot.addEventListener("click",()=>{
+      newsIndex=index;
+      renderNewsSlide();
+      restartNewsTimer();
+    });
+
+    dots.appendChild(dot);
+  });
+
+  const progress=$("newsProgress");
+
+  if(progress){
+    progress.style.transition="none";
+    progress.style.width="0%";
+
+    requestAnimationFrame(()=>{
+      progress.style.transition="width 7s linear";
+      progress.style.width="100%";
+    });
+  }
+}
+
+function nextNews(){
+  if(!sportsNews.length)return;
+
+  newsIndex=(newsIndex+1)%sportsNews.length;
+  renderNewsSlide();
+}
+
+function previousNews(){
+  if(!sportsNews.length)return;
+
+  newsIndex=
+    (newsIndex-1+sportsNews.length)%sportsNews.length;
+
+  renderNewsSlide();
+}
+
+function restartNewsTimer(){
+  clearInterval(newsTimer);
+  newsTimer=setInterval(nextNews,7000);
+}
+
+async function loadSportsNews(){
+  const slide=$("newsSlide");
+
+  try{
+    const results=await Promise.allSettled(
+      NEWS_FEEDS.map(fetchNewsFeed)
+    );
+
+    sportsNews=results
+      .filter(result=>result.status==="fulfilled")
+      .flatMap(result=>result.value)
+      .filter(item=>item.title)
+      .slice(0,30);
+
+    if(!sportsNews.length){
+      throw new Error("No sports news available");
+    }
+
+    newsIndex=0;
+    renderNewsSlide();
+    restartNewsTimer();
+
+  }catch(error){
+    console.error("Sports news error:",error);
+
+    if(slide){
+      slide.innerHTML="";
+
+      const source=document.createElement("div");
+      source.className="news-source";
+      source.textContent="SPORTS NEWS";
+
+      const heading=document.createElement("h2");
+      heading.textContent="Sports headlines temporarily unavailable";
+
+      const message=document.createElement("p");
+      message.textContent=
+        "The news providers could not be reached. Please try again later.";
+
+      slide.append(source,heading,message);
+    }
+  }
+}
+
+$("newsNext").addEventListener("click",()=>{
+  nextNews();
+  restartNewsTimer();
+});
+
+$("newsPrev").addEventListener("click",()=>{
+  previousNews();
+  restartNewsTimer();
+});
+
+/* Swipe left and right on the news carousel */
+$("sportsNewsCarousel").addEventListener(
+  "touchstart",
+  event=>{
+    newsTouchStart=event.changedTouches[0].clientX;
+  },
+  {passive:true}
+);
+
+$("sportsNewsCarousel").addEventListener(
+  "touchend",
+  event=>{
+    const difference=
+      event.changedTouches[0].clientX-newsTouchStart;
+
+    if(Math.abs(difference)>45){
+      if(difference<0)nextNews();
+      else previousNews();
+
+      restartNewsTimer();
+    }
+  },
+  {passive:true}
+);
+
+loadSportsNews();
+setInterval(loadSportsNews,15*60*1000);
+
+
+/* ==========================================
+   FREE ODDS FILTERS
+========================================== */
 
 document.querySelectorAll("#freeFilters button").forEach(button=>{
   button.addEventListener("click",()=>{
-    document.querySelectorAll("#freeFilters button").forEach(b=>{
-      b.classList.remove("active");
+    document.querySelectorAll("#freeFilters button").forEach(item=>{
+      item.classList.remove("active");
     });
+
     button.classList.add("active");
 
     const category=button.textContent.trim();
 
-    document.querySelectorAll("#freePredictions .prediction-card").forEach(card=>{
+    document.querySelectorAll(
+      "#freePredictions .prediction-card"
+    ).forEach(card=>{
       const league=card.dataset.league||"";
+
       card.style.display=
-        category==="All"||league.toLowerCase()===category.toLowerCase()
+        category==="All"||
+        league.toLowerCase()===category.toLowerCase()
         ?"block":"none";
     });
   });
 });
 
+
 /* ==========================================
-   MEMBERSHIP ACCESS
-   ========================================== */
-
-/*
-  These are display-only access defaults.
-
-  Real membership security must be enforced by your existing
-  Supabase authentication and database policies. Do not use a
-  browser-side flag as proof of payment or approval.
-*/
+   MEMBERSHIP ACCESS DISPLAY
+========================================== */
 
 let memberAccess={
   vip:false,
@@ -528,30 +1240,42 @@ let memberAccess={
 };
 
 function setMembershipAccess(type,approved){
-  if(type==="VIP")memberAccess.vip=Boolean(approved);
-  if(type==="ROLLOVER")memberAccess.rollover=Boolean(approved);
+  if(type==="VIP"){
+    memberAccess.vip=Boolean(approved);
+  }
+
+  if(type==="ROLLOVER"){
+    memberAccess.rollover=Boolean(approved);
+  }
+
   renderMembershipAccess();
 }
 
 function renderMembershipAccess(){
   if(memberAccess.vip){
     $("vipContent").className="card";
+
     $("vipContent").innerHTML=
       '<div class="section-title">VIP PREDICTIONS</div>'+
-      '<div id="vipPredictions" class="empty">Connect your approved VIP prediction feed here.</div>';
+      '<div id="vipPredictions" class="empty">'+
+      'Connect your approved VIP prediction feed here.'+
+      '</div>';
   }
 
   if(memberAccess.rollover){
     $("rollContent").className="card";
+
     $("rollContent").innerHTML=
       '<div class="section-title">ROLLOVER PREDICTIONS</div>'+
-      '<div id="rolloverPredictions" class="empty">Connect your approved Rollover prediction feed here.</div>';
+      '<div id="rolloverPredictions" class="empty">'+
+      'Connect your approved Rollover prediction feed here.'+
+      '</div>';
   }
 }
 
 function showPlans(type){
-  navigate("plans");
   window.currentRequestedPlan=type;
+  navigate("plans");
 }
 
 function receiptWhatsApp(type){
@@ -559,23 +1283,24 @@ function receiptWhatsApp(type){
     "Hello, I have made payment for "+type+
     " membership on onlybosstips. Please find my payment receipt attached.";
 
-  const url="https://wa.me/2348032413495?text="+encodeURIComponent(message);
+  const url=
+    "https://wa.me/2348032413495?text="+
+    encodeURIComponent(message);
+
   window.open(url,"_blank","noopener,noreferrer");
 }
 
+
 /* ==========================================
    WINNING STREAK STATISTICS
-   ========================================== */
-
-/*
-  Call updateWinningStats with prediction records from your
-  database. Only WON and LOST count toward the win rate.
-  PENDING, LIVE and VOID are excluded.
-*/
+========================================== */
 
 function updateWinningStats(records){
   const settled=(records||[]).filter(record=>{
-    const status=String(record.status||record.result||"").toUpperCase();
+    const status=String(
+      record.status||record.result||""
+    ).toUpperCase();
+
     return status==="WON"||status==="LOST";
   });
 
@@ -591,13 +1316,19 @@ function updateWinningStats(records){
   const rate=total?Math.round((won/total)*100):0;
 
   let streak=0;
+
   for(let i=settled.length-1;i>=0;i--){
-    const status=String(settled[i].status||settled[i].result).toUpperCase();
+    const status=String(
+      settled[i].status||settled[i].result
+    ).toUpperCase();
+
     if(i===settled.length-1){
       streak=status==="WON"?1:-1;
       continue;
     }
-    if((streak>0&&status==="WON")||(streak<0&&status==="LOST")){
+
+    if((streak>0&&status==="WON")||
+       (streak<0&&status==="LOST")){
       streak+=streak>0?1:-1;
     }else{
       break;
@@ -607,19 +1338,26 @@ function updateWinningStats(records){
   $("statWon").textContent=won;
   $("statLost").textContent=lost;
   $("statRate").textContent=rate+"%";
-  $("statStreak").textContent=streak>0?streak+"W":streak<0?Math.abs(streak)+"L":"0";
+
+  $("statStreak").textContent=
+    streak>0?streak+"W":
+    streak<0?Math.abs(streak)+"L":"0";
 }
 
+
 /* ==========================================
-   MEMBER PROFILE DISPLAY
-   ========================================== */
+   MEMBER PROFILE
+========================================== */
 
 function setMemberProfile(profile){
   if(!profile)return;
 
   if(profile.name){
-    $("memberName").textContent="Welcome, "+profile.name;
-    $("avatar").textContent=profile.name.trim().charAt(0).toUpperCase();
+    $("memberName").textContent=
+      "Welcome, "+profile.name;
+
+    $("avatar").textContent=
+      profile.name.trim().charAt(0).toUpperCase();
   }
 
   if(profile.email){
@@ -627,20 +1365,22 @@ function setMemberProfile(profile){
   }
 
   if(profile.membership_tier){
-    $("memberTier").textContent=String(profile.membership_tier).toUpperCase()+" MEMBER";
+    $("memberTier").textContent=
+      String(profile.membership_tier).toUpperCase()+" MEMBER";
   }
 }
 
+
 /* ==========================================
    SAFE BOOKING CODE DISPLAY
-   ========================================== */
+========================================== */
 
-/*
-  Booking codes should be inserted as plain text.
-  Never insert untrusted code using innerHTML.
-*/
-
-function addBookingCode(containerId,title,code,platformLink){
+function addBookingCode(
+  containerId,
+  title,
+  code,
+  platformLink
+){
   const container=$(containerId);
   if(!container)return;
 
@@ -658,49 +1398,131 @@ function addBookingCode(containerId,title,code,platformLink){
   if(platformLink){
     try{
       const url=new URL(platformLink);
+
       if(url.protocol==="https:"||url.protocol==="http:"){
         const link=document.createElement("a");
+
         link.href=url.href;
         link.target="_blank";
         link.rel="noopener noreferrer";
         link.textContent="OPEN BOOKING PLATFORM";
-        link.style.cssText="display:inline-block;margin-top:12px;color:#75e5a5;font-size:10px;font-weight:800";
+
+        link.style.cssText=
+          "display:inline-block;margin-top:12px;"+
+          "color:#75e5a5;font-size:10px;font-weight:800";
+
         card.appendChild(link);
       }
     }catch(error){
-      // Invalid links are simply not displayed.
+      console.warn("Invalid platform link");
     }
   }
 
   container.appendChild(card);
 }
 
+
 /* ==========================================
    LOGOUT
-   ========================================== */
+========================================== */
 
 /*
-  Replace this demo handler with your existing Supabase sign-out
-  function when merging this layout into your live website.
+  IMPORTANT:
+  When connecting this layout to your original website,
+  retain your original Supabase client and authentication
+  configuration.
+
+  The function below supports a client exposed as
+  window.supabaseClient or window.supabase.
 */
 
-function logout(){
-  const confirmed=window.confirm("Are you sure you want to log out?");
+async function logout(){
+  const confirmed=window.confirm(
+    "Are you sure you want to log out?"
+  );
+
   if(!confirmed)return;
 
-  // Demo behaviour only.
-  // Your production site should call supabase.auth.signOut()
-  // and then redirect to its existing login screen.
-  alert("Connect this button to your existing Supabase logout function.");
+  try{
+    let client=null;
+
+    if(window.supabaseClient?.auth){
+      client=window.supabaseClient;
+    }else if(
+      window.supabase?.auth&&
+      typeof window.supabase.auth.signOut==="function"
+    ){
+      client=window.supabase;
+    }
+
+    if(client){
+      const {error}=await client.auth.signOut();
+
+      if(error)throw error;
+    }else{
+      /*
+        Fallback for the standalone version.
+        A production Supabase site should use the real client.
+      */
+
+      Object.keys(localStorage).forEach(key=>{
+        if(
+          key.startsWith("sb-")&&
+          key.endsWith("-auth-token")
+        ){
+          localStorage.removeItem(key);
+        }
+      });
+
+      sessionStorage.clear();
+    }
+
+    /*
+      Return to the existing authentication section
+      if this code is merged into the original site.
+    */
+
+    const dashboard=$("memberDashboard");
+    const auth=$("authSection");
+    const welcome=$("welcome");
+
+    if(auth){
+      if(dashboard)dashboard.style.display="none";
+
+      auth.style.display="block";
+
+      if(welcome)welcome.style.display="none";
+
+      window.scrollTo(0,0);
+      return;
+    }
+
+    /*
+      If the original login page is not included,
+      reload the current page after sign-out.
+    */
+
+    window.location.reload();
+
+  }catch(error){
+    console.error("Logout error:",error);
+
+    alert(
+      "Logout failed. Please try again."
+    );
+  }
 }
 
-/* ==========================================
-   INITIAL DISPLAY
-   ========================================== */
 
-navigate("home");
+/* ==========================================
+   START APPLICATION
+========================================== */
+
+refreshDateLabels();
 updateClock();
 renderScores();
+navigate("home");
+
 </script>
 </body>
 </html>
