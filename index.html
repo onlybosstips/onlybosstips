@@ -25,11 +25,11 @@ main{max-width:960px;margin:auto;padding:16px 13px 30px}.screen{display:none;ani
 .primary{background:linear-gradient(135deg,#20d486,#0eaa62);color:#041b10;border:1px solid #5be5a0;border-radius:9px;padding:11px 16px;font-size:11px;font-weight:900;letter-spacing:.3px;box-shadow:0 6px 18px #0e9f5d22}
 .secondary{background:#14251a;color:#b7f2d2;border:1px solid #31523e;border-radius:9px;padding:10px 14px;font-size:11px;font-weight:800}.muted{color:var(--muted)}.error-text{color:#ff8992;font-size:11px;line-height:1.5}.success-text{color:#75e5a5;font-size:11px;line-height:1.5}
 
-/* AUTHENTICATION — dark stadium watermark */
+/* AUTHENTICATION — clearly visible football stadium watermark */
 .auth-wrap{max-width:450px;margin:32px auto;padding:10px;position:relative;isolation:isolate}
-.auth-wrap:before{content:"";position:fixed;inset:64px 0 0;z-index:-2;background:url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1800&q=85") center/cover no-repeat;opacity:.25;pointer-events:none}
-.auth-wrap:after{content:"";position:fixed;inset:64px 0 0;z-index:-1;background:linear-gradient(135deg,rgba(3,12,7,.91),rgba(5,19,11,.82)),radial-gradient(ellipse at 50% 35%,rgba(25,199,121,.12),transparent 65%);pointer-events:none}
-.auth-card{background:linear-gradient(145deg,rgba(18,34,25,.94),rgba(8,17,11,.94));backdrop-filter:blur(9px);border:1px solid #294333;border-radius:21px;padding:23px 18px;box-shadow:0 18px 55px #0009}
+.auth-wrap:before{content:"";position:fixed;inset:64px 0 0;z-index:-2;background:url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1800&q=85") center/cover no-repeat;opacity:.38;pointer-events:none}
+.auth-wrap:after{content:"";position:fixed;inset:64px 0 0;z-index:-1;background:linear-gradient(135deg,rgba(3,12,7,.76),rgba(5,19,11,.70)),radial-gradient(ellipse at 50% 35%,rgba(25,199,121,.13),transparent 65%);pointer-events:none}
+.auth-card{background:linear-gradient(145deg,rgba(18,34,25,.91),rgba(8,17,11,.92));backdrop-filter:blur(8px);border:1px solid #355541;border-radius:21px;padding:23px 18px;box-shadow:0 18px 55px #0009}
 .auth-brand{text-align:center;font-family:"Cinzel",serif;font-size:23px;font-weight:800;color:#b7f2d2;margin-bottom:8px}.auth-brand span{color:var(--green)}
 .auth-subtitle{text-align:center;color:var(--muted);font-size:10px;letter-spacing:1.2px;margin-bottom:21px}
 .auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:17px}.auth-tabs button{padding:10px;border-radius:9px;background:#0b130e;color:var(--muted);border:1px solid var(--line);font-size:10px;font-weight:900}.auth-tabs button.active{background:#17452d;color:#c4f8d9;border-color:#238d57}
@@ -48,7 +48,9 @@ main{max-width:960px;margin:auto;padding:16px 13px 30px}.screen{display:none;ani
 .news-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;filter:brightness(1.13) contrast(1.12) saturate(1.22);transition:transform .5s ease;z-index:0}.news-carousel:hover .news-image{transform:scale(1.025)}
 .news-image-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(2,8,5,.96) 0%,rgba(3,10,6,.70) 36%,rgba(3,10,6,.16) 78%,rgba(3,10,6,.02) 100%)}
 .news-content{position:relative;z-index:2;padding:23px 19px 22px;pointer-events:none}
-.news-source{display:none!important}
+.news-source{display:inline-flex!important;align-items:center;gap:8px;margin-bottom:12px;padding:6px 9px;background:rgba(5,12,8,.76);border:1px solid rgba(255,255,255,.25);border-radius:7px;color:#fff;font-size:9px;font-weight:900;letter-spacing:.8px;text-shadow:0 1px 5px #000}
+.news-source img{display:block;width:94px;height:auto;max-height:22px;object-fit:contain;filter:drop-shadow(0 1px 3px #000)}
+.news-source-text{font-size:9px;font-weight:900;letter-spacing:1px}
 .news-slide h2{max-width:690px;font-size:clamp(21px,4.5vw,32px);line-height:1.14;letter-spacing:-.7px;font-weight:900;margin:0;color:#fff;text-shadow:0 3px 18px rgba(0,0,0,.95)}
 .news-controls{display:none!important}
 
@@ -224,12 +226,12 @@ footer{text-align:center;color:#91a397;font-size:9px;letter-spacing:.8px;padding
  <button class="nav-item" data-page="rollover"><svg viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9A7 7 0 0 1 18 6l2 6M4 12l2 6a7 7 0 0 0 12.4-3"/></svg><span>ROLLOVER</span></button>
  <button class="nav-item" data-page="never"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h4M16 16h.01"/></svg><span>NEVER MISS</span></button>
 </nav>
-
 <script>
 "use strict";
 const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
 const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 const WAT="Africa/Lagos",LIVE_SCORES_URL="https://onlybosstips-api.onrender.com/live-scores";
+const SKY_SPORTS_LOGO="https://commons.wikimedia.org/wiki/Special:Redirect/file/Sky_Sports_2026.svg";
 const $=id=>document.getElementById(id);
 let supabaseClient=null,currentUser=null,selectedPage="authSection",selectedSport="football",selectedScoreState="live",selectedCalendarDate=new Date(),scoreRequestNumber=0;
 let scoreData={football:{live:[],finished:[],upcoming:[]},basketball:{live:[],finished:[],upcoming:[]}};
@@ -286,36 +288,107 @@ function createScoreRow(game,state){const row=document.createElement("div");row.
 function renderScores(message=""){const list=$("scoreList");if(!list)return;const games=scoreData[selectedSport]?.[selectedScoreState]||[];if(!games.length){list.innerHTML='<div class="empty">'+(message||"No "+selectedScoreState+" matches returned for this selected date.")+'</div>';return}list.innerHTML="";const groups=new Map();games.forEach(g=>{const name=String(g.league||"Other Leagues").trim()||"Other Leagues";if(!groups.has(name))groups.set(name,[]);groups.get(name).push(g)});groups.forEach((items,league)=>{const group=document.createElement("section");group.className="league-group";const heading=document.createElement("div");heading.className="league-heading";const title=document.createElement("span");title.textContent=league;const count=document.createElement("span");count.textContent=items.length+(items.length===1?" MATCH":" MATCHES");heading.append(title,count);group.append(heading);items.forEach(g=>group.append(createScoreRow(g,selectedScoreState)));list.append(group)})}
 setInterval(()=>{if(currentUser)loadLiveScores()},60000);
 
-/* SPORTS NEWS — SKY SPORTS ONLY */
-const NEWS_FEEDS=[{name:"SKY SPORTS",url:"https://www.skysports.com/rss/12040"}];
+/* SPORTS NEWS — SKY SPORTS, BBC SPORT AND SUPERSPORT */
+const NEWS_FEEDS=[
+ {name:"SKY SPORTS",url:"https://www.skysports.com/rss/12040",logo:SKY_SPORTS_LOGO},
+ {name:"BBC SPORT",url:"https://feeds.bbci.co.uk/sport/rss.xml",logo:""},
+ {name:"SUPERSPORT",url:"https://supersport.com/rss",logo:""}
+];
 function extractNewsImage(item){if(item.thumbnail)return item.thumbnail;if(item.enclosure?.link)return item.enclosure.link;if(item.enclosure?.url)return item.enclosure.url;const content=String(item.content||"")+" "+String(item.description||"");const match=content.match(/<img[^>]+src=["']([^"']+)["']/i);return match?match[1]:""}
 function cleanNewsText(value){return String(value||"").replace(/<[^>]*>/g," ").replace(/&nbsp;/gi," ").replace(/&amp;/gi,"&").replace(/&#39;/gi,"'").replace(/&quot;/gi,'"').replace(/\b0{4,}\b/g,"").replace(/\s+/g," ").trim()}
-async function fetchNewsFeed(feed){const url="https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed.url),response=await fetch(url);if(!response.ok)throw new Error(feed.name+" unavailable");const data=await response.json();if(data.status==="error")throw new Error(data.message||"News error");return(data.items||[]).map(item=>({source:feed.name,title:cleanNewsText(item.title)||"Sports update",description:cleanNewsText(item.description||item.content).slice(0,240),image:extractNewsImage(item),link:item.link||""}))}
+async function fetchNewsFeed(feed){const url="https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed.url),response=await fetch(url);if(!response.ok)throw new Error(feed.name+" unavailable");const data=await response.json();if(data.status==="error")throw new Error(data.message||"News error");return(data.items||[]).map(item=>({source:feed.name,logo:feed.logo,title:cleanNewsText(item.title)||"Sports update",description:cleanNewsText(item.description||item.content).slice(0,240),image:extractNewsImage(item),link:item.link||""}))}
 function safeHttpUrl(value){try{const url=new URL(value);if(url.protocol==="https:"||url.protocol==="http:")return url.href}catch(error){}return ""}
 function openCurrentNews(){const item=sportsNews[newsIndex];if(!item)return;const url=safeHttpUrl(item.link);if(url)window.open(url,"_blank","noopener,noreferrer")}
-function renderNewsSlide(){const slide=$("newsSlide");if(!slide||!sportsNews.length)return;const item=sportsNews[newsIndex];slide.innerHTML="";slide.setAttribute("aria-label","Open article: "+item.title);const imageUrl=safeHttpUrl(item.image);if(imageUrl){const image=document.createElement("img");image.className="news-image";image.src=imageUrl;image.alt="Sky Sports news photograph";image.loading="eager";image.onerror=()=>image.remove();slide.append(image)}const shade=document.createElement("div");shade.className="news-image-shade";const content=document.createElement("div");content.className="news-content";const heading=document.createElement("h2");heading.textContent=item.title;content.append(heading);slide.append(shade,content)}
+function renderNewsSlide(){
+ const slide=$("newsSlide");if(!slide||!sportsNews.length)return;
+ const item=sportsNews[newsIndex];slide.innerHTML="";slide.setAttribute("aria-label","Open "+item.source+" article: "+item.title);
+ const imageUrl=safeHttpUrl(item.image);
+ if(imageUrl){const image=document.createElement("img");image.className="news-image";image.src=imageUrl;image.alt=item.source+" news photograph";image.loading="eager";image.onerror=()=>image.remove();slide.append(image)}
+ const shade=document.createElement("div");shade.className="news-image-shade";
+ const content=document.createElement("div");content.className="news-content";
+ const sourceBadge=document.createElement("div");sourceBadge.className="news-source";
+ if(item.source==="SKY SPORTS"){
+  const logo=document.createElement("img");logo.src=SKY_SPORTS_LOGO;logo.alt="Sky Sports";logo.onerror=()=>{logo.remove();const fallback=document.createElement("span");fallback.className="news-source-text";fallback.textContent="SKY SPORTS";sourceBadge.append(fallback)};sourceBadge.append(logo);
+ }else{
+  const sourceText=document.createElement("span");sourceText.className="news-source-text";sourceText.textContent=item.source;sourceBadge.append(sourceText);
+ }
+ const heading=document.createElement("h2");heading.textContent=item.title;
+ content.append(sourceBadge,heading);slide.append(shade,content);
+}
 function nextNews(){if(!sportsNews.length)return;newsIndex=(newsIndex+1)%sportsNews.length;renderNewsSlide()}
 function restartNewsTimer(){clearInterval(newsTimer);newsTimer=setInterval(nextNews,7000)}
-async function loadSportsNews(){const slide=$("newsSlide");try{const results=await Promise.allSettled(NEWS_FEEDS.map(fetchNewsFeed));sportsNews=results.filter(r=>r.status==="fulfilled").flatMap(r=>r.value).filter(item=>item.title).slice(0,30);if(!sportsNews.length)throw new Error("No Sky Sports articles returned.");newsIndex=0;renderNewsSlide();restartNewsTimer()}catch(error){console.error("News loading error:",error);slide.innerHTML='<div class="news-content"><h2>Sky Sports headlines temporarily unavailable</h2></div>'}}
+async function loadSportsNews(){
+ const slide=$("newsSlide");
+ try{
+  const results=await Promise.allSettled(NEWS_FEEDS.map(fetchNewsFeed));
+  const successful=results.filter(r=>r.status==="fulfilled").flatMap(r=>r.value);
+  const unique=new Map();
+  successful.forEach(item=>{const key=(item.link||item.source+item.title).toLowerCase();if(!unique.has(key))unique.set(key,item)});
+  sportsNews=Array.from(unique.values()).filter(item=>item.title).slice(0,45);
+  if(!sportsNews.length)throw new Error("No sports articles returned from the news feeds.");
+  newsIndex=0;renderNewsSlide();restartNewsTimer();
+ }catch(error){console.error("News loading error:",error);if(!sportsNews.length)slide.innerHTML='<div class="news-content"><div class="news-source"><span class="news-source-text">SPORTS NEWS</span></div><h2>Sports headlines are temporarily unavailable</h2></div>'}
+}
 $("newsSlide").addEventListener("click",openCurrentNews);$("newsSlide").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openCurrentNews()}});
 loadSportsNews();setInterval(loadSportsNews,15*60*1000);
 
 /* LEAGUE SELECTORS */
 function buildLeagueSelector(type){const grid=$(type+"LeagueGrid");if(!grid)return;grid.innerHTML="";leagueOptions.forEach(league=>{const button=document.createElement("button");button.type="button";button.className="league-button";button.classList.toggle("active",selectedLeagues[type]===league.name);const title=document.createElement("strong");title.textContent=league.name;button.append(title);button.addEventListener("click",()=>{selectedLeagues[type]=league.name;buildLeagueSelector(type);renderPredictions(type)});grid.append(button)})}
 
-/* PREDICTION CATEGORY DETECTION — category and league are kept separate */
-function normalizeTierValue(value){const v=String(value??"").trim().toLowerCase().replace(/[_-]+/g," ");if(!v)return"";if(/\brollover\b/.test(v))return"rollover";if(/\b(vip|premium)\b/.test(v))return"vip";if(/\bfree\b/.test(v))return"free";return""}
+/* PREDICTION CATEGORY DETECTION — never mix membership tiers */
+function normalizeTierValue(value){
+ const v=String(value??"").trim().toLowerCase().replace(/[_-]+/g," ");
+ if(!v)return"";
+ if(/\brollover\b/.test(v))return"rollover";
+ if(/\b(vip|premium)\b/.test(v))return"vip";
+ if(/\bfree\b/.test(v))return"free";
+ return"";
+}
 function recordTier(record){
- const fields=["membership_tier","tier","plan","access_level","member_type","package","prediction_type","prediction_category","odds_type","odds_category","membership","category","type"];
- for(const field of fields){const tier=normalizeTierValue(record?.[field]);if(tier)return tier}
- return"free";
+ if(!record||typeof record!=="object")return"";
+ const fields=[
+  "prediction_tier","prediction_type","prediction_category","odds_type","odds_category",
+  "membership_tier","tier","plan","access_level","member_type","package","membership",
+  "category","type","subscription_type","plan_type"
+ ];
+ for(const field of fields){
+  const tier=normalizeTierValue(record[field]);
+  if(tier)return tier;
+ }
+ if(record.is_rollover===true||record.rollover===true)return"rollover";
+ if(record.is_vip===true||record.vip===true||record.premium===true)return"vip";
+ if(record.is_free===true||record.free_odds===true)return"free";
+ return"";
 }
 function classifyPrediction(record){return recordTier(record)}
-async function loadPredictions(){if(!supabaseClient||!currentUser)return;try{const {data,error}=await supabaseClient.from("predictions").select("*");if(error)throw error;const rows=Array.isArray(data)?data:[];predictionRecords={free:rows.filter(r=>classifyPrediction(r)==="free"),vip:rows.filter(r=>classifyPrediction(r)==="vip"),rollover:rows.filter(r=>classifyPrediction(r)==="rollover")};renderPredictions("free");if(memberAccess.vip)renderPredictions("vip");if(memberAccess.rollover)renderPredictions("rollover");updateWinningStats(rows)}catch(error){console.error("Prediction loading error:",error);$("freePredictions").innerHTML='<div class="empty card">Unable to load predictions. Please refresh and try again.</div>';$("vipPredictions").innerHTML='<div class="empty card">Unable to load VIP predictions.</div>';$("rolloverPredictions").innerHTML='<div class="empty card">Unable to load Rollover predictions.</div>'}}
- function predictionLeague(record){
+async function loadPredictions(){
+ if(!supabaseClient||!currentUser)return;
+ try{
+  const {data,error}=await supabaseClient.from("predictions").select("*");
+  if(error)throw error;
+  const rows=Array.isArray(data)?data:[];
+  predictionRecords={
+   free:rows.filter(r=>classifyPrediction(r)==="free"),
+   vip:rows.filter(r=>classifyPrediction(r)==="vip"),
+   rollover:rows.filter(r=>classifyPrediction(r)==="rollover")
+  };
+  renderPredictions("free");
+  if(memberAccess.vip)renderPredictions("vip");
+  if(memberAccess.rollover)renderPredictions("rollover");
+  updateWinningStats(rows);
+  const unclassified=rows.filter(r=>!classifyPrediction(r)).length;
+  if(unclassified)console.warn(unclassified+" prediction record(s) were not displayed because their membership tier could not be identified. Check the tier field on those Supabase records.");
+ }catch(error){
+  console.error("Prediction loading error:",error);
+  $("freePredictions").innerHTML='<div class="empty card">Unable to load predictions. Please refresh and try again.</div>';
+  $("vipPredictions").innerHTML='<div class="empty card">Unable to load VIP predictions.</div>';
+  $("rolloverPredictions").innerHTML='<div class="empty card">Unable to load Rollover predictions.</div>';
+ }
+}
+function predictionLeague(record){
  const candidates=[record.league,record.competition,record.tournament,record.league_name];
  for(const value of candidates){
-  if(value&& !normalizeTierValue(value))return String(value).toLowerCase();
+  if(value&&!normalizeTierValue(value))return String(value).toLowerCase();
  }
  const category=record.category;
  if(category&&!normalizeTierValue(category))return String(category).toLowerCase();
@@ -341,19 +414,41 @@ function leagueMatches(record,selected){
  };
  return(aliases[selected.toLowerCase()]||[selected.toLowerCase()]).some(name=>league.includes(name));
 }
+
+/* STRICT MATCH-DATE HANDLING — undated records are not repeated on every day */
+function validDateKey(key){
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(String(key||"")))return"";
+ const parts=key.split("-").map(Number);
+ const date=new Date(Date.UTC(parts[0],parts[1]-1,parts[2],12));
+ if(date.getUTCFullYear()!==parts[0]||date.getUTCMonth()!==parts[1]-1||date.getUTCDate()!==parts[2])return"";
+ return key;
+}
 function predictionDateKey(record){
- const raw=record.date||record.match_date||record.fixture_date||"";
+ if(!record||typeof record!=="object")return"";
+ const fields=["match_date","fixture_date","matchDate","fixtureDate","event_date","eventDate","match_datetime","matchDateTime","kickoff_at","kickoff","starts_at","date"];
+ let raw="";
+ for(const field of fields){
+  const value=record[field];
+  if(value!==undefined&&value!==null&&String(value).trim()!==""){raw=value;break}
+ }
  if(!raw)return"";
- const value=String(raw).trim(),iso=value.match(/^(\d{4})-(\d{2})-(\d{2})/);
- if(iso)return iso[1]+"-"+iso[2]+"-"+iso[3];
+ if(typeof raw==="number"){
+  const numericDate=new Date(raw<100000000000?raw*1000:raw);
+  return Number.isNaN(numericDate.getTime())?"":nigeriaDate(numericDate);
+ }
+ const value=String(raw).trim();
+ const iso=value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+ if(iso)return validDateKey(iso[1]+"-"+iso[2]+"-"+iso[3]);
  const local=value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
- if(local)return local[3]+"-"+String(local[2]).padStart(2,"0")+"-"+String(local[1]).padStart(2,"0");
+ if(local)return validDateKey(local[3]+"-"+String(local[2]).padStart(2,"0")+"-"+String(local[1]).padStart(2,"0"));
+ const parsed=new Date(value);
+ if(!Number.isNaN(parsed.getTime()))return nigeriaDate(parsed);
  return"";
 }
 function formatPredictionDate(record){
- const raw=record.date||record.match_date||record.fixture_date||"",key=predictionDateKey(record);
- if(key)return new Intl.DateTimeFormat("en-GB",{timeZone:"UTC",weekday:"short",day:"2-digit",month:"short",year:"numeric"}).format(dateFromKey(key));
- return raw?String(raw):"";
+ const key=predictionDateKey(record);
+ if(!key)return"";
+ return new Intl.DateTimeFormat("en-GB",{timeZone:"UTC",weekday:"short",day:"2-digit",month:"short",year:"numeric"}).format(dateFromKey(key));
 }
 function getPredictionStatus(record){
  const raw=String(record.status||record.result||"PENDING").trim().toUpperCase();
@@ -378,13 +473,12 @@ function renderPredictions(type){
  const containerId={free:"freePredictions",vip:"vipPredictions",rollover:"rolloverPredictions"}[type];
  const container=$(containerId);if(!container)return;
  const selected=selectedLeagues[type],selectedDate=nigeriaDate(selectedCalendarDate);
- /* Category is checked independently of the league selector.
-    ALL means all leagues in this tier, never all membership tiers. */
+ /* Tier and league are separate filters. A missing/invalid match date is excluded. */
  const records=(predictionRecords[type]||[]).filter(record=>{
   if(classifyPrediction(record)!==type)return false;
   if(!leagueMatches(record,selected))return false;
   const recordDate=predictionDateKey(record);
-  return!recordDate||recordDate===selectedDate;
+  return Boolean(recordDate)&&recordDate===selectedDate;
  });
  const labelId={free:"freeSelectedLeague",vip:"vipSelectedLeague",rollover:"rollSelectedLeague"}[type];
  if($(labelId))$(labelId).textContent=selected==="All"?"ALL PREDICTIONS":selected.toUpperCase();
@@ -421,7 +515,7 @@ function membershipLabel(tier){
 }
 function setMemberProfile(profile){
  if(!profile)return;
- $("memberName").textContent="";
+ $("memberName").textContent=profile.full_name||profile.name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||"Member";
  $("memberEmail").textContent=profile.email||currentUser?.email||"";
  const tier=membershipLabel(profile.membership_tier||profile.tier||"FREE");
  $("memberTier").textContent=tier;
@@ -437,7 +531,7 @@ function setMemberProfile(profile){
 }
 async function loadMemberData(user){
  if(!user)return;currentUser=user;
- $("memberEmail").textContent=user.email||"";$("memberName").textContent="";$("memberTier").textContent="FREE MEMBER";
+ $("memberEmail").textContent=user.email||"";$("memberName").textContent=user.user_metadata?.full_name||user.user_metadata?.name||"Member";$("memberTier").textContent="FREE MEMBER";
  memberAccess={vip:false,rollover:false};
  try{
   const {data,error}=await supabaseClient.from("member_profiles").select("*").eq("user_id",user.id).maybeSingle();
@@ -447,7 +541,7 @@ async function loadMemberData(user){
    const tier=String(data.membership_tier||data.tier||"Free").trim().toLowerCase();
    memberAccess.vip=tier==="vip"||tier==="vip member"||tier==="premium";
    memberAccess.rollover=tier==="rollover"||tier==="rollover member";
-  }else setMemberProfile({email:user.email,membership_tier:"FREE"});
+  }else setMemberProfile({email:user.email,membership_tier:"FREE",full_name:user.user_metadata?.full_name||user.user_metadata?.name||"Member"});
  }catch(error){
   console.error("Member profile loading error:",error);
   $("memberTier").textContent="FREE MEMBER";memberAccess={vip:false,rollover:false};
