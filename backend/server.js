@@ -46,6 +46,119 @@ if (supabaseUrl && supabaseSecretKey) {
 }
 
 // =====================================
+// DATABASE COLUMN COMPATIBILITY
+// =====================================
+
+const DB_COLUMNS = {
+  kickoff: "Kickoff",
+  api_fixture_id: "API fixture id",
+  market_category: "Market caregory",
+  market_type: "Market type",
+  market_selection: "Market selection",
+  market_line: "Market line",
+  market_team: "Market team",
+  player_name: "Player name",
+  player_id: "Player id",
+  fixture_status: "Fixture status",
+  home_score: "Home score",
+  away_score: "Away score",
+  halftime_home_score: "Halftime home score",
+  halftime_away_score: "Halftime away score",
+  statistics: "Statistics",
+  tracking_updated_at: "Tracking updated at",
+  api_basketball_game_id: "Api basketball game id"
+};
+
+function normalizeDatabaseRow(row) {
+  if (!row || typeof row !== "object" || Array.isArray(row)) {
+    return row;
+  }
+
+  const normalized = { ...row };
+
+  for (const [alias, column] of Object.entries(DB_COLUMNS)) {
+    if (Object.prototype.hasOwnProperty.call(row, column)) {
+      normalized[alias] = row[column];
+    }
+  }
+
+  return normalized;
+}
+
+function databaseQuery(query) {
+  return new Proxy(query, {
+    get(target, property) {
+      if (property === "then") {
+        return (resolve, reject) => target.then(
+          result => {
+            if (Array.isArray(result?.data)) {
+              result.data = result.data.map(normalizeDatabaseRow);
+            } else if (
+              result?.data &&
+              typeof result.data === "object"
+            ) {
+              result.data = normalizeDatabaseRow(result.data);
+            }
+
+            return resolve ? resolve(result) : result;
+          },
+          reject
+        );
+      }
+
+      const method = target[property];
+
+      if (typeof method !== "function") return method;
+
+      return (...args) => {
+        if (["eq", "is", "not"].includes(property)) {
+          if (typeof args[0] === "string") {
+            args[0] = DB_COLUMNS[args[0]] || args[0];
+          }
+
+          if (
+            args[0] === "status" &&
+            args[1] === "pending"
+          ) {
+            args[1] = "Pending";
+          }
+        }
+
+        if (
+          property === "update" &&
+          args[0] &&
+          typeof args[0] === "object"
+        ) {
+          const update = {};
+
+          for (const [key, value] of Object.entries(args[0])) {
+            const column = DB_COLUMNS[key] || key;
+
+            update[column] =
+              column === "status" && typeof value === "string"
+                ? value.charAt(0).toUpperCase() +
+                  value.slice(1).toLowerCase()
+                : value;
+          }
+
+          args[0] = update;
+        }
+
+        const result = method.apply(target, args);
+
+        return result && typeof result === "object"
+          ? databaseQuery(result)
+          : result;
+      };
+    }
+  });
+}
+
+function dbFrom(table) {
+  return databaseQuery(supabase.from(table));
+}
+
+// =====================================
 // SPORTAPI
 // =====================================
 
@@ -53,7 +166,9 @@ const sportApiKey = process.env.SPORTAPI_KEY;
 const sportApiUrl = "https://sportapi.ai/api";
 
 async function sportApiRequest(endpoint) {
-  if (!sportApiKey) throw new Error("SPORTAPI_KEY is missing in Render.");
+  if (!sportApiKey) {
+    throw new Error("SPORTAPI_KEY is missing in Render.");
+  }
 
   const response = await fetch(`${sportApiUrl}${endpoint}`, {
     method: "GET",
@@ -67,7 +182,9 @@ async function sportApiRequest(endpoint) {
   try {
     data = JSON.parse(responseText);
   } catch {
-    throw new Error(`SportAPI returned invalid JSON. HTTP ${response.status}`);
+    throw new Error(
+      `SportAPI returned invalid JSON. HTTP ${response.status}`
+    );
   }
 
   if (!response.ok || data.success === false) {
@@ -122,8 +239,6 @@ function normalizeTeam(name) {
     realmadridcf: "realmadrid",
     dortmund: "borussiadortmund",
     bvb: "borussiadortmund",
-
-    // Basketball team aliases
     lalakers: "losangeleslakers",
     lakers: "losangeleslakers",
     laclippers: "losangelesclippers",
@@ -157,7 +272,10 @@ function teamMatches(first, second) {
 }
 
 function safeNumber(value) {
-  if (value === null || value === undefined || value === "") return null;
+  if (value === null || value === undefined || value === "") {
+    return null;
+  }
+
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
 }
@@ -197,6 +315,7 @@ function basketballVoidStatus(status) {
 
 function kickoffDate(value) {
   const time = new Date(value);
+
   return Number.isFinite(time.getTime())
     ? time.toISOString().slice(0, 10)
     : null;
@@ -204,7 +323,9 @@ function kickoffDate(value) {
 
 function shiftDate(dateString, days) {
   const date = new Date(`${dateString}T12:00:00.000Z`);
+
   if (!Number.isFinite(date.getTime())) return null;
+
   date.setUTCDate(date.getUTCDate() + days);
   return date.toISOString().slice(0, 10);
 }
@@ -235,6 +356,7 @@ function isOneUpTwoUpMarket(prediction) {
   const market = normalizedText(
     `${prediction.market_type || ""} ${prediction.market_category || ""}`
   );
+
   return /\b(1up|2up)\b/.test(market);
 }
 
@@ -255,10 +377,16 @@ function getOneUpTwoUpDetails(prediction) {
   else if (/\b(away|away team)\b/.test(marketType)) side = "away";
   else if (/\b(home|home team)\b/.test(selection)) side = "home";
   else if (/\b(away|away team)\b/.test(selection)) side = "away";
-  else if (prediction.home_team && selection &&
-    teamMatches(selection, prediction.home_team)) side = "home";
-  else if (prediction.away_team && selection &&
-    teamMatches(selection, prediction.away_team)) side = "away";
+  else if (
+    prediction.home_team &&
+    selection &&
+    teamMatches(selection, prediction.home_team)
+  ) side = "home";
+  else if (
+    prediction.away_team &&
+    selection &&
+    teamMatches(selection, prediction.away_team)
+  ) side = "away";
 
   return side ? { requiredLead, side } : null;
 }
@@ -269,15 +397,20 @@ function settleOneUpTwoUpMarket(prediction, fixture, eventsResponse) {
 
   const finalHome = safeNumber(fixture.home_score);
   const finalAway = safeNumber(fixture.away_score);
+
   if (finalHome === null || finalAway === null) return null;
 
   let events = [];
 
-  if (Array.isArray(eventsResponse)) events = eventsResponse;
-  else if (Array.isArray(eventsResponse?.data)) events = eventsResponse.data;
-  else if (Array.isArray(eventsResponse?.data?.data)) {
+  if (Array.isArray(eventsResponse)) {
+    events = eventsResponse;
+  } else if (Array.isArray(eventsResponse?.data)) {
+    events = eventsResponse.data;
+  } else if (Array.isArray(eventsResponse?.data?.data)) {
     events = eventsResponse.data.data;
-  } else return null;
+  } else {
+    return null;
+  }
 
   const goals = [];
 
@@ -285,9 +418,12 @@ function settleOneUpTwoUpMarket(prediction, fixture, eventsResponse) {
     const event = events[index];
     if (!event) continue;
 
-    if (normalizedText(event.event_type || event.type) !== "goal") continue;
+    if (normalizedText(event.event_type || event.type) !== "goal") {
+      continue;
+    }
 
     const side = String(event.team_side || "").trim().toLowerCase();
+
     if (side !== "home" && side !== "away") return null;
 
     const minuteMatch = String(event.minute || "")
@@ -298,14 +434,16 @@ function settleOneUpTwoUpMarket(prediction, fixture, eventsResponse) {
 
     goals.push({
       side,
-      order: Number(minuteMatch[1]) * 1000 + Number(minuteMatch[2] || 0),
+      order: Number(minuteMatch[1]) * 1000 +
+        Number(minuteMatch[2] || 0),
       originalIndex: index
     });
   }
 
   goals.sort((a, b) =>
-    a.order !== b.order ? a.order - b.order :
-    a.originalIndex - b.originalIndex
+    a.order !== b.order
+      ? a.order - b.order
+      : a.originalIndex - b.originalIndex
   );
 
   let homeGoals = 0;
@@ -323,7 +461,10 @@ function settleOneUpTwoUpMarket(prediction, fixture, eventsResponse) {
     if (lead >= market.requiredLead) achievedLead = true;
   }
 
-  if (homeGoals !== finalHome || awayGoals !== finalAway) return null;
+  if (homeGoals !== finalHome || awayGoals !== finalAway) {
+    return null;
+  }
+
   return achievedLead ? "won" : "lost";
 }
 
@@ -334,6 +475,7 @@ function settleOneUpTwoUpMarket(prediction, fixture, eventsResponse) {
 function settleScoreMarket(prediction, fixture) {
   const home = safeNumber(fixture.home_score);
   const away = safeNumber(fixture.away_score);
+
   if (home === null || away === null) return null;
 
   const htHome = safeNumber(fixture.ht_home);
@@ -361,12 +503,22 @@ function settleScoreMarket(prediction, fixture) {
   function overUnder(value) {
     if (line === null) return null;
 
-    if (/\bover\b/.test(selection) || /\bover\b/.test(marketType)) {
-      return value === line ? "void" : value > line ? "won" : "lost";
+    if (
+      /\bover\b/.test(selection) ||
+      /\bover\b/.test(marketType)
+    ) {
+      return value === line
+        ? "void"
+        : value > line ? "won" : "lost";
     }
 
-    if (/\bunder\b/.test(selection) || /\bunder\b/.test(marketType)) {
-      return value === line ? "void" : value < line ? "won" : "lost";
+    if (
+      /\bunder\b/.test(selection) ||
+      /\bunder\b/.test(marketType)
+    ) {
+      return value === line
+        ? "void"
+        : value < line ? "won" : "lost";
     }
 
     return null;
@@ -375,29 +527,42 @@ function settleScoreMarket(prediction, fixture) {
   function selectedSide(homeResult, drawResult, awayResult) {
     const sideText = `${marketType} ${selection} ${predictionText}`;
 
-    if (/\b(home|home team)\b/.test(sideText) || /\b1\b/.test(selection)) {
-      return homeResult;
-    }
-    if (/\b(draw|tie)\b/.test(sideText) || /\bx\b/.test(selection)) {
-      return drawResult;
-    }
-    if (/\b(away|away team)\b/.test(sideText) || /\b2\b/.test(selection)) {
-      return awayResult;
-    }
+    if (
+      /\b(home|home team)\b/.test(sideText) ||
+      /\b1\b/.test(selection)
+    ) return homeResult;
+
+    if (
+      /\b(draw|tie)\b/.test(sideText) ||
+      /\bx\b/.test(selection)
+    ) return drawResult;
+
+    if (
+      /\b(away|away team)\b/.test(sideText) ||
+      /\b2\b/.test(selection)
+    ) return awayResult;
+
     return null;
   }
 
-  if (/full time result|match result|1x2/.test(marketType) ||
-      category === "match result") {
+  if (
+    /full time result|match result|1x2/.test(marketType) ||
+    category === "match result"
+  ) {
     if (/draw no bet/.test(marketType)) {
       if (draw) return "void";
-      return selectedSide(homeWin ? "won" : "lost", null,
-        awayWin ? "won" : "lost");
+
+      return selectedSide(
+        homeWin ? "won" : "lost",
+        null,
+        awayWin ? "won" : "lost"
+      );
     }
 
     if (/home win to nil/.test(combined)) {
       return homeWin && away === 0 ? "won" : "lost";
     }
+
     if (/away win to nil/.test(combined)) {
       return awayWin && home === 0 ? "won" : "lost";
     }
@@ -409,61 +574,130 @@ function settleScoreMarket(prediction, fixture) {
     );
   }
 
-  if (category === "double chance" || /double chance/.test(marketType)) {
-    if (/home or draw|1x/.test(selection)) return homeWin || draw ? "won" : "lost";
-    if (/draw or away|x2/.test(selection)) return draw || awayWin ? "won" : "lost";
-    if (/home or away|12/.test(selection)) return homeWin || awayWin ? "won" : "lost";
+  if (
+    category === "double chance" ||
+    /double chance/.test(marketType)
+  ) {
+    if (/home or draw|1x/.test(selection)) {
+      return homeWin || draw ? "won" : "lost";
+    }
+
+    if (/draw or away|x2/.test(selection)) {
+      return draw || awayWin ? "won" : "lost";
+    }
+
+    if (/home or away|12/.test(selection)) {
+      return homeWin || awayWin ? "won" : "lost";
+    }
   }
 
-  if (category === "both teams to score" ||
-      /both teams to score|btts/.test(marketType)) {
+  if (
+    category === "both teams to score" ||
+    /both teams to score|btts/.test(marketType)
+  ) {
     const bothScored = home > 0 && away > 0;
+
     const text = normalizedText(
-      `${prediction.market_selection || ""} ${prediction.prediction || ""} ` +
-      `${prediction.market_type || ""} ${prediction.market_category || ""}`
+      `${prediction.market_selection || ""} ` +
+      `${prediction.prediction || ""} ` +
+      `${prediction.market_type || ""} ` +
+      `${prediction.market_category || ""}`
     );
+
     const yes = /\b(yes|gg)\b/.test(text);
     const no = /\b(no|ng)\b/.test(text);
 
-    if (/btts and over 2 5|both teams to score and over 2 5/.test(combined)) {
+    if (
+      /btts and over 2 5|both teams to score and over 2 5/.test(combined)
+    ) {
       return bothScored && totalGoals > 2.5 ? "won" : "lost";
     }
-    if (/btts and under 2 5|both teams to score and under 2 5/.test(combined)) {
+
+    if (
+      /btts and under 2 5|both teams to score and under 2 5/.test(combined)
+    ) {
       return bothScored && totalGoals < 2.5 ? "won" : "lost";
     }
+
     if (yes && !no) return bothScored ? "won" : "lost";
     if (no && !yes) return !bothScored ? "won" : "lost";
+
     return null;
   }
 
-  if (/total goals over under/.test(marketType)) return overUnder(totalGoals);
-  if (/home team goals over under/.test(marketType)) return overUnder(home);
-  if (/away team goals over under/.test(marketType)) return overUnder(away);
-
-  if (/exact total goals/.test(marketType)) {
-    const exact = safeNumber(prediction.market_line ?? prediction.market_selection);
-    return exact === null ? null : totalGoals === exact ? "won" : "lost";
+  if (/total goals over under/.test(marketType)) {
+    return overUnder(totalGoals);
   }
 
-  if (/home team to score/.test(combined)) return home > 0 ? "won" : "lost";
-  if (/away team to score/.test(combined)) return away > 0 ? "won" : "lost";
-  if (/home clean sheet/.test(combined)) return away === 0 ? "won" : "lost";
-  if (/away clean sheet/.test(combined)) return home === 0 ? "won" : "lost";
-  if (/home win by 2 or more/.test(combined)) return home - away >= 2 ? "won" : "lost";
-  if (/away win by 2 or more/.test(combined)) return away - home >= 2 ? "won" : "lost";
-  if (/home win by 1 goal/.test(combined)) return home - away === 1 ? "won" : "lost";
-  if (/away win by 1 goal/.test(combined)) return away - home === 1 ? "won" : "lost";
-  if (/match to have no goals/.test(combined)) return totalGoals === 0 ? "won" : "lost";
+  if (/home team goals over under/.test(marketType)) {
+    return overUnder(home);
+  }
+
+  if (/away team goals over under/.test(marketType)) {
+    return overUnder(away);
+  }
+
+  if (/exact total goals/.test(marketType)) {
+    const exact = safeNumber(
+      prediction.market_line ?? prediction.market_selection
+    );
+
+    return exact === null
+      ? null
+      : totalGoals === exact ? "won" : "lost";
+  }
+
+  if (/home team to score/.test(combined)) {
+    return home > 0 ? "won" : "lost";
+  }
+
+  if (/away team to score/.test(combined)) {
+    return away > 0 ? "won" : "lost";
+  }
+
+  if (/home clean sheet/.test(combined)) {
+    return away === 0 ? "won" : "lost";
+  }
+
+  if (/away clean sheet/.test(combined)) {
+    return home === 0 ? "won" : "lost";
+  }
+
+  if (/home win by 2 or more/.test(combined)) {
+    return home - away >= 2 ? "won" : "lost";
+  }
+
+  if (/away win by 2 or more/.test(combined)) {
+    return away - home >= 2 ? "won" : "lost";
+  }
+
+  if (/home win by 1 goal/.test(combined)) {
+    return home - away === 1 ? "won" : "lost";
+  }
+
+  if (/away win by 1 goal/.test(combined)) {
+    return away - home === 1 ? "won" : "lost";
+  }
+
+  if (/match to have no goals/.test(combined)) {
+    return totalGoals === 0 ? "won" : "lost";
+  }
 
   if (/correct score/.test(marketType)) {
-    const match = (selection || predictionText).match(/\b(\d+)\s*[-:]\s*(\d+)\b/);
+    const match = (selection || predictionText)
+      .match(/\b(\d+)\s*[-:]\s*(\d+)\b/);
+
     if (match) {
-      return home === Number(match[1]) && away === Number(match[2])
-        ? "won" : "lost";
+      return home === Number(match[1]) &&
+        away === Number(match[2])
+        ? "won"
+        : "lost";
     }
   }
 
-  if (/half time result|half time goals|half time correct score|correct score half time|correct score first half|home half time goals|away half time goals/.test(marketType)) {
+  if (
+    /half time result|half time goals|half time correct score|correct score half time|correct score first half|home half time goals|away half time goals/.test(marketType)
+  ) {
     if (htHome === null || htAway === null) return null;
 
     if (/half time result/.test(marketType)) {
@@ -477,23 +711,36 @@ function settleScoreMarket(prediction, fixture) {
     if (/half time goals over under/.test(marketType)) {
       return overUnder(htHome + htAway);
     }
-    if (/home half time goals/.test(marketType)) return overUnder(htHome);
-    if (/away half time goals/.test(marketType)) return overUnder(htAway);
+
+    if (/home half time goals/.test(marketType)) {
+      return overUnder(htHome);
+    }
+
+    if (/away half time goals/.test(marketType)) {
+      return overUnder(htAway);
+    }
 
     if (/correct score/.test(marketType)) {
-      const match = (selection || predictionText).match(/\b(\d+)\s*[-:]\s*(\d+)\b/);
+      const match = (selection || predictionText)
+        .match(/\b(\d+)\s*[-:]\s*(\d+)\b/);
+
       if (match) {
-        return htHome === Number(match[1]) && htAway === Number(match[2])
-          ? "won" : "lost";
+        return htHome === Number(match[1]) &&
+          htAway === Number(match[2])
+          ? "won"
+          : "lost";
       }
     }
   }
 
-  if (/second half result|second half goals over under/.test(marketType)) {
+  if (
+    /second half result|second half goals over under/.test(marketType)
+  ) {
     if (htHome === null || htAway === null) return null;
 
     const secondHome = home - htHome;
     const secondAway = away - htAway;
+
     if (secondHome < 0 || secondAway < 0) return null;
 
     if (/second half result/.test(marketType)) {
@@ -511,36 +758,49 @@ function settleScoreMarket(prediction, fixture) {
 
   if (/goal in first half|goal before half time/.test(combined)) {
     if (htHome === null || htAway === null) return null;
+
     return htHome + htAway > 0 ? "won" : "lost";
   }
 
   if (/no goal in first half/.test(combined)) {
     if (htHome === null || htAway === null) return null;
+
     return htHome + htAway === 0 ? "won" : "lost";
   }
 
   if (/goal in second half/.test(combined)) {
     if (htHome === null || htAway === null) return null;
-    return (home - htHome) + (away - htAway) > 0 ? "won" : "lost";
+
+    return (home - htHome) + (away - htAway) > 0
+      ? "won"
+      : "lost";
   }
 
   if (/goal in both halves/.test(combined)) {
     if (htHome === null || htAway === null) return null;
+
     const first = htHome + htAway;
     const second = (home - htHome) + (away - htAway);
+
     return first > 0 && second > 0 ? "won" : "lost";
   }
 
   if (/home team to win either half/.test(combined)) {
     if (htHome === null || htAway === null) return null;
-    return htHome > htAway || (home - htHome) > (away - htAway)
-      ? "won" : "lost";
+
+    return htHome > htAway ||
+      (home - htHome) > (away - htAway)
+      ? "won"
+      : "lost";
   }
 
   if (/away team to win either half/.test(combined)) {
     if (htHome === null || htAway === null) return null;
-    return htAway > htHome || (away - htAway) > (home - htHome)
-      ? "won" : "lost";
+
+    return htAway > htHome ||
+      (away - htAway) > (home - htHome)
+      ? "won"
+      : "lost";
   }
 
   return null;
@@ -550,18 +810,19 @@ function settleScoreMarket(prediction, fixture) {
 // BASKETBALL MARKET SETTLEMENT
 // =====================================
 
-// SportAPI supplies overall scores and an array of
-// points scored in each period. We only settle markets
-// that can be verified from those scores.
-
 function getBasketballPeriods(game) {
   const home = Array.isArray(game?.home?.periods)
-    ? game.home.periods.map(safeNumber) : [];
+    ? game.home.periods.map(safeNumber)
+    : [];
+
   const away = Array.isArray(game?.away?.periods)
-    ? game.away.periods.map(safeNumber) : [];
+    ? game.away.periods.map(safeNumber)
+    : [];
 
   if (!home.length || !away.length) return null;
-  if (home.some(v => v === null) || away.some(v => v === null)) return null;
+  if (home.some(v => v === null) || away.some(v => v === null)) {
+    return null;
+  }
 
   return { home, away };
 }
@@ -569,13 +830,21 @@ function getBasketballPeriods(game) {
 function basketballSelectionSide(prediction, selection, text) {
   const combined = `${selection} ${text}`;
 
-  if (prediction.home_team &&
-      (teamMatches(combined, prediction.home_team) ||
-       teamMatches(selection, prediction.home_team))) return "home";
+  if (
+    prediction.home_team &&
+    (
+      teamMatches(combined, prediction.home_team) ||
+      teamMatches(selection, prediction.home_team)
+    )
+  ) return "home";
 
-  if (prediction.away_team &&
-      (teamMatches(combined, prediction.away_team) ||
-       teamMatches(selection, prediction.away_team))) return "away";
+  if (
+    prediction.away_team &&
+    (
+      teamMatches(combined, prediction.away_team) ||
+      teamMatches(selection, prediction.away_team)
+    )
+  ) return "away";
 
   if (/\b(home|home team)\b/.test(combined)) return "home";
   if (/\b(away|away team)\b/.test(combined)) return "away";
@@ -587,7 +856,10 @@ function basketballLine(prediction, combined) {
   const stored = safeNumber(prediction.market_line);
   if (stored !== null) return stored;
 
-  const match = combined.match(/(?:over|under|[+-])\s*(\d+(?:\.\d+)?)/);
+  const match = combined.match(
+    /(?:over|under|[+-])\s*(\d+(?:\.\d+)?)/
+  );
+
   return match ? Number(match[1]) : null;
 }
 
@@ -625,25 +897,33 @@ function settleBasketballMarket(prediction, game) {
     if (value === line) return "void";
 
     return over
-      ? (value > line ? "won" : "lost")
-      : (value < line ? "won" : "lost");
+      ? value > line ? "won" : "lost"
+      : value < line ? "won" : "lost";
   }
 
   function settleWinner(homeScore, awayScore) {
     if (homeScore === awayScore) return null;
-
     if (/\b(draw|tie)\b/.test(combined)) return null;
 
-    if (side === "home") return homeScore > awayScore ? "won" : "lost";
-    if (side === "away") return awayScore > homeScore ? "won" : "lost";
-
-    if (prediction.home_team &&
-        teamMatches(selection, prediction.home_team)) {
+    if (side === "home") {
       return homeScore > awayScore ? "won" : "lost";
     }
 
-    if (prediction.away_team &&
-        teamMatches(selection, prediction.away_team)) {
+    if (side === "away") {
+      return awayScore > homeScore ? "won" : "lost";
+    }
+
+    if (
+      prediction.home_team &&
+      teamMatches(selection, prediction.home_team)
+    ) {
+      return homeScore > awayScore ? "won" : "lost";
+    }
+
+    if (
+      prediction.away_team &&
+      teamMatches(selection, prediction.away_team)
+    ) {
       return awayScore > homeScore ? "won" : "lost";
     }
 
@@ -658,8 +938,9 @@ function settleBasketballMarket(prediction, game) {
     let quarter = null;
 
     if (quarterMatch) {
-      if (quarterMatch[1]) quarter = Number(quarterMatch[1]);
-      else {
+      if (quarterMatch[1]) {
+        quarter = Number(quarterMatch[1]);
+      } else {
         quarter = {
           first: 1,
           second: 2,
@@ -669,8 +950,11 @@ function settleBasketballMarket(prediction, game) {
       }
     }
 
-    if (quarter && periods.home.length >= quarter &&
-        periods.away.length >= quarter) {
+    if (
+      quarter &&
+      periods.home.length >= quarter &&
+      periods.away.length >= quarter
+    ) {
       const qHome = periods.home[quarter - 1];
       const qAway = periods.away[quarter - 1];
 
@@ -690,7 +974,9 @@ function settleBasketballMarket(prediction, game) {
     }
 
     if (/first half|1st half|half 1|h1/.test(combined)) {
-      if (periods.home.length < 2 || periods.away.length < 2) return null;
+      if (periods.home.length < 2 || periods.away.length < 2) {
+        return null;
+      }
 
       const hHome = periods.home[0] + periods.home[1];
       const hAway = periods.away[0] + periods.away[1];
@@ -711,7 +997,9 @@ function settleBasketballMarket(prediction, game) {
     }
 
     if (/second half|2nd half|half 2|h2/.test(combined)) {
-      if (periods.home.length < 4 || periods.away.length < 4) return null;
+      if (periods.home.length < 4 || periods.away.length < 4) {
+        return null;
+      }
 
       const hHome = periods.home[2] + periods.home[3];
       const hAway = periods.away[2] + periods.away[3];
@@ -735,8 +1023,13 @@ function settleBasketballMarket(prediction, game) {
   if (/team total|home total|away total|team points/.test(combined)) {
     let teamSide = side;
 
-    if (!teamSide && /\bhome\b/.test(combined)) teamSide = "home";
-    if (!teamSide && /\baway\b/.test(combined)) teamSide = "away";
+    if (!teamSide && /\bhome\b/.test(combined)) {
+      teamSide = "home";
+    }
+
+    if (!teamSide && /\baway\b/.test(combined)) {
+      teamSide = "away";
+    }
 
     if (!teamSide) return null;
 
@@ -749,7 +1042,9 @@ function settleBasketballMarket(prediction, game) {
     );
   }
 
-  if (/total points|match points|game points|over under|total score/.test(combined)) {
+  if (
+    /total points|match points|game points|over under|total score/.test(combined)
+  ) {
     return settleTotal(total);
   }
 
@@ -773,10 +1068,15 @@ function settleBasketballSpread(
   if (!side) {
     const selection = normalizedText(prediction.market_selection);
 
-    if (prediction.home_team && teamMatches(selection, prediction.home_team)) {
+    if (
+      prediction.home_team &&
+      teamMatches(selection, prediction.home_team)
+    ) {
       side = "home";
-    } else if (prediction.away_team &&
-               teamMatches(selection, prediction.away_team)) {
+    } else if (
+      prediction.away_team &&
+      teamMatches(selection, prediction.away_team)
+    ) {
       side = "away";
     }
   }
@@ -791,8 +1091,8 @@ function settleBasketballSpread(
 
   if (signed) {
     handicap = Number(signed[1].replace(/\s/g, ""));
-  } else {
-    if (!String(prediction.market_line ?? "").trim()) return null;
+  } else if (!String(prediction.market_line ?? "").trim()) {
+    return null;
   }
 
   const selectedScore = side === "home" ? homeScore : awayScore;
@@ -800,6 +1100,7 @@ function settleBasketballSpread(
   const adjusted = selectedScore + handicap;
 
   if (adjusted === opponentScore) return "void";
+
   return adjusted > opponentScore ? "won" : "lost";
 }
 
@@ -838,7 +1139,10 @@ async function requireAdmin(req, res, next) {
       await supabase.auth.getUser(token);
 
     if (userError || !userData?.user) {
-      console.error("ADMIN TOKEN VERIFICATION FAILED:", userError?.message);
+      console.error(
+        "ADMIN TOKEN VERIFICATION FAILED:",
+        userError?.message
+      );
 
       return res.status(401).json({
         success: false,
@@ -847,13 +1151,16 @@ async function requireAdmin(req, res, next) {
     }
 
     const { data: admin, error: adminError } = await supabase
-      .from("admins")
+      .from("admin")
       .select("user_id")
       .eq("user_id", userData.user.id)
       .maybeSingle();
 
     if (adminError) {
-      console.error("ADMIN TABLE LOOKUP FAILED:", adminError.message);
+      console.error(
+        "ADMIN TABLE LOOKUP FAILED:",
+        adminError.message
+      );
 
       return res.status(500).json({
         success: false,
@@ -909,9 +1216,8 @@ app.get("/health/database", async (req, res) => {
       });
     }
 
-    const { error } = await supabase
-      .from("predictions")
-      .select("id, api_basketball_game_id")
+    const { error } = await dbFrom("predictions")
+      .select("*")
       .limit(1);
 
     if (error) throw error;
@@ -926,7 +1232,8 @@ app.get("/health/database", async (req, res) => {
 
     return res.status(500).json({
       success: false,
-      message: "Database connection failed. Check that the basketball ID column exists."
+      message: "Database connection failed.",
+      diagnostic: error.message
     });
   }
 });
@@ -981,8 +1288,6 @@ app.get("/health/basketball", async (req, res) => {
 // MEMBER LIVE SCORES
 // =====================================
 
-// Cache results for five minutes to reduce SportAPI requests.
-
 const LIVE_SCORES_CACHE_MS = 5 * 60 * 1000;
 
 let liveScoresCache = {
@@ -1029,7 +1334,10 @@ function normalizeFootballLiveMatch(fixture) {
     away_score: safeNumber(fixture.away_score),
     status: fixture.status || "LIVE",
     minute: fixture.minute ?? null,
-    kickoff: fixture.kickoff_utc || fixture.datetime || fixture.date || null,
+    kickoff: fixture.kickoff_utc ||
+      fixture.datetime ||
+      fixture.date ||
+      null,
     home_logo: fixture.home_logo || null,
     away_logo: fixture.away_logo || null
   };
@@ -1039,8 +1347,10 @@ function normalizeBasketballLiveMatch(game) {
   return {
     id: game.id,
     sport: "basketball",
-    league: game.league?.name || game.league_name ||
-      game.league || "Basketball",
+    league: game.league?.name ||
+      game.league_name ||
+      game.league ||
+      "Basketball",
     home_team: game.home?.name || "",
     away_team: game.away?.name || "",
     home_score: safeNumber(game.home?.score),
@@ -1058,16 +1368,19 @@ async function buildLiveScoresResponse() {
   const footballDate = getFootballDate();
   const basketballDate = new Date().toISOString().slice(0, 10);
 
-  const [footballResult, basketballLiveResult, basketballDateResult] =
-    await Promise.allSettled([
-      sportApiRequest(
-        `/fixtures/date/${encodeURIComponent(footballDate)}`
-      ),
-      sportApiRequest("/basketball/games/live"),
-      sportApiRequest(
-        `/basketball/games/date/${encodeURIComponent(basketballDate)}?tz=UTC`
-      )
-    ]);
+  const [
+    footballResult,
+    basketballLiveResult,
+    basketballDateResult
+  ] = await Promise.allSettled([
+    sportApiRequest(
+      `/fixtures/date/${encodeURIComponent(footballDate)}`
+    ),
+    sportApiRequest("/basketball/games/live"),
+    sportApiRequest(
+      `/basketball/games/date/${encodeURIComponent(basketballDate)}?tz=UTC`
+    )
+  ]);
 
   const warnings = [];
 
@@ -1098,6 +1411,7 @@ async function buildLiveScoresResponse() {
 
   } else {
     warnings.push("Football scores are temporarily unavailable.");
+
     console.error(
       "Live football scores error:",
       footballResult.reason?.message
@@ -1117,13 +1431,18 @@ async function buildLiveScoresResponse() {
         const status = String(game.status || "").trim().toUpperCase();
 
         return game.live === true ||
-          ["Q1", "Q2", "Q3", "Q4", "H1", "H2", "HT", "OT",
-            "OVERTIME", "LIVE"].includes(status);
+          [
+            "Q1", "Q2", "Q3", "Q4", "H1", "H2", "HT",
+            "OT", "OVERTIME", "LIVE"
+          ].includes(status);
       })
       .map(normalizeBasketballLiveMatch);
 
   } else {
-    warnings.push("Live basketball games are temporarily unavailable.");
+    warnings.push(
+      "Live basketball games are temporarily unavailable."
+    );
+
     console.error(
       "Live basketball scores error:",
       basketballLiveResult.reason?.message
@@ -1140,7 +1459,10 @@ async function buildLiveScoresResponse() {
       .map(normalizeBasketballLiveMatch);
 
   } else {
-    warnings.push("Basketball results are temporarily unavailable.");
+    warnings.push(
+      "Basketball results are temporarily unavailable."
+    );
+
     console.error(
       "Basketball results error:",
       basketballDateResult.reason?.message
@@ -1148,6 +1470,7 @@ async function buildLiveScoresResponse() {
   }
 
   const footballAvailable = footballResult.status === "fulfilled";
+
   const basketballAvailable =
     basketballLiveAvailable || basketballFinishedAvailable;
 
@@ -1169,8 +1492,6 @@ async function buildLiveScoresResponse() {
     warnings
   };
 }
-
-// Public endpoint for the member website.
 
 app.get("/live-scores", async (req, res) => {
   try {
@@ -1221,8 +1542,6 @@ app.get("/live-scores", async (req, res) => {
 
 // =====================================
 // FOOTBALL FIXTURE SEARCH
-// =====================================
-
 // =====================================
 
 app.get("/fixtures/search", async (req, res) => {
@@ -1363,13 +1682,13 @@ app.post("/predictions/link-fixture", requireAdmin, async (req, res) => {
       });
     }
 
-    const { data: prediction, error: predictionError } = await supabase
-      .from("predictions")
+    const { data: prediction, error: predictionError } = await dbFrom("predictions")
       .select("*")
       .eq("id", predictionId)
       .maybeSingle();
 
     if (predictionError) throw predictionError;
+
     if (!prediction) {
       return res.status(404).json({
         success: false,
@@ -1377,7 +1696,7 @@ app.post("/predictions/link-fixture", requireAdmin, async (req, res) => {
       });
     }
 
-    if (prediction.status !== "pending") {
+    if (prediction.status !== "Pending") {
       return res.status(409).json({
         success: false,
         message: "Only pending predictions can be linked."
@@ -1404,8 +1723,10 @@ app.post("/predictions/link-fixture", requireAdmin, async (req, res) => {
       });
     }
 
-    if (!teamMatches(prediction.home_team, fixture.home_team) ||
-        !teamMatches(prediction.away_team, fixture.away_team)) {
+    if (
+      !teamMatches(prediction.home_team, fixture.home_team) ||
+      !teamMatches(prediction.away_team, fixture.away_team)
+    ) {
       return res.status(400).json({
         success: false,
         message: "The selected fixture does not match this prediction."
@@ -1417,23 +1738,25 @@ app.post("/predictions/link-fixture", requireAdmin, async (req, res) => {
       fixture.kickoff_utc || fixture.datetime
     ).getTime();
 
-    if (!Number.isFinite(predictionTime) || !Number.isFinite(fixtureTime) ||
-        Math.abs(predictionTime - fixtureTime) > 18 * 60 * 60 * 1000) {
+    if (
+      !Number.isFinite(predictionTime) ||
+      !Number.isFinite(fixtureTime) ||
+      Math.abs(predictionTime - fixtureTime) > 18 * 60 * 60 * 1000
+    ) {
       return res.status(400).json({
         success: false,
         message: "Unable to verify kickoff time or the time differs by more than 18 hours."
       });
     }
 
-    const { data: linked, error: updateError } = await supabase
-      .from("predictions")
+    const { data: linked, error: updateError } = await dbFrom("predictions")
       .update({
         api_fixture_id: fixture.id,
         fixture_status: fixture.status,
         tracking_updated_at: new Date().toISOString()
       })
       .eq("id", predictionId)
-      .eq("status", "pending")
+      .eq("status", "Pending")
       .is("api_fixture_id", null)
       .is("api_basketball_game_id", null)
       .select()
@@ -1474,13 +1797,13 @@ app.post("/predictions/link-basketball-game", requireAdmin, async (req, res) => 
       });
     }
 
-    const { data: prediction, error: predictionError } = await supabase
-      .from("predictions")
+    const { data: prediction, error: predictionError } = await dbFrom("predictions")
       .select("*")
       .eq("id", predictionId)
       .maybeSingle();
 
     if (predictionError) throw predictionError;
+
     if (!prediction) {
       return res.status(404).json({
         success: false,
@@ -1488,7 +1811,7 @@ app.post("/predictions/link-basketball-game", requireAdmin, async (req, res) => 
       });
     }
 
-    if (prediction.status !== "pending") {
+    if (prediction.status !== "Pending") {
       return res.status(409).json({
         success: false,
         message: "Only pending predictions can be linked."
@@ -1517,8 +1840,10 @@ app.post("/predictions/link-basketball-game", requireAdmin, async (req, res) => 
 
     const teams = getBasketballTeams(game);
 
-    if (!teamMatches(prediction.home_team, teams.home) ||
-        !teamMatches(prediction.away_team, teams.away)) {
+    if (
+      !teamMatches(prediction.home_team, teams.home) ||
+      !teamMatches(prediction.away_team, teams.away)
+    ) {
       return res.status(400).json({
         success: false,
         message: "Basketball teams do not match this prediction."
@@ -1528,23 +1853,25 @@ app.post("/predictions/link-basketball-game", requireAdmin, async (req, res) => 
     const predictionTime = new Date(prediction.kickoff).getTime();
     const gameTime = new Date(getBasketballStart(game)).getTime();
 
-    if (!Number.isFinite(predictionTime) || !Number.isFinite(gameTime) ||
-        Math.abs(predictionTime - gameTime) > 18 * 60 * 60 * 1000) {
+    if (
+      !Number.isFinite(predictionTime) ||
+      !Number.isFinite(gameTime) ||
+      Math.abs(predictionTime - gameTime) > 18 * 60 * 60 * 1000
+    ) {
       return res.status(400).json({
         success: false,
         message: "Unable to verify basketball game kickoff time."
       });
     }
 
-    const { data: linked, error: updateError } = await supabase
-      .from("predictions")
+    const { data: linked, error: updateError } = await dbFrom("predictions")
       .update({
         api_basketball_game_id: String(game.id),
         fixture_status: game.status || null,
         tracking_updated_at: new Date().toISOString()
       })
       .eq("id", predictionId)
-      .eq("status", "pending")
+      .eq("status", "Pending")
       .is("api_fixture_id", null)
       .is("api_basketball_game_id", null)
       .select()
@@ -1596,10 +1923,9 @@ async function autoLinkUnlinkedPredictions() {
   }
 
   try {
-    const { data: unlinked, error } = await supabase
-      .from("predictions")
+    const { data: unlinked, error } = await dbFrom("predictions")
       .select("*")
-      .eq("status", "pending")
+      .eq("status", "Pending")
       .is("api_fixture_id", null)
       .is("api_basketball_game_id", null)
       .limit(AUTO_LINK_MAX_PREDICTIONS);
@@ -1609,7 +1935,9 @@ async function autoLinkUnlinkedPredictions() {
     lastAutoLinkScanAt = Date.now();
 
     if (!unlinked || unlinked.length === 0) {
-      console.log("Automatic matching: no unlinked pending predictions.");
+      console.log(
+        "Automatic matching: no unlinked pending predictions."
+      );
       return;
     }
 
@@ -1743,7 +2071,8 @@ async function autoLinkUnlinkedPredictions() {
           ).getTime();
 
           return Number.isFinite(fixtureTime) &&
-            Math.abs(predictionTime - fixtureTime) <= 18 * 60 * 60 * 1000;
+            Math.abs(predictionTime - fixtureTime) <=
+              18 * 60 * 60 * 1000;
         });
 
         const matchingBasketball = basketballGames.filter(game => {
@@ -1759,7 +2088,8 @@ async function autoLinkUnlinkedPredictions() {
           }
 
           return Number.isFinite(gameTime) &&
-            Math.abs(predictionTime - gameTime) <= 18 * 60 * 60 * 1000;
+            Math.abs(predictionTime - gameTime) <=
+              18 * 60 * 60 * 1000;
         });
 
         if (
@@ -1792,15 +2122,14 @@ async function autoLinkUnlinkedPredictions() {
         if (matchingFootball.length === 1) {
           const fixture = matchingFootball[0];
 
-          const { data: linked, error: linkError } = await supabase
-            .from("predictions")
+          const { data: linked, error: linkError } = await dbFrom("predictions")
             .update({
               api_fixture_id: fixture.id,
               fixture_status: fixture.status || null,
               tracking_updated_at: new Date().toISOString()
             })
             .eq("id", prediction.id)
-            .eq("status", "pending")
+            .eq("status", "Pending")
             .is("api_fixture_id", null)
             .is("api_basketball_game_id", null)
             .select("id");
@@ -1815,6 +2144,7 @@ async function autoLinkUnlinkedPredictions() {
 
           if (linked?.length) {
             footballLinked++;
+
             console.log(
               `Prediction ${prediction.id} linked to football fixture ${fixture.id}.`
             );
@@ -1824,15 +2154,14 @@ async function autoLinkUnlinkedPredictions() {
         if (matchingBasketball.length === 1) {
           const game = matchingBasketball[0];
 
-          const { data: linked, error: linkError } = await supabase
-            .from("predictions")
+          const { data: linked, error: linkError } = await dbFrom("predictions")
             .update({
               api_basketball_game_id: String(game.id),
               fixture_status: game.status || null,
               tracking_updated_at: new Date().toISOString()
             })
             .eq("id", prediction.id)
-            .eq("status", "pending")
+            .eq("status", "Pending")
             .is("api_fixture_id", null)
             .is("api_basketball_game_id", null)
             .select("id");
@@ -1847,6 +2176,7 @@ async function autoLinkUnlinkedPredictions() {
 
           if (linked?.length) {
             basketballLinked++;
+
             console.log(
               `Prediction ${prediction.id} linked to basketball game ${game.id}.`
             );
@@ -1884,10 +2214,9 @@ async function getFixtureEvents(fixtureId) {
 // =====================================
 
 async function trackFootballPredictions() {
-  const { data: predictions, error } = await supabase
-    .from("predictions")
+  const { data: predictions, error } = await dbFrom("predictions")
     .select("*")
-    .eq("status", "pending")
+    .eq("status", "Pending")
     .not("api_fixture_id", "is", null)
     .limit(200);
 
@@ -1900,6 +2229,7 @@ async function trackFootballPredictions() {
     const date = kickoffDate(prediction.kickoff);
 
     if (!date) continue;
+
     if (!dateGroups.has(date)) dateGroups.set(date, []);
     dateGroups.get(date).push(prediction);
   }
@@ -1958,15 +2288,14 @@ async function trackFootballPredictions() {
         ? "Match postponed by SportAPI"
         : "Match officially cancelled by SportAPI";
 
-      const { data: settled, error } = await supabase
-        .from("predictions")
+      const { data: settled, error } = await dbFrom("predictions")
         .update({
           ...update,
-          status: "void",
+          status: "Void",
           result: `Automatically settled VOID: ${reason}.`
         })
         .eq("id", prediction.id)
-        .eq("status", "pending")
+        .eq("status", "Pending")
         .eq("api_fixture_id", prediction.api_fixture_id)
         .select("id");
 
@@ -1980,11 +2309,10 @@ async function trackFootballPredictions() {
     }
 
     if (!finalStatus(status)) {
-      const { error } = await supabase
-        .from("predictions")
+      const { error } = await dbFrom("predictions")
         .update(update)
         .eq("id", prediction.id)
-        .eq("status", "pending")
+        .eq("status", "Pending")
         .eq("api_fixture_id", prediction.api_fixture_id);
 
       if (error) {
@@ -1998,7 +2326,10 @@ async function trackFootballPredictions() {
 
     try {
       const details = await getFixtureDetails(prediction.api_fixture_id);
-      if (details) finalFixture = { ...fixture, ...details };
+
+      if (details) {
+        finalFixture = { ...fixture, ...details };
+      }
     } catch (error) {
       console.error("Football detail lookup failed:", error.message);
     }
@@ -2008,17 +2339,20 @@ async function trackFootballPredictions() {
     update.halftime_home_score = safeNumber(finalFixture.ht_home);
     update.halftime_away_score = safeNumber(finalFixture.ht_away);
 
-    if (update.home_score === null || update.away_score === null) {
-      await supabase
-        .from("predictions")
+    if (
+      update.home_score === null ||
+      update.away_score === null
+    ) {
+      await dbFrom("predictions")
         .update(update)
         .eq("id", prediction.id)
-        .eq("status", "pending")
+        .eq("status", "Pending")
         .eq("api_fixture_id", prediction.api_fixture_id);
 
       console.log(
         `Football prediction ${prediction.id}: final score unavailable; still pending.`
       );
+
       return;
     }
 
@@ -2037,20 +2371,21 @@ async function trackFootballPredictions() {
     }
 
     if (!["won", "lost", "void"].includes(outcome)) {
-      await supabase
-        .from("predictions")
+      await dbFrom("predictions")
         .update(update)
         .eq("id", prediction.id)
-        .eq("status", "pending")
+        .eq("status", "Pending")
         .eq("api_fixture_id", prediction.api_fixture_id);
 
       console.log(
         `Football prediction ${prediction.id}: unsupported or unverified market; still pending.`
       );
+
       return;
     }
 
-    const scoreText = `${update.home_score}-${update.away_score}`;
+    const scoreText =
+      `${update.home_score}-${update.away_score}`;
 
     const resultText = isOneUpTwoUpMarket(prediction)
       ? `Automatically settled ${outcome.toUpperCase()} using verified SportAPI goal events. Final score ${scoreText}.`
@@ -2058,15 +2393,14 @@ async function trackFootballPredictions() {
         ? `Automatically settled VOID: market resulted in a push. Final score ${scoreText}.`
         : `Automatically settled ${outcome.toUpperCase()}: final score ${scoreText}.`;
 
-    const { data: settled, error } = await supabase
-      .from("predictions")
+    const { data: settled, error } = await dbFrom("predictions")
       .update({
         ...update,
         status: outcome,
         result: resultText
       })
       .eq("id", prediction.id)
-      .eq("status", "pending")
+      .eq("status", "Pending")
       .eq("api_fixture_id", prediction.api_fixture_id)
       .select("id");
 
@@ -2090,9 +2424,15 @@ async function trackFootballPredictions() {
         `/fixtures/date/${encodeURIComponent(date)}`
       );
 
-      fixtures = Array.isArray(dailyData.data) ? dailyData.data : [];
+      fixtures = Array.isArray(dailyData.data)
+        ? dailyData.data
+        : [];
+
     } catch (error) {
-      console.error(`Football date lookup failed for ${date}:`, error.message);
+      console.error(
+        `Football date lookup failed for ${date}:`,
+        error.message
+      );
     }
 
     for (const prediction of group) {
@@ -2102,13 +2442,22 @@ async function trackFootballPredictions() {
 
       if (!fixture) {
         const key = String(prediction.api_fixture_id);
-        const lastCheck = missingFixtureChecks.get(`football-${key}`) || 0;
 
-        if (Date.now() - lastCheck >= MISSING_FIXTURE_RECHECK_MS) {
-          missingFixtureChecks.set(`football-${key}`, Date.now());
+        const lastCheck =
+          missingFixtureChecks.get(`football-${key}`) || 0;
+
+        if (
+          Date.now() - lastCheck >= MISSING_FIXTURE_RECHECK_MS
+        ) {
+          missingFixtureChecks.set(
+            `football-${key}`,
+            Date.now()
+          );
 
           try {
-            fixture = await getFixtureDetails(prediction.api_fixture_id);
+            fixture = await getFixtureDetails(
+              prediction.api_fixture_id
+            );
           } catch (error) {
             console.error(
               `Football rescheduled fixture lookup failed for ${key}:`,
@@ -2132,6 +2481,7 @@ async function trackFootballPredictions() {
         console.error(
           `Football team mismatch for prediction ${prediction.id}. Settlement blocked.`
         );
+
         continue;
       }
 
@@ -2152,10 +2502,9 @@ async function trackFootballPredictions() {
 // =====================================
 
 async function trackBasketballPredictions() {
-  const { data: predictions, error } = await supabase
-    .from("predictions")
+  const { data: predictions, error } = await dbFrom("predictions")
     .select("*")
-    .eq("status", "pending")
+    .eq("status", "Pending")
     .not("api_basketball_game_id", "is", null)
     .limit(200);
 
@@ -2168,6 +2517,7 @@ async function trackBasketballPredictions() {
     const date = kickoffDate(prediction.kickoff);
 
     if (!date) continue;
+
     if (!dateGroups.has(date)) dateGroups.set(date, []);
     dateGroups.get(date).push(prediction);
   }
@@ -2208,16 +2558,18 @@ async function trackBasketballPredictions() {
         ? "Basketball game postponed by SportAPI"
         : "Basketball game cancelled by SportAPI";
 
-      const { data: settled, error } = await supabase
-        .from("predictions")
+      const { data: settled, error } = await dbFrom("predictions")
         .update({
           ...update,
-          status: "void",
+          status: "Void",
           result: `Automatically settled VOID: ${reason}.`
         })
         .eq("id", prediction.id)
-        .eq("status", "pending")
-        .eq("api_basketball_game_id", String(prediction.api_basketball_game_id))
+        .eq("status", "Pending")
+        .eq(
+          "api_basketball_game_id",
+          String(prediction.api_basketball_game_id)
+        )
         .select("id");
 
       if (error) {
@@ -2235,12 +2587,14 @@ async function trackBasketballPredictions() {
     }
 
     if (!basketballFinalStatus(status)) {
-      const { error } = await supabase
-        .from("predictions")
+      const { error } = await dbFrom("predictions")
         .update(update)
         .eq("id", prediction.id)
-        .eq("status", "pending")
-        .eq("api_basketball_game_id", String(prediction.api_basketball_game_id));
+        .eq("status", "Pending")
+        .eq(
+          "api_basketball_game_id",
+          String(prediction.api_basketball_game_id)
+        );
 
       if (error) {
         console.error(
@@ -2259,7 +2613,9 @@ async function trackBasketballPredictions() {
         prediction.api_basketball_game_id
       );
 
-      if (details) finalGame = { ...game, ...details };
+      if (details) {
+        finalGame = { ...game, ...details };
+      }
     } catch (error) {
       console.error(
         `Basketball game detail lookup failed for ${prediction.api_basketball_game_id}:`,
@@ -2273,52 +2629,64 @@ async function trackBasketballPredictions() {
     update.away_score = finalScores.away;
     update.fixture_status = finalGame.status || status;
 
-    if (update.home_score === null || update.away_score === null) {
-      await supabase
-        .from("predictions")
+    if (
+      update.home_score === null ||
+      update.away_score === null
+    ) {
+      await dbFrom("predictions")
         .update(update)
         .eq("id", prediction.id)
-        .eq("status", "pending")
-        .eq("api_basketball_game_id", String(prediction.api_basketball_game_id));
+        .eq("status", "Pending")
+        .eq(
+          "api_basketball_game_id",
+          String(prediction.api_basketball_game_id)
+        );
 
       console.log(
         `Basketball prediction ${prediction.id}: final score unavailable; still pending.`
       );
+
       return;
     }
 
     const outcome = settleBasketballMarket(prediction, finalGame);
 
     if (!["won", "lost", "void"].includes(outcome)) {
-      await supabase
-        .from("predictions")
+      await dbFrom("predictions")
         .update(update)
         .eq("id", prediction.id)
-        .eq("status", "pending")
-        .eq("api_basketball_game_id", String(prediction.api_basketball_game_id));
+        .eq("status", "Pending")
+        .eq(
+          "api_basketball_game_id",
+          String(prediction.api_basketball_game_id)
+        );
 
       console.log(
         `Basketball prediction ${prediction.id}: market could not be verified; still pending.`
       );
+
       return;
     }
 
-    const scoreText = `${update.home_score}-${update.away_score}`;
+    const scoreText =
+      `${update.home_score}-${update.away_score}`;
 
     const resultText = outcome === "void"
       ? `Automatically settled VOID: basketball market resulted in a push. Final score ${scoreText}.`
       : `Automatically settled ${outcome.toUpperCase()} using SportAPI basketball results. Final score ${scoreText}.`;
 
-    const { data: settled, error: settleError } = await supabase
-      .from("predictions")
+    const { data: settled, error: settleError } = await dbFrom("predictions")
       .update({
         ...update,
         status: outcome,
         result: resultText
       })
       .eq("id", prediction.id)
-      .eq("status", "pending")
-      .eq("api_basketball_game_id", String(prediction.api_basketball_game_id))
+      .eq("status", "Pending")
+      .eq(
+        "api_basketball_game_id",
+        String(prediction.api_basketball_game_id)
+      )
       .select("id");
 
     if (settleError) {
@@ -2326,6 +2694,7 @@ async function trackBasketballPredictions() {
         `Basketball settlement failed for ${prediction.id}:`,
         settleError.message
       );
+
       return;
     }
 
@@ -2344,7 +2713,10 @@ async function trackBasketballPredictions() {
         `/basketball/games/date/${encodeURIComponent(date)}?tz=UTC`
       );
 
-      games = Array.isArray(response.data) ? response.data : [];
+      games = Array.isArray(response.data)
+        ? response.data
+        : [];
+
     } catch (error) {
       console.error(
         `Basketball date lookup failed for ${date}:`,
@@ -2354,18 +2726,29 @@ async function trackBasketballPredictions() {
 
     for (const prediction of group) {
       let game = games.find(
-        item => String(item.id) === String(prediction.api_basketball_game_id)
+        item =>
+          String(item.id) ===
+          String(prediction.api_basketball_game_id)
       );
 
       if (!game) {
         const key = String(prediction.api_basketball_game_id);
-        const lastCheck = missingFixtureChecks.get(`basketball-${key}`) || 0;
 
-        if (Date.now() - lastCheck >= MISSING_FIXTURE_RECHECK_MS) {
-          missingFixtureChecks.set(`basketball-${key}`, Date.now());
+        const lastCheck =
+          missingFixtureChecks.get(`basketball-${key}`) || 0;
+
+        if (
+          Date.now() - lastCheck >= MISSING_FIXTURE_RECHECK_MS
+        ) {
+          missingFixtureChecks.set(
+            `basketball-${key}`,
+            Date.now()
+          );
 
           try {
-            game = await getBasketballGame(prediction.api_basketball_game_id);
+            game = await getBasketballGame(
+              prediction.api_basketball_game_id
+            );
           } catch (error) {
             console.error(
               `Basketball rescheduled game lookup failed for ${key}:`,
@@ -2379,6 +2762,7 @@ async function trackBasketballPredictions() {
         console.log(
           `Basketball game ${prediction.api_basketball_game_id} not found yet.`
         );
+
         continue;
       }
 
@@ -2391,6 +2775,7 @@ async function trackBasketballPredictions() {
         console.error(
           `Basketball team mismatch for prediction ${prediction.id}. Settlement blocked.`
         );
+
         continue;
       }
 
@@ -2458,6 +2843,9 @@ app.listen(PORT, () => {
   console.log("Basketball point spread/handicap: ENABLED");
   console.log("Manual settlement protection: ENABLED");
   console.log("Unsupported markets: REMAIN PENDING");
+
+  console.log("Supabase column compatibility: ENABLED");
+  console.log("Status capitalization: Pending/Won/Lost/Void");
 
   if (!sportApiKey) {
     console.error("WARNING: SPORTAPI_KEY is missing.");
