@@ -240,7 +240,14 @@ const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 const WAT="Africa/Lagos",LIVE_SCORES_URL="https://onlybosstips-api.onrender.com/live-scores";
 const SKY_SPORTS_LOGO="https://commons.wikimedia.org/wiki/Special:Redirect/file/Sky_Sports_2026.svg";
 const $=id=>document.getElementById(id);
-let supabaseClient=null,currentUser=null,selectedPage="authSection",selectedSport="football",selectedScoreState="live",selectedCalendarDate=new Date(),scoreRequestNumber=0;
+let supabaseClient=null,currentUser=null,selectedPage="authSection",selectedSport="football",selectedScoreState="live",scoreRequestNumber=0;
+
+/* Each page now owns an independent calendar date. */
+let selectedLiveScoreDate=new Date();
+let selectedFreeOddsDate=new Date();
+let selectedVipOddsDate=new Date();
+let selectedRolloverDate=new Date();
+
 let scoreData={football:{live:[],finished:[],upcoming:[]},basketball:{live:[],finished:[],upcoming:[]}};
 let sportsNews=[],newsIndex=0,newsTimer=null,dateTouchStart=0;
 let predictionRecords={free:[],vip:[],rollover:[]},memberAccess={vip:false,rollover:false};
@@ -268,12 +275,67 @@ function dateFromKey(key){const p=key.split("-").map(Number);return new Date(Dat
 function shiftDate(date,amount){const shifted=dateFromKey(nigeriaDate(date));shifted.setUTCDate(shifted.getUTCDate()+amount);return shifted}
 function dateDifferenceFromToday(key){return Math.round((dateFromKey(key)-dateFromKey(nigeriaDate(new Date())))/86400000)}
 function fullDateParts(key){const date=dateFromKey(key);return{weekday:new Intl.DateTimeFormat("en-GB",{timeZone:"UTC",weekday:"long"}).format(date),monthYear:new Intl.DateTimeFormat("en-GB",{timeZone:"UTC",month:"long",year:"numeric"}).format(date)}}
-function getDateLabel(){const selected=nigeriaDate(selectedCalendarDate),difference=dateDifferenceFromToday(selected),parts=fullDateParts(selected);return{heading:difference===0?"TODAY":difference===1?"TOMORROW":difference===-1?"YESTERDAY":"SELECTED DATE",weekday:parts.weekday,monthYear:parts.monthYear}}
-function refreshDateLabels(){const label=getDateLabel();["calendarDateLabel","freeDateLabel","vipDateLabel","rollDateLabel"].forEach(id=>{const e=$(id);if(!e)return;e.innerHTML="";const h=document.createElement("span");h.className="date-detail";h.textContent=label.heading;const w=document.createElement("span");w.className="date-name";w.textContent=label.weekday;const m=document.createElement("span");m.className="date-detail";m.textContent=label.monthYear;e.append(h,w,m)})}
-function changeDate(amount){selectedCalendarDate=shiftDate(selectedCalendarDate,amount);refreshDateLabels();clearScoreDisplay();loadLiveScores();renderPredictions("free");if(memberAccess.vip)renderPredictions("vip");if(memberAccess.rollover)renderPredictions("rollover")}
-$("previousDate").addEventListener("click",()=>changeDate(-1));$("nextDate").addEventListener("click",()=>changeDate(1));
-document.querySelectorAll("[data-date-controls],#homeDateControls").forEach(control=>{control.addEventListener("touchstart",event=>{dateTouchStart=event.changedTouches[0].clientX},{passive:true});control.addEventListener("touchend",event=>{const d=event.changedTouches[0].clientX-dateTouchStart;if(Math.abs(d)>55)changeDate(d<0?1:-1)},{passive:true});control.querySelectorAll("[data-date-step]").forEach(button=>button.addEventListener("click",()=>changeDate(Number(button.dataset.dateStep))))});
-refreshDateLabels();function updateYear(){if($("year"))$("year").textContent=new Intl.DateTimeFormat("en",{timeZone:WAT,year:"numeric"}).format(new Date())}
+function getDateLabel(date){const selected=nigeriaDate(date),difference=dateDifferenceFromToday(selected),parts=fullDateParts(selected);return{heading:difference===0?"TODAY":difference===1?"TOMORROW":difference===-1?"YESTERDAY":"SELECTED DATE",weekday:parts.weekday,monthYear:parts.monthYear}}
+function writeDateLabel(id,date){const e=$(id);if(!e)return;const label=getDateLabel(date);e.innerHTML="";const h=document.createElement("span");h.className="date-detail";h.textContent=label.heading;const w=document.createElement("span");w.className="date-name";w.textContent=label.weekday;const m=document.createElement("span");m.className="date-detail";m.textContent=label.monthYear;e.append(h,w,m)}
+function refreshDateLabels(){
+ writeDateLabel("calendarDateLabel",selectedLiveScoreDate);
+ writeDateLabel("freeDateLabel",selectedFreeOddsDate);
+ writeDateLabel("vipDateLabel",selectedVipOddsDate);
+ writeDateLabel("rollDateLabel",selectedRolloverDate);
+}
+function changeDate(amount,type){
+ if(type==="home"){
+  selectedLiveScoreDate=shiftDate(selectedLiveScoreDate,amount);
+  refreshDateLabels();
+  clearScoreDisplay();
+  loadLiveScores();
+  return;
+ }
+ if(type==="free"){
+  selectedFreeOddsDate=shiftDate(selectedFreeOddsDate,amount);
+  refreshDateLabels();
+  renderPredictions("free");
+  return;
+ }
+ if(type==="vip"){
+  selectedVipOddsDate=shiftDate(selectedVipOddsDate,amount);
+  refreshDateLabels();
+  if(memberAccess.vip)renderPredictions("vip");
+  return;
+ }
+ if(type==="rollover"){
+  selectedRolloverDate=shiftDate(selectedRolloverDate,amount);
+  refreshDateLabels();
+  if(memberAccess.rollover)renderPredictions("rollover");
+ }
+}
+$("previousDate").addEventListener("click",()=>changeDate(-1,"home"));
+$("nextDate").addEventListener("click",()=>changeDate(1,"home"));
+
+/* Attach each swipe and arrow handler to its own page calendar. */
+const dateControlGroups=[
+ {element:$("homeDateControls"),type:"home"},
+ ...Array.from(document.querySelectorAll("[data-date-controls]")).map(control=>({
+  element:control,
+  type:control.closest(".screen")?.id==="free"?"free":control.closest(".screen")?.id==="vip"?"vip":"rollover"
+ }))
+];
+dateControlGroups.forEach(({element,type})=>{
+ if(!element)return;
+ let touchStartX=0;
+ element.addEventListener("touchstart",event=>{
+  touchStartX=event.changedTouches[0].clientX;
+ },{passive:true});
+ element.addEventListener("touchend",event=>{
+  const distance=event.changedTouches[0].clientX-touchStartX;
+  if(Math.abs(distance)>55)changeDate(distance<0?1:-1,type);
+ },{passive:true});
+ element.querySelectorAll("[data-date-step]").forEach(button=>{
+  button.addEventListener("click",()=>changeDate(Number(button.dataset.dateStep),type));
+ });
+});
+refreshDateLabels();
+function updateYear(){if($("year"))$("year").textContent=new Intl.DateTimeFormat("en",{timeZone:WAT,year:"numeric"}).format(new Date())}
 
 /* NAVIGATION */
 function navigate(page){if(!currentUser){showLoginScreen();return}const target=$(page);if(!target)return;document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===page));document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));selectedPage=page;window.scrollTo({top:0,behavior:"smooth"})}
@@ -289,7 +351,7 @@ function leagueName(v){return typeof v==="object"&&v!==null?getFirst(v,["name","
 function normalizeGame(g){const fixtureDate=getFirst(g,["date","matchDate","match_date","fixtureDate","kickoff"],""),dateText=fixtureDate?String(fixtureDate).slice(0,16).replace("T"," "):"",rawStatus=String(getFirst(g,["status","time","elapsed","minute"],"")).trim(),normalizedStatus=rawStatus.toLowerCase(),rawLeague=getFirst(g,["league","competition","tournament","category"],""),rawHomeScore=getFirst(g,["homeScore","home_score","homeGoals","home_goals","scoreHome"],"-"),rawAwayScore=getFirst(g,["awayScore","away_score","awayGoals","away_goals","scoreAway"],"-");return{home:teamName(getFirst(g,["home","homeTeam","home_team","team1","participant1"]),"Home"),away:teamName(getFirst(g,["away","awayTeam","away_team","team2","participant2"]),"Away"),homeScore:rawHomeScore,awayScore:rawAwayScore,status:rawStatus,league:leagueName(rawLeague),date:dateText,live:normalizedStatus.includes("live")||normalizedStatus.includes("1st")||normalizedStatus.includes("2nd")||normalizedStatus.includes("half")||normalizedStatus.includes("period")||normalizedStatus.includes("extra time")||normalizedStatus.includes("pen"),finished:normalizedStatus.includes("finished")||normalizedStatus.includes("full time")||normalizedStatus==="ft"||normalizedStatus.includes("after penalties")||normalizedStatus.includes("ended"),pending:normalizedStatus.includes("not started")||normalizedStatus.includes("scheduled")||normalizedStatus.includes("upcoming")||normalizedStatus.includes("pending")||normalizedStatus.includes("timed")}}
 function extractResponseDate(source){return getFirst(source,["date","requestedDate","requested_date","matchDate","match_date"],null)}
 function normalizeSportData(source){const out={live:[],finished:[],upcoming:[]};["live","finished","upcoming"].forEach(s=>{if(Array.isArray(source[s]))out[s]=source[s].map(normalizeGame)});if(!out.upcoming.length&&Array.isArray(source.fixtures))out.upcoming=source.fixtures.map(normalizeGame);if(!out.finished.length&&Array.isArray(source.results))out.finished=source.results.map(normalizeGame);return out}
-async function loadLiveScores(){if(!currentUser)return;const requestId=++scoreRequestNumber,requestedDate=nigeriaDate(selectedCalendarDate),today=nigeriaDate(new Date());$("scoreList").innerHTML='<div class="empty">Loading '+requestedDate+' matches...</div>';try{const response=await fetch(LIVE_SCORES_URL+"?date="+encodeURIComponent(requestedDate),{method:"GET",headers:{"Accept":"application/json"},cache:"no-store"});if(!response.ok)throw new Error("Scores API returned "+response.status);const source=await response.json();if(requestId!==scoreRequestNumber)return;const returnedDate=extractResponseDate(source);if(requestedDate!==today&&(!returnedDate||String(returnedDate).slice(0,10)!==requestedDate)){scoreData={football:{live:[],finished:[],upcoming:[]},basketball:{live:[],finished:[],upcoming:[]}};renderScores("The server has not confirmed date-specific matches for "+requestedDate+".");return}if(returnedDate&&String(returnedDate).slice(0,10)!==requestedDate)throw new Error("The server returned a different date.");scoreData={football:normalizeSportData(source.football||{}),basketball:normalizeSportData(source.basketball||{})};renderScores()}catch(error){if(requestId!==scoreRequestNumber)return;console.error("Match centre error:",error);$("scoreList").innerHTML='<div class="empty">Unable to load verified match data. Please try again later.</div>'}}
+ async function loadLiveScores(){if(!currentUser)return;const requestId=++scoreRequestNumber,requestedDate=nigeriaDate(selectedLiveScoreDate),today=nigeriaDate(new Date());$("scoreList").innerHTML='<div class="empty">Loading '+requestedDate+' matches...</div>';try{const response=await fetch(LIVE_SCORES_URL+"?date="+encodeURIComponent(requestedDate),{method:"GET",headers:{"Accept":"application/json"},cache:"no-store"});if(!response.ok)throw new Error("Scores API returned "+response.status);const source=await response.json();if(requestId!==scoreRequestNumber)return;const returnedDate=extractResponseDate(source);if(requestedDate!==today&&(!returnedDate||String(returnedDate).slice(0,10)!==requestedDate)){scoreData={football:{live:[],finished:[],upcoming:[]},basketball:{live:[],finished:[],upcoming:[]}};renderScores("The server has not confirmed date-specific matches for "+requestedDate+".");return}if(returnedDate&&String(returnedDate).slice(0,10)!==requestedDate)throw new Error("The server returned a different date.");scoreData={football:normalizeSportData(source.football||{}),basketball:normalizeSportData(source.basketball||{})};renderScores()}catch(error){if(requestId!==scoreRequestNumber)return;console.error("Match centre error:",error);$("scoreList").innerHTML='<div class="empty">Unable to load verified match data. Please try again later.</div>'}}
 function createScoreStatus(game,state){const w=document.createElement("div");w.className="score-status";if(state==="live"){w.classList.add("live");const dot=document.createElement("span");dot.className="live-indicator";const label=document.createElement("span");label.textContent="LIVE";w.append(dot,label);const status=String(game.status||"").trim();if(status&&!/^live$/i.test(status)){const time=document.createElement("span");time.textContent=status;w.append(time)}}else if(state==="finished"){w.classList.add("finished");w.textContent="FINISHED"}else{w.classList.add("pending");w.textContent="PENDING"}return w}
 function createScoreRow(game,state){const row=document.createElement("div");row.className="score-row";const home=document.createElement("div");home.className="team";const hn=document.createElement("span");hn.textContent=game.home;home.append(hn);const center=document.createElement("div"),score=document.createElement("div");score.className="score";score.textContent=state==="upcoming"?"VS":game.homeScore+" : "+game.awayScore;const meta=document.createElement("div");meta.className="score-meta";meta.textContent=state==="upcoming"?(game.date||"Scheduled"):state==="finished"?"Final score":"Match in progress";center.append(score,meta,createScoreStatus(game,state));const away=document.createElement("div");away.className="team";const an=document.createElement("span");an.textContent=game.away;away.append(an);row.append(home,center,away);return row}
 function renderScores(message=""){const list=$("scoreList");if(!list)return;const games=scoreData[selectedSport]?.[selectedScoreState]||[];if(!games.length){list.innerHTML='<div class="empty">'+(message||"No "+selectedScoreState+" matches returned for this selected date.")+'</div>';return}list.innerHTML="";const groups=new Map();games.forEach(g=>{const name=String(g.league||"Other Leagues").trim()||"Other Leagues";if(!groups.has(name))groups.set(name,[]);groups.get(name).push(g)});groups.forEach((items,league)=>{const group=document.createElement("section");group.className="league-group";const heading=document.createElement("div");heading.className="league-heading";const title=document.createElement("span");title.textContent=league;const count=document.createElement("span");count.textContent=items.length+(items.length===1?" MATCH":" MATCHES");heading.append(title,count);group.append(heading);items.forEach(g=>group.append(createScoreRow(g,selectedScoreState)));list.append(group)})}
@@ -412,7 +474,9 @@ function leagueMatches(record,selected){if(selected==="All")return true;const va
 function renderPredictions(type){
  const containerId={free:"freePredictions",vip:"vipPredictions",rollover:"rolloverPredictions"}[type],container=$(containerId);
  if(!container)return;
- const selected=selectedLeagues[type],selectedDate=nigeriaDate(selectedCalendarDate);
+ const selected=selectedLeagues[type];
+ const dateByType={free:selectedFreeOddsDate,vip:selectedVipOddsDate,rollover:selectedRolloverDate};
+ const selectedDate=nigeriaDate(dateByType[type]);
  const records=(predictionRecords[type]||[]).filter(record=>
   classifyPrediction(record)===type&&
   leagueMatches(record,selected)&&
