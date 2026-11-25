@@ -8,18 +8,20 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Cinzel:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#070c09;--panel:#0e1711;--panel2:#14231a;--green:#19c779;--green2:#0e9f5d;--green3:#a6f0c2;--text:#f2f8f4;--muted:#91a198;--line:#26382c;--red:#f15c67;--gold:#e5bd65;--yellow:#ffd34e;--radius:15px}
+:root{--bg:#070c09;--panel:#0e1711;--panel2:#14231a;--green:#19c779;--green2:#0e9f5d;--green3:#a6f0c2;--text:#f2f8f4;--muted:#a4b3a9;--line:#26382c;--red:#f15c67;--gold:#e5bd65;--yellow:#ffd34e;--radius:15px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;position:relative;isolation:isolate;background:radial-gradient(ellipse at 50% -15%,#12301f 0%,transparent 42%),var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;padding-bottom:94px}
 body.member-mode:before{content:"";position:fixed;inset:64px 0 0;z-index:-2;background:url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1800&q=85") center/cover no-repeat;opacity:.34;pointer-events:none}
-body.member-mode:after{content:"";position:fixed;inset:64px 0 0;z-index:-1;background:linear-gradient(135deg,rgba(3,12,7,.76),rgba(5,19,11,.70)),radial-gradient(ellipse at 50% 35%,rgba(25,199,121,.13),transparent 65%);pointer-events:none}
+body.member-mode:after{content:"";position:fixed;inset:64px 0 0;z-index:-1;background:linear-gradient(135deg,rgba(3,12,7,.63),rgba(5,19,11,.58)),radial-gradient(ellipse at 50% 35%,rgba(25,199,121,.10),transparent 65%);pointer-events:none}
 button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--green);outline-offset:3px}a{color:inherit}.hidden{display:none!important}
 .topbar{height:64px;padding:0 17px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #294333;background:rgba(7,14,9,.96);position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);box-shadow:0 7px 25px #0004}
 .brand{font-family:"Cinzel",serif;font-size:19px;font-weight:800;letter-spacing:1px;color:#b7f2d2;cursor:pointer;text-shadow:0 0 20px #19c77930}.brand span{color:var(--green)}
 .online{font-size:9px;letter-spacing:1.2px;color:var(--green3);display:flex;align-items:center;gap:8px;font-weight:800}.online:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
 main{max-width:960px;margin:auto;padding:16px 13px 30px;position:relative;z-index:0}.screen{display:none;animation:appear .22s ease}.screen.active{display:block}
 @keyframes appear{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
-.card{background:linear-gradient(145deg,rgba(17,29,21,.88),rgba(12,20,15,.89));border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:13px;box-shadow:0 8px 24px #0002;backdrop-filter:blur(5px)}
+
+/* General page wrappers are transparent so the stadium watermark remains visible. */
+.card{background:transparent;border:0;border-radius:0;padding:0;margin-bottom:13px;box-shadow:none;backdrop-filter:none}
 .section-title{font-size:12px;font-weight:900;letter-spacing:1px;margin:20px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:9px}.section-title:before{content:"";width:3px;height:15px;border-radius:5px;background:var(--green);box-shadow:0 0 10px #19c77965;margin-right:1px;flex-shrink:0}.section-title small{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.2px}
 .page-heading{margin:4px 0 15px}.page-heading h1{font-size:21px;letter-spacing:.3px;margin:0 0 5px;font-weight:900}.page-heading p{font-size:11px;color:var(--muted);margin:0;line-height:1.6}
 .back-home{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#17452d,#0e2418);border:1px solid #34784e;color:#c4f8d9;border-radius:9px;padding:9px 13px;font-size:10px;font-weight:900;letter-spacing:1px;margin-bottom:13px;box-shadow:0 5px 16px #0004}
@@ -27,7 +29,7 @@ main{max-width:960px;margin:auto;padding:16px 13px 30px;position:relative;z-inde
 .primary{background:linear-gradient(135deg,#20d486,#0eaa62);color:#041b10;border:1px solid #5be5a0;border-radius:9px;padding:11px 16px;font-size:11px;font-weight:900;letter-spacing:.3px;box-shadow:0 6px 18px #0e9f5d22}
 .secondary{background:#14251a;color:#b7f2d2;border:1px solid #31523e;border-radius:9px;padding:10px 14px;font-size:11px;font-weight:800}.muted{color:var(--muted)}.error-text{color:#ff8992;font-size:11px;line-height:1.5}.success-text{color:#75e5a5;font-size:11px;line-height:1.5}
 
-/* AUTHENTICATION — clearly visible football stadium watermark */
+/* AUTHENTICATION */
 .auth-wrap{max-width:450px;margin:32px auto;padding:10px;position:relative;isolation:isolate}
 .auth-wrap:before{content:"";position:fixed;inset:64px 0 0;z-index:-2;background:url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1800&q=85") center/cover no-repeat;opacity:.38;pointer-events:none}
 .auth-wrap:after{content:"";position:fixed;inset:64px 0 0;z-index:-1;background:linear-gradient(135deg,rgba(3,12,7,.76),rgba(5,19,11,.70)),radial-gradient(ellipse at 50% 35%,rgba(25,199,121,.13),transparent 65%);pointer-events:none}
@@ -39,13 +41,13 @@ main{max-width:960px;margin:auto;padding:16px 13px 30px;position:relative;z-inde
 .password-wrap{display:flex;gap:7px}.password-wrap input{flex:1;min-width:0}.show-password{border:1px solid #304538;background:#14251a;color:#9af0bc;border-radius:9px;padding:0 11px;font-size:10px}
 .auth-submit{width:100%;margin-top:5px}.auth-links{display:flex;justify-content:space-between;gap:10px;margin-top:15px;font-size:10px;color:#9af0bc}.auth-links button{border:0;background:none;color:inherit;font-size:inherit;padding:0}.auth-message{min-height:18px;margin:10px 0 0;text-align:center}.auth-foot{text-align:center;color:#748379;font-size:9px;margin-top:16px;line-height:1.6}
 
-/* MEMBER PROFILE */
-.profile{display:flex;align-items:center;gap:12px;background:linear-gradient(110deg,rgba(20,39,29,.90),rgba(16,25,21,.90));border:1px solid #31513b;border-radius:14px;padding:12px 14px;margin-bottom:16px;box-shadow:0 9px 25px #0003;backdrop-filter:blur(5px)}
+/* MEMBER PROFILE — reduced outer container */
+.profile{display:flex;align-items:center;gap:12px;background:rgba(13,29,19,.28);border:0;border-bottom:1px solid rgba(91,229,160,.22);border-radius:0;padding:12px 5px;margin-bottom:16px;box-shadow:none;backdrop-filter:none}
 .avatar-wrap{position:relative;flex-shrink:0}.avatar{width:49px;height:49px;border-radius:50%;background:#fff;color:#77837b;display:grid;place-items:center;border:2px solid #9be8b9;overflow:hidden}.avatar svg{width:26px;height:26px;stroke:#8c9990}.avatar img{width:100%;height:100%;object-fit:cover;display:block}.online-dot{position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;background:#19c779;border:2px solid #14271d}
 .profile-info{min-width:0;display:flex;flex-direction:column;gap:4px}.profile h2{font-size:12px;margin:0;font-weight:700;color:#e9f5ed;overflow-wrap:anywhere}.profile p{font-size:10px;color:#a6f0c2;margin:0;font-weight:900;letter-spacing:.7px}.tier{display:none}
 
 /* SPORTS NEWS — SKY SPORTS ONLY */
-.news-carousel{position:relative;overflow:hidden;padding:0;background:#0b1510;min-height:340px;border:1px solid #31513b;box-shadow:0 14px 35px #0006}
+.news-carousel{position:relative;overflow:hidden;padding:0;background:#0b1510;min-height:340px;border:1px solid #31513b;border-radius:13px;box-shadow:0 14px 35px #0006}
 .news-slide{position:relative;min-height:340px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;background:#102016;cursor:pointer;isolation:isolate}
 .news-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;filter:brightness(1.13) contrast(1.12) saturate(1.22);transition:transform .5s ease;z-index:0}.news-carousel:hover .news-image{transform:scale(1.025)}
 .news-image-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(2,8,5,.96) 0%,rgba(3,10,6,.70) 36%,rgba(3,10,6,.16) 78%,rgba(3,10,6,.02) 100%)}
@@ -59,59 +61,59 @@ main{max-width:960px;margin:auto;padding:16px 13px 30px;position:relative;z-inde
 /* MATCH CENTRE */
 .match-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.match-head strong{font-size:12px;font-weight:900;letter-spacing:.8px}
 .date-controls{display:flex;align-items:center;justify-content:center;gap:12px;padding:3px 0;background:transparent;border:0;border-radius:0;margin-bottom:10px;touch-action:pan-y;user-select:none}
-.date-controls button{width:30px;height:30px;border:1px solid #31523e;background:#153522;color:#9af0bc;border-radius:8px;font-size:21px;line-height:1;display:grid;place-items:center;flex-shrink:0}
+.date-controls button{width:30px;height:30px;border:1px solid #31523e;background:rgba(21,53,34,.82);color:#9af0bc;border-radius:8px;font-size:21px;line-height:1;display:grid;place-items:center;flex-shrink:0}
 .date-controls button:hover{background:#1a4930;border-color:#35a96b}
 .date-current{min-width:170px;min-height:37px;padding:4px 9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:transparent;border:0;border-radius:0;color:#b9f5d0;font-size:9px;font-weight:900;letter-spacing:.5px;text-align:center;line-height:1.3}
 .date-current .date-name{font-size:12px;color:#f2fff6;letter-spacing:.2px}.date-current .date-detail{font-size:8px;color:#9fe6b9;font-weight:800;letter-spacing:.8px;text-transform:uppercase}
 .sport-tabs,.score-tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 9px;scrollbar-width:none}.sport-tabs::-webkit-scrollbar,.score-tabs::-webkit-scrollbar{display:none}
-.sport-tabs button,.score-tabs button{white-space:nowrap;border:1px solid var(--line);border-radius:20px;background:#0d1510;color:var(--muted);padding:7px 11px;font-size:9px;font-weight:800}
+.sport-tabs button,.score-tabs button{white-space:nowrap;border:1px solid rgba(166,240,194,.20);border-radius:20px;background:rgba(13,21,16,.58);color:var(--muted);padding:7px 11px;font-size:9px;font-weight:800}
 .sport-tabs button.active,.score-tabs button.active{background:#16472e;border-color:#238d57;color:#c4f8d9}
-.score-list{display:grid;gap:9px}.league-group{overflow:hidden;border:1px solid #263d2e;border-radius:10px;background:rgba(10,18,13,.91);backdrop-filter:blur(4px)}
-.league-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:linear-gradient(100deg,#173a25,#10251a);border-bottom:1px solid #31523c;color:#c8f5d8;font-size:9px;font-weight:900;letter-spacing:.6px;text-transform:uppercase}
-.league-heading span:last-child{color:#8fbea0;font-size:8px;letter-spacing:.3px}
-.score-row{display:grid;grid-template-columns:minmax(0,1fr) 60px minmax(0,1fr);gap:7px;align-items:center;padding:10px 9px;background:rgba(12,20,16,.90);border-bottom:1px solid #1e3025;font-size:10px}.score-row:last-child{border-bottom:0}
+.score-list{display:grid;gap:9px}.league-group{overflow:hidden;border:0;border-bottom:1px solid rgba(166,240,194,.20);border-radius:0;background:rgba(5,14,8,.16);backdrop-filter:none}
+.league-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 5px;background:rgba(23,58,37,.45);border-bottom:1px solid rgba(49,82,60,.65);color:#c8f5d8;font-size:9px;font-weight:900;letter-spacing:.6px;text-transform:uppercase}
+.league-heading span:last-child{color:#a2c9ae;font-size:8px;letter-spacing:.3px}
+.score-row{display:grid;grid-template-columns:minmax(0,1fr) 60px minmax(0,1fr);gap:7px;align-items:center;padding:10px 5px;background:rgba(5,13,8,.24);border-bottom:1px solid rgba(166,240,194,.12);font-size:10px}.score-row:last-child{border-bottom:0}
 .team{display:flex;align-items:center;min-width:0;font-weight:700}.team span{overflow-wrap:anywhere}.team:last-child{justify-content:flex-end;text-align:right}
 .score{font-size:14px;font-weight:900;white-space:nowrap;text-align:center}.score-meta{text-align:center;font-size:8px;color:var(--muted);margin-top:3px;line-height:1.4}
 .score-status{display:inline-flex;align-items:center;justify-content:center;gap:5px;font-size:8px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;margin-top:4px}
-.score-status.live{color:var(--yellow)}.score-status.pending{color:#aab8ae}.score-status.finished{color:#8ed9a9}.live-indicator{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--yellow);box-shadow:0 0 8px #ffd34e;animation:livePulse 1s infinite}
-@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.4}}.empty{padding:18px;text-align:center;color:var(--muted);font-size:10px;line-height:1.6}
+.score-status.live{color:var(--yellow)}.score-status.pending{color:#c1cec5}.score-status.finished{color:#8ed9a9}.live-indicator{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--yellow);box-shadow:0 0 8px #ffd34e;animation:livePulse 1s infinite}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.4}}.empty{padding:18px 8px;text-align:center;color:#c0cec4;font-size:10px;line-height:1.6}
 
-/* WINNING STREAK */
-.streak-board{position:relative;overflow:hidden;background:radial-gradient(circle at 100% 0%,#1b5736 0%,transparent 40%),linear-gradient(145deg,rgba(16,34,25,.91),rgba(10,18,13,.92) 72%);border:1px solid #34764d;border-radius:14px;padding:12px;box-shadow:0 10px 25px #0005;backdrop-filter:blur(5px)}
+/* WINNING STREAK — remove large outer card while keeping readable figures */
+.streak-board{position:relative;overflow:hidden;background:rgba(8,24,14,.24);border:0;border-top:1px solid rgba(52,118,77,.65);border-bottom:1px solid rgba(52,118,77,.65);border-radius:0;padding:12px 4px;box-shadow:none;backdrop-filter:none}
 .streak-board:before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,#23d782,#a8f2c4,transparent)}
 .streak-heading{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.streak-heading strong{font-size:10px;letter-spacing:.8px;font-weight:900}.streak-heading span{color:#9be8b9;font-size:8px;font-weight:900;letter-spacing:.8px}
-.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.stat{min-width:0;background:linear-gradient(145deg,#14251a,#0b140e);border:1px solid #2a4532;border-radius:9px;padding:9px 7px}
-.stat small{font-size:8px;color:#9eafa3;letter-spacing:.3px;text-transform:uppercase;font-weight:800;display:block}.stat strong{display:block;font-size:19px;margin-top:5px;font-weight:900;color:#f1f8f3;overflow-wrap:anywhere}
-.stat.green strong{color:#6de7a3}.stat.red strong{color:#ff8791}.streak-note{font-size:9px;color:#9baea1;line-height:1.6;margin:9px 2px 0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.stat{min-width:0;background:rgba(11,28,17,.48);border:1px solid rgba(42,69,50,.70);border-radius:7px;padding:9px 7px}
+.stat small{font-size:8px;color:#b2c1b7;letter-spacing:.3px;text-transform:uppercase;font-weight:800;display:block}.stat strong{display:block;font-size:19px;margin-top:5px;font-weight:900;color:#f1f8f3;overflow-wrap:anywhere}
+.stat.green strong{color:#6de7a3}.stat.red strong{color:#ff8791}.streak-note{font-size:9px;color:#b1c0b5;line-height:1.6;margin:9px 2px 0}
 
 /* RESPONSIBLE GAMBLING */
-.notice{position:relative;border:1px solid #554a2b;background:linear-gradient(135deg,rgba(33,30,19,.94),rgba(21,23,15,.94));color:#e7d8a8;border-radius:12px;padding:13px 13px 13px 39px;font-size:10px;line-height:1.8;box-shadow:0 8px 22px #0003}
+.notice{position:relative;border:1px solid #554a2b;background:linear-gradient(135deg,rgba(33,30,19,.82),rgba(21,23,15,.82));color:#e7d8a8;border-radius:12px;padding:13px 13px 13px 39px;font-size:10px;line-height:1.8;box-shadow:none}
 .notice:before{content:"!";position:absolute;left:13px;top:13px;width:17px;height:17px;display:grid;place-items:center;border:1px solid #b99a4d;border-radius:50%;color:#e8c76c;font-size:10px;font-weight:900}.notice-title{display:block;color:#f2d88d;font-size:9px;font-weight:900;letter-spacing:1.2px;margin-bottom:4px}
 
 /* LEAGUE SELECTORS */
 .league-screen{display:flex;flex-direction:column;gap:8px}.league-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:100%;overflow:visible;padding:2px 0 5px}
-.league-button{width:100%;min-width:0;min-height:35px;display:flex;align-items:center;justify-content:center;text-align:center;padding:5px 3px;background:linear-gradient(145deg,rgba(18,30,23,.94),rgba(13,21,16,.94));border:1px solid #263b2d;border-radius:8px;color:#dce9df;transition:background .15s,border-color .15s,transform .15s}
-.league-button:active{transform:scale(.98)}.league-button.active{background:linear-gradient(145deg,#17452d,#10281b);border-color:#20a965;box-shadow:inset 0 0 0 1px #20a96533}.league-button strong{display:block;font-size:8px;line-height:1.2;font-weight:900;white-space:normal;overflow-wrap:anywhere}
+.league-button{width:100%;min-width:0;min-height:35px;display:flex;align-items:center;justify-content:center;text-align:center;padding:5px 3px;background:rgba(13,27,17,.42);border:1px solid rgba(166,240,194,.17);border-radius:7px;color:#e5f1e8;transition:background .15s,border-color .15s,transform .15s}
+.league-button:active{transform:scale(.98)}.league-button.active{background:rgba(23,69,45,.88);border-color:#20a965;box-shadow:inset 0 0 0 1px #20a96533}.league-button strong{display:block;font-size:8px;line-height:1.2;font-weight:900;white-space:normal;overflow-wrap:anywhere}
 
-/* PREDICTIONS */
-.prediction-card{background:linear-gradient(145deg,rgba(17,29,21,.92),rgba(10,19,14,.92));border:1px solid #293d30;border-radius:11px;padding:11px 12px;margin-bottom:8px;box-shadow:0 6px 16px #0002;backdrop-filter:blur(5px)}
-.prediction-top{display:flex;justify-content:space-between;gap:8px;font-size:9px;color:#a4b4a9;font-weight:700}.prediction-card h3{font-size:12px;line-height:1.4;margin:9px 0;font-weight:900;color:#f0f7f2}
-.prediction-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:9px;color:var(--muted)}.prediction-pick{color:#b9f5d0;font-weight:800}
+/* PREDICTIONS — clear separation without heavy surrounding boxes */
+.prediction-card{background:rgba(5,17,9,.30);border:0;border-bottom:1px solid rgba(166,240,194,.24);border-radius:0;padding:12px 5px;margin-bottom:5px;box-shadow:none;backdrop-filter:none}
+.prediction-top{display:flex;justify-content:space-between;gap:8px;font-size:9px;color:#b8c7bd;font-weight:700}.prediction-card h3{font-size:12px;line-height:1.4;margin:9px 0;font-weight:900;color:#f0f7f2}
+.prediction-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:9px;color:#b4c2b8}.prediction-pick{color:#b9f5d0;font-weight:800}
 .status{display:inline-flex;align-items:center;justify-content:center;gap:4px;border-radius:30px;padding:5px 8px;font-size:8px;font-weight:900;letter-spacing:.4px;white-space:nowrap;border:1px solid transparent}.status-icon{width:15px;height:15px;border-radius:50%;display:inline-grid;place-items:center;font-size:9px;font-weight:900;border:1px solid currentColor}
 .status.pending{background:#302a17;color:#e8c76c;border-color:#6b5728}.status.won{background:#123b28;color:#75e5a5;border-color:#28784f}.status.lost{background:#401c22;color:#ff8992;border-color:#873c47}.status.void{background:#292d30;color:#c4cdd1;border-color:#59656a}
 
 /* MEMBERSHIP */
 .gate{text-align:center;padding:25px 16px}.gate-icon{width:51px;height:51px;border-radius:16px;background:#183b29;color:#83e5ad;display:grid;place-items:center;margin:0 auto 13px;font-size:23px;border:1px solid #34764d}
 .gate h2{font-size:15px;margin:0 0 8px;font-weight:900}.gate p{font-size:10px;line-height:1.7;color:var(--muted);max-width:340px;margin:0 auto 15px}
-.payment-detail{background:rgba(12,21,16,.94);border:1px solid #294333;border-radius:11px;padding:13px;margin:11px 0}.payment-detail p{font-size:10px;color:var(--muted);line-height:1.8}.payment-detail strong{color:#eaf5ed}
-.payment-amount{font-size:27px;font-weight:900;color:var(--green);letter-spacing:-.5px}.code-box{background:rgba(12,21,16,.94);border:1px solid #294333;border-radius:11px;padding:13px;margin-bottom:9px}.code-box h3{font-size:11px;margin:0 0 6px}.code-box p{font-size:10px;color:var(--muted);line-height:1.5;margin:0}
+.payment-detail{background:rgba(12,21,16,.30);border:0;border-left:2px solid rgba(49,82,60,.85);border-radius:0;padding:8px 12px;margin:11px 0}.payment-detail p{font-size:10px;color:#bdcabe;line-height:1.8}.payment-detail strong{color:#eaf5ed}
+.payment-amount{font-size:27px;font-weight:900;color:var(--green);letter-spacing:-.5px}.code-box{background:rgba(12,21,16,.22);border:0;border-bottom:1px solid rgba(166,240,194,.18);border-radius:0;padding:13px 5px;margin-bottom:9px}.code-box h3{font-size:11px;margin:0 0 6px}.code-box p{font-size:10px;color:#bdcabe;line-height:1.5;margin:0}
 .logout{width:100%;border:1px solid #744047;color:#ffb0b6;background:linear-gradient(135deg,#29151a,#1b1013);padding:12px;border-radius:10px;font-weight:900;font-size:10px;letter-spacing:1.2px;margin-top:15px;box-shadow:0 7px 20px #0003}.logout:hover{background:#3a1c23;border-color:#b35b66}
-footer{text-align:center;color:#91a397;font-size:9px;letter-spacing:.8px;padding:22px 5px 18px;line-height:1.9;font-weight:800}footer .footer-brand{color:#a6f0c2;font-family:"Cinzel",serif}footer .footer-motto{color:#7ddda5;letter-spacing:1.5px}
+footer{text-align:center;color:#a8b6ac;font-size:9px;letter-spacing:.8px;padding:22px 5px 18px;line-height:1.9;font-weight:800}footer .footer-brand{color:#a6f0c2;font-family:"Cinzel",serif}footer .footer-motto{color:#7ddda5;letter-spacing:1.5px}
 .bottom-nav{position:fixed;z-index:30;bottom:0;left:0;right:0;background:rgba(7,14,9,.97);border-top:1px solid #294333;display:grid;grid-template-columns:repeat(4,1fr);padding:7px 5px calc(7px + env(safe-area-inset-bottom));backdrop-filter:blur(17px);box-shadow:0 -8px 25px #0004}
-.nav-item{border:0;background:none;color:#77877d;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;font-size:8px;font-weight:900;letter-spacing:.4px;padding:5px 1px}.nav-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.nav-item.active{color:var(--green)}.nav-item.active svg{filter:drop-shadow(0 0 5px #19c77966)}
+.nav-item{border:0;background:none;color:#91a198;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;font-size:8px;font-weight:900;letter-spacing:.4px;padding:5px 1px}.nav-item svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.nav-item.active{color:var(--green)}.nav-item.active svg{filter:drop-shadow(0 0 5px #19c77966)}
 @media(min-width:520px){.league-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.league-button{min-height:38px}}
 @media(min-width:760px){.league-grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
-@media(min-width:650px){.stats-grid{grid-template-columns:repeat(4,1fr)}.card{padding:16px}.news-slide,.news-carousel{min-height:400px}.score-row{padding:12px}}
+@media(min-width:650px){.stats-grid{grid-template-columns:repeat(4,1fr)}.news-slide,.news-carousel{min-height:400px}.score-row{padding:12px 5px}}
 @media(max-width:420px){.news-slide,.news-carousel{min-height:320px}.news-content{padding:20px 15px}.news-slide h2{font-size:21px}.date-controls{gap:8px}.date-current{min-width:150px}.league-grid{gap:5px}.league-button{min-height:34px;padding:5px 2px}.league-button strong{font-size:8px}.score-row{grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);gap:4px}.team{font-size:9px}.score{font-size:13px}.stats-grid{gap:5px}.stat{padding:8px 5px}.stat small{font-size:7px}.stat strong{font-size:17px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
@@ -325,13 +327,13 @@ async function loadSportsNews(){
   newsIndex=0;renderNewsSlide();restartNewsTimer();
  }catch(error){console.error("Sky Sports news loading error:",error);if(!sportsNews.length)slide.innerHTML='<div class="news-content"><div class="news-source"><span class="news-source-text">SKY SPORTS</span></div><h2>Sky Sports headlines are temporarily unavailable</h2></div>'}
 }
-$("newsSlide").addEventListener("click",openCurrentNews);$("newsSlide").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openCurrentNews()}});
+$("newsSlide").addEventListener("click",openCurrentNews);$("newsSlide").addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openCurrentNews}});
 loadSportsNews();setInterval(loadSportsNews,15*60*1000);
 
 /* LEAGUE SELECTORS — EACH TIER HAS ITS OWN FILTER */
 function buildLeagueSelector(type){const grid=$(type+"LeagueGrid");if(!grid)return;grid.innerHTML="";leagueOptions.forEach(league=>{const button=document.createElement("button");button.type="button";button.className="league-button";button.classList.toggle("active",selectedLeagues[type]===league.name);const title=document.createElement("strong");title.textContent=league.name;button.append(title);button.addEventListener("click",()=>{selectedLeagues[type]=league.name;buildLeagueSelector(type);renderPredictions(type)});grid.append(button)})}
 
-/* PREDICTION CATEGORY DETECTION — EXPLICIT ODDS CATEGORY TAKES PRIORITY */
+/* PREDICTION CATEGORY DETECTION — KEEP FREE, VIP AND ROLLOVER SEPARATE */
 function normalizeTierValue(value){
  const v=String(value??"").trim().toLowerCase().replace(/[_-]+/g," ");
  if(!v)return"";
@@ -342,8 +344,6 @@ function normalizeTierValue(value){
 }
 function recordTier(record){
  if(!record||typeof record!=="object")return"";
-
- /* First trust fields that describe the prediction's own odds category. */
  const explicitFields=[
   "prediction_tier","prediction_category","odds_type","odds_category",
   "prediction_type","odds_plan","prediction_plan","category"
@@ -352,13 +352,9 @@ function recordTier(record){
   const tier=normalizeTierValue(record[field]);
   if(tier)return tier;
  }
-
- /* Then use explicit boolean flags when the row has no category label. */
  if(record.is_rollover===true||record.rollover===true)return"rollover";
  if(record.is_vip===true||record.vip===true||record.premium===true)return"vip";
  if(record.is_free===true||record.free_odds===true)return"free";
-
- /* Membership fields are only a fallback, not the first choice. */
  const membershipFields=["membership_tier","tier","plan","access_level","member_type","package","membership","subscription_type","plan_type","type"];
  for(const field of membershipFields){
   const tier=normalizeTierValue(record[field]);
@@ -391,37 +387,7 @@ async function loadPredictions(){
   $("rolloverPredictions").innerHTML='<div class="empty card">Unable to load Rollover predictions.</div>';
  }
 }
-function predictionLeague(record){
- const candidates=[record.league,record.competition,record.tournament,record.league_name];
- for(const value of candidates){
-  if(value&&!normalizeTierValue(value))return String(value).toLowerCase();
- }
- const category=record.category;
- if(category&&!normalizeTierValue(category))return String(category).toLowerCase();
- return"other leagues";
-}
-function leagueMatches(record,selected){
- if(selected==="All")return true;
- const league=predictionLeague(record);
- const aliases={
-  "premier league":["premier league","epl"],
-  "bundesliga":["bundesliga"],
-  "la liga":["la liga","laliga"],
-  "ligue 1":["ligue 1","ligue one"],
-  "world cup":["world cup"],
-  "uefa":["uefa"],
-  "afcon":["afcon","africa cup of nations"],
-  "champions league":["champions league","ucl"],
-  "europa league":["europa league","uel"],
-  "conference league":["conference league","uecl"],
-  "other leagues":["other leagues","other"],
-  "tennis":["tennis"],
-  "basketball":["basketball"]
- };
- return(aliases[selected.toLowerCase()]||[selected.toLowerCase()]).some(name=>league.includes(name));
-}
-
-/* STRICT DATE MATCHING — WAT MATCH DATE, WITH PUBLICATION DATE FALLBACK */
+ /* NIGERIA DATE MATCHING — USE THE ACTUAL FIXTURE DATE */
 function validDateKey(key){
  if(!/^\d{4}-\d{2}-\d{2}$/.test(String(key||"")))return"";
  const parts=key.split("-").map(Number);
@@ -437,7 +403,7 @@ function parsePredictionDateValue(raw){
  }
  const value=String(raw).trim();
 
- /* A date-only database value is already a calendar date; do not shift it. */
+ /* Date-only values are calendar dates and must not be shifted by timezone conversion. */
  const dateOnly=value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
  if(dateOnly)return validDateKey(dateOnly[1]+"-"+dateOnly[2]+"-"+dateOnly[3]);
 
@@ -447,7 +413,7 @@ function parsePredictionDateValue(raw){
   return Number.isNaN(parsedDate.getTime())?"":nigeriaDate(parsedDate);
  }
 
- /* Support common day/month/year values saved by manual forms. */
+ /* Support DD/MM/YYYY and DD-MM-YYYY date values. */
  const local=value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
  if(local)return validDateKey(local[3]+"-"+String(local[2]).padStart(2,"0")+"-"+String(local[1]).padStart(2,"0"));
 
@@ -458,22 +424,39 @@ function parsePredictionDateValue(raw){
 function predictionDateKey(record){
  if(!record||typeof record!=="object")return"";
 
- /* Prefer the fixture/match date when the admin supplied one. */
+ /*
+  * Check actual fixture/prediction date columns first.
+  * These names cover common date fields used by prediction forms.
+  */
  const matchDateFields=[
-  "match_date","fixture_date","matchDate","fixtureDate","event_date","eventDate",
-  "match_datetime","matchDateTime","kickoff_at","kickoff","starts_at","date"
+  "match_date","matchDate",
+  "fixture_date","fixtureDate",
+  "prediction_date","predictionDate",
+  "game_date","gameDate",
+  "event_date","eventDate",
+  "scheduled_date","scheduledDate",
+  "kickoff_date","kickoffDate",
+  "match_day","matchDay",
+  "start_date","startDate",
+  "match_datetime","matchDateTime",
+  "event_datetime","eventDateTime",
+  "scheduled_at","scheduledAt",
+  "kickoff_at","kickoff",
+  "starts_at","start_time",
+  "date"
  ];
+
  for(const field of matchDateFields){
   const key=parsePredictionDateValue(record[field]);
   if(key)return key;
  }
 
- /* If no match date exists, use when the prediction was actually published. */
- const publicationFields=["published_at","posted_at","created_at","inserted_at","createdAt","publishedAt"];
- for(const field of publicationFields){
-  const key=parsePredictionDateValue(record[field]);
-  if(key)return key;
- }
+ /*
+  * Do not use created_at, published_at or posted_at as a match date.
+  * Those fields tell us when a prediction was uploaded, not when the
+  * actual match takes place. Using them can put a fixture under the
+  * wrong day and hide yesterday's or tomorrow's predictions.
+  */
  return"";
 }
 function formatPredictionDate(record){
@@ -505,7 +488,12 @@ function renderPredictions(type){
  const container=$(containerId);if(!container)return;
  const selected=selectedLeagues[type],selectedDate=nigeriaDate(selectedCalendarDate);
 
- /* Keep the tier check independent from the date and league checks. */
+ /*
+  * Three independent checks:
+  * 1. The record must belong to the requested prediction tier.
+  * 2. It must match the selected league.
+  * 3. Its actual fixture date must equal the selected Nigeria date.
+  */
  const records=(predictionRecords[type]||[]).filter(record=>{
   if(classifyPrediction(record)!==type)return false;
   if(!leagueMatches(record,selected))return false;
@@ -517,7 +505,10 @@ function renderPredictions(type){
  if($(labelId))$(labelId).textContent=selected==="All"?"ALL PREDICTIONS":selected.toUpperCase();
  if(type==="free"&&$("freePredictionCount"))$("freePredictionCount").textContent=records.length+" selections";
  container.innerHTML="";
- if(!records.length){container.innerHTML='<div class="empty card">No predictions available in this category for the selected date.</div>';return}
+ if(!records.length){
+  container.innerHTML='<div class="empty">No predictions available in this category for the selected date.</div>';
+  return;
+ }
 
  records.forEach(record=>{
   const card=document.createElement("div");card.className="prediction-card";
