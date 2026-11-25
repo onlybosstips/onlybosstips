@@ -106,6 +106,24 @@ main{max-width:960px;margin:auto;padding:16px 13px 30px;position:relative;z-inde
 .gate h2{font-size:15px;margin:0 0 8px;font-weight:900}.gate p{font-size:10px;line-height:1.7;color:var(--muted);max-width:340px;margin:0 auto 15px}
 .payment-detail{background:rgba(12,21,16,.25);border:0;border-left:2px solid rgba(49,82,60,.85);border-radius:0;padding:8px 12px;margin:11px 0}.payment-detail p{font-size:10px;color:#bdcabe;line-height:1.8}.payment-detail strong{color:#eaf5ed}
 .payment-amount{font-size:27px;font-weight:900;color:var(--green);letter-spacing:-.5px}.code-box{background:rgba(12,21,16,.18);border:0;border-bottom:1px solid rgba(166,240,194,.18);border-radius:0;padding:13px 5px;margin-bottom:9px}.code-box h3{font-size:11px;margin:0 0 6px}.code-box p{font-size:10px;color:#bdcabe;line-height:1.5;margin:0}
+
+/* NEVER MISS — PUBLISHED BOOKING GROUPS */
+.booking-group{background:linear-gradient(145deg,rgba(10,28,17,.78),rgba(5,15,9,.78));border:1px solid rgba(67,137,91,.55);border-radius:13px;padding:14px;margin:0 0 13px;box-shadow:0 8px 22px #0003}
+.booking-group-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.booking-group-title{font-size:11px;font-weight:900;letter-spacing:.8px;color:#c9f6d9}
+.booking-group-odds{font-size:22px;font-weight:900;color:#75e5a5;margin-top:5px}
+.booking-group-meta{font-size:9px;color:#aebfb2;line-height:1.6;margin-top:5px}
+.booking-group .status{flex-shrink:0}
+.booking-platform{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-top:1px solid rgba(166,240,194,.14)}
+.booking-platform-info{min-width:0}
+.booking-platform-name{display:block;font-size:10px;font-weight:900;color:#e9f6ed;letter-spacing:.5px}
+.booking-platform-code{display:block;margin-top:5px;font-size:11px;color:#a6f0c2;font-weight:800;overflow-wrap:anywhere;letter-spacing:.5px}
+.booking-unavailable{display:block;margin-top:5px;font-size:9px;color:#899b8e}
+.booking-copy{flex-shrink:0;min-width:75px;background:linear-gradient(135deg,#20d486,#0eaa62);color:#041b10;border:1px solid #5be5a0;border-radius:7px;padding:9px 11px;font-size:9px;font-weight:900;letter-spacing:.5px}
+.booking-copy:disabled{opacity:.55;cursor:default}
+.booking-refresh{margin:0 0 12px}
+.booking-message{padding:18px 10px;text-align:center;color:#c0cec4;font-size:10px;line-height:1.7;background:rgba(5,14,8,.25);border:1px solid rgba(166,240,194,.14);border-radius:10px}
+.booking-error{color:#ff9aa2}
 .logout{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;border:1px solid #d7e8dc;color:#173b27;background:linear-gradient(135deg,#ffffff,#edf7f0);padding:13px;border-radius:10px;font-weight:900;font-size:10px;letter-spacing:1.2px;margin-top:15px;box-shadow:0 5px 16px #0003;transition:background .18s,transform .18s}
 .logout:hover{background:#e3f5e9;border-color:#a6d9b8;transform:translateY(-1px)}
 .logout svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
@@ -115,7 +133,7 @@ footer{text-align:center;color:#a8b6ac;font-size:9px;letter-spacing:.8px;padding
 @media(min-width:520px){.league-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.league-button{min-height:38px}}
 @media(min-width:760px){.league-grid{grid-template-columns:repeat(6,minmax(0,1fr))}}
 @media(min-width:650px){.stats-grid{grid-template-columns:repeat(4,1fr)}.news-slide,.news-carousel{min-height:400px}.score-row{padding:12px 5px}}
-@media(max-width:420px){.news-slide,.news-carousel{min-height:320px}.news-content{padding:20px 15px}.news-slide h2{font-size:21px}.date-controls{gap:8px}.date-current{min-width:150px}.league-grid{gap:5px}.league-button{min-height:34px;padding:5px 2px}.league-button strong{font-size:8px}.score-row{grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);gap:4px}.team{font-size:9px}.score{font-size:13px}.stats-grid{gap:5px}.stat{padding:8px 5px}.stat small{font-size:7px}.stat strong{font-size:17px}}
+@media(max-width:420px){.news-slide,.news-carousel{min-height:320px}.news-content{padding:20px 15px}.news-slide h2{font-size:21px}.date-controls{gap:8px}.date-current{min-width:150px}.league-grid{gap:5px}.league-button{min-height:34px;padding:5px 2px}.league-button strong{font-size:8px}.score-row{grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);gap:4px}.team{font-size:9px}.score{font-size:13px}.stats-grid{gap:5px}.stat{padding:8px 5px}.stat small{font-size:7px}.stat strong{font-size:17px}.booking-group{padding:12px}.booking-copy{min-width:68px;padding:8px 9px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
 </head>
@@ -203,12 +221,13 @@ footer{text-align:center;color:#a8b6ac;font-size:9px;letter-spacing:.8px;padding
  <div id="rollMemberContent" class="hidden"><div class="section-title">SELECT A LEAGUE</div><div class="league-grid" id="rolloverLeagueGrid"></div><div class="section-title"><span id="rollSelectedLeague">ALL PREDICTIONS</span></div><div id="rolloverPredictions"></div></div>
 </section>
 
-<!-- NEVER MISS -->
+<!-- NEVER MISS — EXISTING PAGE CONNECTED TO PUBLISHED BOOKING GROUPS -->
 <section id="never" class="screen">
  <div class="page-heading"><h1>NEVER MISS</h1><p>Booking codes from your betting platforms</p></div>
  <button class="back-home" onclick="navigate('home')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-7h6v7"/></svg>HOME</button>
- <div id="bookingCodes"><div class="code-box"><h3>SPORTYBET BOOKING CODES</h3><p>Your SportyBet codes will be published here.</p></div><div class="code-box"><h3>MSPORT BOOKING CODES</h3><p>Your MSport codes will be published here.</p></div><div class="code-box"><h3>OTHER PLATFORMS</h3><p>Additional booking codes and verified links will appear here.</p></div></div>
- <div class="notice"><span class="notice-title">PLATFORM INFORMATION</span>Only trusted booking codes and normal web links should be added here. Third-party scripts and unverified embeds are not executed.</div>
+ <button class="secondary booking-refresh" id="refreshBookingGroups" type="button">REFRESH BOOKING CODES</button>
+ <div id="bookingCodes" aria-live="polite"><div class="booking-message">Loading published booking groups...</div></div>
+ <div class="notice"><span class="notice-title">PLATFORM INFORMATION</span>Only booking codes published by onlybosstips are displayed here. Always check your selections and total odds on your chosen betting platform before placing a bet.</div>
 </section>
 
 <!-- VIP PAYMENT -->
@@ -241,6 +260,7 @@ const WAT="Africa/Lagos",LIVE_SCORES_URL="https://onlybosstips-api.onrender.com/
 const SKY_SPORTS_LOGO="https://commons.wikimedia.org/wiki/Special:Redirect/file/Sky_Sports_2026.svg";
 const $=id=>document.getElementById(id);
 let supabaseClient=null,currentUser=null,selectedPage="authSection",selectedSport="football",selectedScoreState="live",scoreRequestNumber=0;
+let bookingRequestNumber=0;
 
 /* Each page now owns an independent calendar date. */
 let selectedLiveScoreDate=new Date();
@@ -261,8 +281,6 @@ function showAuthMode(mode){$("authWelcome").classList.remove("hidden");$("forgo
 function showForgotPassword(){$("authWelcome").classList.add("hidden");$("forgotForm").classList.remove("hidden");$("recoveryForm").classList.add("hidden");$("forgotEmail").value=$("loginEmail").value||"";setAuthMessage("")}
 function showRecoveryForm(){$("authWelcome").classList.add("hidden");$("forgotForm").classList.add("hidden");$("recoveryForm").classList.remove("hidden");setAuthMessage("Enter your new password below.","success")}
 function togglePassword(id,button){const field=$(id);if(!field)return;const visible=field.type==="password";field.type=visible?"text":"password";button.textContent=visible?"HIDE":"SHOW"}
-function showWelcome(){document.body.classList.add("member-mode");$("authSection").classList.remove("active");$("bottomNav").classList.remove("hidden");navigate("home")}
-function showLoginScreen(){document.body.classList.remove("member-mode");$("bottomNav").classList.add("hidden");document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$("authSection").classList.add("active");$("headerStatus").textContent="MEMBER LOGIN";showAuthMode("login");window.scrollTo({top:0,behavior:"smooth"})}
 
 $("signupForm").addEventListener("submit",async event=>{event.preventDefault();if(!supabaseClient){setAuthMessage("Authentication is not ready. Refresh and try again.");return}const name=$("signupName").value.trim(),email=$("signupEmail").value.trim().toLowerCase(),password=$("signupPassword").value;if(!name||!email||password.length<6){setAuthMessage("Enter your name, a valid email and a password of at least 6 characters.");return}setButtonLoading("signupSubmit",true,"CREATE MY ACCOUNT");setAuthMessage("");try{const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{full_name:name},emailRedirectTo:window.location.origin+"/?auth=signup"}});if(error)throw error;if(data.session){currentUser=data.user;await loadMemberData(data.user);showWelcome();setAuthMessage("Your account has been created.","success")}else{$("signupForm").classList.add("hidden");$("loginForm").classList.remove("hidden");$("loginTab").classList.add("active");$("signupTab").classList.remove("active");$("loginEmail").value=email;$("loginPassword").value="";setAuthMessage("Registration successful. Check your email and confirm your account, then log in.","success")}}catch(error){console.error("Registration error:",error);setAuthMessage(error.message||"Registration failed. Please try again.")}finally{setButtonLoading("signupSubmit",false,"CREATE MY ACCOUNT")}});
 $("loginForm").addEventListener("submit",async event=>{event.preventDefault();if(!supabaseClient){setAuthMessage("Authentication is not ready. Refresh and try again.");return}const email=$("loginEmail").value.trim().toLowerCase(),password=$("loginPassword").value;setButtonLoading("loginSubmit",true,"LOG IN TO YOUR ACCOUNT");setAuthMessage("");try{const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw error;currentUser=data.user;await loadMemberData(data.user);showWelcome()}catch(error){console.error("Login error:",error);setAuthMessage(error.message||"Login failed. Check your email and password.")}finally{setButtonLoading("loginSubmit",false,"LOG IN TO YOUR ACCOUNT")}});
@@ -338,7 +356,7 @@ refreshDateLabels();
 function updateYear(){if($("year"))$("year").textContent=new Intl.DateTimeFormat("en",{timeZone:WAT,year:"numeric"}).format(new Date())}
 
 /* NAVIGATION */
-function navigate(page){if(!currentUser){showLoginScreen();return}const target=$(page);if(!target)return;document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===page));document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));selectedPage=page;window.scrollTo({top:0,behavior:"smooth"})}
+function navigate(page){if(!currentUser){showLoginScreen();return}const target=$(page);if(!target)return;document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===page));document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));selectedPage=page;window.scrollTo({top:0,behavior:"smooth"});if(page==="never")loadBookingGroups()}
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
 document.querySelectorAll("#sportTabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#sportTabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedSport=b.dataset.sport;renderScores()}));
 document.querySelectorAll("#scoreTabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#scoreTabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedScoreState=b.dataset.state;renderScores()}));
@@ -351,7 +369,7 @@ function leagueName(v){return typeof v==="object"&&v!==null?getFirst(v,["name","
 function normalizeGame(g){const fixtureDate=getFirst(g,["date","matchDate","match_date","fixtureDate","kickoff"],""),dateText=fixtureDate?String(fixtureDate).slice(0,16).replace("T"," "):"",rawStatus=String(getFirst(g,["status","time","elapsed","minute"],"")).trim(),normalizedStatus=rawStatus.toLowerCase(),rawLeague=getFirst(g,["league","competition","tournament","category"],""),rawHomeScore=getFirst(g,["homeScore","home_score","homeGoals","home_goals","scoreHome"],"-"),rawAwayScore=getFirst(g,["awayScore","away_score","awayGoals","away_goals","scoreAway"],"-");return{home:teamName(getFirst(g,["home","homeTeam","home_team","team1","participant1"]),"Home"),away:teamName(getFirst(g,["away","awayTeam","away_team","team2","participant2"]),"Away"),homeScore:rawHomeScore,awayScore:rawAwayScore,status:rawStatus,league:leagueName(rawLeague),date:dateText,live:normalizedStatus.includes("live")||normalizedStatus.includes("1st")||normalizedStatus.includes("2nd")||normalizedStatus.includes("half")||normalizedStatus.includes("period")||normalizedStatus.includes("extra time")||normalizedStatus.includes("pen"),finished:normalizedStatus.includes("finished")||normalizedStatus.includes("full time")||normalizedStatus==="ft"||normalizedStatus.includes("after penalties")||normalizedStatus.includes("ended"),pending:normalizedStatus.includes("not started")||normalizedStatus.includes("scheduled")||normalizedStatus.includes("upcoming")||normalizedStatus.includes("pending")||normalizedStatus.includes("timed")}}
 function extractResponseDate(source){return getFirst(source,["date","requestedDate","requested_date","matchDate","match_date"],null)}
 function normalizeSportData(source){const out={live:[],finished:[],upcoming:[]};["live","finished","upcoming"].forEach(s=>{if(Array.isArray(source[s]))out[s]=source[s].map(normalizeGame)});if(!out.upcoming.length&&Array.isArray(source.fixtures))out.upcoming=source.fixtures.map(normalizeGame);if(!out.finished.length&&Array.isArray(source.results))out.finished=source.results.map(normalizeGame);return out}
- async function loadLiveScores(){if(!currentUser)return;const requestId=++scoreRequestNumber,requestedDate=nigeriaDate(selectedLiveScoreDate),today=nigeriaDate(new Date());$("scoreList").innerHTML='<div class="empty">Loading '+requestedDate+' matches...</div>';try{const response=await fetch(LIVE_SCORES_URL+"?date="+encodeURIComponent(requestedDate),{method:"GET",headers:{"Accept":"application/json"},cache:"no-store"});if(!response.ok)throw new Error("Scores API returned "+response.status);const source=await response.json();if(requestId!==scoreRequestNumber)return;const returnedDate=extractResponseDate(source);if(requestedDate!==today&&(!returnedDate||String(returnedDate).slice(0,10)!==requestedDate)){scoreData={football:{live:[],finished:[],upcoming:[]},basketball:{live:[],finished:[],upcoming:[]}};renderScores("The server has not confirmed date-specific matches for "+requestedDate+".");return}if(returnedDate&&String(returnedDate).slice(0,10)!==requestedDate)throw new Error("The server returned a different date.");scoreData={football:normalizeSportData(source.football||{}),basketball:normalizeSportData(source.basketball||{})};renderScores()}catch(error){if(requestId!==scoreRequestNumber)return;console.error("Match centre error:",error);$("scoreList").innerHTML='<div class="empty">Unable to load verified match data. Please try again later.</div>'}}
+async function loadLiveScores(){if(!currentUser)return;const requestId=++scoreRequestNumber,requestedDate=nigeriaDate(selectedLiveScoreDate),today=nigeriaDate(new Date());$("scoreList").innerHTML='<div class="empty">Loading '+requestedDate+' matches...</div>';try{const response=await fetch(LIVE_SCORES_URL+"?date="+encodeURIComponent(requestedDate),{method:"GET",headers:{"Accept":"application/json"},cache:"no-store"});if(!response.ok)throw new Error("Scores API returned "+response.status);const source=await response.json();if(requestId!==scoreRequestNumber)return;const returnedDate=extractResponseDate(source);if(requestedDate!==today&&(!returnedDate||String(returnedDate).slice(0,10)!==requestedDate)){scoreData={football:{live:[],finished:[],upcoming:[]},basketball:{live:[],finished:[],upcoming:[]}};renderScores("The server has not confirmed date-specific matches for "+requestedDate+".");return}if(returnedDate&&String(returnedDate).slice(0,10)!==requestedDate)throw new Error("The server returned a different date.");scoreData={football:normalizeSportData(source.football||{}),basketball:normalizeSportData(source.basketball||{})};renderScores()}catch(error){if(requestId!==scoreRequestNumber)return;console.error("Match centre error:",error);$("scoreList").innerHTML='<div class="empty">Unable to load verified match data. Please try again later.</div>'}}
 function createScoreStatus(game,state){const w=document.createElement("div");w.className="score-status";if(state==="live"){w.classList.add("live");const dot=document.createElement("span");dot.className="live-indicator";const label=document.createElement("span");label.textContent="LIVE";w.append(dot,label);const status=String(game.status||"").trim();if(status&&!/^live$/i.test(status)){const time=document.createElement("span");time.textContent=status;w.append(time)}}else if(state==="finished"){w.classList.add("finished");w.textContent="FINISHED"}else{w.classList.add("pending");w.textContent="PENDING"}return w}
 function createScoreRow(game,state){const row=document.createElement("div");row.className="score-row";const home=document.createElement("div");home.className="team";const hn=document.createElement("span");hn.textContent=game.home;home.append(hn);const center=document.createElement("div"),score=document.createElement("div");score.className="score";score.textContent=state==="upcoming"?"VS":game.homeScore+" : "+game.awayScore;const meta=document.createElement("div");meta.className="score-meta";meta.textContent=state==="upcoming"?(game.date||"Scheduled"):state==="finished"?"Final score":"Match in progress";center.append(score,meta,createScoreStatus(game,state));const away=document.createElement("div");away.className="team";const an=document.createElement("span");an.textContent=game.away;away.append(an);row.append(home,center,away);return row}
 function renderScores(message=""){const list=$("scoreList");if(!list)return;const games=scoreData[selectedSport]?.[selectedScoreState]||[];if(!games.length){list.innerHTML='<div class="empty">'+(message||"No "+selectedScoreState+" matches returned for this selected date.")+'</div>';return}list.innerHTML="";const groups=new Map();games.forEach(g=>{const name=String(g.league||"Other Leagues").trim()||"Other Leagues";if(!groups.has(name))groups.set(name,[]);groups.get(name).push(g)});groups.forEach((items,league)=>{const group=document.createElement("section");group.className="league-group";const heading=document.createElement("div");heading.className="league-heading";const title=document.createElement("span");title.textContent=league;const count=document.createElement("span");count.textContent=items.length+(items.length===1?" MATCH":" MATCHES");heading.append(title,count);group.append(heading);items.forEach(g=>group.append(createScoreRow(g,selectedScoreState)));list.append(group)})}
@@ -505,7 +523,7 @@ function setPredictionRecords(type,records){if(!["free","vip","rollover"].includ
 /* MEMBER PROFILE AND MEMBERSHIP */
 function membershipLabel(tier){const value=String(tier||"FREE").trim().toLowerCase();if(value.includes("rollover"))return"ROLLOVER MEMBER";if(value.includes("vip")||value.includes("premium"))return"VIP MEMBER";return"FREE MEMBER"}
 function setMemberProfile(profile){if(!profile)return;$("memberName").textContent=profile.full_name||profile.name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||"Member";$("memberEmail").textContent=profile.email||currentUser?.email||"";const tier=membershipLabel(profile.membership_tier||profile.tier||"FREE");$("memberTier").textContent=tier;const avatarUrl=profile.avatar_url||profile.profile_image||profile.photo_url||currentUser?.user_metadata?.avatar_url||currentUser?.user_metadata?.picture||"";const safeAvatar=safeHttpUrl(avatarUrl);if(safeAvatar){const image=document.createElement("img");image.src=safeAvatar;image.alt="Member profile picture";image.onerror=()=>{$("avatar").innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/></svg>'};$("avatar").innerHTML="";$("avatar").append(image)}else{$("avatar").innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/></svg>'}}
-async function loadMemberData(user){if(!user)return;currentUser=user;$("memberEmail").textContent=user.email||"";$("memberName").textContent=user.user_metadata?.full_name||user.user_metadata?.name||"Member";$("memberTier").textContent="FREE MEMBER";memberAccess={vip:false,rollover:false};try{const {data,error}=await supabaseClient.from("member_profiles").select("*").eq("user_id",user.id).maybeSingle();if(error)throw error;if(data){setMemberProfile(data);const tier=String(data.membership_tier||data.tier||"Free").trim().toLowerCase();memberAccess.vip=tier==="vip"||tier==="vip member"||tier==="premium";memberAccess.rollover=tier==="rollover"||tier==="rollover member"}else setMemberProfile({email:user.email,membership_tier:"FREE",full_name:user.user_metadata?.full_name||user.user_metadata?.name||"Member"})}catch(error){console.error("Member profile loading error:",error);$("memberTier").textContent="FREE MEMBER";memberAccess={vip:false,rollover:false}}renderMembershipAccess();await loadPredictions();loadLiveScores()}
+ async function loadMemberData(user){if(!user)return;currentUser=user;$("memberEmail").textContent=user.email||"";$("memberName").textContent=user.user_metadata?.full_name||user.user_metadata?.name||"Member";$("memberTier").textContent="FREE MEMBER";memberAccess={vip:false,rollover:false};try{const {data,error}=await supabaseClient.from("member_profiles").select("*").eq("user_id",user.id).maybeSingle();if(error)throw error;if(data){setMemberProfile(data);const tier=String(data.membership_tier||data.tier||"Free").trim().toLowerCase();memberAccess.vip=tier==="vip"||tier==="vip member"||tier==="premium";memberAccess.rollover=tier==="rollover"||tier==="rollover member"}else setMemberProfile({email:user.email,membership_tier:"FREE",full_name:user.user_metadata?.full_name||user.user_metadata?.name||"Member"})}catch(error){console.error("Member profile loading error:",error);$("memberTier").textContent="FREE MEMBER";memberAccess={vip:false,rollover:false}}renderMembershipAccess();await loadPredictions();loadLiveScores()}
 function setMembershipAccess(type,approved){if(type==="VIP")memberAccess.vip=Boolean(approved);if(type==="ROLLOVER")memberAccess.rollover=Boolean(approved);renderMembershipAccess()}
 function renderMembershipAccess(){$("vipGate").classList.toggle("hidden",memberAccess.vip);$("vipMemberContent").classList.toggle("hidden",!memberAccess.vip);$("rollGate").classList.toggle("hidden",memberAccess.rollover);$("rollMemberContent").classList.toggle("hidden",!memberAccess.rollover);if(memberAccess.vip)renderPredictions("vip");if(memberAccess.rollover)renderPredictions("rollover")}
 function showPlans(type){if(type==="VIP")navigate("vipPayment");if(type==="ROLLOVER")navigate("rollPayment")}
@@ -516,14 +534,223 @@ function updateWinningStats(records){const settled=(records||[]).filter(record=>
 /* PAYMENT RECEIPT WHATSAPP */
 function receiptWhatsApp(type){const message="Hello, I have made payment for "+type+" membership on onlybosstips. Please find my payment receipt attached.";window.open("https://wa.me/2348032413495?text="+encodeURIComponent(message),"_blank","noopener,noreferrer")}
 
-/* NEVER MISS BOOKING CODES */
-function addBookingCode(containerId,title,code,platformLink){const container=$(containerId);if(!container)return;const card=document.createElement("div");card.className="code-box";const heading=document.createElement("h3");heading.textContent=title;const content=document.createElement("p");content.textContent=code;card.append(heading,content);const url=safeHttpUrl(platformLink);if(url){const link=document.createElement("a");link.href=url;link.target="_blank";link.rel="noopener noreferrer";link.textContent="OPEN BOOKING PLATFORM";link.style.cssText="display:inline-block;margin-top:12px;color:#75e5a5;font-size:10px;font-weight:800";card.append(link)}container.append(card)}
+/* NEVER MISS — LOAD PUBLISHED BOOKING GROUPS FROM SUPABASE */
+function createBookingStatus(value){
+ const normalized=String(value||"PENDING").trim().toUpperCase();
+ const allowed=["PENDING","WON","LOST","VOID"];
+ const status=allowed.includes(normalized)?normalized:"PENDING";
+ const element=document.createElement("span");
+ element.className="status "+status.toLowerCase();
+ const icon=document.createElement("span");
+ icon.className="status-icon";
+ const label=document.createElement("span");
+ if(status==="WON"){icon.textContent="✓";label.textContent="WON"}
+ else if(status==="LOST"){icon.textContent="×";label.textContent="LOST"}
+ else if(status==="VOID"){icon.textContent="–";label.textContent="VOID"}
+ else{icon.textContent="…";label.textContent="PENDING"}
+ element.append(icon,label);
+ return element;
+}
+
+function formatBookingPublishedDate(value){
+ if(!value)return"";
+ const date=new Date(value);
+ if(Number.isNaN(date.getTime()))return"";
+ return new Intl.DateTimeFormat("en-NG",{
+  timeZone:WAT,
+  day:"2-digit",
+  month:"short",
+  year:"numeric",
+  hour:"2-digit",
+  minute:"2-digit",
+  hour12:true
+ }).format(date)+" WAT";
+}
+
+function createBookingPlatformRow(platform,code){
+ const row=document.createElement("div");
+ row.className="booking-platform";
+
+ const info=document.createElement("div");
+ info.className="booking-platform-info";
+
+ const name=document.createElement("span");
+ name.className="booking-platform-name";
+ name.textContent=platform;
+
+ info.append(name);
+
+ const cleanCode=String(code??"").trim();
+
+ if(cleanCode){
+  const codeText=document.createElement("span");
+  codeText.className="booking-platform-code";
+  codeText.textContent=cleanCode;
+  info.append(codeText);
+
+  const button=document.createElement("button");
+  button.type="button";
+  button.className="booking-copy";
+  button.textContent="COPY";
+  button.addEventListener("click",()=>copyBookingCode(cleanCode,button));
+
+  row.append(info,button);
+ }else{
+  const unavailable=document.createElement("span");
+  unavailable.className="booking-unavailable";
+  unavailable.textContent="Not available for this platform";
+  info.append(unavailable);
+  row.append(info);
+ }
+
+ return row;
+}
+
+async function copyBookingCode(code,button){
+ const originalText="COPY";
+ button.disabled=true;
+ button.textContent="COPYING...";
+
+ try{
+  if(navigator.clipboard&&window.isSecureContext){
+   await navigator.clipboard.writeText(code);
+  }else{
+   const textarea=document.createElement("textarea");
+   textarea.value=code;
+   textarea.setAttribute("readonly","");
+   textarea.style.position="fixed";
+   textarea.style.opacity="0";
+   textarea.style.left="-9999px";
+   document.body.append(textarea);
+   textarea.select();
+   textarea.setSelectionRange(0,textarea.value.length);
+   const copied=document.execCommand("copy");
+   textarea.remove();
+   if(!copied)throw new Error("Copy command was not successful.");
+  }
+
+  button.textContent="COPIED!";
+  button.style.background="linear-gradient(135deg,#a6f0c2,#64d995)";
+  button.style.color="#052012";
+
+  setTimeout(()=>{
+   button.textContent=originalText;
+   button.style.background="";
+   button.style.color="";
+   button.disabled=false;
+  },1800);
+ }catch(error){
+  console.error("Booking code copy error:",error);
+  button.textContent="RETRY";
+  button.disabled=false;
+  alert("Unable to copy automatically. Please select and copy the booking code manually.");
+ }
+}
+
+function createBookingGroupCard(record){
+ const card=document.createElement("article");
+ card.className="booking-group";
+
+ const head=document.createElement("div");
+ head.className="booking-group-head";
+
+ const headingWrap=document.createElement("div");
+
+ const title=document.createElement("div");
+ title.className="booking-group-title";
+ title.textContent="NEVER MISS BOOKING GROUP";
+
+ const odds=document.createElement("div");
+ odds.className="booking-group-odds";
+
+ const totalOdds=Number(record.total_odds);
+ odds.textContent=Number.isFinite(totalOdds)?totalOdds.toFixed(2):String(record.total_odds||"—");
+
+ const published=document.createElement("div");
+ published.className="booking-group-meta";
+ const publishedDate=formatBookingPublishedDate(record.created_at);
+ published.textContent=publishedDate?"PUBLISHED: "+publishedDate:"PUBLISHED BOOKING GROUP";
+
+ headingWrap.append(title,odds,published);
+
+ const status=createBookingStatus(record.status);
+ head.append(headingWrap,status);
+
+ const platformRows=[
+  createBookingPlatformRow("SPORTYBET",record.sportybet_code),
+  createBookingPlatformRow("BET9JA",record.bet9ja_code),
+  createBookingPlatformRow("M-SPORT",record.msport_code)
+ ];
+
+ card.append(head,...platformRows);
+ return card;
+}
+
+function renderBookingGroups(records){
+ const container=$("bookingCodes");
+ if(!container)return;
+
+ container.innerHTML="";
+
+ if(!Array.isArray(records)||records.length===0){
+  const message=document.createElement("div");
+  message.className="booking-message";
+  message.textContent="No booking groups have been published yet. Please check back soon.";
+  container.append(message);
+  return;
+ }
+
+ records.forEach(record=>{
+  container.append(createBookingGroupCard(record));
+ });
+}
+
+async function loadBookingGroups(){
+ const container=$("bookingCodes");
+ if(!container)return;
+
+ if(!currentUser||!supabaseClient){
+  container.innerHTML='<div class="booking-message">Please log in to view published booking codes.</div>';
+  return;
+ }
+
+ const requestId=++bookingRequestNumber;
+ container.innerHTML='<div class="booking-message">Loading published booking groups...</div>';
+
+ try{
+  const {data,error}=await supabaseClient
+   .from("booking_code_groups")
+   .select("id,total_odds,sportybet_code,bet9ja_code,msport_code,status,created_at")
+   .order("created_at",{ascending:false});
+
+  if(requestId!==bookingRequestNumber)return;
+  if(error)throw error;
+
+  const records=Array.isArray(data)?data:[];
+  renderBookingGroups(records);
+
+ }catch(error){
+  if(requestId!==bookingRequestNumber)return;
+
+  console.error("Booking group loading error:",error);
+  container.innerHTML="";
+
+  const message=document.createElement("div");
+  message.className="booking-message booking-error";
+  message.textContent="Unable to load booking codes right now. Please refresh and try again.";
+  container.append(message);
+ }
+}
+
+$("refreshBookingGroups").addEventListener("click",()=>{
+ loadBookingGroups();
+});
 
 /* LOG OUT */
-async function logout(){if(!currentUser||!supabaseClient){showLoginScreen();return}if(!window.confirm("Are you sure you want to log out?"))return;try{const {error}=await supabaseClient.auth.signOut();if(error)throw error;currentUser=null;memberAccess={vip:false,rollover:false};predictionRecords={free:[],vip:[],rollover:[]};showLoginScreen()}catch(error){console.error("Logout error:",error);alert("Log out failed. Please try again.")}}
+async function logout(){if(!currentUser||!supabaseClient){showLoginScreen();return}if(!window.confirm("Are you sure you want to log out?"))return;try{const {error}=await supabaseClient.auth.signOut();if(error)throw error;currentUser=null;memberAccess={vip:false,rollover:false};predictionRecords={free:[],vip:[],rollover:[]};bookingRequestNumber++;$("bookingCodes").innerHTML='<div class="booking-message">Log in to view published booking codes.</div>';showLoginScreen()}catch(error){console.error("Logout error:",error);alert("Log out failed. Please try again.")}}
 
 /* AUTH SESSION AND PASSWORD RECOVERY */
-async function startApp(){try{initializeSupabase();const params=new URLSearchParams(window.location.search),authMode=params.get("auth");if(params.has("code")){const {error}=await supabaseClient.auth.exchangeCodeForSession(params.get("code"));if(error)throw error}if(authMode==="recovery"){const {data}=await supabaseClient.auth.getSession();if(data.session)showRecoveryForm()}const {data,error}=await supabaseClient.auth.getSession();if(error)throw error;if(data.session){currentUser=data.session.user;await loadMemberData(currentUser);if(authMode==="recovery")showRecoveryForm();else showWelcome()}else showLoginScreen();supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="PASSWORD_RECOVERY"){currentUser=session?.user||null;showRecoveryForm();return}if(event==="SIGNED_OUT"){currentUser=null;memberAccess={vip:false,rollover:false};showLoginScreen();return}if(event==="SIGNED_IN"&&session?.user){currentUser=session.user;await loadMemberData(session.user);showWelcome()}})}catch(error){console.error("Application initialization error:",error);showLoginScreen();setAuthMessage(error.message||"Unable to connect to the member service. Please refresh.")}}
+async function startApp(){try{initializeSupabase();const params=new URLSearchParams(window.location.search),authMode=params.get("auth");if(params.has("code")){const {error}=await supabaseClient.auth.exchangeCodeForSession(params.get("code"));if(error)throw error}if(authMode==="recovery"){const {data}=await supabaseClient.auth.getSession();if(data.session)showRecoveryForm()}const {data,error}=await supabaseClient.auth.getSession();if(error)throw error;if(data.session){currentUser=data.session.user;await loadMemberData(currentUser);if(authMode==="recovery")showRecoveryForm();else showWelcome()}else showLoginScreen();supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="PASSWORD_RECOVERY"){currentUser=session?.user||null;showRecoveryForm();return}if(event==="SIGNED_OUT"){currentUser=null;memberAccess={vip:false,rollover:false};bookingRequestNumber++;showLoginScreen();return}if(event==="SIGNED_IN"&&session?.user){currentUser=session.user;await loadMemberData(session.user);showWelcome()}})}catch(error){console.error("Application initialization error:",error);showLoginScreen();setAuthMessage(error.message||"Unable to connect to the member service. Please refresh.")}}
 
 /* INITIALIZE WEBSITE */
 buildLeagueSelector("free");
