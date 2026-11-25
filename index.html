@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -235,7 +234,7 @@ footer{text-align:center;color:#a8b6ac;font-size:9px;letter-spacing:.8px;padding
 </nav>
 
 <script>
-"use strict";
+ "use strict";
 const SUPABASE_URL="https://mumntekskdfexzupjvmc.supabase.co";
 const SUPABASE_KEY="sb_publishable_JEaf2iqIFEXMyTwBOWrmxQ_-_R3G11d";
 const WAT="Africa/Lagos",LIVE_SCORES_URL="https://onlybosstips-api.onrender.com/live-scores";
@@ -315,41 +314,95 @@ function buildLeagueSelector(type){const grid=$(type+"LeagueGrid");if(!grid)retu
 
 /* PREDICTION CATEGORY DETECTION — KEEP FREE, VIP AND ROLLOVER SEPARATE */
 function normalizeTierValue(value){const v=String(value??"").trim().toLowerCase().replace(/[_-]+/g," ");if(!v)return"";if(/\brollover\b/.test(v))return"rollover";if(/\b(vip|premium)\b/.test(v))return"vip";if(/\bfree\b/.test(v))return"free";return""}
-function recordTier(record){if(!record||typeof record!=="object")return"";const explicitFields=["prediction_tier","prediction_category","odds_type","odds_category","prediction_type","odds_plan","prediction_plan","category"];for(const field of explicitFields){const tier=normalizeTierValue(record[field]);if(tier)return tier}if(record.is_rollover===true||record.rollover===true)return"rollover";if(record.is_vip===true||record.vip===true||record.premium===true)return"vip";if(record.is_free===true||record.free_odds===true)return"free";const membershipFields=["membership_tier","tier","plan","access_level","member_type","package","membership","subscription_type","plan_type","type"];for(const field of membershipFields){const tier=normalizeTierValue(record[field]);if(tier)return tier}return""}
+function recordTier(record){
+ if(!record||typeof record!=="object")return"";
+ /*
+  * Admin saves the prediction category in the visibility field.
+  * Check it first so FREE, VIP and ROLLOVER records are identified
+  * exactly as they were categorised in the admin dashboard.
+  */
+ const explicitFields=[
+  "visibility",
+  "prediction_tier","prediction_category","odds_type","odds_category",
+  "prediction_type","odds_plan","prediction_plan","category"
+ ];
+ for(const field of explicitFields){const tier=normalizeTierValue(record[field]);if(tier)return tier}
+ if(record.is_rollover===true||record.rollover===true)return"rollover";
+ if(record.is_vip===true||record.vip===true||record.premium===true)return"vip";
+ if(record.is_free===true||record.free_odds===true)return"free";
+ const membershipFields=["membership_tier","tier","plan","access_level","member_type","package","membership","subscription_type","plan_type","type"];
+ for(const field of membershipFields){const tier=normalizeTierValue(record[field]);if(tier)return tier}
+ return""
+}
 function classifyPrediction(record){return recordTier(record)}
-async function loadPredictions(){if(!supabaseClient||!currentUser)return;try{const {data,error}=await supabaseClient.from("predictions").select("*");if(error)throw error;const rows=Array.isArray(data)?data:[];predictionRecords={free:rows.filter(r=>classifyPrediction(r)==="free"),vip:rows.filter(r=>classifyPrediction(r)==="vip"),rollover:rows.filter(r=>classifyPrediction(r)==="rollover")};renderPredictions("free");if(memberAccess.vip)renderPredictions("vip");if(memberAccess.rollover)renderPredictions("rollover");updateWinningStats(rows);const unclassified=rows.filter(r=>!classifyPrediction(r)).length;if(unclassified)console.warn(unclassified+" prediction record(s) were not displayed because their prediction category could not be identified. Check the category/tier field on those Supabase records.")}catch(error){console.error("Prediction loading error:",error);$("freePredictions").innerHTML='<div class="empty card">Unable to load predictions. Please refresh and try again.</div>';$("vipPredictions").innerHTML='<div class="empty card">Unable to load VIP predictions.</div>';$("rolloverPredictions").innerHTML='<div class="empty card">Unable to load Rollover predictions.</div>'}}
+async function loadPredictions(){
+ if(!supabaseClient||!currentUser)return;
+ try{
+  const {data,error}=await supabaseClient.from("predictions").select("*");
+  if(error)throw error;
+  const rows=Array.isArray(data)?data:[];
+  predictionRecords={
+   free:rows.filter(r=>classifyPrediction(r)==="free"),
+   vip:rows.filter(r=>classifyPrediction(r)==="vip"),
+   rollover:rows.filter(r=>classifyPrediction(r)==="rollover")
+  };
+  renderPredictions("free");
+  if(memberAccess.vip)renderPredictions("vip");
+  if(memberAccess.rollover)renderPredictions("rollover");
+  updateWinningStats(rows);
+  const unclassified=rows.filter(r=>!classifyPrediction(r)).length;
+  if(unclassified)console.warn(unclassified+" prediction record(s) were not displayed because their prediction category could not be identified. Check the visibility/category field on those Supabase records.");
+  const undated=rows.filter(r=>!predictionDateKey(r)).length;
+  if(undated)console.warn(undated+" prediction record(s) have no saved/posted date and cannot be placed under Yesterday, Today or Tomorrow. Check their created_at field in Supabase.");
+ }catch(error){
+  console.error("Prediction loading error:",error);
+  $("freePredictions").innerHTML='<div class="empty card">Unable to load predictions. Please refresh and try again.</div>';
+  $("vipPredictions").innerHTML='<div class="empty card">Unable to load VIP predictions.</div>';
+  $("rolloverPredictions").innerHTML='<div class="empty card">Unable to load Rollover predictions.</div>';
+ }
+}
 
-/* NIGERIA DATE MATCHING — USE POSTED DATE FIRST, FIXTURE DATE AS FALLBACK */
+/* NIGERIA DATE MATCHING — USE THE SAVED/POSTED DATE ONLY */
 function validDateKey(key){if(!/^\d{4}-\d{2}-\d{2}$/.test(String(key||"")))return"";const parts=key.split("-").map(Number);const date=new Date(Date.UTC(parts[0],parts[1]-1,parts[2],12));if(date.getUTCFullYear()!==parts[0]||date.getUTCMonth()!==parts[1]-1||date.getUTCDate()!==parts[2])return"";return key}
-function parsePredictionDateValue(raw){if(raw===undefined||raw===null||String(raw).trim()==="")return"";if(typeof raw==="number"){const numericDate=new Date(raw<100000000000?raw*1000:raw);return Number.isNaN(numericDate.getTime())?"":nigeriaDate(numericDate)}const value=String(raw).trim();const dateOnly=value.match(/^(\d{4})-(\d{2})-(\d{2})$/);if(dateOnly)return validDateKey(dateOnly[1]+"-"+dateOnly[2]+"-"+dateOnly[3]);if(/^\d{4}-\d{2}-\d{2}[T ]/.test(value)){const parsedDate=new Date(value);return Number.isNaN(parsedDate.getTime())?"":nigeriaDate(parsedDate)}const local=value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);if(local)return validDateKey(local[3]+"-"+String(local[2]).padStart(2,"0")+"-"+String(local[1]).padStart(2,"0"));const parsed=new Date(value);if(!Number.isNaN(parsed.getTime()))return nigeriaDate(parsed);return""}
+function parsePredictionDateValue(raw){
+ if(raw===undefined||raw===null||String(raw).trim()==="")return"";
+ if(typeof raw==="number"){const numericDate=new Date(raw<100000000000?raw*1000:raw);return Number.isNaN(numericDate.getTime())?"":nigeriaDate(numericDate)}
+ const value=String(raw).trim();
+ const dateOnly=value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ if(dateOnly)return validDateKey(dateOnly[1]+"-"+dateOnly[2]+"-"+dateOnly[3]);
+ if(/^\d{4}-\d{2}-\d{2}[T ]/.test(value)){
+  const parsedDate=new Date(value);
+  return Number.isNaN(parsedDate.getTime())?"":nigeriaDate(parsedDate)
+ }
+ const local=value.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})/);
+ if(local)return validDateKey(local[3]+"-"+String(local[2]).padStart(2,"0")+"-"+String(local[1]).padStart(2,"0"));
+ const parsed=new Date(value);
+ if(!Number.isNaN(parsed.getTime()))return nigeriaDate(parsed);
+ return""
+}
 function predictionDateKey(record){
  if(!record||typeof record!=="object")return"";
  /*
-  * A member's Yesterday/Today/Tomorrow prediction list is based on
-  * the date the prediction was posted. Timestamp values are converted
-  * to the Africa/Lagos calendar date before comparison.
+  * The prediction date is the date it was saved or posted.
+  * created_at is the admin dashboard's saved timestamp.
+  * Timestamp values are converted to Africa/Lagos calendar dates.
   */
  const postedDateFields=[
+  "created_at","createdAt",
   "published_at","publishedAt","posted_at","postedAt",
-  "created_at","createdAt","inserted_at","insertedAt",
-  "uploaded_at","uploadedAt","publication_date","publicationDate",
-  "post_date","postDate","upload_date","uploadDate"
+  "inserted_at","insertedAt","uploaded_at","uploadedAt",
+  "publication_date","publicationDate","post_date","postDate",
+  "upload_date","uploadDate"
  ];
- for(const field of postedDateFields){const key=parsePredictionDateValue(record[field]);if(key)return key}
+ for(const field of postedDateFields){
+  const key=parsePredictionDateValue(record[field]);
+  if(key)return key;
+ }
  /*
-  * Older records without a publication timestamp use their match or
-  * prediction date as a fallback, without changing the stored record.
+  * Do not use kickoff, fixture or match dates as a substitute.
+  * If a record has no saved/posted timestamp, its posting date
+  * cannot be established reliably, so it is not assigned to a day.
   */
- const matchDateFields=[
-  "prediction_date","predictionDate","match_date","matchDate",
-  "fixture_date","fixtureDate","game_date","gameDate",
-  "event_date","eventDate","scheduled_date","scheduledDate",
-  "kickoff_date","kickoffDate","match_day","matchDay",
-  "start_date","startDate","match_datetime","matchDateTime",
-  "event_datetime","eventDateTime","scheduled_at","scheduledAt",
-  "kickoff_at","kickoff","starts_at","start_time","date"
- ];
- for(const field of matchDateFields){const key=parsePredictionDateValue(record[field]);if(key)return key}
  return"";
 }
 function formatPredictionDate(record){const key=predictionDateKey(record);if(!key)return"";return new Intl.DateTimeFormat("en-GB",{timeZone:"UTC",weekday:"short",day:"2-digit",month:"short",year:"numeric"}).format(dateFromKey(key))}
@@ -357,15 +410,31 @@ function getPredictionStatus(record){const raw=String(record.status||record.resu
 function createPredictionStatus(value){const status=document.createElement("span");status.className="status";const icon=document.createElement("span");icon.className="status-icon";const label=document.createElement("span");if(value==="WON"){status.classList.add("won");icon.textContent="✓";label.textContent="WON"}else if(value==="LOST"){status.classList.add("lost");icon.textContent="×";label.textContent="LOST"}else if(value==="VOID"){status.classList.add("void");icon.textContent="–";label.textContent="VOID"}else if(value==="LIVE"){status.classList.add("pending");icon.textContent="•";label.textContent="LIVE"}else{status.classList.add("pending");icon.textContent="…";label.textContent="PENDING"}status.append(icon,label);return status}
 function leagueMatches(record,selected){if(selected==="All")return true;const value=String(record.league||record.competition||record.tournament||"").trim().toLowerCase();const wanted=selected.toLowerCase();if(wanted==="other leagues")return !leagueOptions.slice(1).some(item=>item.name.toLowerCase()!=="other leagues"&&value.includes(item.name.toLowerCase()));if(wanted==="uefa")return value.includes("uefa");return value.includes(wanted)}
 function renderPredictions(type){
- const containerId={free:"freePredictions",vip:"vipPredictions",rollover:"rolloverPredictions"}[type],container=$(containerId);if(!container)return;
+ const containerId={free:"freePredictions",vip:"vipPredictions",rollover:"rolloverPredictions"}[type],container=$(containerId);
+ if(!container)return;
  const selected=selectedLeagues[type],selectedDate=nigeriaDate(selectedCalendarDate);
- const records=(predictionRecords[type]||[]).filter(record=>classifyPrediction(record)===type&&leagueMatches(record,selected)&&predictionDateKey(record)===selectedDate);
+ const records=(predictionRecords[type]||[]).filter(record=>
+  classifyPrediction(record)===type&&
+  leagueMatches(record,selected)&&
+  predictionDateKey(record)===selectedDate
+ );
  const labelId={free:"freeSelectedLeague",vip:"vipSelectedLeague",rollover:"rollSelectedLeague"}[type];
  if($(labelId))$(labelId).textContent=selected==="All"?"ALL PREDICTIONS":selected.toUpperCase();
  if(type==="free"&&$("freePredictionCount"))$("freePredictionCount").textContent=records.length+" selections";
  container.innerHTML="";
  if(!records.length){container.innerHTML='<div class="empty">No predictions available in this category for the selected date.</div>';return}
- records.forEach(record=>{const card=document.createElement("div");card.className="prediction-card";const top=document.createElement("div");top.className="prediction-top";const league=document.createElement("span");league.textContent=record.league||record.competition||"Football";const date=document.createElement("span");date.textContent=formatPredictionDate(record);top.append(league,date);const title=document.createElement("h3");title.textContent=record.match||record.fixture||record.match_name||((record.home_team||"Home")+" vs "+(record.away_team||"Away"));const bottom=document.createElement("div");bottom.className="prediction-bottom";const pick=document.createElement("span");pick.className="prediction-pick";pick.textContent="PICK: "+(record.prediction||record.selection||record.pick||"");bottom.append(pick,createPredictionStatus(getPredictionStatus(record)));card.append(top,title,bottom);container.append(card)})
+ records.forEach(record=>{
+  const card=document.createElement("div");card.className="prediction-card";
+  const top=document.createElement("div");top.className="prediction-top";
+  const league=document.createElement("span");league.textContent=record.league||record.competition||"Football";
+  const date=document.createElement("span");date.textContent=formatPredictionDate(record);
+  top.append(league,date);
+  const title=document.createElement("h3");title.textContent=record.match||record.fixture||record.match_name||((record.home_team||"Home")+" vs "+(record.away_team||"Away"));
+  const bottom=document.createElement("div");bottom.className="prediction-bottom";
+  const pick=document.createElement("span");pick.className="prediction-pick";pick.textContent="PICK: "+(record.prediction||record.selection||record.pick||"");
+  bottom.append(pick,createPredictionStatus(getPredictionStatus(record)));
+  card.append(top,title,bottom);container.append(card);
+ });
 }
 function setPredictionRecords(type,records){if(!["free","vip","rollover"].includes(type))return;predictionRecords[type]=Array.isArray(records)?records.filter(record=>classifyPrediction(record)===type):[];renderPredictions(type)}
 
