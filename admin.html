@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -573,6 +572,28 @@ function initializeSupabase(){
 
 /* NIGERIA DATE HELPERS */
 
+function nigeriaDateKey(value){
+ if(!value)return null;
+
+ const raw=String(value).trim();
+
+ // Preserve an existing date-only database value.
+ if(/^\d{4}-\d{2}-\d{2}$/.test(raw))return raw;
+
+ const parsed=new Date(raw);
+ if(Number.isNaN(parsed.getTime()))return null;
+
+ const parts=new Intl.DateTimeFormat("en-CA",{
+  timeZone:"Africa/Lagos",
+  year:"numeric",
+  month:"2-digit",
+  day:"2-digit"
+ }).formatToParts(parsed);
+
+ const get=type=>parts.find(p=>p.type===type)?.value;
+ return get("year")+"-"+get("month")+"-"+get("day");
+}
+
 function nigeriaToday(){
  const parts=new Intl.DateTimeFormat("en-CA",{
   timeZone:"Africa/Lagos",year:"numeric",month:"2-digit",day:"2-digit"
@@ -590,27 +611,36 @@ function nigeriaYesterday(){
   String(date.getUTCDate()).padStart(2,"0");
 }
 
-function kickoffDateOnly(value){
- if(!value)return null;
- const match=String(value).match(/^(\d{4}-\d{2}-\d{2})/);
- return match?match[1]:null;
-}
+/*
+  KEEP PREDICTIONS BY THEIR POSTING DATE.
 
-/* KEEP YESTERDAY, TODAY AND TOMORROW */
+  Yesterday, today and tomorrow are retained.
+  Predictions posted before yesterday are deleted.
+  Kickoff dates are deliberately not used for cleanup.
+  Records without a valid created_at date are preserved safely.
+*/
 
 async function cleanupExpiredPredictions(){
- const{data,error}=await db.from("predictions").select("id,kickoff");
+ const{data,error}=await db.from("predictions").select("id,created_at");
  if(error)throw error;
+
  const yesterday=nigeriaYesterday();
+
  const expired=(data||[])
-  .filter(p=>{
-   const matchDate=kickoffDateOnly(p.kickoff);
-   return matchDate&&matchDate<yesterday;
-  }).map(p=>p.id);
+  .filter(prediction=>{
+   const postedDate=nigeriaDateKey(prediction.created_at);
+   return postedDate&&postedDate<yesterday;
+  })
+  .map(prediction=>prediction.id);
+
  if(!expired.length)return 0;
- const{error:deleteError}=await db.from("predictions").delete().in("id",expired);
+
+ const{error:deleteError}=await db.from("predictions")
+  .delete().in("id",expired);
+
  if(deleteError)throw deleteError;
- console.log(expired.length+" expired prediction(s) deleted.");
+
+ console.log(expired.length+" prediction(s) older than yesterday automatically deleted.");
  return expired.length;
 }
 
@@ -876,8 +906,7 @@ async function searchAndLinkPrediction(prediction,showMessages=true){
   return{linked:false,error:error.message};
  }
 }
-
-/* PUBLISH PREDICTION */
+ /* PUBLISH PREDICTION */
 
 async function savePrediction(){
  if(!db||!currentUser)return;
@@ -921,7 +950,10 @@ async function savePrediction(){
   market_selection:selection||null,
   market_line:line||null,
   market_team:team||null,
-  player_name:player||null
+  player_name:player||null,
+
+  // Record the actual publishing time, not the match kickoff time.
+  created_at:new Date().toISOString()
  };
 
  const selectionRequired=!isSpecial;
@@ -1008,6 +1040,17 @@ async function loadPredictions(){
   const date=document.createElement("p");
   date.textContent="Kickoff: "+(p.kickoff||"Not available");
   item.appendChild(date);
+
+  if(p.created_at){
+   const posted=document.createElement("p");
+   const postedDate=new Date(p.created_at);
+   posted.textContent="Posted: "+(
+    Number.isNaN(postedDate.getTime())?
+    "Date unavailable":
+    postedDate.toLocaleString("en-GB",{timeZone:"Africa/Lagos"})
+   )+" WAT";
+   item.appendChild(posted);
+  }
 
   if(p.market_category){
    const market=document.createElement("p");
