@@ -1,3 +1,4 @@
+
 const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
 
@@ -48,9 +49,12 @@ if (supabaseUrl && supabaseSecretKey) {
 // DATABASE COLUMN COMPATIBILITY
 // =====================================
 
+// These names must match the actual Supabase column names.
+// The aliases on the left are used internally by this backend.
+
 const DB_COLUMNS = {
   kickoff: "Kickoff",
-  api_fixture_id: "api_fixture_id",
+  api_fixture_id: "API fixture id",
   market_category: "Market caregory",
   market_type: "Market type",
   market_selection: "Market selection",
@@ -58,7 +62,7 @@ const DB_COLUMNS = {
   market_team: "Market team",
   player_name: "Player name",
   player_id: "Player id",
-  fixture_status: "fixture_status",
+  fixture_status: "Fixture status",
   home_score: "Home score",
   away_score: "Away score",
   halftime_home_score: "Halftime home score",
@@ -117,7 +121,8 @@ function databaseQuery(query) {
 
           if (
             args[0] === "status" &&
-            args[1] === "pending"
+            typeof args[1] === "string" &&
+            args[1].toLowerCase() === "pending"
           ) {
             args[1] = "Pending";
           }
@@ -154,6 +159,10 @@ function databaseQuery(query) {
 }
 
 function dbFrom(table) {
+  if (!supabase) {
+    throw new Error("Supabase is not configured.");
+  }
+
   return databaseQuery(supabase.from(table));
 }
 
@@ -327,6 +336,34 @@ function shiftDate(dateString, days) {
 
   date.setUTCDate(date.getUTCDate() + days);
   return date.toISOString().slice(0, 10);
+}
+
+function getNigeriaDate(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Africa/Lagos",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(date);
+
+  const values = {};
+
+  for (const part of parts) {
+    if (part.type !== "literal") {
+      values[part.type] = part.value;
+    }
+  }
+
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+function isValidDateKey(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+
+  const date = new Date(`${value}T12:00:00.000Z`);
+
+  return Number.isFinite(date.getTime()) &&
+    date.toISOString().slice(0, 10) === value;
 }
 
 function getBasketballTeams(game) {
@@ -1103,6 +1140,7 @@ function settleBasketballSpread(
   return adjusted > opponentScore ? "won" : "lost";
 }
 
+ 
 // =====================================
 // ADMIN AUTHENTICATION
 // =====================================
@@ -1149,8 +1187,9 @@ async function requireAdmin(req, res, next) {
       });
     }
 
+    // Confirmed Supabase table name: admins
     const { data: admin, error: adminError } = await supabase
-      .from("admin")
+      .from("admins")
       .select("user_id")
       .eq("user_id", userData.user.id)
       .maybeSingle();
@@ -1239,13 +1278,15 @@ app.get("/health/database", async (req, res) => {
 
 app.get("/health/football", async (req, res) => {
   try {
-    const date = new Date().toISOString().slice(0, 10);
-    const data = await sportApiRequest(`/fixtures/date/${date}`);
+    const date = getNigeriaDate();
+    const data = await sportApiRequest(
+      `/fixtures/date/${encodeURIComponent(date)}`
+    );
 
     return res.json({
       success: true,
       message: "ONLYBOSSTIPS is connected to SportAPI football.",
-      fixtures_returned: Array.isArray(data.data) ? data.data.length : 0
+      fixtures_returned: getSportApiArray(data).length
     });
 
   } catch (error) {
@@ -1261,15 +1302,15 @@ app.get("/health/football", async (req, res) => {
 
 app.get("/health/basketball", async (req, res) => {
   try {
-    const date = new Date().toISOString().slice(0, 10);
+    const date = getNigeriaDate();
     const data = await sportApiRequest(
-      `/basketball/games/date/${date}?tz=UTC`
+      `/basketball/games/date/${encodeURIComponent(date)}?tz=UTC`
     );
 
     return res.json({
       success: true,
       message: "ONLYBOSSTIPS is connected to SportAPI basketball.",
-      games_returned: Array.isArray(data.data) ? data.data.length : 0
+      games_returned: getSportApiArray(data).length
     });
 
   } catch (error) {
@@ -1288,12 +1329,7 @@ app.get("/health/basketball", async (req, res) => {
 // =====================================
 
 const LIVE_SCORES_CACHE_MS = 5 * 60 * 1000;
-
-let liveScoresCache = {
-  data: null,
-  expiresAt: 0,
-  pending: null
-};
+const liveScoresCache = new Map();
 
 function getSportApiArray(response) {
   if (Array.isArray(response?.data)) return response.data;
@@ -1301,25 +1337,6 @@ function getSportApiArray(response) {
   if (Array.isArray(response?.games)) return response.games;
   if (Array.isArray(response?.fixtures)) return response.fixtures;
   return [];
-}
-
-function getFootballDate() {
-  const parts = new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Europe/Berlin",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-  }).formatToParts(new Date());
-
-  const values = {};
-
-  for (const part of parts) {
-    if (part.type !== "literal") {
-      values[part.type] = part.value;
-    }
-  }
-
-  return `${values.year}-${values.month}-${values.day}`;
 }
 
 function normalizeFootballLiveMatch(fixture) {
@@ -1357,28 +1374,47 @@ function normalizeBasketballLiveMatch(game) {
     status: game.status || "LIVE",
     period: game.period || game.current_period || null,
     clock: game.clock || game.time_remaining || null,
-    kickoff: game.start || game.date || game.datetime || null,
+    kickoff: getBasketballStart(game),
     home_logo: game.home?.logo_url || game.home?.logo || null,
     away_logo: game.away?.logo_url || game.away?.logo || null
   };
 }
 
-async function buildLiveScoresResponse() {
-  const footballDate = getFootballDate();
-  const basketballDate = new Date().toISOString().slice(0, 10);
+function isFootballLiveStatus(status) {
+  return [
+    "LIVE", "1H", "2H", "HT", "ET", "P",
+    "INPLAY", "IN PLAY", "SUSPENDED"
+  ].includes(String(status || "").trim().toUpperCase());
+}
+
+function isBasketballLiveStatus(game) {
+  const status = String(game?.status || "").trim().toUpperCase();
+
+  return game?.live === true ||
+    [
+      "Q1", "Q2", "Q3", "Q4", "H1", "H2",
+      "HT", "OT", "OVERTIME", "LIVE"
+    ].includes(status);
+}
+
+async function buildLiveScoresResponse(date) {
+  const today = getNigeriaDate();
+  const isToday = date === today;
 
   const [
     footballResult,
-    basketballLiveResult,
-    basketballDateResult
+    basketballDateResult,
+    basketballLiveResult
   ] = await Promise.allSettled([
     sportApiRequest(
-      `/fixtures/date/${encodeURIComponent(footballDate)}`
+      `/fixtures/date/${encodeURIComponent(date)}`
     ),
-    sportApiRequest("/basketball/games/live"),
     sportApiRequest(
-      `/basketball/games/date/${encodeURIComponent(basketballDate)}?tz=UTC`
-    )
+      `/basketball/games/date/${encodeURIComponent(date)}?tz=UTC`
+    ),
+    isToday
+      ? sportApiRequest("/basketball/games/live")
+      : Promise.resolve(null)
   ]);
 
   const warnings = [];
@@ -1391,17 +1427,8 @@ async function buildLiveScoresResponse() {
   if (footballResult.status === "fulfilled") {
     const fixtures = getSportApiArray(footballResult.value);
 
-    const liveStatuses = [
-      "LIVE", "1H", "2H", "HT", "ET", "P",
-      "INPLAY", "IN PLAY", "SUSPENDED"
-    ];
-
     footballLive = fixtures
-      .filter(fixture =>
-        liveStatuses.includes(
-          String(fixture.status || "").trim().toUpperCase()
-        )
-      )
+      .filter(fixture => isFootballLiveStatus(fixture.status))
       .map(normalizeFootballLiveMatch);
 
     footballFinished = fixtures
@@ -1417,30 +1444,52 @@ async function buildLiveScoresResponse() {
     );
   }
 
-  let basketballLiveAvailable = false;
-  let basketballFinishedAvailable = false;
-
-  if (basketballLiveResult.status === "fulfilled") {
-    basketballLiveAvailable = true;
-
-    const games = getSportApiArray(basketballLiveResult.value);
+  if (basketballDateResult.status === "fulfilled") {
+    const games = getSportApiArray(basketballDateResult.value);
 
     basketballLive = games
-      .filter(game => {
-        const status = String(game.status || "").trim().toUpperCase();
+      .filter(isBasketballLiveStatus)
+      .map(normalizeBasketballLiveMatch);
 
-        return game.live === true ||
-          [
-            "Q1", "Q2", "Q3", "Q4", "H1", "H2", "HT",
-            "OT", "OVERTIME", "LIVE"
-          ].includes(status);
-      })
+    basketballFinished = games
+      .filter(game => basketballFinalStatus(game.status))
       .map(normalizeBasketballLiveMatch);
 
   } else {
-    warnings.push(
-      "Live basketball games are temporarily unavailable."
+    warnings.push("Basketball results are temporarily unavailable.");
+
+    console.error(
+      "Basketball date lookup error:",
+      basketballDateResult.reason?.message
     );
+  }
+
+  // The live endpoint is only used for today's selected date.
+  // This prevents today's live games appearing on yesterday's results.
+  if (
+    isToday &&
+    basketballLiveResult.status === "fulfilled" &&
+    basketballLiveResult.value
+  ) {
+    const liveGames = getSportApiArray(basketballLiveResult.value);
+
+    const existingIds = new Set(
+      basketballLive.map(game => String(game.id))
+    );
+
+    for (const game of liveGames) {
+      if (
+        isBasketballLiveStatus(game) &&
+        !existingIds.has(String(game.id))
+      ) {
+        basketballLive.push(normalizeBasketballLiveMatch(game));
+      }
+    }
+  } else if (
+    isToday &&
+    basketballLiveResult.status === "rejected"
+  ) {
+    warnings.push("Live basketball games are temporarily unavailable.");
 
     console.error(
       "Live basketball scores error:",
@@ -1448,34 +1497,14 @@ async function buildLiveScoresResponse() {
     );
   }
 
-  if (basketballDateResult.status === "fulfilled") {
-    basketballFinishedAvailable = true;
-
-    const games = getSportApiArray(basketballDateResult.value);
-
-    basketballFinished = games
-      .filter(game => basketballFinalStatus(game.status))
-      .map(normalizeBasketballLiveMatch);
-
-  } else {
-    warnings.push(
-      "Basketball results are temporarily unavailable."
-    );
-
-    console.error(
-      "Basketball results error:",
-      basketballDateResult.reason?.message
-    );
-  }
-
   const footballAvailable = footballResult.status === "fulfilled";
-
-  const basketballAvailable =
-    basketballLiveAvailable || basketballFinishedAvailable;
+  const basketballAvailable = basketballDateResult.status === "fulfilled";
 
   return {
     success: footballAvailable || basketballAvailable,
     provider: "SportAPI",
+    date,
+    timezone: "Africa/Lagos",
     updated_at: new Date().toISOString(),
 
     football: {
@@ -1494,31 +1523,50 @@ async function buildLiveScoresResponse() {
 
 app.get("/live-scores", async (req, res) => {
   try {
-    if (
-      liveScoresCache.data &&
-      Date.now() < liveScoresCache.expiresAt
-    ) {
+    const requestedDate = String(
+      req.query.date || getNigeriaDate()
+    ).trim();
+
+    if (!isValidDateKey(requestedDate)) {
+      return res.status(400).json({
+        success: false,
+        message: "Date must use YYYY-MM-DD format."
+      });
+    }
+
+    const cached = liveScoresCache.get(requestedDate);
+
+    if (cached && Date.now() < cached.expiresAt) {
       return res.json({
-        ...liveScoresCache.data,
+        ...cached.data,
         cached: true
       });
     }
 
-    if (!liveScoresCache.pending) {
-      liveScoresCache.pending = buildLiveScoresResponse()
-        .then(data => {
-          liveScoresCache.data = data;
-          liveScoresCache.expiresAt =
-            Date.now() + LIVE_SCORES_CACHE_MS;
+    if (!cached || !cached.pending) {
+      const entry = {
+        data: cached?.data || null,
+        expiresAt: 0,
+        pending: null
+      };
 
+      entry.pending = buildLiveScoresResponse(requestedDate)
+        .then(data => {
+          entry.data = data;
+          entry.expiresAt = Date.now() + LIVE_SCORES_CACHE_MS;
           return data;
         })
         .finally(() => {
-          liveScoresCache.pending = null;
+          entry.pending = null;
         });
+
+      liveScoresCache.set(requestedDate, entry);
     }
 
-    const data = await liveScoresCache.pending;
+    const entry = liveScoresCache.get(requestedDate);
+    const data = entry.data && Date.now() < entry.expiresAt
+      ? entry.data
+      : await entry.pending;
 
     if (!data.success) {
       return res.status(502).json(data);
@@ -1556,7 +1604,7 @@ app.get("/fixtures/search", async (req, res) => {
       });
     }
 
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    if (!isValidDateKey(date)) {
       return res.status(400).json({
         success: false,
         message: "Date must use YYYY-MM-DD format."
@@ -1567,7 +1615,7 @@ app.get("/fixtures/search", async (req, res) => {
       `/fixtures/date/${encodeURIComponent(date)}`
     );
 
-    const fixtures = Array.isArray(data.data) ? data.data : [];
+    const fixtures = getSportApiArray(data);
 
     const matches = fixtures.filter(item =>
       teamMatches(item.home_team, home) &&
@@ -1628,7 +1676,7 @@ app.get("/basketball/games/search", async (req, res) => {
       });
     }
 
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    if (!isValidDateKey(date)) {
       return res.status(400).json({
         success: false,
         message: "Date must use YYYY-MM-DD format."
@@ -1639,7 +1687,7 @@ app.get("/basketball/games/search", async (req, res) => {
       `/basketball/games/date/${encodeURIComponent(date)}?tz=UTC`
     );
 
-    const games = Array.isArray(data.data) ? data.data : [];
+    const games = getSportApiArray(data);
 
     const matches = games.filter(game =>
       teamMatches(game?.home?.name, home) &&
@@ -1664,6 +1712,7 @@ app.get("/basketball/games/search", async (req, res) => {
     });
   }
 });
+
 // =====================================
 // SECURE ADMIN FOOTBALL FIXTURE LINKING
 // =====================================
@@ -1680,10 +1729,11 @@ app.post("/predictions/link-fixture", requireAdmin, async (req, res) => {
       });
     }
 
-    const { data: prediction, error: predictionError } = await dbFrom("predictions")
-      .select("*")
-      .eq("id", predictionId)
-      .maybeSingle();
+    const { data: prediction, error: predictionError } =
+      await dbFrom("predictions")
+        .select("*")
+        .eq("id", predictionId)
+        .maybeSingle();
 
     if (predictionError) throw predictionError;
 
@@ -1747,18 +1797,19 @@ app.post("/predictions/link-fixture", requireAdmin, async (req, res) => {
       });
     }
 
-    const { data: linked, error: updateError } = await dbFrom("predictions")
-      .update({
-        api_fixture_id: fixture.id,
-        fixture_status: fixture.status,
-        tracking_updated_at: new Date().toISOString()
-      })
-      .eq("id", predictionId)
-      .eq("status", "Pending")
-      .is("api_fixture_id", null)
-      .is("api_basketball_game_id", null)
-      .select()
-      .single();
+    const { data: linked, error: updateError } =
+      await dbFrom("predictions")
+        .update({
+          api_fixture_id: fixture.id,
+          fixture_status: fixture.status,
+          tracking_updated_at: new Date().toISOString()
+        })
+        .eq("id", predictionId)
+        .eq("status", "Pending")
+        .is("api_fixture_id", null)
+        .is("api_basketball_game_id", null)
+        .select()
+        .single();
 
     if (updateError) throw updateError;
 
@@ -1795,10 +1846,11 @@ app.post("/predictions/link-basketball-game", requireAdmin, async (req, res) => 
       });
     }
 
-    const { data: prediction, error: predictionError } = await dbFrom("predictions")
-      .select("*")
-      .eq("id", predictionId)
-      .maybeSingle();
+    const { data: prediction, error: predictionError } =
+      await dbFrom("predictions")
+        .select("*")
+        .eq("id", predictionId)
+        .maybeSingle();
 
     if (predictionError) throw predictionError;
 
@@ -1862,18 +1914,19 @@ app.post("/predictions/link-basketball-game", requireAdmin, async (req, res) => 
       });
     }
 
-    const { data: linked, error: updateError } = await dbFrom("predictions")
-      .update({
-        api_basketball_game_id: String(game.id),
-        fixture_status: game.status || null,
-        tracking_updated_at: new Date().toISOString()
-      })
-      .eq("id", predictionId)
-      .eq("status", "Pending")
-      .is("api_fixture_id", null)
-      .is("api_basketball_game_id", null)
-      .select()
-      .single();
+    const { data: linked, error: updateError } =
+      await dbFrom("predictions")
+        .update({
+          api_basketball_game_id: String(game.id),
+          fixture_status: game.status || null,
+          tracking_updated_at: new Date().toISOString()
+        })
+        .eq("id", predictionId)
+        .eq("status", "Pending")
+        .is("api_fixture_id", null)
+        .is("api_basketball_game_id", null)
+        .select()
+        .single();
 
     if (updateError) throw updateError;
 
@@ -1971,7 +2024,7 @@ async function autoLinkUnlinkedPredictions() {
         footballCache.set(
           date,
           sportApiRequest(`/fixtures/date/${encodeURIComponent(date)}`)
-            .then(data => Array.isArray(data.data) ? data.data : [])
+            .then(getSportApiArray)
         );
       }
 
@@ -1984,7 +2037,7 @@ async function autoLinkUnlinkedPredictions() {
           date,
           sportApiRequest(
             `/basketball/games/date/${encodeURIComponent(date)}?tz=UTC`
-          ).then(data => Array.isArray(data.data) ? data.data : [])
+          ).then(getSportApiArray)
         );
       }
 
@@ -2075,8 +2128,7 @@ async function autoLinkUnlinkedPredictions() {
 
         const matchingBasketball = basketballGames.filter(game => {
           const teams = getBasketballTeams(game);
-          const start = getBasketballStart(game);
-          const gameTime = new Date(start).getTime();
+          const gameTime = new Date(getBasketballStart(game)).getTime();
 
           if (
             !teamMatches(prediction.home_team, teams.home) ||
@@ -2120,17 +2172,18 @@ async function autoLinkUnlinkedPredictions() {
         if (matchingFootball.length === 1) {
           const fixture = matchingFootball[0];
 
-          const { data: linked, error: linkError } = await dbFrom("predictions")
-            .update({
-              api_fixture_id: fixture.id,
-              fixture_status: fixture.status || null,
-              tracking_updated_at: new Date().toISOString()
-            })
-            .eq("id", prediction.id)
-            .eq("status", "Pending")
-            .is("api_fixture_id", null)
-            .is("api_basketball_game_id", null)
-            .select("id");
+          const { data: linked, error: linkError } =
+            await dbFrom("predictions")
+              .update({
+                api_fixture_id: fixture.id,
+                fixture_status: fixture.status || null,
+                tracking_updated_at: new Date().toISOString()
+              })
+              .eq("id", prediction.id)
+              .eq("status", "Pending")
+              .is("api_fixture_id", null)
+              .is("api_basketball_game_id", null)
+              .select("id");
 
           if (linkError) {
             console.error(
@@ -2152,17 +2205,18 @@ async function autoLinkUnlinkedPredictions() {
         if (matchingBasketball.length === 1) {
           const game = matchingBasketball[0];
 
-          const { data: linked, error: linkError } = await dbFrom("predictions")
-            .update({
-              api_basketball_game_id: String(game.id),
-              fixture_status: game.status || null,
-              tracking_updated_at: new Date().toISOString()
-            })
-            .eq("id", prediction.id)
-            .eq("status", "Pending")
-            .is("api_fixture_id", null)
-            .is("api_basketball_game_id", null)
-            .select("id");
+          const { data: linked, error: linkError } =
+            await dbFrom("predictions")
+              .update({
+                api_basketball_game_id: String(game.id),
+                fixture_status: game.status || null,
+                tracking_updated_at: new Date().toISOString()
+              })
+              .eq("id", prediction.id)
+              .eq("status", "Pending")
+              .is("api_fixture_id", null)
+              .is("api_basketball_game_id", null)
+              .select("id");
 
           if (linkError) {
             console.error(
@@ -2422,9 +2476,7 @@ async function trackFootballPredictions() {
         `/fixtures/date/${encodeURIComponent(date)}`
       );
 
-      fixtures = Array.isArray(dailyData.data)
-        ? dailyData.data
-        : [];
+      fixtures = getSportApiArray(dailyData);
 
     } catch (error) {
       console.error(
@@ -2673,19 +2725,20 @@ async function trackBasketballPredictions() {
       ? `Automatically settled VOID: basketball market resulted in a push. Final score ${scoreText}.`
       : `Automatically settled ${outcome.toUpperCase()} using SportAPI basketball results. Final score ${scoreText}.`;
 
-    const { data: settled, error: settleError } = await dbFrom("predictions")
-      .update({
-        ...update,
-        status: outcome,
-        result: resultText
-      })
-      .eq("id", prediction.id)
-      .eq("status", "Pending")
-      .eq(
-        "api_basketball_game_id",
-        String(prediction.api_basketball_game_id)
-      )
-      .select("id");
+    const { data: settled, error: settleError } =
+      await dbFrom("predictions")
+        .update({
+          ...update,
+          status: outcome,
+          result: resultText
+        })
+        .eq("id", prediction.id)
+        .eq("status", "Pending")
+        .eq(
+          "api_basketball_game_id",
+          String(prediction.api_basketball_game_id)
+        )
+        .select("id");
 
     if (settleError) {
       console.error(
@@ -2711,9 +2764,7 @@ async function trackBasketballPredictions() {
         `/basketball/games/date/${encodeURIComponent(date)}?tz=UTC`
       );
 
-      games = Array.isArray(response.data)
-        ? response.data
-        : [];
+      games = getSportApiArray(response);
 
     } catch (error) {
       console.error(
@@ -2828,7 +2879,8 @@ app.listen(PORT, () => {
   console.log("Football provider: SportAPI");
   console.log("Basketball provider: SportAPI");
   console.log("Live scores endpoint: ENABLED");
-  console.log("Live scores cache: 5 MINUTES");
+  console.log("Live scores cache: 5 MINUTES PER DATE");
+  console.log("Live score timezone: Africa/Lagos");
   console.log("Football automatic settlement: ENABLED");
   console.log("Basketball automatic settlement: ENABLED");
   console.log("Automatic football fixture matching: ENABLED");
@@ -2843,6 +2895,9 @@ app.listen(PORT, () => {
   console.log("Unsupported markets: REMAIN PENDING");
 
   console.log("Supabase column compatibility: ENABLED");
+  console.log("Admin table: admins");
+  console.log("API fixture column: API fixture id");
+  console.log("Fixture status column: Fixture status");
   console.log("Status capitalization: Pending/Won/Lost/Void");
 
   if (!sportApiKey) {
