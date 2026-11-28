@@ -21,7 +21,6 @@ button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus
 main{width:100%;max-width:960px;margin:auto;padding:16px 13px 30px;position:relative;z-index:0}
 .screen{display:none;animation:appear .22s ease}.screen.active{display:block}
 @keyframes appear{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
-/* General page wrappers remain transparent to show the stadium watermark. */
 .card{background:transparent;border:0;border-radius:0;padding:0;margin-bottom:13px;box-shadow:none;backdrop-filter:none}
 .section-title{font-size:12px;font-weight:900;letter-spacing:1px;margin:20px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:9px}.section-title:before{content:"";width:3px;height:15px;border-radius:5px;background:var(--green);box-shadow:0 0 10px #19c77965;margin-right:1px;flex-shrink:0}.section-title small{font-size:9px;color:var(--muted);font-weight:600;letter-spacing:.2px}
 .page-heading{margin:4px 0 15px}.page-heading h1{font-size:21px;letter-spacing:.3px;margin:0 0 5px;font-weight:900}.page-heading p{font-size:11px;color:var(--muted);margin:0;line-height:1.6}
@@ -49,6 +48,18 @@ main{width:100%;max-width:960px;margin:auto;padding:16px 13px 30px;position:rela
 .profile{display:flex;align-items:center;gap:12px;background:rgba(13,29,19,.22);border:0;border-bottom:1px solid rgba(91,229,160,.22);border-radius:0;padding:12px 5px;margin-bottom:16px;box-shadow:none;backdrop-filter:none}
 .avatar-wrap{position:relative;flex-shrink:0}.avatar{width:49px;height:49px;border-radius:50%;background:#fff;color:#77837b;display:grid;place-items:center;border:2px solid #9be8b9;overflow:hidden}.avatar svg{width:26px;height:26px;stroke:#8c9990}.avatar img{width:100%;height:100%;object-fit:cover;display:block}.online-dot{position:absolute;right:0;bottom:0;width:12px;height:12px;border-radius:50%;background:#19c779;border:2px solid #14271d}
 .profile-info{min-width:0;display:flex;flex-direction:column;gap:4px}.profile h2{font-size:12px;margin:0;font-weight:700;color:#e9f5ed;overflow-wrap:anywhere}.profile p{font-size:10px;color:#a6f0c2;margin:0;font-weight:900;letter-spacing:.7px}.tier{display:none}
+
+/* MEMBER ANNOUNCEMENTS */
+.announcement-panel{position:relative;margin:0 0 17px;padding:12px 13px;background:linear-gradient(135deg,rgba(8,27,16,.82),rgba(5,16,10,.78));border:1px solid rgba(67,137,91,.55);border-left:3px solid var(--green);border-radius:10px;box-shadow:0 7px 20px #0003}
+.announcement-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.announcement-heading strong{font-size:10px;font-weight:900;letter-spacing:1px;color:#bdf3d0}
+.announcement-heading span{font-size:8px;font-weight:900;letter-spacing:.7px;color:#07190e;background:#75e5a5;border-radius:20px;padding:4px 7px}
+.announcement-item{padding:9px 0;border-top:1px solid rgba(166,240,194,.14)}
+.announcement-item:first-child{border-top:0;padding-top:2px}
+.announcement-message{font-size:11px;line-height:1.65;color:#eff9f2;overflow-wrap:anywhere;white-space:pre-wrap}
+.announcement-date{font-size:8px;color:#9fb6a6;margin-top:6px;letter-spacing:.3px}
+.announcement-empty{font-size:10px;color:#aebfb2;line-height:1.6}
+.announcement-loading{font-size:9px;color:#aebfb2}
 
 /* SPORTS NEWS — SKY SPORTS ONLY */
 .news-carousel{position:relative;overflow:hidden;padding:0;background:#0b1510;min-height:340px;border:1px solid #31513b;border-radius:13px;box-shadow:0 14px 35px #0006}
@@ -103,8 +114,14 @@ main{width:100%;max-width:960px;margin:auto;padding:16px 13px 30px;position:rela
 .prediction-card{background:rgba(5,17,9,.24);border:0;border-bottom:1px solid rgba(166,240,194,.24);border-radius:0;padding:12px 5px;margin-bottom:5px;box-shadow:none;backdrop-filter:none}
 .prediction-top{display:flex;justify-content:space-between;gap:8px;font-size:9px;color:#b8c7bd;font-weight:700}.prediction-card h3{font-size:12px;line-height:1.4;margin:9px 0;font-weight:900;color:#f0f7f2}
 .prediction-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:9px;color:#b4c2b8}.prediction-pick{color:#b9f5d0;font-weight:800}
+.prediction-meta{display:flex;align-items:center;flex-wrap:wrap;gap:7px 13px;margin:0 0 9px;font-size:9px;color:#b8c7bd}
+.prediction-meta span{display:inline-flex;align-items:center;gap:4px}
+.prediction-meta strong{color:#a6f0c2;font-weight:900}
 .status{display:inline-flex;align-items:center;justify-content:center;gap:4px;border-radius:30px;padding:5px 8px;font-size:8px;font-weight:900;letter-spacing:.4px;white-space:nowrap;border:1px solid transparent}.status-icon{width:15px;height:15px;border-radius:50%;display:inline-grid;place-items:center;font-size:9px;font-weight:900;border:1px solid currentColor}
 .status.pending{background:#302a17;color:#e8c76c;border-color:#6b5728}.status.won{background:#123b28;color:#75e5a5;border-color:#28784f}.status.lost{background:#401c22;color:#ff8992;border-color:#873c47}.status.void{background:#292d30;color:#c4cdd1;border-color:#59656a}
+.status.live{background:rgba(75,59,8,.68);color:var(--yellow);border-color:#a98928;animation:livePulse 1s infinite}
+.status.live .status-icon{border:0;width:7px;height:7px;background:var(--yellow);font-size:0;box-shadow:0 0 8px var(--yellow)}
+.status.ht,.status.ft{background:rgba(22,57,36,.82);color:#a6f0c2;border-color:#34784e}
 
 /* MEMBERSHIP */
 .gate{text-align:center;padding:25px 16px}.gate-icon{width:51px;height:51px;border-radius:16px;background:#183b29;color:#83e5ad;display:grid;place-items:center;margin:0 auto 13px;font-size:23px;border:1px solid #34764d}
@@ -203,6 +220,13 @@ footer{text-align:center;color:#a8b6ac;font-size:9px;letter-spacing:.8px;padding
 <!-- HOME -->
 <section id="home" class="screen">
  <div class="profile"><div class="avatar-wrap"><div class="avatar" id="avatar"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/></svg></div><span class="online-dot"></span></div><div class="profile-info"><h2 id="memberName">Member</h2><p id="memberEmail">Loading account...</p><p id="memberTier">FREE MEMBER</p></div></div>
+
+ <!-- ADMIN ANNOUNCEMENTS -->
+ <div class="announcement-panel" id="memberAnnouncements" aria-live="polite">
+  <div class="announcement-heading"><strong>MEMBER ANNOUNCEMENTS</strong><span>UPDATES</span></div>
+  <div id="announcementList"><div class="announcement-loading">Loading latest announcements...</div></div>
+ </div>
+
  <div class="section-title">SPORTS NEWS</div>
  <div class="news-carousel card" id="sportsNewsCarousel"><div class="news-slide" id="newsSlide" role="link" tabindex="0" aria-label="Open Sky Sports news article"><div class="news-content"><h2>Loading latest Sky Sports headlines...</h2></div></div></div>
  <div class="section-title">DAILY MATCH CENTER</div>
@@ -294,7 +318,7 @@ const WAT="Africa/Lagos",LIVE_SCORES_URL="https://onlybosstips-api.onrender.com/
 const SKY_SPORTS_LOGO="https://commons.wikimedia.org/wiki/Special:Redirect/file/Sky_Sports_2026.svg";
 const $=id=>document.getElementById(id);
 let supabaseClient=null,currentUser=null,selectedPage="authSection",selectedSport="football",selectedScoreState="live",scoreRequestNumber=0;
-let bookingRequestNumber=0;
+let bookingRequestNumber=0,announcementRequestNumber=0;
 
 /* Each page now owns an independent calendar date. */
 let selectedLiveScoreDate=new Date();
@@ -388,26 +412,135 @@ dateControlGroups.forEach(({element,type})=>{
 });
 refreshDateLabels();
 function updateYear(){if($("year"))$("year").textContent=new Intl.DateTimeFormat("en",{timeZone:WAT,year:"numeric"}).format(new Date())}
+ /* NAVIGATION */
 
-/* NAVIGATION */
-function navigate(page){if(!currentUser){showLoginScreen();return}const target=$(page);if(!target)return;document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===page));document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));selectedPage=page;window.scrollTo({top:0,behavior:"smooth"});if(page==="never")loadBookingGroups()}
+function navigate(page){if(!currentUser){showLoginScreen();return}const target=$(page);if(!target)return;document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===page));document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));selectedPage=page;window.scrollTo({top:0,behavior:"smooth"});if(page==="never")loadBookingGroups();if(page==="home")loadAnnouncements()}
+
 document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
+
 document.querySelectorAll("#sportTabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#sportTabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedSport=b.dataset.sport;renderScores()}));
+
 document.querySelectorAll("#scoreTabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#scoreTabs button").forEach(x=>x.classList.remove("active"));b.classList.add("active");selectedScoreState=b.dataset.state;renderScores()}));
- /* MATCH CENTRE API */
+
+/* MEMBER ANNOUNCEMENTS — LOAD ACTIVE ADMIN-PUBLISHED MESSAGES */
+
+function formatAnnouncementDate(value){
+ if(!value)return"";
+ const date=new Date(value);
+ if(Number.isNaN(date.getTime()))return"";
+ return new Intl.DateTimeFormat("en-NG",{
+  timeZone:WAT,
+  day:"2-digit",
+  month:"short",
+  year:"numeric",
+  hour:"2-digit",
+  minute:"2-digit",
+  hour12:true
+ }).format(date)+" WAT";
+}
+
+function renderAnnouncements(records){
+ const container=$("announcementList");
+ if(!container)return;
+ container.innerHTML="";
+
+ if(!Array.isArray(records)||!records.length){
+  const empty=document.createElement("div");
+  empty.className="announcement-empty";
+  empty.textContent="There are no new announcements at the moment.";
+  container.append(empty);
+  return;
+ }
+
+ records.forEach(record=>{
+  const item=document.createElement("article");
+  item.className="announcement-item";
+
+  const messageText=document.createElement("div");
+  messageText.className="announcement-message";
+  messageText.textContent=String(record.message||"").trim();
+
+  if(!messageText.textContent)return;
+
+  item.append(messageText);
+
+  const dateText=formatAnnouncementDate(record.created_at);
+  if(dateText){
+   const date=document.createElement("div");
+   date.className="announcement-date";
+   date.textContent="PUBLISHED: "+dateText;
+   item.append(date);
+  }
+
+  container.append(item);
+ });
+
+ if(!container.children.length){
+  const empty=document.createElement("div");
+  empty.className="announcement-empty";
+  empty.textContent="There are no new announcements at the moment.";
+  container.append(empty);
+ }
+}
+
+async function loadAnnouncements(){
+ const container=$("announcementList");
+ if(!container)return;
+
+ if(!currentUser||!supabaseClient){
+  container.innerHTML='<div class="announcement-empty">Log in to view member announcements.</div>';
+  return;
+ }
+
+ const requestId=++announcementRequestNumber;
+ container.innerHTML='<div class="announcement-loading">Loading latest announcements...</div>';
+
+ try{
+  const {data,error}=await supabaseClient
+   .from("member_announcements")
+   .select("id,message,active,created_at")
+   .eq("active",true)
+   .order("created_at",{ascending:false});
+
+  if(requestId!==announcementRequestNumber)return;
+  if(error)throw error;
+
+  renderAnnouncements(Array.isArray(data)?data:[]);
+ }catch(error){
+  if(requestId!==announcementRequestNumber)return;
+  console.error("Member announcement loading error:",error);
+  container.innerHTML='<div class="announcement-empty">Announcements are temporarily unavailable. Please refresh later.</div>';
+ }
+}
+
+/* MATCH CENTRE API */
+
 function clearScoreDisplay(){
+
  scoreData={football:{live:[],finished:[],upcoming:[]},basketball:{live:[],finished:[],upcoming:[]}};
+
  $("scoreList").innerHTML='<div class="empty">Loading matches for selected date...</div>';
+
 }
+
 function getFirst(o,keys,fallback=""){
+
  for(const k of keys)if(o&&o[k]!==undefined&&o[k]!==null)return o[k];
+
  return fallback;
+
 }
+
 function teamName(v,fallback){
+
  return typeof v==="object"&&v!==null?getFirst(v,["name","title","team"],fallback):v||fallback;
+
 }
+
 function leagueName(v){
+
  return typeof v==="object"&&v!==null?getFirst(v,["name","title","league","competition"],"Other Leagues"):v||"Other Leagues";
+
 }
 
 /*
@@ -415,8 +548,11 @@ function leagueName(v){
  * Supports plain-text statuses and nested API status objects.
  * Uses the actual elapsed minute supplied by the scores API.
  */
+
 function getMatchStatusInfo(game){
+
  const statusValue=getFirst(game,["status","fixture_status","match_status"],"");
+
  const statusObject=typeof statusValue==="object"&&statusValue!==null?statusValue:null;
 
  const statusText=String(
@@ -440,12 +576,14 @@ function getMatchStatusInfo(game){
  );
 
  let minuteNumber=null;
+
  if(elapsedValue!==null&&elapsedValue!==undefined&&String(elapsedValue).trim()!==""){
   const parsed=Number(String(elapsedValue).replace(/[^\d.-]/g,""));
   if(Number.isFinite(parsed)&&parsed>=0)minuteNumber=Math.floor(parsed);
  }
 
  let extraNumber=null;
+
  if(extraValue!==null&&extraValue!==undefined&&String(extraValue).trim()!==""){
   const parsed=Number(String(extraValue).replace(/[^\d.-]/g,""));
   if(Number.isFinite(parsed)&&parsed>0)extraNumber=Math.floor(parsed);
@@ -460,17 +598,22 @@ function getMatchStatusInfo(game){
  }
 
  const isHalfTime=/\bht\b|half[\s-]*time|halftime/.test(normalized);
+
  const isFullTime=/\bft\b|full[\s-]*time|finished|ended|after penalties|after extra time/.test(normalized);
+
  const isLiveStatus=
   /\blive\b|\b1h\b|\b2h\b|\b1st half\b|\b2nd half\b|\bfirst half\b|\bsecond half\b|\bextra time\b|\bextratime\b|\b(et|pen|pens)\b|in play|playing|period/.test(normalized);
 
  let minute="";
+
  if(minuteNumber!==null){
   minute=String(minuteNumber)+(extraNumber?"+"+extraNumber:"")+"’";
  }
 
  if(isHalfTime)return{label:"HT",minute:"",live:false,finished:false,halfTime:true};
+
  if(isFullTime)return{label:"FT",minute:"",live:false,finished:true,halfTime:false};
+
  if(isLiveStatus)return{label:"LIVE",minute,live:true,finished:false,halfTime:false};
 
  return{
@@ -480,14 +623,21 @@ function getMatchStatusInfo(game){
   finished:false,
   halfTime:false
  };
+
 }
 
 function normalizeGame(g){
+
  const fixtureDate=getFirst(g,["date","matchDate","match_date","fixtureDate","kickoff"],"");
+
  const dateText=fixtureDate?String(fixtureDate).slice(0,16).replace("T"," "):"";
+
  const statusInfo=getMatchStatusInfo(g);
+
  const rawLeague=getFirst(g,["league","competition","tournament","category"],"");
+
  const rawHomeScore=getFirst(g,["homeScore","home_score","homeGoals","home_goals","scoreHome"],"-");
+
  const rawAwayScore=getFirst(g,["awayScore","away_score","awayGoals","away_goals","scoreAway"],"-");
 
  return{
@@ -504,32 +654,45 @@ function normalizeGame(g){
   halfTime:statusInfo.halfTime,
   pending:/not started|scheduled|upcoming|pending|timed/.test(String(statusInfo.label).toLowerCase())
  };
+
 }
 
 function extractResponseDate(source){
+
  return getFirst(source,["date","requestedDate","requested_date","matchDate","match_date"],null);
+
 }
 
 function normalizeSportData(source){
+
  const out={live:[],finished:[],upcoming:[]};
+
  ["live","finished","upcoming"].forEach(s=>{
   if(Array.isArray(source[s]))out[s]=source[s].map(normalizeGame);
  });
+
  if(!out.upcoming.length&&Array.isArray(source.fixtures))out.upcoming=source.fixtures.map(normalizeGame);
+
  if(!out.finished.length&&Array.isArray(source.results))out.finished=source.results.map(normalizeGame);
+
  return out;
+
 }
 
 async function loadLiveScores(){
+
  if(!currentUser)return;
 
  const requestId=++scoreRequestNumber;
+
  const requestedDate=nigeriaDate(selectedLiveScoreDate);
+
  const today=nigeriaDate(new Date());
 
  $("scoreList").innerHTML='<div class="empty">Loading '+requestedDate+' matches...</div>';
 
  try{
+
   const response=await fetch(
    LIVE_SCORES_URL+"?date="+encodeURIComponent(requestedDate),
    {
@@ -542,17 +705,22 @@ async function loadLiveScores(){
   if(!response.ok)throw new Error("Scores API returned "+response.status);
 
   const source=await response.json();
+
   if(requestId!==scoreRequestNumber)return;
 
   const returnedDate=extractResponseDate(source);
 
   if(requestedDate!==today&&(!returnedDate||String(returnedDate).slice(0,10)!==requestedDate)){
+
    scoreData={
     football:{live:[],finished:[],upcoming:[]},
     basketball:{live:[],finished:[],upcoming:[]}
    };
+
    renderScores("The server has not confirmed date-specific matches for "+requestedDate+".");
+
    return;
+
   }
 
   if(returnedDate&&String(returnedDate).slice(0,10)!==requestedDate){
@@ -567,18 +735,27 @@ async function loadLiveScores(){
   renderScores();
 
  }catch(error){
+
   if(requestId!==scoreRequestNumber)return;
+
   console.error("Match centre error:",error);
+
   $("scoreList").innerHTML='<div class="empty">Unable to load verified match data. Please try again later.</div>';
+
  }
+
 }
 
 /* DISPLAY LIVE MINUTES, HALF-TIME AND FULL-TIME */
+
 function createScoreStatus(game,state){
+
  const wrapper=document.createElement("div");
+
  wrapper.className="score-status";
 
  if(state==="live"){
+
   if(game.halfTime||game.status==="HT"){
    wrapper.classList.add("finished");
    wrapper.textContent="HT";
@@ -608,34 +785,49 @@ function createScoreStatus(game,state){
   }
 
  }else if(state==="finished"){
+
   wrapper.classList.add("finished");
   wrapper.textContent="FT";
 
  }else{
+
   wrapper.classList.add("pending");
   wrapper.textContent="PENDING";
+
  }
 
  return wrapper;
+
 }
 
 function createScoreRow(game,state){
+
  const row=document.createElement("div");
+
  row.className="score-row";
 
  const home=document.createElement("div");
+
  home.className="team";
+
  const homeName=document.createElement("span");
+
  homeName.textContent=game.home;
+
  home.append(homeName);
 
  const center=document.createElement("div");
+
  const score=document.createElement("div");
+
  score.className="score";
+
  score.textContent=state==="upcoming"?"VS":game.homeScore+" : "+game.awayScore;
 
  const meta=document.createElement("div");
+
  meta.className="score-meta";
+
  meta.textContent=state==="upcoming"
   ?(game.date||"Scheduled")
   :state==="finished"
@@ -645,24 +837,35 @@ function createScoreRow(game,state){
  center.append(score,meta,createScoreStatus(game,state));
 
  const away=document.createElement("div");
+
  away.className="team";
+
  const awayName=document.createElement("span");
+
  awayName.textContent=game.away;
+
  away.append(awayName);
 
  row.append(home,center,away);
+
  return row;
+
 }
 
 function renderScores(message=""){
+
  const list=$("scoreList");
+
  if(!list)return;
 
  const games=scoreData[selectedSport]?.[selectedScoreState]||[];
 
  if(!games.length){
+
   list.innerHTML='<div class="empty">'+(message||"No "+selectedScoreState+" matches returned for this selected date.")+'</div>';
+
   return;
+
  }
 
  list.innerHTML="";
@@ -676,19 +879,25 @@ function renderScores(message=""){
  });
 
  groups.forEach((items,league)=>{
+
   const group=document.createElement("section");
+
   group.className="league-group";
 
   const heading=document.createElement("div");
+
   heading.className="league-heading";
 
   const title=document.createElement("span");
+
   title.textContent=league;
 
   const count=document.createElement("span");
+
   count.textContent=items.length+(items.length===1?" MATCH":" MATCHES");
 
   heading.append(title,count);
+
   group.append(heading);
 
   items.forEach(game=>{
@@ -696,27 +905,39 @@ function renderScores(message=""){
   });
 
   list.append(group);
+
  });
+
 }
 
 /* Refresh scores from the API every minute. */
+
 setInterval(()=>{
  if(currentUser)loadLiveScores();
 },60000);
 
 /* SPORTS NEWS — SKY SPORTS ONLY */
+
 const NEWS_FEEDS=[{name:"SKY SPORTS",url:"https://www.skysports.com/rss/12040",logo:SKY_SPORTS_LOGO}];
 
 function extractNewsImage(item){
+
  if(item.thumbnail)return item.thumbnail;
+
  if(item.enclosure?.link)return item.enclosure.link;
+
  if(item.enclosure?.url)return item.enclosure.url;
+
  const content=String(item.content||"")+" "+String(item.description||"");
+
  const match=content.match(/<img[^>]+src=["']([^"']+)["']/i);
+
  return match?match[1]:"";
+
 }
 
 function cleanNewsText(value){
+
  return String(value||"")
   .replace(/<[^>]*>/g," ")
   .replace(/&nbsp;/gi," ")
@@ -726,14 +947,19 @@ function cleanNewsText(value){
   .replace(/\b0{4,}\b/g,"")
   .replace(/\s+/g," ")
   .trim();
+
 }
 
 async function fetchNewsFeed(feed){
+
  const url="https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(feed.url);
+
  const response=await fetch(url);
+
  if(!response.ok)throw new Error(feed.name+" unavailable");
 
  const data=await response.json();
+
  if(data.status==="error")throw new Error(data.message||"News error");
 
  return(data.items||[]).map(item=>({
@@ -744,55 +970,82 @@ async function fetchNewsFeed(feed){
   image:extractNewsImage(item),
   link:item.link||""
  }));
+
 }
 
 function safeHttpUrl(value){
+
  try{
   const url=new URL(value);
   if(url.protocol==="https:"||url.protocol==="http:")return url.href;
  }catch(error){}
+
  return "";
+
 }
 
 function openCurrentNews(){
+
  const item=sportsNews[newsIndex];
+
  if(!item)return;
+
  const url=safeHttpUrl(item.link);
+
  if(url)window.open(url,"_blank","noopener,noreferrer");
+
 }
 
 function renderNewsSlide(){
+
  const slide=$("newsSlide");
+
  if(!slide||!sportsNews.length)return;
 
  const item=sportsNews[newsIndex];
+
  slide.innerHTML="";
+
  slide.setAttribute("aria-label","Open Sky Sports article: "+item.title);
 
  const imageUrl=safeHttpUrl(item.image);
 
  if(imageUrl){
+
   const image=document.createElement("img");
+
   image.className="news-image";
+
   image.src=imageUrl;
+
   image.alt="Sky Sports news photograph";
+
   image.loading="eager";
+
   image.onerror=()=>image.remove();
+
   slide.append(image);
+
  }
 
  const shade=document.createElement("div");
+
  shade.className="news-image-shade";
 
  const content=document.createElement("div");
+
  content.className="news-content";
 
  const sourceBadge=document.createElement("div");
+
  sourceBadge.className="news-source";
 
  const logo=document.createElement("img");
+
  logo.src=SKY_SPORTS_LOGO;
+
  logo.alt="Sky Sports logo";
+
  logo.onerror=()=>{
   logo.remove();
   const fallback=document.createElement("span");
@@ -804,29 +1057,43 @@ function renderNewsSlide(){
  sourceBadge.append(logo);
 
  const heading=document.createElement("h2");
+
  heading.textContent=item.title;
 
  content.append(sourceBadge,heading);
+
  slide.append(shade,content);
+
 }
 
 function nextNews(){
+
  if(!sportsNews.length)return;
+
  newsIndex=(newsIndex+1)%sportsNews.length;
+
  renderNewsSlide();
+
 }
 
 function restartNewsTimer(){
+
  clearInterval(newsTimer);
+
  newsTimer=setInterval(nextNews,7000);
+
 }
 
 async function loadSportsNews(){
+
  const slide=$("newsSlide");
 
  try{
+
   const results=await Promise.allSettled(NEWS_FEEDS.map(fetchNewsFeed));
+
   const successful=results.filter(r=>r.status==="fulfilled").flatMap(r=>r.value);
+
   const unique=new Map();
 
   successful.forEach(item=>{
@@ -839,18 +1106,25 @@ async function loadSportsNews(){
   if(!sportsNews.length)throw new Error("No Sky Sports articles returned.");
 
   newsIndex=0;
+
   renderNewsSlide();
+
   restartNewsTimer();
 
  }catch(error){
+
   console.error("Sky Sports news loading error:",error);
+
   if(!sportsNews.length){
    slide.innerHTML='<div class="news-content"><div class="news-source"><span class="news-source-text">SKY SPORTS</span></div><h2>Sky Sports headlines are temporarily unavailable</h2></div>';
   }
+
  }
+
 }
 
 $("newsSlide").addEventListener("click",openCurrentNews);
+
 $("newsSlide").addEventListener("keydown",event=>{
  if(event.key==="Enter"||event.key===" "){
   event.preventDefault();
@@ -859,23 +1133,33 @@ $("newsSlide").addEventListener("keydown",event=>{
 });
 
 loadSportsNews();
+
 setInterval(loadSportsNews,15*60*1000);
 
 /* LEAGUE SELECTORS — EACH TIER HAS ITS OWN FILTER */
+
 function buildLeagueSelector(type){
+
  const grid=$(type+"LeagueGrid");
+
  if(!grid)return;
 
  grid.innerHTML="";
 
  leagueOptions.forEach(league=>{
+
   const button=document.createElement("button");
+
   button.type="button";
+
   button.className="league-button";
+
   button.classList.toggle("active",selectedLeagues[type]===league.name);
 
   const title=document.createElement("strong");
+
   title.textContent=league.name;
+
   button.append(title);
 
   button.addEventListener("click",()=>{
@@ -885,24 +1169,36 @@ function buildLeagueSelector(type){
   });
 
   grid.append(button);
+
  });
+
 }
 
 /* PREDICTION CATEGORY DETECTION — KEEP FREE, VIP AND ROLLOVER SEPARATE */
+
 function normalizeTierValue(value){
+
  const v=String(value??"").trim().toLowerCase().replace(/[_-]+/g," ");
+
  if(!v)return"";
+
  if(/\brollover\b/.test(v))return"rollover";
+
  if(/\b(vip|premium)\b/.test(v))return"vip";
+
  if(/\bfree\b/.test(v))return"free";
+
  return"";
+
 }
 
 function recordTier(record){
+
  if(!record||typeof record!=="object")return"";
 
  const explicitFields=[
   "visibility",
+  "Visibility",
   "prediction_tier","prediction_category","odds_type","odds_category",
   "prediction_type","odds_plan","prediction_plan","category"
  ];
@@ -913,7 +1209,9 @@ function recordTier(record){
  }
 
  if(record.is_rollover===true||record.rollover===true)return"rollover";
+
  if(record.is_vip===true||record.vip===true||record.premium===true)return"vip";
+
  if(record.is_free===true||record.free_odds===true)return"free";
 
  const membershipFields=[
@@ -927,17 +1225,23 @@ function recordTier(record){
  }
 
  return"";
+
 }
 
 function classifyPrediction(record){
+
  return recordTier(record);
+
 }
 
 async function loadPredictions(){
+
  if(!supabaseClient||!currentUser)return;
 
  try{
+
   const {data,error}=await supabaseClient.from("predictions").select("*");
+
   if(error)throw error;
 
   const rows=Array.isArray(data)?data:[];
@@ -949,35 +1253,53 @@ async function loadPredictions(){
   };
 
   renderPredictions("free");
+
   if(memberAccess.vip)renderPredictions("vip");
+
   if(memberAccess.rollover)renderPredictions("rollover");
 
   updateWinningStats(rows);
 
   const unclassified=rows.filter(r=>!classifyPrediction(r)).length;
+
   if(unclassified)console.warn(unclassified+" prediction record(s) were not displayed because their prediction category could not be identified. Check the visibility/category field on those Supabase records.");
 
   const undated=rows.filter(r=>!predictionDateKey(r)).length;
+
   if(undated)console.warn(undated+" prediction record(s) have no saved/posted date and cannot be placed under Yesterday, Today or Tomorrow. Check their created_at field in Supabase.");
 
  }catch(error){
+
   console.error("Prediction loading error:",error);
+
   $("freePredictions").innerHTML='<div class="empty card">Unable to load predictions. Please refresh and try again.</div>';
+
   $("vipPredictions").innerHTML='<div class="empty card">Unable to load VIP predictions.</div>';
+
   $("rolloverPredictions").innerHTML='<div class="empty card">Unable to load Rollover predictions.</div>';
+
  }
+
 }
 
 /* NIGERIA DATE MATCHING — USE THE SAVED/POSTED DATE ONLY */
+
 function validDateKey(key){
+
  if(!/^\d{4}-\d{2}-\d{2}$/.test(String(key||"")))return"";
+
  const parts=key.split("-").map(Number);
+
  const date=new Date(Date.UTC(parts[0],parts[1]-1,parts[2],12));
+
  if(date.getUTCFullYear()!==parts[0]||date.getUTCMonth()!==parts[1]-1||date.getUTCDate()!==parts[2])return"";
+
  return key;
+
 }
 
 function parsePredictionDateValue(raw){
+
  if(raw===undefined||raw===null||String(raw).trim()==="")return"";
 
  if(typeof raw==="number"){
@@ -986,6 +1308,7 @@ function parsePredictionDateValue(raw){
  }
 
  const value=String(raw).trim();
+
  const dateOnly=value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
 
  if(dateOnly)return validDateKey(dateOnly[1]+"-"+dateOnly[2]+"-"+dateOnly[3]);
@@ -1000,12 +1323,15 @@ function parsePredictionDateValue(raw){
  if(local)return validDateKey(local[3]+"-"+String(local[2]).padStart(2,"0")+"-"+String(local[1]).padStart(2,"0"));
 
  const parsed=new Date(value);
+
  if(!Number.isNaN(parsed.getTime()))return nigeriaDate(parsed);
 
  return"";
+
 }
 
 function predictionDateKey(record){
+
  if(!record||typeof record!=="object")return"";
 
  const postedDateFields=[
@@ -1022,11 +1348,15 @@ function predictionDateKey(record){
  }
 
  return"";
+
 }
 
 function formatPredictionDate(record){
+
  const key=predictionDateKey(record);
+
  if(!key)return"";
+
  return new Intl.DateTimeFormat("en-GB",{
   timeZone:"UTC",
   weekday:"short",
@@ -1034,56 +1364,260 @@ function formatPredictionDate(record){
   month:"short",
   year:"numeric"
  }).format(dateFromKey(key));
+
+}
+
+/* PREDICTION STATUS — SETTLED RESULT ALWAYS TAKES PRIORITY */
+
+function getPredictionStatusInfo(record){
+
+ const resultRaw=String(
+  getFirst(record,["status","result","settlement_status","settlement"],"PENDING")
+ ).trim().toUpperCase();
+
+ if(/\bWON\b|\bWIN\b/.test(resultRaw))return{value:"WON",minute:""};
+
+ if(/\bLOST\b|\bLOSS\b/.test(resultRaw))return{value:"LOST",minute:""};
+
+ if(/\bVOID\b|\bCANCELLED\b|\bABANDONED\b/.test(resultRaw))return{value:"VOID",minute:""};
+
+ const fixtureRaw=getFirst(
+  record,
+  ["Fixture status","fixture_status","fixtureStatus","match_status","matchStatus"],
+  ""
+ );
+
+ const fixtureText=String(
+  typeof fixtureRaw==="object"&&fixtureRaw!==null
+   ?getFirst(fixtureRaw,["short","name","long","status"],"")
+   :fixtureRaw
+ ).trim().toUpperCase();
+
+ const combined=fixtureText+" "+String(
+  getFirst(record,["elapsed","minute","match_minute","current_minute"],"")
+ );
+
+ if(/\bHT\b|HALF[\s-]*TIME|HALFTIME/.test(fixtureText)){
+  return{value:"HT",minute:""};
+ }
+
+ if(/\bFT\b|FULL[\s-]*TIME|FINISHED|AFTER EXTRA TIME|AFTER PENALTIES/.test(fixtureText)){
+  return{value:"FT",minute:""};
+ }
+
+ const liveStatus=
+  /\bLIVE\b|\b1H\b|\b2H\b|\bET\b|\bPEN\b|\bPENS\b|IN PLAY|IN_PLAY|PLAYING|FIRST HALF|SECOND HALF|EXTRA TIME/.test(fixtureText);
+
+ if(liveStatus){
+
+  let minuteValue=getFirst(
+   record,
+   ["elapsed","minute","match_minute","current_minute","elapsed_time"],
+   null
+  );
+
+  let minute="";
+
+  if(minuteValue!==null&&minuteValue!==undefined&&String(minuteValue).trim()!==""){
+   const parsed=String(minuteValue).match(/\d{1,3}/);
+   if(parsed)minute=parsed[0]+"’";
+  }
+
+  if(!minute){
+   const match=combined.match(/(\d{1,3})\s*(?:\+\s*(\d{1,2}))?\s*['’′]/);
+   if(match)minute=match[1]+(match[2]?"+"+match[2]:"")+"’";
+  }
+
+  if(!minute){
+   const match=fixtureText.match(/(\d{1,3})\s*(?:\+\s*(\d{1,2}))?/);
+   if(match)minute=match[1]+(match[2]?"+"+match[2]:"")+"’";
+  }
+
+  return{value:"LIVE",minute};
+ }
+
+ if(resultRaw==="LIVE"||resultRaw==="IN PLAY"){
+  return{value:"LIVE",minute:""};
+ }
+
+ return{value:"PENDING",minute:""};
+
 }
 
 function getPredictionStatus(record){
- const raw=String(record.status||record.result||"PENDING").trim().toUpperCase();
- if(raw==="WON"||raw==="WIN")return"WON";
- if(raw==="LOST"||raw==="LOSS")return"LOST";
- if(raw==="VOID"||raw==="CANCELLED")return"VOID";
- if(raw==="LIVE"||raw==="IN PLAY")return"LIVE";
- return"PENDING";
+
+ return getPredictionStatusInfo(record).value;
+
 }
 
-function createPredictionStatus(value){
+/* ODDS AND KICKOFF DISPLAY — NIGERIAN TIME */
+
+function getPredictionOdds(record){
+
+ const value=getFirst(record,["odds","Odds","odd","Odd","total_odds","Total odds"],"");
+
+ if(value===null||value===undefined||String(value).trim()==="")return"";
+
+ const numeric=Number(value);
+
+ return Number.isFinite(numeric)?numeric.toFixed(2):String(value).trim();
+
+}
+
+function formatKickoffTime(value){
+
+ if(value===null||value===undefined||String(value).trim()==="")return"";
+
+ const raw=String(value).trim();
+
+ /*
+  * A datetime-local value has no timezone.
+  * Treat it as the Nigerian local time entered by the admin.
+  * Do not convert it from the Render server timezone.
+  */
+
+ const localMatch=raw.match(/^(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2})(?::(\d{2}))?$/);
+
+ if(localMatch&&!/[zZ]|[+-]\d{2}:?\d{2}$/.test(raw)){
+  const hour=Number(localMatch[4]);
+  const minute=localMatch[5];
+  const suffix=hour>=12?"PM":"AM";
+  const displayHour=hour%12||12;
+  return displayHour+":"+minute+" "+suffix+" WAT";
+ }
+
+ const date=new Date(raw);
+
+ if(Number.isNaN(date.getTime()))return raw;
+
+ return new Intl.DateTimeFormat("en-NG",{
+  timeZone:WAT,
+  hour:"numeric",
+  minute:"2-digit",
+  hour12:true
+ }).format(date)+" WAT";
+
+}
+
+function getPredictionKickoff(record){
+
+ return getFirst(record,["kickoff","Kickoff","kickoff_time","kickoffTime","match_time","matchTime"],"");
+
+}
+
+function createPredictionMeta(record){
+
+ const meta=document.createElement("div");
+ meta.className="prediction-meta";
+
+ const odds=getPredictionOdds(record);
+
+ if(odds){
+  const oddsItem=document.createElement("span");
+  oddsItem.append("ODDS: ");
+  const oddsValue=document.createElement("strong");
+  oddsValue.textContent=odds;
+  oddsItem.append(oddsValue);
+  meta.append(oddsItem);
+ }
+
+ const kickoff=formatKickoffTime(getPredictionKickoff(record));
+
+ if(kickoff){
+  const kickoffItem=document.createElement("span");
+  kickoffItem.append("KICKOFF: ");
+  const kickoffValue=document.createElement("strong");
+  kickoffValue.textContent=kickoff;
+  kickoffItem.append(kickoffValue);
+  meta.append(kickoffItem);
+ }
+
+ return meta;
+
+}
+
+function createPredictionStatus(value,minute=""){
+
  const status=document.createElement("span");
+
  status.className="status";
 
  const icon=document.createElement("span");
+
  icon.className="status-icon";
 
  const label=document.createElement("span");
 
  if(value==="WON"){
+
   status.classList.add("won");
+
   icon.textContent="✓";
+
   label.textContent="WON";
+
  }else if(value==="LOST"){
+
   status.classList.add("lost");
+
   icon.textContent="×";
+
   label.textContent="LOST";
+
  }else if(value==="VOID"){
+
   status.classList.add("void");
+
   icon.textContent="–";
+
   label.textContent="VOID";
+
  }else if(value==="LIVE"){
-  status.classList.add("pending");
-  icon.textContent="•";
-  label.textContent="LIVE";
+
+  status.classList.add("live");
+
+  icon.textContent="";
+
+  label.textContent=minute?"LIVE "+minute:"LIVE";
+
+ }else if(value==="HT"){
+
+  status.classList.add("ht");
+
+  icon.textContent="";
+
+  label.textContent="HT";
+
+ }else if(value==="FT"){
+
+  status.classList.add("ft");
+
+  icon.textContent="";
+
+  label.textContent="FT";
+
  }else{
+
   status.classList.add("pending");
+
   icon.textContent="…";
+
   label.textContent="PENDING";
+
  }
 
  status.append(icon,label);
+
  return status;
+
 }
 
 function leagueMatches(record,selected){
+
  if(selected==="All")return true;
 
  const value=String(record.league||record.competition||record.tournament||"").trim().toLowerCase();
+
  const wanted=selected.toLowerCase();
 
  if(wanted==="other leagues"){
@@ -1095,9 +1629,11 @@ function leagueMatches(record,selected){
  if(wanted==="uefa")return value.includes("uefa");
 
  return value.includes(wanted);
+
 }
 
 function renderPredictions(type){
+
  const containerId={
   free:"freePredictions",
   vip:"vipPredictions",
@@ -1105,6 +1641,7 @@ function renderPredictions(type){
  }[type];
 
  const container=$(containerId);
+
  if(!container)return;
 
  const selected=selectedLeagues[type];
@@ -1143,66 +1680,103 @@ function renderPredictions(type){
  }
 
  records.forEach(record=>{
+
   const card=document.createElement("div");
+
   card.className="prediction-card";
 
   const top=document.createElement("div");
+
   top.className="prediction-top";
 
   const league=document.createElement("span");
+
   league.textContent=record.league||record.competition||"Football";
 
   const date=document.createElement("span");
+
   date.textContent=formatPredictionDate(record);
 
   top.append(league,date);
 
   const title=document.createElement("h3");
+
   title.textContent=record.match||record.fixture||record.match_name||((record.home_team||"Home")+" vs "+(record.away_team||"Away"));
 
+  const meta=createPredictionMeta(record);
+
   const bottom=document.createElement("div");
+
   bottom.className="prediction-bottom";
 
   const pick=document.createElement("span");
+
   pick.className="prediction-pick";
+
   pick.textContent="PICK: "+(record.prediction||record.selection||record.pick||"");
 
-  bottom.append(pick,createPredictionStatus(getPredictionStatus(record)));
+  const statusInfo=getPredictionStatusInfo(record);
 
-  card.append(top,title,bottom);
+  bottom.append(pick,createPredictionStatus(statusInfo.value,statusInfo.minute));
+
+  card.append(top,title);
+
+  if(meta.children.length)card.append(meta);
+
+  card.append(bottom);
+
   container.append(card);
+
  });
+
 }
 
 function setPredictionRecords(type,records){
+
  if(!["free","vip","rollover"].includes(type))return;
+
  predictionRecords[type]=Array.isArray(records)?records.filter(record=>classifyPrediction(record)===type):[];
+
  renderPredictions(type);
+
 }
 
 /* MEMBER PROFILE AND MEMBERSHIP */
+
 function membershipLabel(tier){
+
  const value=String(tier||"FREE").trim().toLowerCase();
+
  if(value.includes("rollover"))return"ROLLOVER MEMBER";
+
  if(value.includes("vip")||value.includes("premium"))return"VIP MEMBER";
+
  return"FREE MEMBER";
+
 }
 
 function setMemberProfile(profile){
+
  if(!profile)return;
 
  $("memberName").textContent=profile.full_name||profile.name||currentUser?.user_metadata?.full_name||currentUser?.user_metadata?.name||"Member";
+
  $("memberEmail").textContent=profile.email||currentUser?.email||"";
 
  const tier=membershipLabel(profile.membership_tier||profile.tier||"FREE");
+
  $("memberTier").textContent=tier;
 
  const avatarUrl=profile.avatar_url||profile.profile_image||profile.photo_url||currentUser?.user_metadata?.avatar_url||currentUser?.user_metadata?.picture||"";
+
  const safeAvatar=safeHttpUrl(avatarUrl);
 
  if(safeAvatar){
+
   const image=document.createElement("img");
+
   image.src=safeAvatar;
+
   image.alt="Member profile picture";
 
   image.onerror=()=>{
@@ -1210,24 +1784,33 @@ function setMemberProfile(profile){
   };
 
   $("avatar").innerHTML="";
+
   $("avatar").append(image);
 
  }else{
+
   $("avatar").innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.2 3.5-6.3 8-6.3s7.3 2.1 8 6.3"/></svg>';
+
  }
+
 }
 
 async function loadMemberData(user){
+
  if(!user)return;
 
  currentUser=user;
+
  $("memberEmail").textContent=user.email||"";
+
  $("memberName").textContent=user.user_metadata?.full_name||user.user_metadata?.name||"Member";
+
  $("memberTier").textContent="FREE MEMBER";
 
  memberAccess={vip:false,rollover:false};
 
  try{
+
   const {data,error}=await supabaseClient
    .from("member_profiles")
    .select("*")
@@ -1237,55 +1820,83 @@ async function loadMemberData(user){
   if(error)throw error;
 
   if(data){
+
    setMemberProfile(data);
 
    const tier=String(data.membership_tier||data.tier||"Free").trim().toLowerCase();
 
    memberAccess.vip=tier==="vip"||tier==="vip member"||tier==="premium";
+
    memberAccess.rollover=tier==="rollover"||tier==="rollover member";
 
   }else{
+
    setMemberProfile({
     email:user.email,
     membership_tier:"FREE",
     full_name:user.user_metadata?.full_name||user.user_metadata?.name||"Member"
    });
+
   }
 
  }catch(error){
+
   console.error("Member profile loading error:",error);
+
   $("memberTier").textContent="FREE MEMBER";
+
   memberAccess={vip:false,rollover:false};
+
  }
 
  renderMembershipAccess();
+
+ await loadAnnouncements();
+
  await loadPredictions();
+
  loadLiveScores();
+
 }
 
 function setMembershipAccess(type,approved){
+
  if(type==="VIP")memberAccess.vip=Boolean(approved);
+
  if(type==="ROLLOVER")memberAccess.rollover=Boolean(approved);
+
  renderMembershipAccess();
+
 }
 
 function renderMembershipAccess(){
+
  $("vipGate").classList.toggle("hidden",memberAccess.vip);
+
  $("vipMemberContent").classList.toggle("hidden",!memberAccess.vip);
+
  $("rollGate").classList.toggle("hidden",memberAccess.rollover);
+
  $("rollMemberContent").classList.toggle("hidden",!memberAccess.rollover);
 
  if(memberAccess.vip)renderPredictions("vip");
+
  if(memberAccess.rollover)renderPredictions("rollover");
+
 }
 
 function showPlans(type){
+
  if(type==="VIP")navigate("vipPayment");
+
  if(type==="ROLLOVER")navigate("rollPayment");
+
 }
 
 /* WINNING STREAK STATISTICS */
+
 function updateWinningStats(records){
+
  const settled=(records||[]).filter(record=>
   ["WON","LOST"].includes(String(record.status||record.result||"").toUpperCase())
  );
@@ -1295,7 +1906,9 @@ function updateWinningStats(records){
  ).length;
 
  const lost=settled.length-won;
+
  const total=won+lost;
+
  const rate=total?Math.round(won/total*100):0;
 
  const ordered=[...settled].sort((a,b)=>
@@ -1305,6 +1918,7 @@ function updateWinningStats(records){
  let streak=0;
 
  for(let i=ordered.length-1;i>=0;i--){
+
   const status=String(ordered[i].status||ordered[i].result).toUpperCase();
 
   if(i===ordered.length-1){
@@ -1317,30 +1931,45 @@ function updateWinningStats(records){
   }else{
    break;
   }
+
  }
 
  $("statWon").textContent=won;
+
  $("statLost").textContent=lost;
+
  $("statRate").textContent=rate+"%";
+
  $("statStreak").textContent=streak>0?streak+"W":streak<0?Math.abs(streak)+"L":"0";
+
 }
 
 /* PAYMENT RECEIPT WHATSAPP */
+
 function receiptWhatsApp(type){
+
  const message="Hello, I have made payment for "+type+" membership on onlybosstips. Please find my payment receipt attached.";
+
  window.open("https://wa.me/2348032413495?text="+encodeURIComponent(message),"_blank","noopener,noreferrer");
+
 }
 
 /* NEVER MISS — LOAD PUBLISHED BOOKING GROUPS FROM SUPABASE */
+
 function createBookingStatus(value){
+
  const normalized=String(value||"PENDING").trim().toUpperCase();
+
  const allowed=["PENDING","WON","LOST","VOID"];
+
  const status=allowed.includes(normalized)?normalized:"PENDING";
 
  const element=document.createElement("span");
+
  element.className="status "+status.toLowerCase();
 
  const icon=document.createElement("span");
+
  icon.className="status-icon";
 
  const label=document.createElement("span");
@@ -1360,13 +1989,17 @@ function createBookingStatus(value){
  }
 
  element.append(icon,label);
+
  return element;
+
 }
 
 function formatBookingPublishedDate(value){
+
  if(!value)return"";
 
  const date=new Date(value);
+
  if(Number.isNaN(date.getTime()))return"";
 
  return new Intl.DateTimeFormat("en-NG",{
@@ -1378,17 +2011,23 @@ function formatBookingPublishedDate(value){
   minute:"2-digit",
   hour12:true
  }).format(date)+" WAT";
+
 }
 
 function createBookingPlatformRow(platform,code){
+
  const row=document.createElement("div");
+
  row.className="booking-platform";
 
  const info=document.createElement("div");
+
  info.className="booking-platform-info";
 
  const name=document.createElement("span");
+
  name.className="booking-platform-name";
+
  name.textContent=platform;
 
  info.append(name);
@@ -1396,57 +2035,91 @@ function createBookingPlatformRow(platform,code){
  const cleanCode=String(code??"").trim();
 
  if(cleanCode){
+
   const codeText=document.createElement("span");
+
   codeText.className="booking-platform-code";
+
   codeText.textContent=cleanCode;
+
   info.append(codeText);
 
   const button=document.createElement("button");
+
   button.type="button";
+
   button.className="booking-copy";
+
   button.textContent="COPY";
+
   button.addEventListener("click",()=>copyBookingCode(cleanCode,button));
 
   row.append(info,button);
 
  }else{
+
   const unavailable=document.createElement("span");
+
   unavailable.className="booking-unavailable";
+
   unavailable.textContent="Not available for this platform";
+
   info.append(unavailable);
+
   row.append(info);
+
  }
 
  return row;
+
 }
 
 async function copyBookingCode(code,button){
+
  const originalText="COPY";
+
  button.disabled=true;
+
  button.textContent="COPYING...";
 
  try{
+
   if(navigator.clipboard&&window.isSecureContext){
+
    await navigator.clipboard.writeText(code);
+
   }else{
+
    const textarea=document.createElement("textarea");
+
    textarea.value=code;
+
    textarea.setAttribute("readonly","");
+
    textarea.style.position="fixed";
+
    textarea.style.opacity="0";
+
    textarea.style.left="-9999px";
+
    document.body.append(textarea);
+
    textarea.select();
+
    textarea.setSelectionRange(0,textarea.value.length);
 
    const copied=document.execCommand("copy");
+
    textarea.remove();
 
    if(!copied)throw new Error("Copy command was not successful.");
+
   }
 
   button.textContent="COPIED!";
+
   button.style.background="linear-gradient(135deg,#a6f0c2,#64d995)";
+
   button.style.color="#052012";
 
   setTimeout(()=>{
@@ -1457,41 +2130,57 @@ async function copyBookingCode(code,button){
   },1800);
 
  }catch(error){
+
   console.error("Booking code copy error:",error);
+
   button.textContent="RETRY";
+
   button.disabled=false;
+
   alert("Unable to copy automatically. Please select and copy the booking code manually.");
+
  }
+
 }
 
 function createBookingGroupCard(record){
+
  const card=document.createElement("article");
+
  card.className="booking-group";
 
  const head=document.createElement("div");
+
  head.className="booking-group-head";
 
  const headingWrap=document.createElement("div");
 
  const title=document.createElement("div");
+
  title.className="booking-group-title";
+
  title.textContent="NEVER MISS BOOKING GROUP";
 
  const odds=document.createElement("div");
+
  odds.className="booking-group-odds";
 
  const totalOdds=Number(record.total_odds);
+
  odds.textContent=Number.isFinite(totalOdds)?totalOdds.toFixed(2):String(record.total_odds||"—");
 
  const published=document.createElement("div");
+
  published.className="booking-group-meta";
 
  const publishedDate=formatBookingPublishedDate(record.created_at);
+
  published.textContent=publishedDate?"PUBLISHED: "+publishedDate:"PUBLISHED BOOKING GROUP";
 
  headingWrap.append(title,odds,published);
 
  const status=createBookingStatus(record.status);
+
  head.append(headingWrap,status);
 
  const platformRows=[
@@ -1501,30 +2190,43 @@ function createBookingGroupCard(record){
  ];
 
  card.append(head,...platformRows);
+
  return card;
+
 }
 
 function renderBookingGroups(records){
+
  const container=$("bookingCodes");
+
  if(!container)return;
 
  container.innerHTML="";
 
  if(!Array.isArray(records)||records.length===0){
+
   const message=document.createElement("div");
+
   message.className="booking-message";
+
   message.textContent="No booking groups have been published yet. Please check back soon.";
+
   container.append(message);
+
   return;
+
  }
 
  records.forEach(record=>{
   container.append(createBookingGroupCard(record));
  });
+
 }
 
 async function loadBookingGroups(){
+
  const container=$("bookingCodes");
+
  if(!container)return;
 
  if(!currentUser||!supabaseClient){
@@ -1533,31 +2235,42 @@ async function loadBookingGroups(){
  }
 
  const requestId=++bookingRequestNumber;
+
  container.innerHTML='<div class="booking-message">Loading published booking groups...</div>';
 
  try{
+
   const {data,error}=await supabaseClient
    .from("booking_code_groups")
    .select("id,total_odds,sportybet_code,bet9ja_code,msport_code,status,created_at")
    .order("created_at",{ascending:false});
 
   if(requestId!==bookingRequestNumber)return;
+
   if(error)throw error;
 
   const records=Array.isArray(data)?data:[];
+
   renderBookingGroups(records);
 
  }catch(error){
+
   if(requestId!==bookingRequestNumber)return;
 
   console.error("Booking group loading error:",error);
+
   container.innerHTML="";
 
   const message=document.createElement("div");
+
   message.className="booking-message booking-error";
+
   message.textContent="Unable to load booking codes right now. Please refresh and try again.";
+
   container.append(message);
+
  }
+
 }
 
 $("refreshBookingGroups").addEventListener("click",()=>{
@@ -1565,7 +2278,9 @@ $("refreshBookingGroups").addEventListener("click",()=>{
 });
 
 /* LOG OUT */
+
 async function logout(){
+
  if(!currentUser||!supabaseClient){
   showLoginScreen();
   return;
@@ -1574,26 +2289,41 @@ async function logout(){
  if(!window.confirm("Are you sure you want to log out?"))return;
 
  try{
+
   const {error}=await supabaseClient.auth.signOut();
+
   if(error)throw error;
 
   currentUser=null;
+
   memberAccess={vip:false,rollover:false};
+
   predictionRecords={free:[],vip:[],rollover:[]};
+
   bookingRequestNumber++;
 
+  announcementRequestNumber++;
+
   $("bookingCodes").innerHTML='<div class="booking-message">Log in to view published booking codes.</div>';
+
+  $("announcementList").innerHTML='<div class="announcement-empty">Log in to view member announcements.</div>';
 
   showLoginScreen();
 
  }catch(error){
+
   console.error("Logout error:",error);
+
   alert("Log out failed. Please try again.");
+
  }
+
 }
 
 /* SCREEN DISPLAY — FIX FOR THE BLANK WEBSITE */
+
 function showLoginScreen(){
+
  document.body.classList.remove("member-mode");
 
  document.querySelectorAll(".screen").forEach(screen=>{
@@ -1601,6 +2331,7 @@ function showLoginScreen(){
  });
 
  $("bottomNav").classList.add("hidden");
+
  $("headerStatus").textContent="MEMBER CENTER";
 
  document.querySelectorAll(".nav-item").forEach(button=>{
@@ -1612,9 +2343,11 @@ function showLoginScreen(){
  showAuthMode("login");
 
  window.scrollTo({top:0,behavior:"auto"});
+
 }
 
 function showWelcome(){
+
  document.body.classList.add("member-mode");
 
  document.querySelectorAll(".screen").forEach(screen=>{
@@ -1622,6 +2355,7 @@ function showWelcome(){
  });
 
  $("bottomNav").classList.remove("hidden");
+
  $("headerStatus").textContent="MEMBER CENTER";
 
  document.querySelectorAll(".nav-item").forEach(button=>{
@@ -1631,17 +2365,23 @@ function showWelcome(){
  selectedPage="home";
 
  refreshDateLabels();
+
  updateYear();
 
  window.scrollTo({top:0,behavior:"auto"});
+
 }
 
 /* AUTH SESSION AND PASSWORD RECOVERY */
+
 async function startApp(){
+
  try{
+
   initializeSupabase();
 
   const params=new URLSearchParams(window.location.search);
+
   const authMode=params.get("auth");
 
   if(params.has("code")){
@@ -1655,10 +2395,13 @@ async function startApp(){
   }
 
   const {data,error}=await supabaseClient.auth.getSession();
+
   if(error)throw error;
 
   if(data.session){
+
    currentUser=data.session.user;
+
    await loadMemberData(currentUser);
 
    if(authMode==="recovery"){
@@ -1668,10 +2411,13 @@ async function startApp(){
    }
 
   }else{
+
    showLoginScreen();
+
   }
 
   supabaseClient.auth.onAuthStateChange(async(event,session)=>{
+
    if(event==="PASSWORD_RECOVERY"){
     currentUser=session?.user||null;
     showRecoveryForm();
@@ -1682,6 +2428,7 @@ async function startApp(){
     currentUser=null;
     memberAccess={vip:false,rollover:false};
     bookingRequestNumber++;
+    announcementRequestNumber++;
     showLoginScreen();
     return;
    }
@@ -1691,22 +2438,37 @@ async function startApp(){
     await loadMemberData(session.user);
     showWelcome();
    }
+
   });
 
  }catch(error){
+
   console.error("Application initialization error:",error);
+
   showLoginScreen();
+
   setAuthMessage(error.message||"Unable to connect to the member service. Please refresh.");
+
  }
+
 }
 
 /* INITIALIZE WEBSITE */
+
 buildLeagueSelector("free");
+
 buildLeagueSelector("vip");
+
 buildLeagueSelector("rollover");
+
 refreshDateLabels();
+
 updateYear();
+
 startApp();
+
 </script>
+
 </body>
+
 </html>
